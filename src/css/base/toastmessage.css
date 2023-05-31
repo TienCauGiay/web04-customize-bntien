@@ -45,3 +45,10 @@
 .toast-info b{
     color: var(--color-btn-default);
 }
+
+.toast-success {
+    position: fixed;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+}

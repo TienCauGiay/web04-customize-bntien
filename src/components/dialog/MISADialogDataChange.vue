@@ -1,0 +1,71 @@
+<template>
+  <div
+    class="dialog-employee position-display-center"
+    id="dialog-question-employee"
+  >
+    <div class="dialog-content">
+      <div class="question-blue-icon dialog-content-icon"></div>
+      <div class="dialog-content-main">
+        <p>Dữ liệu đã bị thay đổi. Bạn có muốn cất không?</p>
+      </div>
+    </div>
+    <div class="dialog-question-footer">
+      <div class="dialog-question-footer-left">
+        <misa-button-extra
+          :textButtonExtra="'Hủy'"
+          class="btn-no-minwwidth"
+          @click="btnCancel"
+        ></misa-button-extra>
+      </div>
+      <div class="dialog-question-footer-right">
+        <misa-button-extra
+          :textButtonExtra="'Không'"
+          @click="btnNo"
+        ></misa-button-extra>
+        <misa-button-default
+          :textButtonDefault="'Có'"
+          class="btn-no-minwwidth"
+          @click="btnYes"
+        ></misa-button-default>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "MISADialogDataChange",
+  methods: {
+    /**
+     * Mô tả: Hàm xử lí sự kiện đồng ý thay đổi dữ liệu
+     * created by : BNTIEN
+     * created date: 31-05-2023 13:56:30
+     */
+    btnYes() {
+      this.$emit("yesDialogDataChange");
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện không đồng ý thay đổi dữ liệu
+     * created by : BNTIEN
+     * created date: 31-05-2023 13:57:26
+     */
+    btnNo() {
+      this.$emit("noDialogDataChange");
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện hủy thay đổi dữ liệu
+     * created by : BNTIEN
+     * created date: 31-05-2023 13:57:52
+     */
+    btnCancel() {
+      this.$emit("cancelDialogDataChange");
+    },
+  },
+};
+</script>
+
+<style>
+@import url(@/css/base/dialog.css);
+</style>
