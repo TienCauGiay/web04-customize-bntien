@@ -1,11 +1,12 @@
 <template>
   <div id="detail-info-employee" class="position-display-center">
     <div class="employee-toolbar">
-      <div class="question-icon icon-tb"></div>
+      <div class="question-icon icon-tb" :tabindex="21"></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
         id="employee-exit"
+        :tabindex="22"
       ></div>
     </div>
     <div class="employee-main">
@@ -30,6 +31,7 @@
               :class="{
                 'border-red': isBorderRed.Code && !employee.EmployeeCode,
               }"
+              :tabindex="1"
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -38,6 +40,7 @@
               ref="nameEmployee"
               v-model="employee.FullName"
               :class="{ 'border-red': isBorderRed.Name && !employee.FullName }"
+              :tabindex="2"
             ></misa-input>
           </div>
         </div>
@@ -48,39 +51,34 @@
               type="date"
               v-model="employee.DateOfBirth"
               :value="formattedDate"
+              :tabindex="5"
             ></misa-input>
           </div>
           <div class="col-md-tb">
             <label>Giới tính</label>
             <div class="e-gender">
               <input
+                v-model="employee.GenderName"
+                :value="this.$_MISAEnum.GENDER.Male.TextGender"
                 type="radio"
                 name="gender"
-                :checked="
-                  employee.GenderName === this.$_MISAEnum.GENDER.Male.TextGender
-                "
-                @change="selectGender(this.$_MISAEnum.GENDER.Male.TextGender)"
+                :tabindex="6"
               />
               <span>Nam</span>
               <input
+                v-model="employee.GenderName"
+                :value="this.$_MISAEnum.GENDER.Female.TextGender"
                 type="radio"
                 name="gender"
-                :checked="
-                  employee.GenderName ===
-                  this.$_MISAEnum.GENDER.Female.TextGender
-                "
-                @change="selectGender(this.$_MISAEnum.GENDER.Female.TextGender)"
+                :tabindex="7"
               />
               <span>Nữ</span>
               <input
+                v-model="employee.GenderName"
+                :value="this.$_MISAEnum.GENDER.Other.TextGender"
                 type="radio"
                 name="gender"
-                :checked="
-                  employee.GenderName !==
-                    this.$_MISAEnum.GENDER.Female.TextGender &&
-                  employee.GenderName !== this.$_MISAEnum.GENDER.Male.TextGender
-                "
-                @change="selectGender(this.$_MISAEnum.GENDER.Other.TextGender)"
+                :tabindex="8"
               />
               <span>Khác</span>
             </div>
@@ -99,6 +97,7 @@
                   ref="unitEmployee"
                   placeholder="-- Chọn Đơn Vị --"
                   v-model="employee.UnitName"
+                  :tabindex="3"
                 ></misa-input>
               </div>
               <i class="function-icon" @click="onShowSelectUnit"></i>
@@ -122,7 +121,10 @@
         <div class="half-content">
           <div class="col-md-tb">
             <label title="Số chứng minh nhân dân">Số CMND</label>
-            <misa-input v-model="employee.CMNDNumber"></misa-input>
+            <misa-input
+              v-model="employee.CMNDNumber"
+              :tabindex="9"
+            ></misa-input>
           </div>
           <div class="col-md-n">
             <label>Ngày cấp</label>
@@ -130,39 +132,55 @@
               type="date"
               v-model="employee.CMNDDate"
               :value="formattedDateCMND"
+              :tabindex="9"
             ></misa-input>
           </div>
         </div>
         <div class="half-content">
           <div class="col-md-l">
             <label>Chức danh</label>
-            <misa-input v-model="employee.TitleProfessional"></misa-input>
+            <misa-input
+              v-model="employee.TitleProfessional"
+              :tabindex="4"
+            ></misa-input>
           </div>
         </div>
         <div class="half-content">
           <div class="col-md-l">
             <label>Nơi cấp</label>
-            <misa-input v-model="employee.CMNDAddress"></misa-input>
+            <misa-input
+              v-model="employee.CMNDAddress"
+              :tabindex="10"
+            ></misa-input>
           </div>
         </div>
         <div class="full-content" id="content-null"></div>
         <div class="full-content">
           <label>Địa chỉ</label>
-          <misa-input v-model="employee.EmployeeAddress"></misa-input>
+          <misa-input
+            v-model="employee.EmployeeAddress"
+            :tabindex="11"
+          ></misa-input>
         </div>
         <div class="full-content">
           <div class="full-content-quarter">
             <div class="col-md-quater">
               <label title="Điện thoại di động">ĐT di động</label>
-              <misa-input v-model="employee.PhoneNumber"></misa-input>
+              <misa-input
+                v-model="employee.PhoneNumber"
+                :tabindex="12"
+              ></misa-input>
             </div>
             <div class="col-md-quater">
               <label title="Điện thoại cố định">ĐT cố định</label>
-              <misa-input v-model="employee.PhoneLandline"></misa-input>
+              <misa-input
+                v-model="employee.PhoneLandline"
+                :tabindex="13"
+              ></misa-input>
             </div>
             <div class="col-md-quater">
               <label>Email</label>
-              <misa-input v-model="employee.Email"></misa-input>
+              <misa-input v-model="employee.Email" :tabindex="14"></misa-input>
             </div>
           </div>
         </div>
@@ -170,15 +188,24 @@
           <div class="full-content-quarter">
             <div class="col-md-quater">
               <label>Tài khoản ngân hàng</label>
-              <misa-input v-model="employee.BankAccount"></misa-input>
+              <misa-input
+                v-model="employee.BankAccount"
+                :tabindex="15"
+              ></misa-input>
             </div>
             <div class="col-md-quater">
               <label>Tên ngân hàng</label>
-              <misa-input v-model="employee.BankName"></misa-input>
+              <misa-input
+                v-model="employee.BankName"
+                :tabindex="16"
+              ></misa-input>
             </div>
             <div class="col-md-quater">
               <label>Chi nhánh</label>
-              <misa-input v-model="employee.BankBranch"></misa-input>
+              <misa-input
+                v-model="employee.BankBranch"
+                :tabindex="17"
+              ></misa-input>
             </div>
           </div>
         </div>
@@ -188,16 +215,19 @@
           <misa-button-extra
             :textButtonExtra="'Hủy'"
             @click="btnCancel"
+            :tabindex="18"
           ></misa-button-extra>
         </div>
         <div class="action-right">
           <misa-button-extra
             :textButtonExtra="'Cất'"
             @click="btnClose"
+            :tabindex="19"
           ></misa-button-extra>
           <misa-button-default
             :textButtonDefault="'Cất và thêm'"
             @click="btnSaveAndClose"
+            :tabindex="20"
           ></misa-button-default>
         </div>
       </div>
@@ -439,14 +469,6 @@ export default {
      */
     btnCloseDialogIdExist() {
       this.isShowDialogCodeExist = false;
-    },
-    /**
-     * Mô tả: Xử lí xem radio giới tính nào được chọn
-     * created by : BNTIEN
-     * created date: 30-05-2023 22:32:23
-     */
-    selectGender(gender) {
-      this.employee.GenderName = gender;
     },
 
     /**

@@ -94,7 +94,11 @@
                       <li
                         class="menu-function-select-delete-employee"
                         @click="
-                          onDeleteEmployee(item.EmployeeID, item.EmployeeCode)
+                          onDeleteEmployee(
+                            item.EmployeeID,
+                            item.EmployeeCode,
+                            index
+                          )
                         "
                       >
                         Xóa
@@ -221,6 +225,8 @@ export default {
       contentToastSuccess: "",
       // Tái sử dụng hàm formatDate trong helperCommon
       formatDate: helperCommon.formatDate,
+      // Khai báo biến lưu chỉ số index được chọn để xóa trong table
+      selectedIndex: null,
     };
   },
   created() {
@@ -310,11 +316,12 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
-    onDeleteEmployee(employeeID, employeeCode) {
+    onDeleteEmployee(employeeID, employeeCode, index) {
       this.isShowDialogConfirmDelete = true;
       this.isOverlay = true;
       this.employeeIdDeleteSelected = employeeID;
       this.employeeCodeDeleteSelected = employeeCode;
+      this.selectedIndex = index;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa
@@ -333,9 +340,11 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource.TEXT_CONTENT.SUCCESS_DELETE;
           this.isShowToastMessage = true;
+          // sau khi xóa thành công thì xóa trên table
+          this.employees = this.employees.filter((item, index) => {
+            return this.selectedIndex !== index;
+          });
         }
-        // Sau khi xóa gọi lại api lấy danh sách nhân viên
-        this.getListEmployee();
       } catch (error) {
         console.log(error);
       }
