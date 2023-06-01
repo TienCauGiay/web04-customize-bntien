@@ -73,8 +73,8 @@
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
 }
   
 ::-webkit-scrollbar-track {
@@ -83,13 +83,10 @@
 }
    
 ::-webkit-scrollbar-thumb {
-    background: var(--color-btn-default); 
+    background-color: lightgrey;
     border-radius: 10px;
 }
   
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-btn-default-hover); 
-}
 /* End css main content */
 
 /* Start css table employee */
@@ -132,13 +129,14 @@ table{
 
 th, td, tr{
     border: 1px solid var(--color-border-default);
-    padding: 5px;
+    padding: 8px;
     height: 30px;
     box-sizing: border-box;
 }
 
 tr{
     border-top: none;
+    border-left: none;
 }
 
 tr:hover {

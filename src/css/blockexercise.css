@@ -16,11 +16,17 @@ html, body {
     font-family: RobotoRegular;
     outline: none;
     border: none;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none; /* Ẩn thanh cuộn của trình duyệt cho các trình duyệt dựa trên WebKit */
 }
 
 .container{
     display: flex;
 }
+
 /* End css chung */
 
 /* Start css position display */

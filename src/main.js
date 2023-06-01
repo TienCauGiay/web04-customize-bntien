@@ -8,8 +8,10 @@ import MISADialogDataNotNull from './components/dialog/MISADialogDataNotNull.vue
 import MISAButtonDefault from './components/button/MISAButtonDefault.vue';
 import MISAButtonExtra from './components/button/MISAButtonExtra.vue';
 import MISAToastSuccess from './components/toast/MISAToastSuccess.vue';
-import MISAEnum from './scripts/enum';
-import MISAResource from './scripts/resource';
+import MISAEnum from './scripts/enum.js';
+import MISAResource from './scripts/resource.js';
+import vueRouter from './router/router.js';
+import MISAEmitter from 'tiny-emitter/instance'
 
 var app = createApp(App);
 app.component("misa-input", MISAInputText);
@@ -22,4 +24,7 @@ app.component("misa-button-extra", MISAButtonExtra);
 app.component("misa-toast-success", MISAToastSuccess);
 app.config.globalProperties.$_MISAEnum = MISAEnum;
 app.config.globalProperties.$_MISAResource = MISAResource;
+app.config.globalProperties.$_MISAEmitter = MISAEmitter;
+app.config.globalProperties.$_LANG_CODE = 'vn-VI';
+app.use(vueRouter);
 app.mount('#app');

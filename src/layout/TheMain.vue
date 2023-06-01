@@ -1,16 +1,12 @@
 <template>
   <div id="content-main" class="content-main">
-    <EmployeeList></EmployeeList>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import EmployeeList from "../views/employee/EmployeeList.vue";
 export default {
   name: "TheMain",
-  components: {
-    EmployeeList,
-  },
 };
 </script>
 

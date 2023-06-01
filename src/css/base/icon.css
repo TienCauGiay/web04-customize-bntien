@@ -241,3 +241,15 @@
 	width: 16px;
 	height: 16px;
 }
+
+.employee-icon {
+	background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -636px -1588px;
+	width: 19px;
+	height: 18px;
+}
+
+.setting-icon {
+	background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -145px -32px;
+	width: 24px;
+	height: 24px;
+}

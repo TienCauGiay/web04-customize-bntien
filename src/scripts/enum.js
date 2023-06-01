@@ -51,10 +51,20 @@ const MISAEnum = {
         }
     },
 
+    RECORD:{
+        RECORD_DEFAULT : 20,
+        RECORD_OPTIONS : [10, 20, 30, 50, 100],
+    },
+
     GENDER:{
-        Male: {NumberGender: 0, TextGender: "Nam"},
-        Female: {NumberGender: 1, TextGender: "Nữ"},
-        Other: {NumberGender: 2, TextGender: "Khác"}
+        Male: 0,
+        Female: 1,
+        Other: 2
+    },
+
+    FORM_MODE: {
+        Add: 1,
+        Edit: 2
     }
 } 
 

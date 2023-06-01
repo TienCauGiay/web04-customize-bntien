@@ -1,19 +1,45 @@
 const MISAResource = {
-    TEXT_CONTENT:{
-        CODE: "Mã",
-        NAME: "Tên",
-        UNIT: "Đơn vị",
-        DATE_NaN: "NaN/NaN/NaN",
-        SUCCESS_DELETE : "Xóa thành công",
-        SUCCESS_CTEATE : "Thêm thành công",
-        SUCCESS_UPDATE : "Sửa thành công",
-        RECORD_DEFAULT : "20",
-        RECORD_OPTIONS : ["10", "20", "30", "50", "100"],
-        SPLIT_DATE : "T"
+    'vn-VI':{
+        TEXT_CONTENT:{
+            CODE: "Mã",
+            NAME: "Tên",
+            UNIT: "Đơn vị",
+            DATE_NaN: "NaN/NaN/NaN",
+            SUCCESS_DELETE : "Xóa thành công",
+            SUCCESS_CTEATE : "Thêm thành công",
+            SUCCESS_UPDATE : "Sửa thành công",
+            SPLIT_DATE : "T",
+            GENDER:{
+                Male: "Nam",
+                Female: "Nữ",
+                Other: "Khác"
+            }
+        },
+        TABLE_NAME:{
+            EMPLOYEE :"employee",
+            UNIT: "unit"
+        }
     },
-    TABLE_NAME:{
-        EMPLOYEE :"employee",
-        UNIT: "unit"
+    'en-EN':{
+        TEXT_CONTENT:{
+            CODE: "Code",
+            NAME: "FullName",
+            UNIT: "Unit",
+            DATE_NaN: "NaN/NaN/NaN",
+            SUCCESS_DELETE : "Successful delele",
+            SUCCESS_CTEATE : "Successful add",
+            SUCCESS_UPDATE : "Successful update",
+            SPLIT_DATE : "T",
+            GENDER:{
+                Male: "Male",
+                Female: "Female",
+                Other: "Other"
+            }
+        },
+        TABLE_NAME:{
+            EMPLOYEE :"employee",
+            UNIT: "unit"
+        }
     }
 }
 

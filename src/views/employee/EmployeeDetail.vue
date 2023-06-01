@@ -7,6 +7,7 @@
         class="close-icon icon-tb"
         id="employee-exit"
         :tabindex="22"
+        @keydown.tab.prevent="resetTab($event.target.value)"
       ></div>
     </div>
     <div class="employee-main">
@@ -59,7 +60,9 @@
             <div class="e-gender">
               <input
                 v-model="employee.GenderName"
-                :value="this.$_MISAEnum.GENDER.Male.TextGender"
+                :value="
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
+                "
                 type="radio"
                 name="gender"
                 :tabindex="6"
@@ -67,7 +70,10 @@
               <span>Nam</span>
               <input
                 v-model="employee.GenderName"
-                :value="this.$_MISAEnum.GENDER.Female.TextGender"
+                :value="
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
+                    .Female
+                "
                 type="radio"
                 name="gender"
                 :tabindex="7"
@@ -75,7 +81,10 @@
               <span>Nữ</span>
               <input
                 v-model="employee.GenderName"
-                :value="this.$_MISAEnum.GENDER.Other.TextGender"
+                :value="
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
+                    .Other
+                "
                 type="radio"
                 name="gender"
                 :tabindex="8"
@@ -251,12 +260,6 @@
       @noDialogDataChange="onNoDialogDataChange"
       @yesDialogDataChange="onYesDialogDataChange"
     ></misa-dialog-data-change>
-    <!-- toast mesage -->
-    <misa-toast-success
-      v-if="isShowToastMessage"
-      :contentToast="contentToastSuccess"
-      @closeToastMessage="btnCloseToastMessage"
-    ></misa-toast-success>
   </div>
 </template>
 
@@ -292,10 +295,6 @@ export default {
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
-      // Khai báo biến xác định trạng thái hiển thị của toast message
-      isShowToastMessage: false,
-      // Khai báo nội dung toast message
-      contentToastSuccess: "",
     };
   },
 
@@ -308,11 +307,12 @@ export default {
     async getListUnit() {
       try {
         const res = await apiEmployeemanage.getListAllObject(
-          `/${this.$_MISAResource.TABLE_NAME.UNIT}`
+          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.UNIT}`
         );
         this.listUnit = res.data;
       } catch (error) {
         console.log(error);
+        return;
       }
     },
     /**
@@ -322,7 +322,7 @@ export default {
      */
     loadData() {
       this.getListUnit();
-      if (!this.statusEdit) {
+      if (this.statusEdit !== this.$_MISAEnum.FORM_MODE.Edit) {
         this.employee = {};
       } else {
         try {
@@ -332,6 +332,7 @@ export default {
           this.employee = JSON.parse(res);
         } catch (error) {
           console.log(error);
+          return;
         }
       }
     },
@@ -384,26 +385,29 @@ export default {
         // Kiểm tra xem các trường bắt buộc đã được nhập dữ liệu chưa, nếu chưa thì thông báo cho người dùng
         if (!this.employee.EmployeeCode) {
           this.isShowDialogDataNotNull = true;
-          this.dataNotNull = this.$_MISAResource.TEXT_CONTENT.CODE;
+          this.dataNotNull =
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE;
           this.isBorderRed.Code = true;
           return;
         }
         if (!this.employee.FullName) {
           this.isShowDialogDataNotNull = true;
-          this.dataNotNull = this.$_MISAResource.TEXT_CONTENT.NAME;
+          this.dataNotNull =
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME;
           this.isBorderRed.Name = true;
           return;
         }
         if (!this.employee.UnitName) {
           this.isShowDialogDataNotNull = true;
-          this.dataNotNull = this.$_MISAResource.TEXT_CONTENT.UNIT;
+          this.dataNotNull =
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT;
           this.isBorderRed.Unit = true;
           return;
         }
         // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
         let employeeById = {};
         const res = await apiEmployeemanage.getObjectById(
-          `/${this.$_MISAResource.TABLE_NAME.EMPLOYEE}`,
+          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
           `/${this.employee.EmployeeCode}`
         );
         employeeById = res.data;
@@ -414,13 +418,14 @@ export default {
           );
           this.employee.UnitID = unitAdd.UnitID;
           const res = await apiEmployeemanage.postObject(
-            `/${this.$_MISAResource.TABLE_NAME.EMPLOYEE}`,
+            `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
             this.employee
           );
           if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-            this.contentToastSuccess =
-              this.$_MISAResource.TEXT_CONTENT.SUCCESS_CTEATE;
-            this.isShowToastMessage = true;
+            this.$_MISAEmitter.emit(
+              "onShowToastMessage",
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE
+            );
             this.employee = {};
             this.isBorderRed = {};
           }
@@ -431,6 +436,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        return;
       }
     },
     /**
@@ -469,6 +475,7 @@ export default {
      */
     btnCloseDialogIdExist() {
       this.isShowDialogCodeExist = false;
+      this.$refs.codeEmployee.$el.focus();
     },
 
     /**
@@ -497,26 +504,30 @@ export default {
     async onYesDialogDataChange() {
       try {
         const res = await apiEmployeemanage.putObject(
-          `/${this.$_MISAResource.TABLE_NAME.EMPLOYEE}`,
+          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
           this.employee
         );
+        console.log(res);
         this.onCloseFormDetail();
-        if (this.$_MISAEnum.isResponseStatusOk(res.status)) {
-          // Chưa xử lí khi sửa thành công
-          console.log(res);
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          this.$_MISAEmitter.emit(
+            "onShowToastMessageUpdate",
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
+          );
         }
       } catch (error) {
         console.log(error);
+        return;
       }
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện đóng toast message
+     * Mô tả: Hàm reset tabindex về ô input mã nhân viên khi tab nhảy đến icon close
      * created by : BNTIEN
-     * created date: 31-05-2023 01:15:51
+     * created date: 01-06-2023 14:24:19
      */
-    btnCloseToastMessage() {
-      this.isShowToastMessage = false;
+    resetTab() {
+      this.$refs.codeEmployee.$el.focus();
     },
   },
 
@@ -531,7 +542,7 @@ export default {
         if (this.employee.DateOfBirth) {
           const isoDate = this.employee.DateOfBirth;
           const formattedDate = isoDate.split(
-            this.$_MISAResource.TEXT_CONTENT.SPLIT_DATE
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
           )[0];
           return formattedDate;
         }
@@ -552,7 +563,7 @@ export default {
         if (this.employee.CMNDDate) {
           const isoDateCMND = this.employee.CMNDDate;
           const formattedDateCMND = isoDateCMND.split(
-            this.$_MISAResource.TEXT_CONTENT.SPLIT_DATE
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
           )[0];
           return formattedDateCMND;
         }

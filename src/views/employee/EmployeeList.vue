@@ -33,7 +33,7 @@
               </th>
               <th class="e-id">MÃ NHÂN VIÊN</th>
               <th>TÊN NHÂN VIÊN</th>
-              <th class="e-id">GIỚI TÍNH</th>
+              <th style="width: 80px">GIỚI TÍNH</th>
               <th type="date" class="text-center e-birthday">NGÀY SINH</th>
               <th>
                 <span title="Số chứng minh nhân dân">Số CMND</span>
@@ -65,7 +65,7 @@
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
               <td>{{ item.FullName }}</td>
-              <td class="e-id">{{ item.GenderName }}</td>
+              <td style="width: 80px">{{ item.GenderName }}</td>
               <td class="text-center e-birthday">
                 {{ formatDate(item.DateOfBirth) }}
               </td>
@@ -204,7 +204,7 @@ export default {
       // Khai báo biến quy định trạng thái hiển thị của các item select paging
       isShowPaging: false,
       // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
-      isStatusEdit: false,
+      isStatusEdit: this.$_MISAEnum.FORM_MODE.Add,
       // Khai báo trạng thái hiển thị của toast message
       isShowToastMessage: false,
       // Khai báo list employee
@@ -212,9 +212,9 @@ export default {
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
-      selectedRecord: this.$_MISAResource.TEXT_CONTENT.RECORD_DEFAULT,
+      selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
-      recordOptions: this.$_MISAResource.TEXT_CONTENT.RECORD_OPTIONS,
+      recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
       // Khai báo EmployeeId của nhân viên cần xóa
       employeeIdDeleteSelected: "",
       // Khai báo EmployeeCode của nhân viên cần xóa
@@ -231,6 +231,14 @@ export default {
   },
   created() {
     this.getListEmployee();
+    this.$_MISAEmitter.on("onShowToastMessage", (data) => {
+      this.contentToastSuccess = data;
+      this.isShowToastMessage = true;
+    });
+    this.$_MISAEmitter.on("onShowToastMessageUpdate", (data) => {
+      this.contentToastSuccess = data;
+      this.isShowToastMessage = true;
+    });
   },
   methods: {
     /**
@@ -250,7 +258,7 @@ export default {
     onCloseFormDetail() {
       this.isShowFormDetail = false;
       this.isOverlay = false;
-      this.isStatusEdit = false;
+      this.isStatusEdit = this.$_MISAEnum.FORM_MODE.Add;
       this.employeeUpdate = {};
     },
     /**
@@ -277,11 +285,12 @@ export default {
     async getListEmployee() {
       try {
         const res = await apiEmployeemanage.getListAllObject(
-          `/${this.$_MISAResource.TABLE_NAME.EMPLOYEE}`
+          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`
         );
         this.employees = res.data;
       } catch (error) {
         console.log(error);
+        return;
       }
     },
     /**
@@ -301,7 +310,7 @@ export default {
       this.employeeUpdate = employee;
       this.isShowFormDetail = true;
       this.isOverlay = true;
-      this.isStatusEdit = true;
+      this.isStatusEdit = this.$_MISAEnum.FORM_MODE.Edit;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện click vào các item lựa chọn số bản ghi hiển thị trên table
@@ -331,15 +340,15 @@ export default {
     async btnConfirmYesDeleteEmployee() {
       try {
         const res = await apiEmployeemanage.deleteObjectById(
-          `/${this.$_MISAResource.TABLE_NAME.EMPLOYEE}`,
+          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
           `/${this.employeeIdDeleteSelected}`
         );
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
           this.contentToastSuccess =
-            this.$_MISAResource.TEXT_CONTENT.SUCCESS_DELETE;
-          this.isShowToastMessage = true;
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.onShowToastMessage();
           // sau khi xóa thành công thì xóa trên table
           this.employees = this.employees.filter((item, index) => {
             return this.selectedIndex !== index;
@@ -347,6 +356,7 @@ export default {
         }
       } catch (error) {
         console.log(error);
+        return;
       }
     },
     /**
@@ -360,6 +370,15 @@ export default {
     },
 
     /**
+     * Mô tả: Hàm xử lí sự kiện mở toast mesage
+     * created by : BNTIEN
+     * created date: 31-05-2023 00:42:10
+     */
+    onShowToastMessage() {
+      this.isShowToastMessage = true;
+    },
+
+    /**
      * Mô tả: Hàm xử lí sự kiện đóng toast mesage
      * created by : BNTIEN
      * created date: 31-05-2023 00:42:10
@@ -367,6 +386,11 @@ export default {
     btnCloseToastMessage() {
       this.isShowToastMessage = false;
     },
+  },
+
+  beforeUnmount() {
+    this.$_MISAEmitter.off("onShowToastMessage");
+    this.$_MISAEmitter.off("onShowToastMessageUpdate");
   },
 };
 </script>

@@ -5,7 +5,9 @@
     background-color: #27395E;
     color: white;
     padding-left: 10px;
+    padding-right: 5px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .content{
@@ -45,10 +47,15 @@
     margin-right: 10px;
 }
 
-.menu-item a {
+.menu-item .menu-item-a {
     text-decoration: none;
     color: white;
     display: flex;
     align-items: center;
+}
+
+.router-link-active {
+    background-color: rgba(128, 128, 128, 0.154);
+    color: rgb(255, 255, 255);
 }
 /* End css sidebar */
