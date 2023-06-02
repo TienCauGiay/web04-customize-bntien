@@ -33,6 +33,12 @@
                 'border-red': isBorderRed.Code && !employee.EmployeeCode,
               }"
               :tabindex="1"
+              :titleContent="
+                !employee.EmployeeCode
+                  ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                      .CODE_NOT_NULL
+                  : ''
+              "
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -42,6 +48,12 @@
               v-model="employee.FullName"
               :class="{ 'border-red': isBorderRed.Name && !employee.FullName }"
               :tabindex="2"
+              :titleContent="
+                !employee.FullName
+                  ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                      .NAME_NOT_NULL
+                  : ''
+              "
             ></misa-input>
           </div>
         </div>
@@ -107,9 +119,17 @@
                   placeholder="-- Chọn Đơn Vị --"
                   v-model="employee.UnitName"
                   :tabindex="3"
+                  :titleContent="
+                    !employee.UnitName
+                      ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                          .UNIT_NOT_NULL
+                      : ''
+                  "
                 ></misa-input>
               </div>
-              <i class="function-icon" @click="onShowSelectUnit"></i>
+              <div class="e-icon-cbb" @click="onShowSelectUnit">
+                <div class="function-icon"></div>
+              </div>
             </div>
             <div
               class="col-md-l select-unit"
@@ -376,32 +396,46 @@ export default {
       }
     },
     /**
+     * Mô tả: Hàm ckeck border red của các ô bắt buộc phải nhập dữ liệu
+     * created by : BNTIEN
+     * created date: 02-06-2023 15:04:13
+     */
+    checkBorder() {
+      if (!this.employee.EmployeeCode) {
+        this.isBorderRed.Code = true;
+      }
+      if (!this.employee.FullName) {
+        this.isBorderRed.Name = true;
+      }
+      if (!this.employee.UnitName) {
+        this.isBorderRed.Unit = true;
+      }
+    },
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nut cất và thêm trên form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:23
      */
     async btnSaveAndClose() {
       try {
+        this.checkBorder();
         // Kiểm tra xem các trường bắt buộc đã được nhập dữ liệu chưa, nếu chưa thì thông báo cho người dùng
         if (!this.employee.EmployeeCode) {
           this.isShowDialogDataNotNull = true;
           this.dataNotNull =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE;
-          this.isBorderRed.Code = true;
           return;
         }
         if (!this.employee.FullName) {
           this.isShowDialogDataNotNull = true;
           this.dataNotNull =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME;
-          this.isBorderRed.Name = true;
           return;
         }
         if (!this.employee.UnitName) {
           this.isShowDialogDataNotNull = true;
           this.dataNotNull =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT;
-          this.isBorderRed.Unit = true;
           return;
         }
         // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
@@ -580,33 +614,27 @@ export default {
 <style scoped>
 @import url(@/css/detailinfoemployee.css);
 
-i:hover {
-  cursor: pointer;
-}
-
 .select-unit-block {
   background-color: #fff;
   border: 1px solid var(--color-border-default);
   z-index: 100;
 }
 
-.e-textfield-cbb input {
-  background-color: white;
-}
-
-.e-textfield-cbb input:hover {
-  background-color: white;
-}
-
-.e-textfield-cbb input:focus {
-  border: none;
-}
-
 .border-red {
   border: 1px solid red;
 }
 
-.toast-success {
-  top: -50px;
+.e-textfield-cbb .textfield {
+  border-radius: 4px 0px 0px 4px;
+}
+
+input[type="radio"]:checked {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -o-appearance: none;
+  -ms-appearance: none;
+  border-radius: 50%;
+  background-color: var(--color-btn-default);
 }
 </style>

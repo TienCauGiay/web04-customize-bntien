@@ -134,7 +134,6 @@
 .e-cbb{
     display: flex;
     align-items: center;
-    border: 1px solid var(--color-border-default);
     border-radius: 4px;
 }
 
@@ -142,9 +141,12 @@
     width: 95%;
 }
 
-.e-textfield-cbb input{
-    border: none;
-    outline: none;
+.e-icon-cbb{
+    box-sizing: border-box;
+    background-color: #BDBDBD;
+    padding: calc((30px - 5px) / 2);
+    cursor: pointer;
+    border-radius: 0px 4px 4px 0px;
 }
 
 .select-unit{

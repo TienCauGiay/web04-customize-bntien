@@ -60,7 +60,7 @@
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
             >
-              <td class="employee-border-left">
+              <td class="employee-border-left" @dblclick.stop>
                 <input class="checkbox-select-row" type="checkbox" />
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>

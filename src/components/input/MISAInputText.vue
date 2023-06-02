@@ -4,6 +4,7 @@
     type="text"
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
+    :title="titleContent"
   />
 </template>
 
@@ -12,6 +13,7 @@ export default {
   name: "MISAInputText",
   props: {
     modelValue: String,
+    titleContent: String,
   },
 };
 </script>
