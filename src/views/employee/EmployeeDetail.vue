@@ -284,7 +284,8 @@
 </template>
 
 <script>
-import apiEmployeemanage from "@/scripts/services.js";
+import employeeService from "@/services/employee.js";
+import unitService from "@/services/unit.js";
 export default {
   name: "EmployeeDetail",
   props: ["employeeSelected", "statusEdit"],
@@ -326,9 +327,7 @@ export default {
      */
     async getListUnit() {
       try {
-        const res = await apiEmployeemanage.getListAllObject(
-          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.UNIT}`
-        );
+        const res = await unitService.getAll();
         this.listUnit = res.data;
       } catch (error) {
         console.log(error);
@@ -440,10 +439,7 @@ export default {
         }
         // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
         let employeeById = {};
-        const res = await apiEmployeemanage.getObjectById(
-          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
-          `/${this.employee.EmployeeCode}`
-        );
+        const res = await employeeService.getById(this.employee.EmployeeCode);
         employeeById = res.data;
         if (!employeeById) {
           // Nếu mã nhân viên chưa tồn tại trong hệ thống
@@ -451,10 +447,7 @@ export default {
             (unit) => unit.UnitName === this.employee.UnitName
           );
           this.employee.UnitID = unitAdd.UnitID;
-          const res = await apiEmployeemanage.postObject(
-            `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
-            this.employee
-          );
+          const res = await employeeService.create(this.employee);
           if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
             this.$_MISAEmitter.emit(
               "onShowToastMessage",
@@ -537,8 +530,8 @@ export default {
      */
     async onYesDialogDataChange() {
       try {
-        const res = await apiEmployeemanage.putObject(
-          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
+        const res = await employeeService.update(
+          this.employeeSelected.EmployeeID,
           this.employee
         );
         console.log(res);

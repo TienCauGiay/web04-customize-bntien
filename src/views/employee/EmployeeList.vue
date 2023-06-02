@@ -186,8 +186,8 @@
 
 <script>
 import EmployeeDetail from "./EmployeeDetail.vue";
-import apiEmployeemanage from "@/scripts/services.js";
 import helperCommon from "@/scripts/helper.js";
+import employeeService from "@/services/employee.js";
 export default {
   name: "EmployeeList",
   components: {
@@ -233,11 +233,11 @@ export default {
     this.getListEmployee();
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
-      this.isShowToastMessage = true;
+      this.onShowToastMessage();
     });
     this.$_MISAEmitter.on("onShowToastMessageUpdate", (data) => {
       this.contentToastSuccess = data;
-      this.isShowToastMessage = true;
+      this.onShowToastMessage();
     });
   },
   methods: {
@@ -284,9 +284,7 @@ export default {
      */
     async getListEmployee() {
       try {
-        const res = await apiEmployeemanage.getListAllObject(
-          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`
-        );
+        const res = await employeeService.getAll();
         this.employees = res.data;
       } catch (error) {
         console.log(error);
@@ -339,10 +337,7 @@ export default {
      */
     async btnConfirmYesDeleteEmployee() {
       try {
-        const res = await apiEmployeemanage.deleteObjectById(
-          `/${this.$_MISAResource[this.$_LANG_CODE].TABLE_NAME.EMPLOYEE}`,
-          `/${this.employeeIdDeleteSelected}`
-        );
+        const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
@@ -376,6 +371,9 @@ export default {
      */
     onShowToastMessage() {
       this.isShowToastMessage = true;
+      setTimeout(() => {
+        this.isShowToastMessage = false;
+      }, 3000);
     },
 
     /**

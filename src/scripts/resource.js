@@ -18,10 +18,6 @@ const MISAResource = {
             NAME_NOT_NULL: "Tên không được để trống.",
             UNIT_NOT_NULL: "Đơn vị không được để trống.",
         },
-        TABLE_NAME:{
-            EMPLOYEE :"employee",
-            UNIT: "unit"
-        }
     },
     'en-EN':{
         TEXT_CONTENT:{
@@ -42,10 +38,6 @@ const MISAResource = {
             NAME_NOT_NULL: "Fullname cannot be blank.",
             UNIT_NOT_NULL: "Unit cannot be blank.",
         },
-        TABLE_NAME:{
-            EMPLOYEE :"employee",
-            UNIT: "unit"
-        }
     }
 }
 
