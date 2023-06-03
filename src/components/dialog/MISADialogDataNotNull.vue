@@ -6,8 +6,8 @@
     <div class="dialog-content">
       <div class="danger-red-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
-        <p id="dialog-content-main-notnull">
-          {{ this.valueNotNull }} không được để trống.
+        <p v-for="(item, index) in this.valueNotNull" :key="index">
+          {{ item }} nhân viên không được để trống.
         </p>
       </div>
     </div>
@@ -31,7 +31,7 @@ export default {
      * created date: 29-05-2023 08:35:28
      */
     btnClose() {
-      this.$emit("closeBtnSaveAndClose");
+      this.$emit("closeBtnSaveAndAdd");
     },
   },
 };

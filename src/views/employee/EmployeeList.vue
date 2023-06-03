@@ -166,7 +166,7 @@
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
       :employeeSelected="employeeUpdate"
-      :statusEdit="isStatusEdit"
+      :statusFormMode="isStatusFormMode"
     ></EmployeeDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
@@ -204,7 +204,7 @@ export default {
       // Khai báo biến quy định trạng thái hiển thị của các item select paging
       isShowPaging: false,
       // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
-      isStatusEdit: this.$_MISAEnum.FORM_MODE.Add,
+      isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
       // Khai báo trạng thái hiển thị của toast message
       isShowToastMessage: false,
       // Khai báo list employee
@@ -239,6 +239,9 @@ export default {
       this.contentToastSuccess = data;
       this.onShowToastMessage();
     });
+    this.$_MISAEmitter.on("setFormModeAdd", () => {
+      this.setFormModeAdd();
+    });
   },
   methods: {
     /**
@@ -258,7 +261,7 @@ export default {
     onCloseFormDetail() {
       this.isShowFormDetail = false;
       this.isOverlay = false;
-      this.isStatusEdit = this.$_MISAEnum.FORM_MODE.Add;
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
       this.employeeUpdate = {};
     },
     /**
@@ -308,7 +311,15 @@ export default {
       this.employeeUpdate = employee;
       this.isShowFormDetail = true;
       this.isOverlay = true;
-      this.isStatusEdit = this.$_MISAEnum.FORM_MODE.Edit;
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
+    },
+    /**
+     * Mô tả: Hàm set isStatusFormMode = ADD
+     * created by : BNTIEN
+     * created date: 03-06-2023 15:37:14
+     */
+    setFormModeAdd() {
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện click vào các item lựa chọn số bản ghi hiển thị trên table
@@ -389,6 +400,7 @@ export default {
   beforeUnmount() {
     this.$_MISAEmitter.off("onShowToastMessage");
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
+    this.$_MISAEmitter.off("setFormModeAdd");
   },
 };
 </script>

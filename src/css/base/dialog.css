@@ -52,6 +52,12 @@
     margin-right: 10px;
 }
 
+.dialog-content-main{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
 .dialog-content-main p{
     margin: 0px;
 }
