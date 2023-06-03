@@ -55,7 +55,7 @@
             </tr>
           </thead>
           <!-- Kiểm tra list employees có rỗng hay không, nếu không rỗng mới hiển thị lên table -->
-          <tbody v-if="employees.length > 0">
+          <tbody v-if="dataTable.length > 0">
             <tr
               v-for="(item, index) in dataTable"
               :key="item.EmployeeId"
@@ -115,7 +115,9 @@
       </form>
     </div>
     <div id="pagination" class="pagination">
-      <p>Tổng số: <b>1035</b> bản ghi</p>
+      <p>
+        Tổng số: <b>{{ this.employees.length }}</b> bản ghi
+      </p>
       <div class="pagination-detail">
         <div class="pagination-detail-pagesize">
           <div
@@ -147,11 +149,15 @@
         </div>
         <div>
           <ul class="page-number">
-            <li>Trước</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>Sau</li>
+            <li @click="goToPage('previous')">Trước</li>
+            <li
+              v-for="pageNumber in totalPages"
+              :key="pageNumber"
+              @click="goToPage(pageNumber)"
+            >
+              {{ pageNumber }}
+            </li>
+            <li @click="goToPage('next')">Sau</li>
           </ul>
         </div>
       </div>
@@ -194,6 +200,16 @@ export default {
   components: {
     EmployeeDetail,
   },
+  computed: {
+    /**
+     * Mô tả: tính toán tổng số trang (làm tròn lên)
+     * created by : BNTIEN
+     * created date: 04-06-2023 02:02:33
+     */
+    totalPages() {
+      return Math.ceil(this.employees.length / this.selectedRecord);
+    },
+  },
   data() {
     return {
       // Khai báo biến quy định trạng thái hiển thị của form chi tiết
@@ -232,6 +248,9 @@ export default {
       selectedIndex: null,
       // Khai báo biến lưu nội dung tìm kiếm
       textSearch: "",
+      // Khai báo trang hiện tại trong phân trang
+      currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo số bản ghi trên trang
     };
   },
   created() {
@@ -334,6 +353,7 @@ export default {
      */
     onSelectedRecord(record) {
       this.selectedRecord = record;
+      this.updateDataTable();
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa nhân viên thì hiển thị dialog xác nhận xóa
@@ -362,7 +382,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           // sau khi xóa thành công thì xóa trên table
-          this.employees = this.employees.filter((item, index) => {
+          this.dataTable = this.dataTable.filter((item, index) => {
             return this.selectedIndex !== index;
           });
         }
@@ -440,6 +460,35 @@ export default {
         .replace(/[\u0300-\u036f]/g, "")
         .replace(/đ/g, "d")
         .replace(/Đ/g, "D");
+    },
+    /**
+     * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize
+     * created by : BNTIEN
+     * created date: 04-06-2023 01:49:06
+     */
+    updateDataTable() {
+      const startIndex = (this.currentPage - 1) * this.selectedRecord;
+      const endIndex = startIndex + this.selectedRecord;
+      this.dataTable = this.employees.slice(startIndex, endIndex);
+    },
+    /**
+     * Mô tả: Di chuyển giữa các trang trong phân trang
+     * created by : BNTIEN
+     * created date: 04-06-2023 01:49:32
+     */
+    goToPage(p) {
+      if (p === "previous") {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        }
+      } else if (p === "next") {
+        if (this.currentPage < this.totalPages) {
+          this.currentPage++;
+        }
+      } else {
+        this.currentPage = p;
+      }
+      this.updateDataTable();
     },
   },
 

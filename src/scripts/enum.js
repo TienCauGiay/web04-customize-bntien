@@ -52,6 +52,7 @@ const MISAEnum = {
     },
 
     RECORD:{
+        CURRENT_PAGE: 1,
         RECORD_DEFAULT : 20,
         RECORD_OPTIONS : [10, 20, 30, 50, 100],
     },
