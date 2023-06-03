@@ -265,7 +265,7 @@
     <misa-dialog-data-not-null
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
-      @closeBtnSaveAndAdd="onCloseBtnSaveAndAdd"
+      @closeBtnSaveAndAdd="onCloseDialogSaveAndAdd"
     ></misa-dialog-data-not-null>
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
@@ -382,20 +382,6 @@ export default {
       this.employee.UnitName = unit;
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:55:05
-     */
-    btnSave() {
-      if (
-        JSON.stringify(this.employeeSelected) !== JSON.stringify(this.employee)
-      ) {
-        this.isShowDialogDataChange = true;
-      } else {
-        this.onCloseFormDetail();
-      }
-    },
-    /**
      * Mô tả: Hàm kiểm tra các ô bắt buộc phải nhập dữ liệu
      * created by : BNTIEN
      * created date: 02-06-2023 15:04:13
@@ -435,6 +421,79 @@ export default {
         return false;
       }
       return true;
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:55:05
+     */
+    async btnSave() {
+      // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
+      this.checkDataNotNull();
+      // Gọi hàm hiển thị dialog data not null
+      if (this.showDialogDataNotNull()) {
+        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+          // Nếu form ở trạng thái thêm mới
+          try {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let employeeById = {};
+            const res = await employeeService.getById(
+              this.employee.EmployeeCode
+            );
+            employeeById = res.data;
+            if (!employeeById) {
+              // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              let unitAdd = this.listUnit.find(
+                (unit) => unit.UnitName === this.employee.UnitName
+              );
+              this.employee.UnitID = unitAdd.UnitID;
+              const res = await employeeService.create(this.employee);
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessage",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .SUCCESS_CTEATE
+                );
+              }
+              this.$emit("closeFormDetail");
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.isShowDialogCodeExist = true;
+              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            }
+          } catch (error) {
+            console.log(error);
+            return;
+          }
+        } else {
+          // Nếu form ở trạng thái sửa
+          // Kiểm tra xem dữ liệu có thay đổi hay k
+          if (
+            JSON.stringify(this.employeeSelected) !==
+            JSON.stringify(this.employee)
+          ) {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let employeeById = {};
+            const res = await employeeService.getById(
+              this.employee.EmployeeCode
+            );
+            employeeById = res.data;
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+            if (
+              !employeeById ||
+              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
+            ) {
+              this.isShowDialogDataChange = true;
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.isShowDialogCodeExist = true;
+              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            }
+          } else {
+            this.$emit("closeFormDetail");
+          }
+        }
+      }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nut cất và thêm trên form chi tiết
@@ -494,7 +553,7 @@ export default {
               this.employee.EmployeeCode
             );
             employeeById = res.data;
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc trùng với nhân viên đang sửa
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
             if (
               !employeeById ||
               employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
@@ -518,7 +577,7 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:59
      */
-    onCloseBtnSaveAndAdd() {
+    onCloseDialogSaveAndAdd() {
       this.isShowDialogDataNotNull = false;
       this.dataNotNull = [];
       if (!this.employee.EmployeeCode) {
@@ -568,10 +627,14 @@ export default {
      * created date: 30-05-2023 23:42:10
      */
     onNoDialogDataChange() {
-      this.isShowDialogDataChange = false;
-      this.employee = {};
-      this.$_MISAEmitter.emit("setFormModeAdd");
-      this.$refs.codeEmployee.$el.focus();
+      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+        this.isShowDialogDataChange = false;
+        this.employee = {};
+        this.$_MISAEmitter.emit("setFormModeAdd");
+        this.$refs.codeEmployee.$el.focus();
+      } else {
+        this.$emit("closeFormDetail");
+      }
     },
 
     /**
@@ -585,10 +648,14 @@ export default {
           this.employeeSelected.EmployeeID,
           this.employee
         );
-        this.isShowDialogDataChange = false;
-        this.employee = {};
-        this.$_MISAEmitter.emit("setFormModeAdd");
-        this.$refs.codeEmployee.$el.focus();
+        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+          this.isShowDialogDataChange = false;
+          this.employee = {};
+          this.$_MISAEmitter.emit("setFormModeAdd");
+          this.$refs.codeEmployee.$el.focus();
+        } else {
+          this.$emit("closeFormDetail");
+        }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.$_MISAEmitter.emit(
             "onShowToastMessageUpdate",

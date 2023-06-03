@@ -14,8 +14,9 @@
           placeholder="Tìm theo mã, tên nhân viên"
           name="search-employee"
           id="search-employee"
+          v-model="textSearch"
         />
-        <div class="search-icon icon-tb"></div>
+        <div class="search-icon icon-tb" @click="onSearchEmployee"></div>
       </div>
       <div
         @click="refreshData"
@@ -56,7 +57,7 @@
           <!-- Kiểm tra list employees có rỗng hay không, nếu không rỗng mới hiển thị lên table -->
           <tbody v-if="employees.length > 0">
             <tr
-              v-for="(item, index) in employees"
+              v-for="(item, index) in dataTable"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
             >
@@ -209,6 +210,8 @@ export default {
       isShowToastMessage: false,
       // Khai báo list employee
       employees: [],
+      // Khai báo dữ liệu duyệt trên table
+      dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
@@ -227,6 +230,8 @@ export default {
       formatDate: helperCommon.formatDate,
       // Khai báo biến lưu chỉ số index được chọn để xóa trong table
       selectedIndex: null,
+      // Khai báo biến lưu nội dung tìm kiếm
+      textSearch: "",
     };
   },
   created() {
@@ -289,6 +294,7 @@ export default {
       try {
         const res = await employeeService.getAll();
         this.employees = res.data;
+        this.dataTable = this.employees;
       } catch (error) {
         console.log(error);
         return;
@@ -394,6 +400,46 @@ export default {
      */
     btnCloseToastMessage() {
       this.isShowToastMessage = false;
+    },
+    /**
+     * Mô tả: Hàm tìm kiếm nhân viên theo mã hoặc tên
+     * created by : BNTIEN
+     * created date: 04-06-2023 00:20:21
+     */
+    onSearchEmployee() {
+      const searchTerm = this.removeVietnameseAccents(
+        this.textSearch.toLowerCase().trim()
+      );
+
+      if (searchTerm) {
+        const filteredEmployees = this.employees.filter((e) => {
+          const employeeName = this.removeVietnameseAccents(
+            e.FullName.toLowerCase()
+          );
+          const employeeCode = this.removeVietnameseAccents(
+            e.EmployeeCode.toLowerCase()
+          );
+          return (
+            employeeName.includes(searchTerm) ||
+            employeeCode.includes(searchTerm)
+          );
+        });
+        this.dataTable = filteredEmployees;
+      } else {
+        this.dataTable = this.employees;
+      }
+    },
+    /**
+     * Mô tả: Hàm xóa dấu tiếng việt
+     * created by : BNTIEN
+     * created date: 04-06-2023 00:54:21
+     */
+    removeVietnameseAccents(str) {
+      return str
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/đ/g, "d")
+        .replace(/Đ/g, "D");
     },
   },
 
