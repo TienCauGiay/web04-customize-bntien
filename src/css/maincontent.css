@@ -186,6 +186,7 @@ tr th:first-child{
     padding-left: 0px;
     background-color: white;
     margin: 0px;
+    z-index: 2000;
 }
 
 .menu-function-select li{

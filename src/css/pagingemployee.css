@@ -27,8 +27,9 @@
 }
 
 .menu-paging-select{
-    padding: 10px;
+    padding: 9px;
     background-color: #e0e0e0;
+    position: relative;
 }
 
 .menu-paging-select:hover{
@@ -37,8 +38,8 @@
 
 .menu-paging{
     position: absolute;
-    bottom: 25px;
-    right: 288px;
+    bottom: 15px;
+    right: 0px;
     border: 1px solid var(--color-border-default);
     padding-left: 0px;
     width: 200px;

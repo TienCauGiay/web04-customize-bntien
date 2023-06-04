@@ -119,7 +119,10 @@
         Tổng số: <b>{{ this.employees.length }}</b> bản ghi
       </p>
       <div class="pagination-detail">
-        <div class="pagination-detail-pagesize">
+        <div
+          class="pagination-detail-pagesize"
+          :class="{ 'active-record': isShowPaging }"
+        >
           <div
             id="pagination-detail-pagesize-content"
             class="pagination-detail-pagesize-content"
@@ -521,5 +524,9 @@ export default {
 
 .active-page {
   border: 1px solid var(--color-border-default);
+}
+
+.active-record {
+  border: 1px solid var(--color-btn-default);
 }
 </style>
