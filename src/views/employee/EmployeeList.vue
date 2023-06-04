@@ -259,6 +259,8 @@ export default {
       contentToastSuccess: "",
       // Tái sử dụng hàm formatDate trong helperCommon
       formatDate: helperCommon.formatDate,
+      // Tái sử dụng hàm xóa dấu tiếng việt
+      removeVietnameseAccents: helperCommon.removeVietnameseAccents,
       // Khai báo biến lưu chỉ số index được chọn để xóa trong table
       selectedIndex: null,
       // Khai báo biến lưu nội dung tìm kiếm
@@ -464,18 +466,6 @@ export default {
       } else {
         this.dataTable = this.employees;
       }
-    },
-    /**
-     * Mô tả: Hàm xóa dấu tiếng việt
-     * created by : BNTIEN
-     * created date: 04-06-2023 00:54:21
-     */
-    removeVietnameseAccents(str) {
-      return str
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/đ/g, "d")
-        .replace(/Đ/g, "D");
     },
     /**
      * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize

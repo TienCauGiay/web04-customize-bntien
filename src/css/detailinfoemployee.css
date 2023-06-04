@@ -153,7 +153,7 @@
     position: absolute;
     width: 100%;
     box-sizing: border-box;
-    height: 78px;
+    max-height: 78px;
     overflow-y: auto;
     border-radius: 4px;
     top: 58px;
@@ -162,7 +162,7 @@
 
 .select-unit ul{
     margin: 0px;
-    padding-left: 8px;
+    padding-left: 0px;
 }
 
 .select-unit li{

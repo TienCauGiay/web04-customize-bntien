@@ -137,7 +137,7 @@
             >
               <ul v-show="isShowSelectUnit" @click="onShowSelectUnit">
                 <li
-                  v-for="(unit, index) in listUnit"
+                  v-for="(unit, index) in listUnitSearch"
                   :key="index"
                   @click="onSelectedUnit(unit.UnitName)"
                 >
@@ -286,6 +286,7 @@
 <script>
 import employeeService from "@/services/employee.js";
 import unitService from "@/services/unit.js";
+import helperCommon from "@/scripts/helper";
 export default {
   name: "EmployeeDetail",
   props: ["employeeSelected", "statusFormMode"],
@@ -296,6 +297,22 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.$refs.codeEmployee.$el.focus();
   },
+  watch: {
+    "employee.UnitName": function (newValue) {
+      const searchTerm = this.removeVietnameseAccents(
+        newValue.toLowerCase().trim()
+      );
+      if (!searchTerm) {
+        this.listUnitSearch = this.listUnit;
+      } else {
+        const filteredUnits = this.listUnit.filter((u) => {
+          const uName = this.removeVietnameseAccents(u.UnitName.toLowerCase());
+          return uName.includes(searchTerm);
+        });
+        this.listUnitSearch = filteredUnits;
+      }
+    },
+  },
   data() {
     return {
       // Khai báo biến quy định trạng thái hiển thị của combobox chọn đơn vị
@@ -304,6 +321,8 @@ export default {
       employee: {},
       // Khai báo danh sách các đơn vị
       listUnit: [],
+      // Khai báo danh sách đơn vị tìm kiếm
+      listUnitSearch: [],
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
       isShowDialogDataNotNull: false,
       // Khai báo biến xác định nội dung trường nào k được để trống
@@ -316,6 +335,8 @@ export default {
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
+      // Tái sử dụng hàm xóa dấu tiếng việt
+      removeVietnameseAccents: helperCommon.removeVietnameseAccents,
     };
   },
 
@@ -329,6 +350,7 @@ export default {
       try {
         const res = await unitService.getAll();
         this.listUnit = res.data;
+        this.listUnitSearch = res.data;
       } catch (error) {
         console.log(error);
         return;
