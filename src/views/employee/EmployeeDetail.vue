@@ -763,13 +763,11 @@ export default {
   border-radius: 4px 0px 0px 4px;
 }
 
-input[type="radio"]:checked {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -o-appearance: none;
-  -ms-appearance: none;
-  border-radius: 50%;
-  background-color: var(--color-btn-default);
+input[type="radio"] {
+  accent-color: #2ca01c;
+}
+
+input[type="checkbox"] {
+  accent-color: #2ca01c;
 }
 </style>

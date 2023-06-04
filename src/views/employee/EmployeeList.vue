@@ -152,7 +152,16 @@
         </div>
         <div>
           <ul class="page-number">
-            <li @click="goToPage('previous')">Trước</li>
+            <li
+              @click="
+                goToPage(
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
+                    .PREVIOUS
+                )
+              "
+            >
+              Trước
+            </li>
             <li
               v-for="pageNumber in this.visiblePageNumbers"
               :key="pageNumber"
@@ -161,7 +170,15 @@
             >
               {{ pageNumber }}
             </li>
-            <li @click="goToPage('next')">Sau</li>
+            <li
+              @click="
+                goToPage(
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
+                )
+              "
+            >
+              Sau
+            </li>
           </ul>
         </div>
       </div>
@@ -487,11 +504,23 @@ export default {
      */
     goToPage(p) {
       let newPage;
-      if (p === "previous" && this.currentPage > 1) {
+      if (
+        p ===
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
+        this.currentPage > 1
+      ) {
         newPage = this.currentPage - 1;
-      } else if (p === "next" && this.currentPage < this.totalPages) {
+      } else if (
+        p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
+        this.currentPage < this.totalPages
+      ) {
         newPage = this.currentPage + 1;
-      } else if (typeof p === "number" && p >= 1 && p <= this.totalPages) {
+      } else if (
+        typeof p ===
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        p >= 1 &&
+        p <= this.totalPages
+      ) {
         newPage = p;
       }
 
@@ -528,5 +557,9 @@ export default {
 
 .active-record {
   border: 1px solid var(--color-btn-default);
+}
+
+input[type="checkbox"] {
+  accent-color: #2ca01c;
 }
 </style>

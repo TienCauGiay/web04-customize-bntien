@@ -17,6 +17,11 @@ const MISAResource = {
             CODE_NOT_NULL: "Mã không được để trống.",
             NAME_NOT_NULL: "Tên không được để trống.",
             UNIT_NOT_NULL: "Đơn vị không được để trống.",
+            PAGE:{
+                PREVIOUS: "previous",
+                NEXT: "next",
+                NUMBER: "number"
+            }
         },
     },
     'en-EN':{
@@ -37,6 +42,11 @@ const MISAResource = {
             CODE_NOT_NULL: "Code cannot be blank.",
             NAME_NOT_NULL: "Fullname cannot be blank.",
             UNIT_NOT_NULL: "Unit cannot be blank.",
+            PAGE:{
+                PREVIOUS: "previous",
+                NEXT: "next",
+                NUMBER: "number"
+            }
         },
     }
 }
