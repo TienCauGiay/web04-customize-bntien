@@ -151,9 +151,10 @@
           <ul class="page-number">
             <li @click="goToPage('previous')">Trước</li>
             <li
-              v-for="pageNumber in totalPages"
+              v-for="pageNumber in this.visiblePageNumbers"
               :key="pageNumber"
               @click="goToPage(pageNumber)"
+              :class="{ 'active-page': pageNumber === this.currentPage }"
             >
               {{ pageNumber }}
             </li>
@@ -201,13 +202,27 @@ export default {
     EmployeeDetail,
   },
   computed: {
-    /**
-     * Mô tả: tính toán tổng số trang (làm tròn lên)
-     * created by : BNTIEN
-     * created date: 04-06-2023 02:02:33
-     */
     totalPages() {
       return Math.ceil(this.employees.length / this.selectedRecord);
+    },
+    visiblePageNumbers() {
+      let startPage = Math.max(
+        this.currentPage - Math.floor(this.maxVisiblePages / 2),
+        1
+      );
+      let endPage = startPage + this.maxVisiblePages - 1;
+
+      if (endPage > this.totalPages) {
+        endPage = this.totalPages;
+        startPage = Math.max(endPage - this.maxVisiblePages + 1, 1);
+      }
+
+      const visiblePages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        visiblePages.push(i);
+      }
+
+      return visiblePages;
     },
   },
   data() {
@@ -226,7 +241,7 @@ export default {
       isShowToastMessage: false,
       // Khai báo list employee
       employees: [],
-      // Khai báo dữ liệu duyệt trên table
+      // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
@@ -250,7 +265,8 @@ export default {
       textSearch: "",
       // Khai báo trang hiện tại trong phân trang
       currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
-      // Khai báo số bản ghi trên trang
+      // Khai báo số trang tối đa hiển thị trong phân trang
+      maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
     };
   },
   created() {
@@ -477,18 +493,19 @@ export default {
      * created date: 04-06-2023 01:49:32
      */
     goToPage(p) {
-      if (p === "previous") {
-        if (this.currentPage > 1) {
-          this.currentPage--;
-        }
-      } else if (p === "next") {
-        if (this.currentPage < this.totalPages) {
-          this.currentPage++;
-        }
-      } else {
-        this.currentPage = p;
+      let newPage;
+      if (p === "previous" && this.currentPage > 1) {
+        newPage = this.currentPage - 1;
+      } else if (p === "next" && this.currentPage < this.totalPages) {
+        newPage = this.currentPage + 1;
+      } else if (typeof p === "number" && p >= 1 && p <= this.totalPages) {
+        newPage = p;
       }
-      this.updateDataTable();
+
+      if (newPage !== undefined && newPage !== this.currentPage) {
+        this.currentPage = newPage;
+        this.updateDataTable();
+      }
     },
   },
 
@@ -510,5 +527,9 @@ export default {
 
 .rotate-function-icon {
   transform: rotate(180deg);
+}
+
+.active-page {
+  border: 1px solid var(--color-border-default);
 }
 </style>
