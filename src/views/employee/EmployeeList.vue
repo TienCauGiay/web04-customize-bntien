@@ -266,6 +266,7 @@ export default {
       employees: [],
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
+      // Khai báo biến lưu list employee search
       searchData: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
@@ -488,6 +489,7 @@ export default {
         });
         this.dataTable = filteredEmployees;
       } else {
+        this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
         this.dataTable = this.employees;
       }
       this.searchData = this.dataTable;
