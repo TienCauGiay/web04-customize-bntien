@@ -37,13 +37,8 @@
 
 .info-user p{
     margin-left: 5px;
-    margin-right: 3px;
+    margin-right: 5px;
     font-weight: 700;
-}
-
-.info-user img{
-    padding: 0px;
-    border-radius: 50%;
 }
 
 /* End css header content */
