@@ -223,6 +223,9 @@ export default {
   },
   computed: {
     totalPages() {
+      if (this.removeVietnameseAccents(this.textSearch.toLowerCase().trim())) {
+        return Math.ceil(this.searchData.length / this.selectedRecord);
+      }
       return Math.ceil(this.employees.length / this.selectedRecord);
     },
     visiblePageNumbers() {
@@ -263,6 +266,7 @@ export default {
       employees: [],
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
+      searchData: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
@@ -486,6 +490,7 @@ export default {
       } else {
         this.dataTable = this.employees;
       }
+      this.searchData = this.dataTable;
     },
     /**
      * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize
@@ -495,7 +500,11 @@ export default {
     updateDataTable() {
       const startIndex = (this.currentPage - 1) * this.selectedRecord;
       const endIndex = startIndex + this.selectedRecord;
-      this.dataTable = this.employees.slice(startIndex, endIndex);
+      if (this.removeVietnameseAccents(this.textSearch.toLowerCase().trim())) {
+        this.dataTable = this.searchData.slice(startIndex, endIndex);
+      } else {
+        this.dataTable = this.employees.slice(startIndex, endIndex);
+      }
     },
     /**
      * Mô tả: Di chuyển giữa các trang trong phân trang

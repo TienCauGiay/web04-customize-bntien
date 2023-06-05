@@ -55,7 +55,7 @@ const MISAEnum = {
         CURRENT_PAGE: 1,
         MAX_VISIBLE_PAGE: 3,
         RECORD_DEFAULT : 20,
-        RECORD_OPTIONS : [10, 20, 30, 50, 100],
+        RECORD_OPTIONS : [2, 10, 20, 30, 50, 100],
     },
 
     GENDER:{
