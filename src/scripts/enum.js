@@ -67,7 +67,12 @@ const MISAEnum = {
     FORM_MODE: {
         Add: 1,
         Edit: 2
-    }
+    },
+    KEY_CODE:{
+        DOWN: 40,
+        UP: 38,
+        ENTER: 13
+    },
 } 
 
 export default MISAEnum;
