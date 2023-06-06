@@ -15,6 +15,7 @@
           name="search-employee"
           id="search-employee"
           v-model="textSearch"
+          @keydown.enter="onSearchEmployee"
         />
         <div class="search-icon icon-tb" @click="onSearchEmployee"></div>
       </div>
@@ -572,5 +573,11 @@ export default {
 
 input[type="checkbox"] {
   accent-color: #2ca01c;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }
 </style>
