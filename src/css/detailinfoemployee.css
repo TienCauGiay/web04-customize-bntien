@@ -179,7 +179,7 @@
     position: absolute;
     width: 100%;
     box-sizing: border-box;
-    max-height: 78px;
+    /* max-height: 78px; */
     overflow-y: auto;
     border-radius: 4px;
     top: 58px;
@@ -189,11 +189,15 @@
 .select-unit ul{
     margin: 0px;
     padding-left: 0px;
+    display: flex;
+    flex-direction: column;
+    line-height: 30px;
 }
 
 .select-unit li{
     display: block;
-    padding: 5px;
+    padding: 0 12px;
+    height: 30px;
 }
 
 .select-unit li:hover{

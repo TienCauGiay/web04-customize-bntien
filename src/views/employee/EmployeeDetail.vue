@@ -117,7 +117,8 @@
                 <misa-input
                   ref="unitEmployee"
                   placeholder="-- Chọn Đơn Vị --"
-                  v-model="employee.UnitName"
+                  :value="employee.UnitName"
+                  @input="onSearchChange"
                   :tabindex="3"
                   :titleContent="
                     !employee.UnitName
@@ -125,6 +126,7 @@
                           .UNIT_NOT_NULL
                       : ''
                   "
+                  @keydown="onKeyDownUnit"
                 ></misa-input>
               </div>
               <div class="e-icon-cbb" @click="onShowSelectUnit">
@@ -140,6 +142,7 @@
                   v-for="(unit, index) in listUnitSearch"
                   :key="index"
                   @click="onSelectedUnit(unit.UnitName)"
+                  :class="{ 'cbb-selected': index == indexUnitSelected }"
                 >
                   {{ unit.UnitName }}
                 </li>
@@ -297,23 +300,6 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.$refs.codeEmployee.$el.focus();
   },
-  watch: {
-    "employee.UnitName": function (newValue) {
-      const searchTerm = this.removeVietnameseAccents(
-        newValue.toLowerCase().trim()
-      );
-      if (!searchTerm) {
-        this.listUnitSearch = this.listUnit;
-      } else {
-        const filteredUnits = this.listUnit.filter((u) => {
-          const uName = this.removeVietnameseAccents(u.UnitName.toLowerCase());
-          return uName.includes(searchTerm);
-        });
-        this.listUnitSearch = filteredUnits;
-        this.isShowSelectUnit = true;
-      }
-    },
-  },
   data() {
     return {
       // Khai báo biến quy định trạng thái hiển thị của combobox chọn đơn vị
@@ -338,10 +324,59 @@ export default {
       isBorderRed: {},
       // Tái sử dụng hàm xóa dấu tiếng việt
       removeVietnameseAccents: helperCommon.removeVietnameseAccents,
+      // Khai báo chỉ số đang được chọn trong combobox
+      indexUnitSelected: 0,
     };
   },
 
   methods: {
+    /**
+     * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
+     * created by : BNTIEN
+     * created date: 06-06-2023 22:02:18
+     */
+    onKeyDownUnit(event) {
+      const maxLength = this.listUnitSearch.length;
+      if (maxLength == 0) {
+        return;
+      } else {
+        if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
+          // Bấm xuống
+          if (this.indexUnitSelected < maxLength - 1) {
+            this.indexUnitSelected++;
+          }
+        } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+          if (this.indexUnitSelected > 0) {
+            this.indexUnitSelected--;
+          }
+        } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+          this.employee.UnitName =
+            this.listUnitSearch[this.indexUnitSelected].UnitName;
+          this.isShowSelectUnit = false;
+        }
+      }
+    },
+    /**
+     * Mô tả: Lắng nghe sự thay đổi text trong input search unit
+     * created by : BNTIEN
+     * created date: 06-06-2023 22:31:16
+     */
+    onSearchChange() {
+      const newValue = event.target.value;
+      const searchTerm = this.removeVietnameseAccents(
+        newValue.toLowerCase().trim()
+      );
+      if (!searchTerm) {
+        this.listUnitSearch = this.listUnit;
+      } else {
+        const filteredUnits = this.listUnit.filter((u) => {
+          const uName = this.removeVietnameseAccents(u.UnitName.toLowerCase());
+          return uName.includes(searchTerm);
+        });
+        this.listUnitSearch = filteredUnits;
+        this.isShowSelectUnit = true;
+      }
+    },
     /**
      * Mô tả: Hàm lấy danh sách department từ api
      * created by : BNTIEN
@@ -770,5 +805,10 @@ input[type="radio"] {
 
 input[type="checkbox"] {
   accent-color: #2ca01c;
+}
+
+.cbb-selected {
+  background-color: var(--color-border-default);
+  color: var(--color-btn-default);
 }
 </style>
