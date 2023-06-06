@@ -108,12 +108,6 @@
         <div class="half-content">
           <div class="col-md-l" style="position: relative">
             <label>Đơn vị <span class="s-require">*</span></label>
-            <!-- <misa-combobox
-              :listData="this.listUnit"
-              propText="UnitName"
-              tabIndex="3"
-              :class="{ 'border-red': isBorderRed.Unit && !employee.UnitName }"
-            ></misa-combobox> -->
             <div
               class="e-cbb"
               id="e-cbb"
@@ -316,6 +310,7 @@ export default {
           return uName.includes(searchTerm);
         });
         this.listUnitSearch = filteredUnits;
+        this.isShowSelectUnit = true;
       }
     },
   },
