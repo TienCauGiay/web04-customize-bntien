@@ -123,6 +123,7 @@
         <div
           class="pagination-detail-pagesize"
           :class="{ 'active-record': isShowPaging }"
+          ref="pagingMenu"
         >
           <div
             id="pagination-detail-pagesize-content"
@@ -221,6 +222,10 @@ export default {
   name: "EmployeeList",
   components: {
     EmployeeDetail,
+  },
+  mounted() {
+    // Lắng nghe sự kiện click trên toàn bộ màn hình
+    window.addEventListener("click", this.handleClickOutsidePaging);
   },
   computed: {
     /**
@@ -409,6 +414,7 @@ export default {
      */
     onSelectedRecord(record) {
       this.selectedRecord = record;
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
       this.updateDataTable();
     },
     /**
@@ -554,6 +560,16 @@ export default {
         this.updateDataTable();
       }
     },
+    /**
+     * Mô tả: xử lí sự kiện khi người dùng click ra ngoài select paging
+     * created by : BNTIEN
+     * created date: 08-06-2023 04:50:25
+     */
+    handleClickOutsidePaging(event) {
+      if (!this.$refs.pagingMenu.contains(event.target)) {
+        this.isShowPaging = false;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -561,6 +577,7 @@ export default {
     this.$_MISAEmitter.off("onShowToastMessage");
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");
+    window.removeEventListener("click", this.handleClickOutsidePaging);
   },
 };
 </script>
