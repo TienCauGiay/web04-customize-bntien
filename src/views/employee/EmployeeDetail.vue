@@ -394,9 +394,13 @@ export default {
           this.scrollIndex(this.indexUnitSelected, this.$_MISAEnum.KEY_CODE.UP);
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
           // Bấm enter
-          this.employee.UnitName =
-            this.listUnitSearch[this.indexUnitSelected].UnitName;
-          this.isShowSelectUnit = false;
+          if (this.isShowSelectUnit) {
+            this.employee.UnitName =
+              this.listUnitSearch[this.indexUnitSelected].UnitName;
+            this.isShowSelectUnit = false;
+          } else {
+            this.isShowSelectUnit = true;
+          }
         }
       }
     },
