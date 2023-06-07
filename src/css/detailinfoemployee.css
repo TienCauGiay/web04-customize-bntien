@@ -179,7 +179,7 @@
     position: absolute;
     width: 100%;
     box-sizing: border-box;
-    /* max-height: 78px; */
+    max-height: 90px;
     overflow-y: auto;
     border-radius: 4px;
     top: 58px;

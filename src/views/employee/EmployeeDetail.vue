@@ -143,6 +143,7 @@
                   :key="index"
                   @click="onSelectedUnit(unit.UnitName)"
                   :class="{ 'cbb-selected': index == indexUnitSelected }"
+                  ref="listValueUnit"
                 >
                   {{ unit.UnitName }}
                 </li>
@@ -344,11 +345,17 @@ export default {
           // Bấm xuống
           if (this.indexUnitSelected < maxLength - 1) {
             this.indexUnitSelected++;
+          } else if (this.indexUnitSelected == maxLength - 1) {
+            this.indexUnitSelected = 0;
           }
+          this.scrollIndex(this.indexUnitSelected);
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
           if (this.indexUnitSelected > 0) {
             this.indexUnitSelected--;
+          } else if (this.indexUnitSelected == 0) {
+            this.indexUnitSelected = maxLength - 1;
           }
+          this.scrollIndex(this.indexUnitSelected);
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
           this.employee.UnitName =
             this.listUnitSearch[this.indexUnitSelected].UnitName;
@@ -376,6 +383,15 @@ export default {
         this.listUnitSearch = filteredUnits;
         this.isShowSelectUnit = true;
       }
+    },
+    /**
+     * Mô tả: Hàm xử scroll theo khi bấm lên xuống
+     * created by : BNTIEN
+     * created date: 07-06-2023 08:37:33
+     */
+    scrollIndex(index) {
+      const element = this.$refs.listValueUnit[index];
+      element.scrollIntoView();
     },
     /**
      * Mô tả: Hàm lấy danh sách department từ api
