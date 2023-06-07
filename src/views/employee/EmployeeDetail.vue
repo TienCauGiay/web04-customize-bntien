@@ -141,7 +141,7 @@
                 <li
                   v-for="(unit, index) in listUnitSearch"
                   :key="index"
-                  @click="onSelectedUnit(unit.UnitName)"
+                  @click="onSelectedUnit(unit.UnitName, index)"
                   :class="{ 'cbb-selected': index == indexUnitSelected }"
                   ref="listValueUnit"
                 >
@@ -213,7 +213,13 @@
             </div>
             <div class="col-md-quater">
               <label>Email</label>
-              <misa-input v-model="employee.Email" :tabindex="14"></misa-input>
+              <misa-input
+                v-model="employee.Email"
+                :tabindex="14"
+                :class="{
+                  'border-red': isBorderRed.Email && employee.Email,
+                }"
+              ></misa-input>
             </div>
           </div>
         </div>
@@ -329,7 +335,11 @@ export default {
       indexUnitSelected: 0,
     };
   },
-
+  watch: {
+    "employee.Email": function () {
+      this.isBorderRed.Email = false;
+    },
+  },
   methods: {
     /**
      * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
@@ -348,14 +358,17 @@ export default {
           } else if (this.indexUnitSelected == maxLength - 1) {
             this.indexUnitSelected = 0;
           }
-          this.scrollIndex(this.indexUnitSelected);
+          this.scrollIndex(
+            this.indexUnitSelected,
+            this.$_MISAEnum.KEY_CODE.DOWN
+          );
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
           if (this.indexUnitSelected > 0) {
             this.indexUnitSelected--;
           } else if (this.indexUnitSelected == 0) {
             this.indexUnitSelected = maxLength - 1;
           }
-          this.scrollIndex(this.indexUnitSelected);
+          this.scrollIndex(this.indexUnitSelected, this.$_MISAEnum.KEY_CODE.UP);
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
           this.employee.UnitName =
             this.listUnitSearch[this.indexUnitSelected].UnitName;
@@ -389,9 +402,13 @@ export default {
      * created by : BNTIEN
      * created date: 07-06-2023 08:37:33
      */
-    scrollIndex(index) {
+    scrollIndex(index, checkKeyCode) {
       const element = this.$refs.listValueUnit[index];
-      element.scrollIntoView();
+      if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
+        element.scrollIntoView({ block: "end" });
+      } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
+        element.scrollIntoView({ block: "start" });
+      }
     },
     /**
      * Mô tả: Hàm lấy danh sách department từ api
@@ -452,32 +469,53 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
      */
-    onSelectedUnit(unit) {
+    onSelectedUnit(unit, index) {
       this.employee.UnitName = unit;
+      this.indexUnitSelected = index;
     },
     /**
      * Mô tả: Hàm kiểm tra các ô bắt buộc phải nhập dữ liệu
      * created by : BNTIEN
      * created date: 02-06-2023 15:04:13
      */
-    checkDataNotNull() {
+    validateData() {
       if (!this.employee.EmployeeCode) {
         this.isBorderRed.Code = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE_NOT_NULL
         );
+      } else {
+        if (
+          !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
+            this.employee.EmployeeCode
+          )
+        ) {
+          this.isBorderRed.Code = true;
+          this.dataNotNull.push(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+              .CODE_END_MUST_NUMBER
+          );
+        }
       }
       if (!this.employee.FullName) {
         this.isBorderRed.Name = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME_NOT_NULL
         );
       }
       if (!this.employee.UnitName) {
         this.isBorderRed.Unit = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT_NOT_NULL
         );
+      }
+      if (this.employee.Email) {
+        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
+          this.isBorderRed.Email = true;
+          this.dataNotNull.push(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EMAIL_ISVALID
+          );
+        }
       }
     },
     /**
@@ -503,7 +541,7 @@ export default {
      */
     async btnSave() {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
-      this.checkDataNotNull();
+      this.validateData();
       // Gọi hàm hiển thị dialog data not null
       if (this.showDialogDataNotNull()) {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
@@ -576,7 +614,7 @@ export default {
      */
     async btnSaveAndAdd() {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
-      this.checkDataNotNull();
+      this.validateData();
       // Gọi hàm hiển thị dialog data not null
       if (this.showDialogDataNotNull()) {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {

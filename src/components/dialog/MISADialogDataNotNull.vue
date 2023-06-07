@@ -7,7 +7,7 @@
       <div class="danger-red-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
         <p v-for="(item, index) in this.valueNotNull" :key="index">
-          {{ item }} nhân viên không được để trống.
+          {{ item }}
         </p>
       </div>
     </div>

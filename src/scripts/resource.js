@@ -1,9 +1,6 @@
 const MISAResource = {
     'vn-VI':{
         TEXT_CONTENT:{
-            CODE: "Mã",
-            NAME: "Tên",
-            UNIT: "Đơn vị",
             DATE_NaN: "NaN/NaN/NaN",
             SUCCESS_DELETE : "Xóa thành công.",
             SUCCESS_CTEATE : "Thêm thành công.",
@@ -14,9 +11,12 @@ const MISAResource = {
                 Female: "Nữ",
                 Other: "Khác"
             },
-            CODE_NOT_NULL: "Mã không được để trống.",
-            NAME_NOT_NULL: "Tên không được để trống.",
-            UNIT_NOT_NULL: "Đơn vị không được để trống.",
+            CODE_NOT_NULL: "Mã nhân viên không được để trống.",
+            NAME_NOT_NULL: "Tên nhân viên không được để trống.",
+            UNIT_NOT_NULL: "Đơn vị nhân viên không được để trống.",
+            CODE_END_MUST_NUMBER: "Mã nhân viên phải kết thúc bằng số",
+            DOB_ISVALID:"Ngày sinh không hợp lệ",
+            EMAIL_ISVALID: "Email không đúng định dạng",
             PAGE:{
                 PREVIOUS: "previous",
                 NEXT: "next",
@@ -26,9 +26,6 @@ const MISAResource = {
     },
     'en-EN':{
         TEXT_CONTENT:{
-            CODE: "Code",
-            NAME: "FullName",
-            UNIT: "Unit",
             DATE_NaN: "NaN/NaN/NaN",
             SUCCESS_DELETE : "Successful delele",
             SUCCESS_CTEATE : "Successful add",
@@ -42,12 +39,18 @@ const MISAResource = {
             CODE_NOT_NULL: "Code cannot be blank.",
             NAME_NOT_NULL: "Fullname cannot be blank.",
             UNIT_NOT_NULL: "Unit cannot be blank.",
+            CODE_END_MUST_NUMBER: "Code must end be number",
+            DOB_ISVALID: "Date is valid",
             PAGE:{
                 PREVIOUS: "previous",
                 NEXT: "next",
                 NUMBER: "number"
             }
         },
+    },
+    REGEX:{
+        END_MUST_NUMBER:/\d$/,
+        EMAIL:/^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     }
 }
 
