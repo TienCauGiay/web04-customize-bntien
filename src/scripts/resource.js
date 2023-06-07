@@ -16,6 +16,7 @@ const MISAResource = {
             UNIT_NOT_NULL: "Đơn vị nhân viên không được để trống.",
             CODE_END_MUST_NUMBER: "Mã nhân viên phải kết thúc bằng số",
             DOB_ISVALID:"Ngày sinh không hợp lệ",
+            CMNDDATE_ISVALID : "Ngày cấp không hợp lệ",
             EMAIL_ISVALID: "Email không đúng định dạng",
             PAGE:{
                 PREVIOUS: "previous",
@@ -40,7 +41,8 @@ const MISAResource = {
             NAME_NOT_NULL: "Fullname cannot be blank.",
             UNIT_NOT_NULL: "Unit cannot be blank.",
             CODE_END_MUST_NUMBER: "Code must end be number",
-            DOB_ISVALID: "Date is valid",
+            DOB_ISVALID: "Date of birth is valid",
+            CMNDDATE_ISVALID: "Invalid ID card issuance date",
             PAGE:{
                 PREVIOUS: "previous",
                 NEXT: "next",

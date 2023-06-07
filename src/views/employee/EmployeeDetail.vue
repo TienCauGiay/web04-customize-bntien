@@ -65,6 +65,10 @@
               v-model="employee.DateOfBirth"
               :value="formattedDate"
               :tabindex="5"
+              :class="{
+                'border-red': isBorderRed.DOB && employee.DateOfBirth,
+              }"
+              ref="dobEmployee"
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -166,6 +170,10 @@
               v-model="employee.CMNDDate"
               :value="formattedDateCMND"
               :tabindex="9"
+              :class="{
+                'border-red': isBorderRed.CMNDDate && employee.CMNDDate,
+              }"
+              ref="cmndDateEmployee"
             ></misa-input>
           </div>
         </div>
@@ -219,6 +227,7 @@
                 :class="{
                   'border-red': isBorderRed.Email && employee.Email,
                 }"
+                ref="emailEmployee"
               ></misa-input>
             </div>
           </div>
@@ -333,11 +342,22 @@ export default {
       removeVietnameseAccents: helperCommon.removeVietnameseAccents,
       // Khai báo chỉ số đang được chọn trong combobox
       indexUnitSelected: 0,
+      // Tái sử dụng hàm kiểm tra ngày hợp lệ
+      isInvalidDate: helperCommon.isInvalidDate,
     };
   },
   watch: {
+    // Lắng nghe sự thay đổi dữ liệu trong ô input email
     "employee.Email": function () {
       this.isBorderRed.Email = false;
+    },
+    // Lắng nghe sự thay đổi dữ liệu trong ô input ngày sinh
+    "employee.DateOfBirth": function () {
+      this.isBorderRed.DOB = false;
+    },
+    // Lắng nghe sự thay đổi dữ liệu trong ô input ngày cấp
+    "employee.CMNDDate": function () {
+      this.isBorderRed.CMNDDate = false;
     },
   },
   methods: {
@@ -358,18 +378,22 @@ export default {
           } else if (this.indexUnitSelected == maxLength - 1) {
             this.indexUnitSelected = 0;
           }
+          // scroll focus theo item được chọn
           this.scrollIndex(
             this.indexUnitSelected,
             this.$_MISAEnum.KEY_CODE.DOWN
           );
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+          // Bấm lên
           if (this.indexUnitSelected > 0) {
             this.indexUnitSelected--;
           } else if (this.indexUnitSelected == 0) {
             this.indexUnitSelected = maxLength - 1;
           }
+          // scroll focus theo item được chọn
           this.scrollIndex(this.indexUnitSelected, this.$_MISAEnum.KEY_CODE.UP);
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+          // Bấm enter
           this.employee.UnitName =
             this.listUnitSearch[this.indexUnitSelected].UnitName;
           this.isShowSelectUnit = false;
@@ -377,12 +401,13 @@ export default {
       }
     },
     /**
-     * Mô tả: Lắng nghe sự thay đổi text trong input search unit
+     * Mô tả: Lắng nghe sự thay đổi text trong input search unit và tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
     onSearchChange() {
       const newValue = event.target.value;
+      this.employee.UnitName = newValue;
       const searchTerm = this.removeVietnameseAccents(
         newValue.toLowerCase().trim()
       );
@@ -479,12 +504,14 @@ export default {
      * created date: 02-06-2023 15:04:13
      */
     validateData() {
+      // Nếu chưa nhập mã nhân viên
       if (!this.employee.EmployeeCode) {
         this.isBorderRed.Code = true;
         this.dataNotNull.push(
           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE_NOT_NULL
         );
       } else {
+        // Nếu mã nhân viên k kết thúc bằng số
         if (
           !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
             this.employee.EmployeeCode
@@ -497,18 +524,39 @@ export default {
           );
         }
       }
+      // Nếu chưa nhập tên nhân viên
       if (!this.employee.FullName) {
         this.isBorderRed.Name = true;
         this.dataNotNull.push(
           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME_NOT_NULL
         );
       }
+      // Nếu chưa chọn đơn vị
       if (!this.employee.UnitName) {
         this.isBorderRed.Unit = true;
         this.dataNotNull.push(
           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT_NOT_NULL
         );
       }
+      // Nếu ngày sinh k hợp lệ
+      if (this.employee.DateOfBirth) {
+        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
+          this.isBorderRed.DOB = true;
+          this.dataNotNull.push(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DOB_ISVALID
+          );
+        }
+      }
+      // Nếu ngày cấp CMND k hợp lệ
+      if (this.employee.CMNDDate) {
+        if (!this.isInvalidDate(this.employee.CMNDDate)) {
+          this.isBorderRed.CMNDDate = true;
+          this.dataNotNull.push(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CMNDDATE_ISVALID
+          );
+        }
+      }
+      // Nếu email có dữ liệu nhưng không đúng định dạng
       if (this.employee.Email) {
         if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
           this.isBorderRed.Email = true;
@@ -532,6 +580,32 @@ export default {
         this.isShowDialogDataNotNull = true;
         return false;
       }
+      if (
+        !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
+          this.employee.EmployeeCode
+        )
+      ) {
+        this.isShowDialogDataNotNull = true;
+        return false;
+      }
+      if (this.employee.DateOfBirth) {
+        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
+          this.isShowDialogDataNotNull = true;
+          return false;
+        }
+      }
+      if (this.employee.CMNDDate) {
+        if (!this.isInvalidDate(this.employee.CMNDDate)) {
+          this.isShowDialogDataNotNull = true;
+          return false;
+        }
+      }
+      if (this.employee.Email) {
+        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
+          this.isShowDialogDataNotNull = true;
+          return false;
+        }
+      }
       return true;
     },
     /**
@@ -542,7 +616,7 @@ export default {
     async btnSave() {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
-      // Gọi hàm hiển thị dialog data not null
+      // Nếu dữ liệu nhập vào hợp lệ
       if (this.showDialogDataNotNull()) {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Nếu form ở trạng thái thêm mới
@@ -615,7 +689,7 @@ export default {
     async btnSaveAndAdd() {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
-      // Gọi hàm hiển thị dialog data not null
+      // Nếu dữ liệu hợp lệ
       if (this.showDialogDataNotNull()) {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Nếu form ở trạng thái thêm mới
@@ -695,6 +769,15 @@ export default {
       if (!this.employee.EmployeeCode) {
         this.$refs.codeEmployee.$el.focus();
         return;
+      } else {
+        if (
+          !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
+            this.employee.EmployeeCode
+          )
+        ) {
+          this.$refs.codeEmployee.$el.focus();
+          return;
+        }
       }
       if (!this.employee.FullName) {
         this.$refs.nameEmployee.$el.focus();
@@ -703,6 +786,24 @@ export default {
       if (!this.employee.UnitName) {
         this.$refs.unitEmployee.$el.focus();
         return;
+      }
+      if (this.employee.DateOfBirth) {
+        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
+          this.$refs.dobEmployee.$el.focus();
+          return;
+        }
+      }
+      if (this.employee.DateOfBirth) {
+        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
+          this.$refs.cmndDateEmployee.$el.focus();
+          return;
+        }
+      }
+      if (this.employee.Email) {
+        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
+          this.$refs.emailEmployee.$el.focus();
+          return;
+        }
       }
     },
 

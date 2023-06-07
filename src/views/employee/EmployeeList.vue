@@ -223,12 +223,22 @@ export default {
     EmployeeDetail,
   },
   computed: {
+    /**
+     * Mô tả: Tính tổng số trang trong phân trang
+     * created by : BNTIEN
+     * created date: 04-06-2023 02:49:32
+     */
     totalPages() {
       if (this.removeVietnameseAccents(this.textSearch.toLowerCase().trim())) {
         return Math.ceil(this.searchData.length / this.selectedRecord);
       }
       return Math.ceil(this.employees.length / this.selectedRecord);
     },
+    /**
+     * Mô tả: Tính tổng số trang sẽ hiển thị
+     * created by : BNTIEN
+     * created date: 04-06-2023 02:49:32
+     */
     visiblePageNumbers() {
       let startPage = Math.max(
         this.currentPage - Math.floor(this.maxVisiblePages / 2),
@@ -298,7 +308,9 @@ export default {
     };
   },
   created() {
+    // Gọi hàm lấy dữ liệu danh sách nhân viên
     this.getListEmployee();
+    // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
       this.onShowToastMessage();
@@ -471,6 +483,7 @@ export default {
      * created date: 04-06-2023 00:20:21
      */
     onSearchEmployee() {
+      // Xóa dấu tiếng việt để có thể tìm kiếm không dấu
       const searchTerm = this.removeVietnameseAccents(
         this.textSearch.toLowerCase().trim()
       );
@@ -544,6 +557,7 @@ export default {
   },
 
   beforeUnmount() {
+    // Hủy các sự kiện đã đăng kí
     this.$_MISAEmitter.off("onShowToastMessage");
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");

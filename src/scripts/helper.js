@@ -26,6 +26,21 @@ const helperCommon = {
         .replace(/đ/g, "d")
         .replace(/Đ/g, "D");
     },
+    /**
+     * Mô tả: Hàm kiểm tra ngày hợp lệ
+     * created by : BNTIEN
+     * created date: 08-06-2023 03:22:05
+     */
+    isInvalidDate: (value) => {
+      const dob = new Date(value);      
+      const dateToday = new Date();
+      if(dob > dateToday){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
 }
 
 export default helperCommon;
