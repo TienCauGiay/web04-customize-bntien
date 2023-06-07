@@ -1,32 +1,38 @@
 <template>
-  <div
-    class="dialog-employee position-display-center"
-    id="dialog-question-employee"
-  >
-    <div class="dialog-content">
-      <div class="question-blue-icon dialog-content-icon"></div>
-      <div class="dialog-content-main">
-        <p>Dữ liệu đã bị thay đổi. Bạn có muốn cất không?</p>
+  <div class="overlay-dialog">
+    <div
+      class="dialog-employee position-display-center"
+      id="dialog-question-employee"
+    >
+      <div class="title-dialog">
+        <h1>Thông báo</h1>
+        <div class="close-icon" @click="btnCancel"></div>
       </div>
-    </div>
-    <div class="dialog-question-footer">
-      <div class="dialog-question-footer-left">
-        <misa-button-extra
-          :textButtonExtra="'Hủy'"
-          class="btn-no-minwwidth"
-          @click="btnCancel"
-        ></misa-button-extra>
+      <div class="dialog-content">
+        <div class="question-blue-icon dialog-content-icon"></div>
+        <div class="dialog-content-main">
+          <p>Dữ liệu đã bị thay đổi. Bạn có muốn cất không?</p>
+        </div>
       </div>
-      <div class="dialog-question-footer-right">
-        <misa-button-extra
-          :textButtonExtra="'Không'"
-          @click="btnNo"
-        ></misa-button-extra>
-        <misa-button-default
-          :textButtonDefault="'Có'"
-          class="btn-no-minwwidth"
-          @click="btnYes"
-        ></misa-button-default>
+      <div class="dialog-question-footer">
+        <div class="dialog-question-footer-left">
+          <misa-button-extra
+            :textButtonExtra="'Hủy'"
+            class="btn-no-minwwidth"
+            @click="btnCancel"
+          ></misa-button-extra>
+        </div>
+        <div class="dialog-question-footer-right">
+          <misa-button-extra
+            :textButtonExtra="'Không'"
+            @click="btnNo"
+          ></misa-button-extra>
+          <misa-button-default
+            :textButtonDefault="'Có'"
+            class="btn-no-minwwidth"
+            @click="btnYes"
+          ></misa-button-default>
+        </div>
       </div>
     </div>
   </div>

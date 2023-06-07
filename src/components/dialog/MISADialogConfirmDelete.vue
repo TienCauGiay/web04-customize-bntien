@@ -3,6 +3,10 @@
     class="dialog-employee position-display-center"
     id="dialog-warning-delete-employee"
   >
+    <div class="title-dialog">
+      <h1>Xác nhận xóa?</h1>
+      <div class="close-icon" @click="btnNoConfirmDelete"></div>
+    </div>
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
@@ -19,7 +23,6 @@
         :textButtonExtra="'Không'"
       ></misa-button-extra>
       <misa-button-default
-        class="btn-no-minwwidth"
         @click="btnConfirmDelete"
         :textButtonDefault="'Có'"
       ></misa-button-default>

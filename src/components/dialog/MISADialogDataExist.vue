@@ -1,22 +1,28 @@
 <template>
-  <div
-    class="dialog-employee position-display-center"
-    id="dialog-warning-employee"
-  >
-    <div class="dialog-content">
-      <div class="warning-yellow-icon dialog-content-icon"></div>
-      <div class="dialog-content-main">
-        <p>
-          Mã nhân viên &lt;{{ this.textEmployeeCodeExist }}&gt; đã tồn tại trong
-          hệ thống, vui lòng kiểm tra lại.
-        </p>
+  <div class="overlay-dialog">
+    <div
+      class="dialog-employee position-display-center"
+      id="dialog-warning-employee"
+    >
+      <div class="title-dialog">
+        <h1>Thông báo</h1>
+        <div class="close-icon" @click="btnAgree"></div>
       </div>
-    </div>
-    <div class="dialog-warning-footer">
-      <misa-button-default
-        :textButtonDefault="'Đồng ý'"
-        @click="btnAgree"
-      ></misa-button-default>
+      <div class="dialog-content">
+        <div class="warning-yellow-icon dialog-content-icon"></div>
+        <div class="dialog-content-main">
+          <p>
+            Mã nhân viên &lt;{{ this.textEmployeeCodeExist }}&gt; đã tồn tại
+            trong hệ thống, vui lòng kiểm tra lại.
+          </p>
+        </div>
+      </div>
+      <div class="dialog-warning-footer">
+        <misa-button-default
+          :textButtonDefault="'Đồng ý'"
+          @click="btnAgree"
+        ></misa-button-default>
+      </div>
     </div>
   </div>
 </template>

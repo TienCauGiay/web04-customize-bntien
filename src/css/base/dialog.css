@@ -1,3 +1,13 @@
+.overlay-dialog{
+    background-color: rgba(41, 37, 37, 0.781);
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 9000;
+}
+
 .dialog{
     box-sizing: border-box;
     width: 400px;
@@ -9,6 +19,12 @@
 .title-dialog{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.title-dialog div{
+    scale: 0.6 0.6;
+    cursor: pointer;
 }
 
 .title-dialog h1{
@@ -35,28 +51,22 @@
 .dialog-employee{
     width: 400px;
     box-sizing: border-box;
-    background-color: #FFF;
+    background-color: #FFFFFF;
     z-index: 9999;
     border-radius: 4px;
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    padding: 30px;
+    padding: 24px;
 }
 
 .dialog-content{
     display: flex;
     align-items: center;
-    padding-bottom: 30px;
-    border-bottom: 1px solid var(--color-border-default);
-}
-
-.dialog-content-icon{
-    margin-right: 10px;
 }
 
 .dialog-content-main{
     display: flex;
     flex-direction: column;
-    row-gap: 5px;
+    row-gap: 8px;
 }
 
 .dialog-content-main p{
@@ -64,39 +74,44 @@
 }
 
 .dialog-warning-footer{
-    padding-top: 20px;
-    float: right;
+    padding-top: 24px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .dialog-danger-footer{
-    padding-top: 20px;
+    padding-top: 24px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 #dialog-danger-employee .dialog-content .dialog-content-icon{
-    margin-right: 20px;
+    margin-right: 24px;
 }
 
 .dialog-warning-delete-footer{
-    padding-top: 20px;
+    padding-top: 24px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    column-gap: 8px;
 }
 
 .dialog-question-footer{
-    padding-top: 20px;
+    padding-top: 24px;
     display: flex;
     justify-content: space-between;
 }
 
 .dialog-question-footer-right{
     display: flex;
-    column-gap: 10px;
+    column-gap: 8px;
 }
 
 #dialog-question-employee .dialog-content .dialog-content-icon{
     margin-right: 20px;
 }
 
+#dialog-warning-employee .dialog-content{
+    column-gap: 10px;
+}
 /* End css dialog employee */
