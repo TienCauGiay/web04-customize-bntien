@@ -1,5 +1,4 @@
-#detail-info-employee{
-    width: 70%;
+#detail-info-employee {
     height: 90%;
     background-color: white;
     z-index: 8888;
@@ -7,7 +6,28 @@
     padding: 10px;
     box-sizing: border-box;
 }
-
+  
+/* Media query cho màn hình có chiều rộng 1280px trở lên */
+@media (min-width: 1280px) {
+    #detail-info-employee {
+        width: 70%;
+    }
+}
+  
+/* Media query cho màn hình có chiều rộng nhỏ hơn 1280px và lớn hơn 1024px */
+@media (max-width: 1279px) and (min-width: 1025px) {
+    #detail-info-employee {
+        width: calc(100% - 200px); /* width giảm dần từ 70% tới 100% */
+    }
+}
+  
+/* Media query cho màn hình có chiều rộng nhỏ hơn hoặc bằng 1024px */
+@media (max-width: 1024px) {
+    #detail-info-employee {
+        width: 100%;
+    }
+}
+  
 .container-overlay{
     background-color: rgba(41, 37, 37, 0.781);
     position: absolute;
