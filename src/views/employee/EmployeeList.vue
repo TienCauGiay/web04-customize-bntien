@@ -1,8 +1,10 @@
 <template>
   <div class="content-title">
-    <h1>Nhân viên</h1>
+    <h1>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EMPLOYEE }}</h1>
     <misa-button-default
-      :textButtonDefault="'Thêm mới nhân viên'"
+      :textButtonDefault="
+        this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE
+      "
       @click="btnOpenFormDetail"
     ></misa-button-default>
   </div>
@@ -11,7 +13,10 @@
       <div class="search-employee">
         <input
           type="search"
-          placeholder="Tìm theo mã, tên nhân viên"
+          :placeholder="
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+              .PLACEHOLDER_SEARCH
+          "
           name="search-employee"
           id="search-employee"
           v-model="textSearch"
@@ -33,25 +38,82 @@
               <th type="checkbox" class="employee-border-left">
                 <input class="checkbox-select-row" type="checkbox" />
               </th>
-              <th class="e-id">MÃ NHÂN VIÊN</th>
-              <th>TÊN NHÂN VIÊN</th>
-              <th style="width: 80px">GIỚI TÍNH</th>
-              <th type="date" class="text-center e-birthday">NGÀY SINH</th>
-              <th>
-                <span title="Số chứng minh nhân dân">Số CMND</span>
+              <th class="e-id">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.CODE
+                }}
               </th>
-              <th>CHỨC DANH</th>
-              <th>TÊN ĐƠN VỊ</th>
-              <th>SỐ TÀI KHOẢN</th>
-              <th>TÊN NGÂN HÀNG</th>
-              <th title="Chi nhánh tài khoản ngân hàng">
-                CHI NHÁNH TK NGÂN HÀNG
+              <th>
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .FULLNAME
+                }}
+              </th>
+              <th style="width: 80px">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
+                }}
+              </th>
+              <th type="date" class="text-center e-birthday">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DOB
+                }}
+              </th>
+              <th>
+                <span
+                  :title="
+                    this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                      .TITLE_IDENTITY_NUMBER
+                  "
+                  >{{
+                    this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                      .IDENTITY_NUMBER
+                  }}</span
+                >
+              </th>
+              <th>
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .POSITION
+                }}
+              </th>
+              <th>
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .DEPARTMENT
+                }}
+              </th>
+              <th>
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .BANK_ACCOUNT
+                }}
+              </th>
+              <th>
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .BANK_NAME
+                }}
+              </th>
+              <th
+                :title="
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .TITLE_BANK_BRANCH
+                "
+              >
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .BANK_BRANCH
+                }}
               </th>
               <th
                 type="feat"
                 class="text-center employee-border-right e-birthday"
               >
-                CHỨC NĂNG
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                    .FEATURE
+                }}
               </th>
             </tr>
           </thead>
@@ -82,7 +144,9 @@
                 id="function-table"
                 @dblclick.stop
               >
-                <span>Sửa</span>
+                <span>{{
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
+                }}</span>
                 <div
                   class="function-table-content"
                   @click="onShowColFeature(index)"
@@ -92,7 +156,12 @@
                       class="menu-function-select"
                       v-show="isShowColFeature[index]"
                     >
-                      <li>Nhân bản</li>
+                      <li>
+                        {{
+                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                            .DUPLICATE
+                        }}
+                      </li>
                       <li
                         class="menu-function-select-delete-employee"
                         @click="
@@ -103,9 +172,17 @@
                           )
                         "
                       >
-                        Xóa
+                        {{
+                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                            .DELETE
+                        }}
                       </li>
-                      <li>Ngừng sử dụng</li>
+                      <li>
+                        {{
+                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                            .STOP_USING
+                        }}
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -124,7 +201,9 @@
     </div>
     <div id="pagination" class="pagination">
       <p>
-        Tổng số: <b>{{ this.employees.length }}</b> bản ghi
+        {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
+        <b>{{ this.employees.length }}</b>
+        {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
         <div
@@ -136,7 +215,10 @@
             id="pagination-detail-pagesize-content"
             class="pagination-detail-pagesize-content"
           >
-            {{ selectedRecord }} bản ghi trên trang
+            {{ selectedRecord }}
+            {{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE
+            }}
           </div>
           <div
             id="menu-paging-select"
@@ -154,7 +236,11 @@
                 :key="index"
                 @click="onSelectedRecord(record)"
               >
-                {{ record }} bản ghi trên trang
+                {{ record }}
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .RECORD_ON_PAGE
+                }}
               </li>
             </ul>
           </div>
@@ -169,7 +255,9 @@
                 )
               "
             >
-              Trước
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
+              }}
             </li>
             <li
               v-for="pageNumber in this.visiblePageNumbers"
@@ -186,7 +274,9 @@
                 )
               "
             >
-              Sau
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
+              }}
             </li>
           </ul>
         </div>

@@ -12,20 +12,29 @@
     </div>
     <div class="employee-main">
       <div class="employee-title">
-        <p><b>THÔNG TIN NHÂN VIÊN</b></p>
+        <p>
+          <b>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.INFO_EMPLOYEE }}</b>
+        </p>
         <div class="employee-check">
           <input type="checkbox" />
-          <span>Là khách hàng</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
+          }}</span>
         </div>
         <div class="employee-check">
           <input type="checkbox" />
-          <span>Là nhà cung cấp</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER
+          }}</span>
         </div>
       </div>
       <div class="employee-content">
         <div class="half-content">
           <div class="col-md-n">
-            <label>Mã <span class="s-require">*</span></label>
+            <label
+              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.CODE }}
+              <span class="s-require">*</span></label
+            >
             <misa-input
               ref="codeEmployee"
               v-model="employee.EmployeeCode"
@@ -42,7 +51,10 @@
             ></misa-input>
           </div>
           <div class="col-md-tb">
-            <label>Tên <span class="s-require">*</span></label>
+            <label
+              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.NAME }}
+              <span class="s-require">*</span></label
+            >
             <misa-input
               ref="nameEmployee"
               v-model="employee.FullName"
@@ -59,7 +71,7 @@
         </div>
         <div class="half-content">
           <div class="col-md-n">
-            <label>Ngày sinh</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DOB }}</label>
             <misa-input
               type="date"
               v-model="employee.DateOfBirth"
@@ -72,7 +84,9 @@
             ></misa-input>
           </div>
           <div class="col-md-tb">
-            <label>Giới tính</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].FORM.GENDER
+            }}</label>
             <div class="e-gender">
               <input
                 v-model="employee.GenderName"
@@ -83,7 +97,9 @@
                 name="gender"
                 :tabindex="6"
               />
-              <span>Nam</span>
+              <span>{{
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
+              }}</span>
               <input
                 v-model="employee.GenderName"
                 :value="
@@ -94,7 +110,9 @@
                 name="gender"
                 :tabindex="7"
               />
-              <span>Nữ</span>
+              <span>{{
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Female
+              }}</span>
               <input
                 v-model="employee.GenderName"
                 :value="
@@ -105,13 +123,18 @@
                 name="gender"
                 :tabindex="8"
               />
-              <span>Khác</span>
+              <span>{{
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Other
+              }}</span>
             </div>
           </div>
         </div>
         <div class="half-content">
           <div class="col-md-l" style="position: relative">
-            <label>Đơn vị <span class="s-require">*</span></label>
+            <label
+              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DEPARTMENT }}
+              <span class="s-require">*</span></label
+            >
             <div
               class="e-cbb"
               id="e-cbb"
@@ -120,7 +143,10 @@
               <div class="e-textfield-cbb">
                 <misa-input
                   ref="unitEmployee"
-                  placeholder="-- Chọn Đơn Vị --"
+                  :placeholder="
+                    this.$_MISAResource[this.$_LANG_CODE].FORM
+                      .PLACEHOLDER_DEPARTMENT
+                  "
                   :value="employee.UnitName"
                   @input="onSearchChange"
                   :tabindex="3"
@@ -157,14 +183,24 @@
         </div>
         <div class="half-content">
           <div class="col-md-tb">
-            <label title="Số chứng minh nhân dân">Số CMND</label>
+            <label
+              :title="
+                this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
+                  .TITLE_IDENTITY_NUMBER
+              "
+              >{{
+                this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_NUMBER
+              }}</label
+            >
             <misa-input
               v-model="employee.CMNDNumber"
               :tabindex="9"
             ></misa-input>
           </div>
           <div class="col-md-n">
-            <label>Ngày cấp</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_DATE
+            }}</label>
             <misa-input
               type="date"
               v-model="employee.CMNDDate"
@@ -179,7 +215,9 @@
         </div>
         <div class="half-content">
           <div class="col-md-l">
-            <label>Chức danh</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].FORM.POSITION
+            }}</label>
             <misa-input
               v-model="employee.TitleProfessional"
               :tabindex="4"
@@ -188,7 +226,9 @@
         </div>
         <div class="half-content">
           <div class="col-md-l">
-            <label>Nơi cấp</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESS
+            }}</label>
             <misa-input
               v-model="employee.CMNDAddress"
               :tabindex="10"
@@ -197,7 +237,9 @@
         </div>
         <div class="full-content" id="content-null"></div>
         <div class="full-content">
-          <label>Địa chỉ</label>
+          <label>{{
+            this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS
+          }}</label>
           <misa-input
             v-model="employee.EmployeeAddress"
             :tabindex="11"
@@ -206,21 +248,38 @@
         <div class="full-content">
           <div class="full-content-quarter">
             <div class="col-md-quater">
-              <label title="Điện thoại di động">ĐT di động</label>
+              <label
+                :title="
+                  this.$_MISAResource[this.$_LANG_CODE].FORM.TITLE_PHONE_NUMBER
+                "
+                >{{
+                  this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_NUMBER
+                }}</label
+              >
               <misa-input
                 v-model="employee.PhoneNumber"
                 :tabindex="12"
               ></misa-input>
             </div>
             <div class="col-md-quater">
-              <label title="Điện thoại cố định">ĐT cố định</label>
+              <label
+                :title="
+                  this.$_MISAResource[this.$_LANG_CODE].FORM
+                    .TITLE_PHONE_LANDLINE
+                "
+                >{{
+                  this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_LANDLINE
+                }}</label
+              >
               <misa-input
                 v-model="employee.PhoneLandline"
                 :tabindex="13"
               ></misa-input>
             </div>
             <div class="col-md-quater">
-              <label>Email</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].FORM.EMAIL
+              }}</label>
               <misa-input
                 v-model="employee.Email"
                 :tabindex="14"
@@ -235,21 +294,27 @@
         <div class="full-content">
           <div class="full-content-quarter">
             <div class="col-md-quater">
-              <label>Tài khoản ngân hàng</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_ACCOUNT
+              }}</label>
               <misa-input
                 v-model="employee.BankAccount"
                 :tabindex="15"
               ></misa-input>
             </div>
             <div class="col-md-quater">
-              <label>Tên ngân hàng</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_NAME
+              }}</label>
               <misa-input
                 v-model="employee.BankName"
                 :tabindex="16"
               ></misa-input>
             </div>
             <div class="col-md-quater">
-              <label>Chi nhánh</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_BRANCH
+              }}</label>
               <misa-input
                 v-model="employee.BankBranch"
                 :tabindex="17"
@@ -261,19 +326,25 @@
       <div class="employee-action">
         <div class="action-left">
           <misa-button-extra
-            :textButtonExtra="'Hủy'"
+            :textButtonExtra="
+              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_CANCEL
+            "
             @click="btnCancel"
             :tabindex="18"
           ></misa-button-extra>
         </div>
         <div class="action-right">
           <misa-button-extra
-            :textButtonExtra="'Cất'"
+            :textButtonExtra="
+              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_SAVE
+            "
             @click="btnSave"
             :tabindex="19"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="'Cất và thêm'"
+            :textButtonDefault="
+              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_SAVEANDCLOSE
+            "
             @click="btnSaveAndAdd"
             :tabindex="20"
           ></misa-button-default>
@@ -434,9 +505,14 @@ export default {
     scrollIndex(index, checkKeyCode) {
       const element = this.$refs.listValueUnit[index];
       if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
-        element.scrollIntoView({ block: "end" });
+        element.scrollIntoView({
+          block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+        });
       } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
-        element.scrollIntoView({ block: "start" });
+        element.scrollIntoView({
+          block:
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+        });
       }
     },
     /**
