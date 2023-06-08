@@ -4,27 +4,32 @@
     id="dialog-warning-delete-employee"
   >
     <div class="title-dialog">
-      <h1>Xác nhận xóa?</h1>
+      <h1>
+        {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CONFIRM_DELETE }}
+      </h1>
       <div class="close-icon" @click="btnNoConfirmDelete"></div>
     </div>
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
         <p>
-          Bạn có thực sự muốn xóa nhân viên &lt;{{
-            this.employeeCodeDelete
-          }}&gt; không?
+          {{
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+              .CONFIRM_DELETE_PRE
+          }}
+          &lt;{{ this.employeeCodeDelete }}&gt;
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
         </p>
       </div>
     </div>
     <div class="dialog-warning-delete-footer">
       <misa-button-extra
         @click="btnNoConfirmDelete"
-        :textButtonExtra="'Không'"
+        :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.NO"
       ></misa-button-extra>
       <misa-button-default
         @click="btnConfirmDelete"
-        :textButtonDefault="'Có'"
+        :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES"
       ></misa-button-default>
     </div>
   </div>

@@ -16,6 +16,28 @@ const MISAResource = {
             FEATURE: "CHỨC NĂNG"
         },
         TEXT_CONTENT:{
+            NAME_COMPANY_SELECTED: "CÔNG TY TNHH SẢN XUẤT - THƯƠNG MẠI - DỊCH VỤ QUI PHÚC",
+            NAME_ACCOUNT_LOGIN:"Bùi Ngọc Tiến",
+            ACCOUNTANT:"KẾ TOÁN",
+            ITEM_SIDEBAR:{
+                OVERVIEW:"Tổng quan",
+                CASH:"Tiền mặt",
+                DEPOSITS:"Tiền gửi",
+                BAG:"Mua hàng",
+                CART:"Bán hàng",
+                BILL:"Quản lí hóa đơn",
+                WAREHOUSE:"Kho",
+                TOOL:"Công cụ dụng cụ",
+                ASSET:"Tài sản cố định",
+                TAX:"Thuế",
+                PRICE:"Giá thành",
+                SYNTHETIC:"Tổng hợp",
+                BUDGET:"Ngân sách",
+                REPORT:"Báo cáo",
+                FINANCE:"Phân tích tài chính",
+                EMPLOYEE:"Nhân viên",
+                SETTING:"Cài đặt",
+            },
             EMPLOYEE:"Nhân viên",
             ADD_EMPLOYEE:"Thêm nhân viên mới",
             PLACEHOLDER_SEARCH:"Tìm theo mã, tên nhân viên",
@@ -79,10 +101,34 @@ const MISAResource = {
             BANK_ACCOUNT:"Tài khoản ngân hàng",
             BANK_NAME:"Tên ngân hàng",
             BANK_BRANCH:"Chi nhánh",
-            BTN_CANCEL:"Hủy",
-            BTN_SAVE:"Cất",
-            BTN_SAVEANDCLOSE:"Cất và thêm",
         },
+        DIALOG:{
+            TITLE:{
+                DEFAULT: "Thông báo",
+                CONFIRM_DELETE: "Xác nhận xóa?",
+                NOTE: "Lưu ý !",
+            },
+            CONTENT:{
+                CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa nhân viên",
+                DATA_CHANGE: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
+                EXIST_PRE: "Mã nhân viên",
+                EXIST_END: "đã tồn tại trong hệ thống, vui lòng kiểm tra lại.",
+                END: "không?"
+            },
+        },
+        BUTTON:{
+            YES:"Có",
+            NO:"Không",
+            CANCEL:"Hủy",
+            SAVE:"Cất",
+            SAVE_AND_CLOSE:"Cất và thêm",
+            AGREE: "Đồng ý",
+            CLOSE: "Đóng",
+        },
+        TOAST:{
+            SUCCESS:"Thành công!",
+            UNDO:"Hoàn tác",
+        }
     },
     'en-EN':{
         TEXT_CONTENT:{

@@ -5,21 +5,26 @@
       id="dialog-warning-employee"
     >
       <div class="title-dialog">
-        <h1>Thông báo</h1>
+        <h1>
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DEFAULT }}
+        </h1>
         <div class="close-icon" @click="btnAgree"></div>
       </div>
       <div class="dialog-content">
         <div class="warning-yellow-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
           <p>
-            Mã nhân viên &lt;{{ this.textEmployeeCodeExist }}&gt; đã tồn tại
-            trong hệ thống, vui lòng kiểm tra lại.
+            {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE }}
+            &lt;{{ this.textEmployeeCodeExist }}&gt;
+            {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_END }}
           </p>
         </div>
       </div>
       <div class="dialog-warning-footer">
         <misa-button-default
-          :textButtonDefault="'Đồng ý'"
+          :textButtonDefault="
+            this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE
+          "
           @click="btnAgree"
         ></misa-button-default>
       </div>

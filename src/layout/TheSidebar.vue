@@ -3,110 +3,163 @@
     <div class="sidebar-logo">
       <div class="icon-tb toggle toggle-icon"></div>
       <div class="logo-icon icon-l"></div>
-      <span>KẾ TOÁN</span>
+      <span>{{
+        this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ACCOUNTANT
+      }}</span>
     </div>
     <div class="menu">
       <ul class="nav">
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb overview-icon"></i>
-            <span>Tổng quan</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .OVERVIEW
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb cash-icon"></i>
-            <span>Tiền mặt</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .CASH
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb deposits-icon"></i>
-            <span>Tiền gửi</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .DEPOSITS
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb bag-icon"></i>
-            <span>Mua hàng</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .BAG
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb cart-icon"></i>
-            <span>Bán hàng</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .CART
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb bill-icon"></i>
-            <span>Quản lí hóa đơn</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .BILL
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb warehouse-icon"></i>
-            <span>Kho</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .WAREHOUSE
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb tool-icon"></i>
-            <span>Công cụ dụng cụ</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .TOOL
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb asset-icon"></i>
-            <span>Tài sản cố định</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .ASSET
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb tax-icon"></i>
-            <span>Thuế</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .TAX
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb price-icon"></i>
-            <span>Giá thành</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .PRICE
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb synthetic-icon"></i>
-            <span>Tổng hợp</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .SYNTHETIC
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb budget-icon"></i>
-            <span>Ngân sách</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .BUDGET
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb report-icon"></i>
-            <span>Báo cáo</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .REPORT
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb finance-icon"></i>
-            <span>Phân tích tài chính</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .FINANCE
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/employee" class="menu-item-a">
             <i class="icon-tb employee-icon"></i>
-            <span>Nhân viên</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .EMPLOYEE
+            }}</span>
           </router-link>
         </li>
         <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb setting-icon" style="scale: 0.85 0.85"></i>
-            <span>Cài đặt</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
+                .SETTING
+            }}</span>
           </router-link>
         </li>
       </ul>

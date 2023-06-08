@@ -2,11 +2,14 @@
   <div class="toast-success">
     <div class="toast-info">
       <div class="check-green-icon"></div>
-      <p><b>Thành công!</b> {{ this.contentToast }}</p>
+      <p>
+        <b>{{ this.$_MISAResource[this.$_LANG_CODE].TOAST.SUCCESS }}</b>
+        {{ this.contentToast }}
+      </p>
     </div>
     <div class="toast-exits">
       <div class="icon-tb close-icon" @click="onCloseToastMessage"></div>
-      <a href="#">Hoàn tác</a>
+      <a href="#">{{ this.$_MISAResource[this.$_LANG_CODE].TOAST.UNDO }}</a>
     </div>
   </div>
 </template>

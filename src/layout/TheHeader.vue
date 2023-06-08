@@ -2,14 +2,24 @@
   <div class="content-header">
     <div class="header-title">
       <div id="gn" class="three-dashes-icon icon-tb"></div>
-      <p>CÔNG TY TNHH SẢN XUẤT - THƯƠNG MẠI - DỊCH VỤ QUI PHÚC</p>
+      <p>
+        {{
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+            .NAME_COMPANY_SELECTED
+        }}
+      </p>
       <div class="dropdown-grey-icon icon-tb"></div>
     </div>
     <div class="header-action">
       <div class="toast-notification-icon icon-l"></div>
       <div class="info-user">
         <div class="avatar-icon icon-l"></div>
-        <p>Bùi Ngọc Tiến</p>
+        <p>
+          {{
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+              .NAME_ACCOUNT_LOGIN
+          }}
+        </p>
         <div class="dropdown-grey-icon icon-tb"></div>
       </div>
     </div>

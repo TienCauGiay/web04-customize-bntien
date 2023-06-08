@@ -5,7 +5,7 @@
       id="dialog-danger-employee"
     >
       <div class="title-dialog">
-        <h1>Lưu ý !</h1>
+        <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.NOTE }}</h1>
         <div class="close-icon" @click="btnClose"></div>
       </div>
       <div class="dialog-content">
@@ -18,7 +18,9 @@
       </div>
       <div class="dialog-danger-footer">
         <misa-button-default
-          :textButtonDefault="'Đóng'"
+          :textButtonDefault="
+            this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE
+          "
           @click="btnClose"
         ></misa-button-default>
       </div>

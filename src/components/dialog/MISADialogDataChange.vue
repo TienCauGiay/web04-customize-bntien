@@ -5,30 +5,40 @@
       id="dialog-question-employee"
     >
       <div class="title-dialog">
-        <h1>Thông báo</h1>
+        <h1>
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DEFAULT }}
+        </h1>
         <div class="close-icon" @click="btnCancel"></div>
       </div>
       <div class="dialog-content">
         <div class="question-blue-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
-          <p>Dữ liệu đã bị thay đổi. Bạn có muốn cất không?</p>
+          <p>
+            {{
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.DATA_CHANGE
+            }}
+          </p>
         </div>
       </div>
       <div class="dialog-question-footer">
         <div class="dialog-question-footer-left">
           <misa-button-extra
-            :textButtonExtra="'Hủy'"
+            :textButtonExtra="
+              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
+            "
             class="btn-no-minwwidth"
             @click="btnCancel"
           ></misa-button-extra>
         </div>
         <div class="dialog-question-footer-right">
           <misa-button-extra
-            :textButtonExtra="'Không'"
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.NO"
             @click="btnNo"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="'Có'"
+            :textButtonDefault="
+              this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES
+            "
             class="btn-no-minwwidth"
             @click="btnYes"
           ></misa-button-default>

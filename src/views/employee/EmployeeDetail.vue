@@ -327,7 +327,7 @@
         <div class="action-left">
           <misa-button-extra
             :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_CANCEL
+              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
             "
             @click="btnCancel"
             :tabindex="18"
@@ -335,15 +335,13 @@
         </div>
         <div class="action-right">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_SAVE
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE"
             @click="btnSave"
             :tabindex="19"
           ></misa-button-extra>
           <misa-button-default
             :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].FORM.BTN_SAVEANDCLOSE
+              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_CLOSE
             "
             @click="btnSaveAndAdd"
             :tabindex="20"
