@@ -112,6 +112,13 @@
               </td>
             </tr>
           </tbody>
+          <tbody v-else>
+            <img
+              class="loading"
+              src="../../assets/img/loading.svg"
+              alt="loading"
+            />
+          </tbody>
         </table>
       </form>
     </div>
