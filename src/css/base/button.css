@@ -6,16 +6,15 @@
     border: none;
     border-radius: 4px;
     text-align: center;
+    cursor: pointer;
 }
 
-.btn:hover{
+.btn-default:hover{
     background-color: var(--color-btn-default-hover);
-    cursor: pointer;
 }
 
-.btn:focus{
+.btn-default:focus{
     background-color: var(--color-btn-pressed);
-    cursor: pointer;
 }
 
 .text{
@@ -35,6 +34,14 @@
     padding-right: 16px;
     background-color: #FFFFFF;
     border: 1px solid var(--color-border-default);
+}
+
+.btn-extra:hover{
+    background-color: #F5F5F5;
+}
+
+.btn-extra:focus{
+    background-color: #EEEEEE;
 }
 /* css cho text button phụ */
 .text-extra{
