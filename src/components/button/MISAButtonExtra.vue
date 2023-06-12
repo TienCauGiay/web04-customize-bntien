@@ -11,6 +11,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(@/css/base/button.css);
+
+button:hover .text-extra {
+  color: white;
+}
 </style>

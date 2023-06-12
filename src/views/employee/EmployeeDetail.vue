@@ -945,6 +945,7 @@ export default {
           this.$_MISAEmitter.emit("setFormModeAdd");
           this.$refs.codeEmployee.$el.focus();
         } else {
+          // cvđ
           this.$emit("closeFormDetail");
         }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {

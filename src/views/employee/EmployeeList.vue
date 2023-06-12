@@ -484,6 +484,7 @@ export default {
      */
     refreshData() {
       this.getListEmployee();
+      this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
     },
     /**
      * Mô tả: Hàm xử lí cập nhật thông tin nhân viên
