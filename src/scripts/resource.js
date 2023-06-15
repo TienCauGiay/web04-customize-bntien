@@ -53,7 +53,7 @@ const MISAResource = {
             },
             CODE_NOT_NULL: "Mã nhân viên không được để trống.",
             NAME_NOT_NULL: "Tên nhân viên không được để trống.",
-            UNIT_NOT_NULL: "Đơn vị nhân viên không được để trống.",
+            DEPARTMENT_NOT_NULL: "Đơn vị nhân viên không được để trống.",
             CODE_END_MUST_NUMBER: "Mã nhân viên phải kết thúc bằng số",
             DOB_ISVALID:"Ngày sinh không hợp lệ",
             CMNDDATE_ISVALID : "Ngày cấp không hợp lệ",

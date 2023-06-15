@@ -129,13 +129,24 @@
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
               <td>{{ item.FullName }}</td>
-              <td style="width: 80px">{{ item.GenderName }}</td>
+              <td style="width: 80px">
+                {{
+                  item.Gender === 0
+                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
+                        .Male
+                    : item.Gender === 1
+                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
+                        .Female
+                    : this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
+                        .Other
+                }}
+              </td>
               <td class="text-center e-birthday">
                 {{ formatDate(item.DateOfBirth) }}
               </td>
-              <td>{{ item.CMNDNumber }}</td>
-              <td>{{ item.TitleProfessional }}</td>
-              <td>{{ item.UnitName }}</td>
+              <td>{{ item.IdentityNumber }}</td>
+              <td>{{ item.PositionName }}</td>
+              <td>{{ item.DepartmentName }}</td>
               <td>{{ item.BankAccount }}</td>
               <td>{{ item.BankName }}</td>
               <td>{{ item.BankBranch }}</td>
@@ -166,7 +177,7 @@
                         class="menu-function-select-delete-employee"
                         @click="
                           onDeleteEmployee(
-                            item.EmployeeID,
+                            item.EmployeeId,
                             item.EmployeeCode,
                             index
                           )

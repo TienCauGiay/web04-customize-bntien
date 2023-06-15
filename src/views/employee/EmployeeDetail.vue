@@ -16,13 +16,13 @@
           <b>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.INFO_EMPLOYEE }}</b>
         </p>
         <div class="employee-check">
-          <input type="checkbox" />
+          <input type="checkbox" :checked="employee.CustomerOrProvider === 1" />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
           }}</span>
         </div>
         <div class="employee-check">
-          <input type="checkbox" />
+          <input type="checkbox" :checked="employee.CustomerOrProvider === 2" />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER
           }}</span>
@@ -89,10 +89,8 @@
             }}</label>
             <div class="e-gender">
               <input
-                v-model="employee.GenderName"
-                :value="
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
-                "
+                v-model="employee.Gender"
+                :value="employee.Gender === 0"
                 type="radio"
                 name="gender"
                 :tabindex="6"
@@ -101,11 +99,8 @@
                 this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
               }}</span>
               <input
-                v-model="employee.GenderName"
-                :value="
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                    .Female
-                "
+                v-model="employee.Gender"
+                :value="employee.Gender === 1"
                 type="radio"
                 name="gender"
                 :tabindex="7"
@@ -114,11 +109,8 @@
                 this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Female
               }}</span>
               <input
-                v-model="employee.GenderName"
-                :value="
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                    .Other
-                "
+                v-model="employee.Gender"
+                :value="employee.Gender === 2"
                 type="radio"
                 name="gender"
                 :tabindex="8"
@@ -138,44 +130,52 @@
             <div
               class="e-cbb"
               id="e-cbb"
-              :class="{ 'border-red': isBorderRed.Unit && !employee.UnitName }"
+              :class="{
+                'border-red':
+                  isBorderRed.Department && !employee.DepartmentName,
+              }"
             >
               <div class="e-textfield-cbb">
                 <misa-input
-                  ref="unitEmployee"
+                  ref="departmentEmployee"
                   :placeholder="
                     this.$_MISAResource[this.$_LANG_CODE].FORM
                       .PLACEHOLDER_DEPARTMENT
                   "
-                  :value="employee.UnitName"
+                  :value="employee.DepartmentName"
                   @input="onSearchChange"
                   :tabindex="3"
                   :titleContent="
-                    !employee.UnitName
+                    !employee.DepartmentName
                       ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                          .UNIT_NOT_NULL
+                          .DEPARTMENT_NOT_NULL
                       : ''
                   "
-                  @keydown="onKeyDownUnit"
+                  @keydown="onKeyDownDepartment"
                 ></misa-input>
               </div>
-              <div class="e-icon-cbb" @click="onShowSelectUnit">
+              <div class="e-icon-cbb" @click="onShowSelectDepartment">
                 <div class="function-icon"></div>
               </div>
             </div>
             <div
-              class="col-md-l select-unit"
-              :class="{ 'select-unit-block': isShowSelectUnit }"
+              class="col-md-l select-department"
+              :class="{ 'select-department-block': isShowSelectDepartment }"
             >
-              <ul v-show="isShowSelectUnit" @click="onShowSelectUnit">
+              <ul
+                v-show="isShowSelectDepartment"
+                @click="onShowSelectDepartment"
+              >
                 <li
-                  v-for="(unit, index) in listUnitSearch"
+                  v-for="(department, index) in listDepartmentSearch"
                   :key="index"
-                  @click="onSelectedUnit(unit.UnitName, index)"
-                  :class="{ 'cbb-selected': index == indexUnitSelected }"
-                  ref="listValueUnit"
+                  @click="
+                    onSelectedDepartment(department.DepartmentName, index)
+                  "
+                  :class="{ 'cbb-selected': index == indexDepartmentSelected }"
+                  ref="listValueDepartment"
                 >
-                  {{ unit.UnitName }}
+                  {{ department.DepartmentName }}
                 </li>
               </ul>
             </div>
@@ -193,7 +193,7 @@
               }}</label
             >
             <misa-input
-              v-model="employee.CMNDNumber"
+              v-model="employee.IdentityNumber"
               :tabindex="9"
             ></misa-input>
           </div>
@@ -203,13 +203,13 @@
             }}</label>
             <misa-input
               type="date"
-              v-model="employee.CMNDDate"
-              :value="formattedDateCMND"
+              v-model="employee.IdentityDate"
+              :value="formattedDateIdentity"
               :tabindex="9"
               :class="{
-                'border-red': isBorderRed.CMNDDate && employee.CMNDDate,
+                'border-red': isBorderRed.IdentityDate && employee.IdentityDate,
               }"
-              ref="cmndDateEmployee"
+              ref="identityDateEmployee"
             ></misa-input>
           </div>
         </div>
@@ -219,7 +219,7 @@
               this.$_MISAResource[this.$_LANG_CODE].FORM.POSITION
             }}</label>
             <misa-input
-              v-model="employee.TitleProfessional"
+              v-model="employee.PositionName"
               :tabindex="4"
             ></misa-input>
           </div>
@@ -230,7 +230,7 @@
               this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESS
             }}</label>
             <misa-input
-              v-model="employee.CMNDAddress"
+              v-model="employee.IdentityPlace"
               :tabindex="10"
             ></misa-input>
           </div>
@@ -240,10 +240,7 @@
           <label>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS
           }}</label>
-          <misa-input
-            v-model="employee.EmployeeAddress"
-            :tabindex="11"
-          ></misa-input>
+          <misa-input v-model="employee.Address" :tabindex="11"></misa-input>
         </div>
         <div class="full-content">
           <div class="full-content-quarter">
@@ -373,7 +370,7 @@
 
 <script>
 import employeeService from "@/services/employee.js";
-import unitService from "@/services/unit.js";
+import departmentService from "@/services/department.js";
 import helperCommon from "@/scripts/helper";
 export default {
   name: "EmployeeDetail",
@@ -388,13 +385,13 @@ export default {
   data() {
     return {
       // Khai báo biến quy định trạng thái hiển thị của combobox chọn đơn vị
-      isShowSelectUnit: false,
+      isShowSelectDepartment: false,
       // Khai báo đối tượng employee
       employee: {},
       // Khai báo danh sách các đơn vị
-      listUnit: [],
+      listDepartment: [],
       // Khai báo danh sách đơn vị tìm kiếm
-      listUnitSearch: [],
+      listDepartmentSearch: [],
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
       isShowDialogDataNotNull: false,
       // Khai báo biến xác định nội dung trường nào k được để trống
@@ -410,7 +407,7 @@ export default {
       // Tái sử dụng hàm xóa dấu tiếng việt
       removeVietnameseAccents: helperCommon.removeVietnameseAccents,
       // Khai báo chỉ số đang được chọn trong combobox
-      indexUnitSelected: 0,
+      indexDepartmentSelected: 0,
       // Tái sử dụng hàm kiểm tra ngày hợp lệ
       isInvalidDate: helperCommon.isInvalidDate,
     };
@@ -425,8 +422,8 @@ export default {
       this.isBorderRed.DOB = false;
     },
     // Lắng nghe sự thay đổi dữ liệu trong ô input ngày cấp
-    "employee.CMNDDate": function () {
-      this.isBorderRed.CMNDDate = false;
+    "employee.IdentityDate": function () {
+      this.isBorderRed.IdentityDate = false;
     },
   },
   methods: {
@@ -435,64 +432,71 @@ export default {
      * created by : BNTIEN
      * created date: 06-06-2023 22:02:18
      */
-    onKeyDownUnit(event) {
-      const maxLength = this.listUnitSearch.length;
+    onKeyDownDepartment(event) {
+      const maxLength = this.listDepartmentSearch.length;
       if (maxLength == 0) {
         return;
       } else {
         if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
           // Bấm xuống
-          if (this.indexUnitSelected < maxLength - 1) {
-            this.indexUnitSelected++;
-          } else if (this.indexUnitSelected == maxLength - 1) {
-            this.indexUnitSelected = 0;
+          if (this.indexDepartmentSelected < maxLength - 1) {
+            this.indexDepartmentSelected++;
+          } else if (this.indexDepartmentSelected == maxLength - 1) {
+            this.indexDepartmentSelected = 0;
           }
           // scroll focus theo item được chọn
           this.scrollIndex(
-            this.indexUnitSelected,
+            this.indexDepartmentSelected,
             this.$_MISAEnum.KEY_CODE.DOWN
           );
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
           // Bấm lên
-          if (this.indexUnitSelected > 0) {
-            this.indexUnitSelected--;
-          } else if (this.indexUnitSelected == 0) {
-            this.indexUnitSelected = maxLength - 1;
+          if (this.indexDepartmentSelected > 0) {
+            this.indexDepartmentSelected--;
+          } else if (this.indexDepartmentSelected == 0) {
+            this.indexDepartmentSelected = maxLength - 1;
           }
           // scroll focus theo item được chọn
-          this.scrollIndex(this.indexUnitSelected, this.$_MISAEnum.KEY_CODE.UP);
+          this.scrollIndex(
+            this.indexDepartmentSelected,
+            this.$_MISAEnum.KEY_CODE.UP
+          );
         } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
           // Bấm enter
-          if (this.isShowSelectUnit) {
-            this.employee.UnitName =
-              this.listUnitSearch[this.indexUnitSelected].UnitName;
-            this.isShowSelectUnit = false;
+          if (this.isShowSelectDepartment) {
+            this.employee.DepartmentName =
+              this.listDepartmentSearch[
+                this.indexDepartmentSelected
+              ].DepartmentName;
+            this.isShowSelectDepartment = false;
           } else {
-            this.isShowSelectUnit = true;
+            this.isShowSelectDepartment = true;
           }
         }
       }
     },
     /**
-     * Mô tả: Lắng nghe sự thay đổi text trong input search unit và tìm kiếm trong combobox
+     * Mô tả: Lắng nghe sự thay đổi text trong input search department và tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
     onSearchChange() {
       const newValue = event.target.value;
-      this.employee.UnitName = newValue;
+      this.employee.DepartmentName = newValue;
       const searchTerm = this.removeVietnameseAccents(
         newValue.toLowerCase().trim()
       );
       if (!searchTerm) {
-        this.listUnitSearch = this.listUnit;
+        this.listDepartmentSearch = this.listDepartment;
       } else {
-        const filteredUnits = this.listUnit.filter((u) => {
-          const uName = this.removeVietnameseAccents(u.UnitName.toLowerCase());
+        const filteredDepartments = this.listDepartment.filter((u) => {
+          const uName = this.removeVietnameseAccents(
+            u.DepartmentName.toLowerCase()
+          );
           return uName.includes(searchTerm);
         });
-        this.listUnitSearch = filteredUnits;
-        this.isShowSelectUnit = true;
+        this.listDepartmentSearch = filteredDepartments;
+        this.isShowSelectDepartment = true;
       }
     },
     /**
@@ -501,7 +505,7 @@ export default {
      * created date: 07-06-2023 08:37:33
      */
     scrollIndex(index, checkKeyCode) {
-      const element = this.$refs.listValueUnit[index];
+      const element = this.$refs.listValueDepartment[index];
       if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
         element.scrollIntoView({
           block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
@@ -518,11 +522,11 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:56:10
      */
-    async getListUnit() {
+    async getListDepartment() {
       try {
-        const res = await unitService.getAll();
-        this.listUnit = res.data;
-        this.listUnitSearch = res.data;
+        const res = await departmentService.getAll();
+        this.listDepartment = res.data;
+        this.listDepartmentSearch = res.data;
       } catch (error) {
         console.log(error);
         return;
@@ -534,7 +538,7 @@ export default {
      * created date: 30-05-2023 14:57:33
      */
     loadData() {
-      this.getListUnit();
+      this.getListDepartment();
       // Nếu form ở trạng thái thêm mới
       if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
         this.employee = {};
@@ -564,17 +568,17 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:42
      */
-    onShowSelectUnit() {
-      this.isShowSelectUnit = !this.isShowSelectUnit;
+    onShowSelectDepartment() {
+      this.isShowSelectDepartment = !this.isShowSelectDepartment;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng chọn đơn vị
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
      */
-    onSelectedUnit(unit, index) {
-      this.employee.UnitName = unit;
-      this.indexUnitSelected = index;
+    onSelectedDepartment(department, index) {
+      this.employee.DepartmentName = department;
+      this.indexDepartmentSelected = index;
     },
     /**
      * Mô tả: Hàm kiểm tra các ô bắt buộc phải nhập dữ liệu
@@ -610,10 +614,10 @@ export default {
         );
       }
       // Nếu chưa chọn đơn vị
-      if (!this.employee.UnitName) {
-        this.isBorderRed.Unit = true;
+      if (!this.employee.DepartmentName) {
+        this.isBorderRed.Department = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UNIT_NOT_NULL
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DEPARTMENT_NOT_NULL
         );
       }
       // Nếu ngày sinh k hợp lệ
@@ -626,9 +630,9 @@ export default {
         }
       }
       // Nếu ngày cấp CMND k hợp lệ
-      if (this.employee.CMNDDate) {
-        if (!this.isInvalidDate(this.employee.CMNDDate)) {
-          this.isBorderRed.CMNDDate = true;
+      if (this.employee.IdentityDate) {
+        if (!this.isInvalidDate(this.employee.IdentityDate)) {
+          this.isBorderRed.IdentityDate = true;
           this.dataNotNull.push(
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CMNDDATE_ISVALID
           );
@@ -653,7 +657,7 @@ export default {
       if (
         !this.employee.EmployeeCode ||
         !this.employee.FullName ||
-        !this.employee.UnitName
+        !this.employee.DepartmentName
       ) {
         this.isShowDialogDataNotNull = true;
         return false;
@@ -672,8 +676,8 @@ export default {
           return false;
         }
       }
-      if (this.employee.CMNDDate) {
-        if (!this.isInvalidDate(this.employee.CMNDDate)) {
+      if (this.employee.IdentityDate) {
+        if (!this.isInvalidDate(this.employee.IdentityDate)) {
           this.isShowDialogDataNotNull = true;
           return false;
         }
@@ -704,15 +708,19 @@ export default {
             const res = await employeeService.getById(
               this.employee.EmployeeCode
             );
+            console.log(res);
             employeeById = res.data;
             if (!employeeById) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let unitAdd = this.listUnit.find(
-                (unit) => unit.UnitName === this.employee.UnitName
+              let departmentAdd = this.listDepartment.find(
+                (department) =>
+                  department.DepartmentName === this.employee.DepartmentName
               );
-              this.employee.UnitID = unitAdd.UnitID;
+              this.employee.DepartmentId = departmentAdd.DepartmentId;
               const res = await employeeService.create(this.employee);
-              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+              if (
+                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+              ) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
@@ -780,12 +788,15 @@ export default {
             employeeById = res.data;
             if (!employeeById) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let unitAdd = this.listUnit.find(
-                (unit) => unit.UnitName === this.employee.UnitName
+              let departmentAdd = this.listDepartment.find(
+                (department) =>
+                  department.DepartmentName === this.employee.DepartmentName
               );
-              this.employee.UnitID = unitAdd.UnitID;
+              this.employee.DepartmentId = departmentAdd.DepartmentId;
               const res = await employeeService.create(this.employee);
-              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+              if (
+                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+              ) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
@@ -861,8 +872,8 @@ export default {
         this.$refs.nameEmployee.$el.focus();
         return;
       }
-      if (!this.employee.UnitName) {
-        this.$refs.unitEmployee.$el.focus();
+      if (!this.employee.DepartmentName) {
+        this.$refs.departmentEmployee.$el.focus();
         return;
       }
       if (this.employee.DateOfBirth) {
@@ -873,7 +884,7 @@ export default {
       }
       if (this.employee.DateOfBirth) {
         if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.$refs.cmndDateEmployee.$el.focus();
+          this.$refs.identityDateEmployee.$el.focus();
           return;
         }
       }
@@ -936,7 +947,7 @@ export default {
     async onYesDialogDataChange() {
       try {
         const res = await employeeService.update(
-          this.employeeSelected.EmployeeID,
+          this.employeeSelected.EmployeeId,
           this.employee
         );
         if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
@@ -997,19 +1008,19 @@ export default {
      * created by : BNTIEN
      * created date: 01-06-2023 02:41:35
      */
-    formattedDateCMND: {
+    formattedDateIdentity: {
       get() {
-        if (this.employee.CMNDDate) {
-          const isoDateCMND = this.employee.CMNDDate;
-          const formattedDateCMND = isoDateCMND.split(
+        if (this.employee.IdentityDate) {
+          const isoDateIdentity = this.employee.IdentityDate;
+          const formattedDateIdentity = isoDateIdentity.split(
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
           )[0];
-          return formattedDateCMND;
+          return formattedDateIdentity;
         }
         return "";
       },
       set(newDate) {
-        this.employee.CMNDDate = newDate;
+        this.employee.IdentityDate = newDate;
       },
     },
   },
@@ -1019,7 +1030,7 @@ export default {
 <style scoped>
 @import url(@/css/detailinfoemployee.css);
 
-.select-unit-block {
+.select-department-block {
   background-color: #fff;
   border: 1px solid var(--color-border-default);
   z-index: 100;

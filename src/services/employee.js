@@ -1,7 +1,7 @@
 import BaseServices from "./base";
 
 class EmployeeService extends BaseServices {
-    controller = "employee";
+    controller = "Employees";
 }
 
 export default new EmployeeService();

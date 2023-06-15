@@ -195,7 +195,7 @@
     align-items: center;
 }
 
-.select-unit{
+.select-department{
     position: absolute;
     width: 100%;
     box-sizing: border-box;
@@ -206,7 +206,7 @@
     z-index: -1;
 }
 
-.select-unit ul{
+.select-department ul{
     margin: 0px;
     padding-left: 0px;
     display: flex;
@@ -214,13 +214,13 @@
     line-height: 30px;
 }
 
-.select-unit li{
+.select-department li{
     display: block;
     padding: 0 12px;
     height: 30px;
 }
 
-.select-unit li:hover{
+.select-department li:hover{
     color: var(--color-btn-default);
     background-color: var(--color-border-default);
     cursor: pointer;
