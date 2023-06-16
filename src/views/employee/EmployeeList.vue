@@ -305,6 +305,7 @@
       @closeFormDetail="onCloseFormDetail"
       :employeeSelected="employeeUpdate"
       :statusFormMode="isStatusFormMode"
+      :newCode="newEmployeeCode"
     ></EmployeeDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
@@ -416,6 +417,8 @@ export default {
       currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo số trang tối đa hiển thị trong phân trang
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
+      // Khai báo biến lưu mã nhân viên tự động sinh
+      newEmployeeCode: null,
     };
   },
   created() {
@@ -440,9 +443,15 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:01
      */
-    btnOpenFormDetail() {
+    async btnOpenFormDetail() {
       this.isShowFormDetail = true;
       this.isOverlay = true;
+      var maxEmployeeCode = await employeeService.getCodeMax();
+      this.newEmployeeCode = `NV-${(
+        parseInt(maxEmployeeCode.data.substring(3)) + 1
+      )
+        .toString()
+        .padStart(4, "0")}`;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi click vào nút close trong form chi tiết
@@ -619,13 +628,13 @@ export default {
      * created date: 04-06-2023 01:49:06
      */
     async updateDataTable() {
-      if (!this.textSearch) {
+      if (!this.textSearch.trim()) {
         this.textSearch = "";
       }
       const resfilter = await employeeService.getFilter(
         this.selectedRecord,
         this.currentPage,
-        this.textSearch
+        this.textSearch.trim()
       );
       this.dataTable = resfilter.data.Data;
     },

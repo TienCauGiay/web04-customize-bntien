@@ -374,13 +374,17 @@ import departmentService from "@/services/department.js";
 import helperCommon from "@/scripts/helper";
 export default {
   name: "EmployeeDetail",
-  props: ["employeeSelected", "statusFormMode"],
+  props: ["employeeSelected", "statusFormMode", "newCode"],
   created() {
     this.loadData();
   },
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.$refs.codeEmployee.$el.focus();
+    // Nếu form ở trạng thái thêm mới thì sinh mã nhân viên tự động
+    if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+      this.employee.EmployeeCode = this.newCode;
+    }
   },
   data() {
     return {
