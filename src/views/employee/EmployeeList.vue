@@ -342,7 +342,7 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     totalPages() {
-      if (this.removeVietnameseAccents(this.textSearch.toLowerCase().trim())) {
+      if (this.textSearch.trim()) {
         return Math.ceil(this.searchData.length / this.selectedRecord);
       }
       return Math.ceil(this.employees.length / this.selectedRecord);
@@ -408,8 +408,6 @@ export default {
       contentToastSuccess: "",
       // Tái sử dụng hàm formatDate trong helperCommon
       formatDate: helperCommon.formatDate,
-      // Tái sử dụng hàm xóa dấu tiếng việt
-      removeVietnameseAccents: helperCommon.removeVietnameseAccents,
       // Khai báo biến lưu chỉ số index được chọn để xóa trong table
       selectedIndex: null,
       // Khai báo biến lưu nội dung tìm kiếm
@@ -482,7 +480,12 @@ export default {
       try {
         const res = await employeeService.getAll();
         this.employees = res.data;
-        this.dataTable = this.employees;
+        const resfilter = await employeeService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          ""
+        );
+        this.dataTable = resfilter.data.Data;
       } catch (error) {
         console.log(error);
         return;
@@ -597,30 +600,17 @@ export default {
      * created by : BNTIEN
      * created date: 04-06-2023 00:20:21
      */
-    onSearchEmployee() {
-      // Xóa dấu tiếng việt để có thể tìm kiếm không dấu
-      const searchTerm = this.removeVietnameseAccents(
-        this.textSearch.toLowerCase().trim()
-      );
-
-      if (searchTerm) {
-        const filteredEmployees = this.employees.filter((e) => {
-          const employeeName = this.removeVietnameseAccents(
-            e.FullName.toLowerCase()
-          );
-          const employeeCode = this.removeVietnameseAccents(
-            e.EmployeeCode.toLowerCase()
-          );
-          return (
-            employeeName.includes(searchTerm) ||
-            employeeCode.includes(searchTerm)
-          );
-        });
-        this.dataTable = filteredEmployees;
-      } else {
-        this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-        this.dataTable = this.employees;
+    async onSearchEmployee() {
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+      if (!this.textSearch.trim()) {
+        this.textSearch = "";
       }
+      const filteredEmployees = await employeeService.getFilter(
+        this.selectedRecord,
+        this.currentPage,
+        this.textSearch.trim()
+      );
+      this.dataTable = filteredEmployees.data.Data;
       this.searchData = this.dataTable;
     },
     /**
@@ -628,14 +618,16 @@ export default {
      * created by : BNTIEN
      * created date: 04-06-2023 01:49:06
      */
-    updateDataTable() {
-      const startIndex = (this.currentPage - 1) * this.selectedRecord;
-      const endIndex = startIndex + this.selectedRecord;
-      if (this.removeVietnameseAccents(this.textSearch.toLowerCase().trim())) {
-        this.dataTable = this.searchData.slice(startIndex, endIndex);
-      } else {
-        this.dataTable = this.employees.slice(startIndex, endIndex);
+    async updateDataTable() {
+      if (!this.textSearch) {
+        this.textSearch = "";
       }
+      const resfilter = await employeeService.getFilter(
+        this.selectedRecord,
+        this.currentPage,
+        this.textSearch
+      );
+      this.dataTable = resfilter.data.Data;
     },
     /**
      * Mô tả: Di chuyển giữa các trang trong phân trang

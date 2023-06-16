@@ -87,6 +87,27 @@ class BaseServices {
             throw error;
         }
     }
+
+    /**
+     * Mô tả: Tìm kiếm phân trang
+     * created by : BNTIEN
+     * created date: 17-06-2023 03:50:28
+     */ 
+    async getFilter(pageSize, pageNumber, textSearch){
+        try{
+            const response = await axios.get(`${this.getBaseUrl()}/filter`, {
+                params: {
+                  pageSize: pageSize,
+                  pageNumber: pageNumber,
+                  textSearch: textSearch
+                }
+              });
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
 }
 
 export default BaseServices;
