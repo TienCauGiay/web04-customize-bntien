@@ -90,7 +90,7 @@
             <div class="e-gender">
               <input
                 v-model="employee.Gender"
-                :value="employee.Gender === 0"
+                :value="this.$_MISAEnum.GENDER.Male"
                 type="radio"
                 name="gender"
                 :tabindex="6"
@@ -100,7 +100,7 @@
               }}</span>
               <input
                 v-model="employee.Gender"
-                :value="employee.Gender === 1"
+                :value="this.$_MISAEnum.GENDER.Female"
                 type="radio"
                 name="gender"
                 :tabindex="7"
@@ -110,7 +110,7 @@
               }}</span>
               <input
                 v-model="employee.Gender"
-                :value="employee.Gender === 2"
+                :value="this.$_MISAEnum.GENDER.Other"
                 type="radio"
                 name="gender"
                 :tabindex="8"
@@ -708,7 +708,6 @@ export default {
             const res = await employeeService.getById(
               this.employee.EmployeeCode
             );
-            console.log(res);
             employeeById = res.data;
             if (!employeeById) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
