@@ -335,6 +335,7 @@ export default {
   mounted() {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
+    this.getNewCode();
   },
   computed: {
     /**
@@ -438,14 +439,7 @@ export default {
     });
   },
   methods: {
-    /**
-     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:48:01
-     */
-    async btnOpenFormDetail() {
-      this.isShowFormDetail = true;
-      this.isOverlay = true;
+    async getNewCode() {
       var maxEmployeeCode = await employeeService.getCodeMax();
       this.newEmployeeCode = `NV-${(
         parseInt(maxEmployeeCode.data.substring(3)) + 1
@@ -454,11 +448,22 @@ export default {
         .padStart(4, "0")}`;
     },
     /**
+     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:48:01
+     */
+    async btnOpenFormDetail() {
+      this.getNewCode();
+      this.isShowFormDetail = true;
+      this.isOverlay = true;
+    },
+    /**
      * Mô tả: Hàm xử lí sự kiện khi click vào nút close trong form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:35
      */
     onCloseFormDetail() {
+      this.getNewCode();
       this.isShowFormDetail = false;
       this.isOverlay = false;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -559,6 +564,7 @@ export default {
       try {
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          this.getNewCode();
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
           this.contentToastSuccess =

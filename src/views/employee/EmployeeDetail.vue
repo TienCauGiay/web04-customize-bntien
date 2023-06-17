@@ -382,7 +382,7 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.$refs.codeEmployee.$el.focus();
     // Nếu form ở trạng thái thêm mới thì sinh mã nhân viên tự động
-    if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+    if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
       this.employee.EmployeeCode = this.newCode;
     }
   },
