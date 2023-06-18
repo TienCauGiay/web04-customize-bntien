@@ -709,7 +709,7 @@ export default {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getById(
+            const res = await employeeService.getByCode(
               this.employee.EmployeeCode
             );
             employeeById = res.data;
@@ -749,7 +749,7 @@ export default {
           ) {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getById(
+            const res = await employeeService.getByCode(
               this.employee.EmployeeCode
             );
             employeeById = res.data;
@@ -785,7 +785,7 @@ export default {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getById(
+            const res = await employeeService.getByCode(
               this.employee.EmployeeCode
             );
             employeeById = res.data;
@@ -827,7 +827,7 @@ export default {
           ) {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getById(
+            const res = await employeeService.getByCode(
               this.employee.EmployeeCode
             );
             employeeById = res.data;

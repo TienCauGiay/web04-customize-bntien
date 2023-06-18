@@ -6,7 +6,7 @@ import axios from "axios";
  * created date: 02-06-2023 22:07:04
  */
 class BaseServices {
-    BASE_URL = "https://localhost:44370/api/v1";
+    BASE_URL = "https://localhost:7156/api/v1";
     controller = "";
 
     getBaseUrl(){
@@ -29,13 +29,13 @@ class BaseServices {
     }
 
     /**
-     * Mô tả: trả về bản trong database có id là tham số truyền vào
+     * Mô tả: trả về bản trong database có code là tham số truyền vào
      * created by : BNTIEN
      * created date: 02-06-2023 22:09:41
      */
-    async getById(id){
+    async getByCode(code){
         try {
-            const response = await axios.get(`${this.getBaseUrl()}/${id}`);
+            const response = await axios.get(`${this.getBaseUrl()}/code/${code}`);
             return response;
         } catch (error) {
             console.log(error);

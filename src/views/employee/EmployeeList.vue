@@ -345,7 +345,7 @@ export default {
      */
     totalPages() {
       if (this.textSearch.trim()) {
-        return Math.ceil(this.searchData.length / this.selectedRecord);
+        return Math.ceil(this.totalRecordSearch / this.selectedRecord);
       }
       return Math.ceil(this.employees.length / this.selectedRecord);
     },
@@ -392,8 +392,8 @@ export default {
       employees: [],
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
-      // Khai báo biến lưu list employee search
-      searchData: [],
+      // Khai báo biến lưu số bản ghi khi tìm kiếm
+      totalRecordSearch: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
@@ -626,7 +626,7 @@ export default {
         this.textSearch.trim()
       );
       this.dataTable = filteredEmployees.data.Data;
-      this.searchData = this.dataTable;
+      this.totalRecordSearch = filteredEmployees.data.TotalRecord;
     },
     /**
      * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize
