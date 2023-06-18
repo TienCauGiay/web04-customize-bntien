@@ -564,7 +564,7 @@ export default {
       try {
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.getNewCode();
+          // this.getNewCode();
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
           this.contentToastSuccess =

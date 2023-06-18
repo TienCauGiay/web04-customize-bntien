@@ -16,13 +16,27 @@
           <b>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.INFO_EMPLOYEE }}</b>
         </p>
         <div class="employee-check">
-          <input type="checkbox" :checked="employee.CustomerOrProvider === 1" />
+          <input
+            type="checkbox"
+            :checked="
+              employee.CustomerOrProvider ===
+              this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER
+            "
+            @change="handleCustomerCheckboxChange"
+          />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
           }}</span>
         </div>
         <div class="employee-check">
-          <input type="checkbox" :checked="employee.CustomerOrProvider === 2" />
+          <input
+            type="checkbox"
+            :checked="
+              employee.CustomerOrProvider ===
+              this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER
+            "
+            @change="handleProviderCheckboxChange"
+          />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER
           }}</span>
@@ -431,6 +445,28 @@ export default {
     },
   },
   methods: {
+    handleCustomerCheckboxChange() {
+      if (
+        this.employee.CustomerOrProvider ===
+        this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER
+      ) {
+        this.employee.CustomerOrProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
+      } else {
+        this.employee.CustomerOrProvider =
+          this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER;
+      }
+    },
+    handleProviderCheckboxChange() {
+      if (
+        this.employee.CustomerOrProvider ===
+        this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER
+      ) {
+        this.employee.CustomerOrProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
+      } else {
+        this.employee.CustomerOrProvider =
+          this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER;
+      }
+    },
     /**
      * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
      * created by : BNTIEN
@@ -959,7 +995,6 @@ export default {
           this.$_MISAEmitter.emit("setFormModeAdd");
           this.$refs.codeEmployee.$el.focus();
         } else {
-          // cvđ
           this.$emit("closeFormDetail");
         }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
