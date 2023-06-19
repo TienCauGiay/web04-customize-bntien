@@ -22,8 +22,9 @@ class BaseServices {
         try {
             const response = await axios.get(this.getBaseUrl());
             return response;
-        } catch  {
-            return {data: null};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     }
 
@@ -36,8 +37,9 @@ class BaseServices {
         try {
             const response = await axios.get(`${this.getBaseUrl()}/code/${code}`);
             return response;
-        } catch  {
-            return {data: null};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     }
 
@@ -80,8 +82,9 @@ class BaseServices {
         try {
             const response = await axios.delete(`${this.getBaseUrl()}/${id}`);
             return response;
-        } catch  {
-            return {data: null};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     }
 
@@ -100,8 +103,9 @@ class BaseServices {
                 }
               });
             return response;
-        } catch  {
-            return {data: null};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     }
 }

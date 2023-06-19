@@ -13,8 +13,9 @@ class EmployeeService extends BaseServices {
         try{
             var response = await axios.get(`${this.getBaseUrl()}/maxcode`);
             return response;
-        } catch  {
-            return {data: null};
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     }
 }

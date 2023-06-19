@@ -32,7 +32,7 @@
     </div>
     <div id="list-employee" class="list-employee">
       <form action="">
-        <table id="tbEmployeeList">
+        <table id="tbEmployeeList" ref="tableEmployeeList">
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
@@ -166,6 +166,7 @@
                     <ul
                       class="menu-function-select"
                       v-show="isShowColFeature[index]"
+                      ref="featureMenu"
                     >
                       <li>
                         {{
@@ -476,6 +477,18 @@ export default {
      */
     onShowColFeature(index) {
       this.isShowColFeature[index] = !this.isShowColFeature[index];
+      const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
+      const ulY = this.$refs.featureMenu[index].getBoundingClientRect().y;
+      console.log(tableY, ulY);
+
+      // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
+      if (tableY - ulY > 80) {
+        // Nếu bị che khuất ở trên, hiển thị xuống dưới
+        this.$refs.featureMenu[index].style.top = "15px";
+      } else {
+        // Nếu bị che khuất ở dưới, hiển thị lên trên
+        this.$refs.featureMenu[index].style.top = "-85px";
+      }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
