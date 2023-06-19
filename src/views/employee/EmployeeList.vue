@@ -161,6 +161,7 @@
                 <div
                   class="function-table-content"
                   @click="onShowColFeature(index)"
+                  ref="functionTableContent"
                 >
                   <div class="function-icon-table function-icon-select">
                     <ul
@@ -336,6 +337,7 @@ export default {
   mounted() {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
+    window.addEventListener("click", this.handleClickOutsideFeature);
     this.getNewCode();
   },
   computed: {
@@ -421,6 +423,8 @@ export default {
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
       // Khai báo biến lưu mã nhân viên tự động sinh
       newEmployeeCode: null,
+      //
+      selectedIndexFeature: null,
     };
   },
   created() {
@@ -476,18 +480,20 @@ export default {
      * created date: 29-05-2023 07:48:54
      */
     onShowColFeature(index) {
+      this.selectedIndexFeature = index;
       this.isShowColFeature[index] = !this.isShowColFeature[index];
       const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
-      const ulY = this.$refs.featureMenu[index].getBoundingClientRect().y;
+      const ulY =
+        this.$refs.functionTableContent[index].getBoundingClientRect().y;
       console.log(tableY, ulY);
 
       // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
-      if (tableY - ulY > 80) {
+      if (tableY - ulY > -160) {
         // Nếu bị che khuất ở trên, hiển thị xuống dưới
         this.$refs.featureMenu[index].style.top = "15px";
       } else {
         // Nếu bị che khuất ở dưới, hiển thị lên trên
-        this.$refs.featureMenu[index].style.top = "-85px";
+        this.$refs.featureMenu[index].style.top = "-90px";
       }
     },
     /**
@@ -699,6 +705,16 @@ export default {
         this.isShowPaging = false;
       }
     },
+
+    handleClickOutsideFeature(event) {
+      if (
+        !this.$refs.functionTableContent[this.selectedIndexFeature].contains(
+          event.target
+        )
+      ) {
+        this.isShowColFeature[this.selectedIndexFeature] = false;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -707,6 +723,7 @@ export default {
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");
     window.removeEventListener("click", this.handleClickOutsidePaging);
+    window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
 </script>
