@@ -485,7 +485,6 @@ export default {
       const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
       const ulY =
         this.$refs.functionTableContent[index].getBoundingClientRect().y;
-      console.log(tableY, ulY);
 
       // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
       if (tableY - ulY > -160) {
@@ -707,10 +706,13 @@ export default {
     },
 
     handleClickOutsideFeature(event) {
+      const functionTableContent =
+        this.$refs.functionTableContent[this.selectedIndexFeature];
       if (
-        !this.$refs.functionTableContent[this.selectedIndexFeature].contains(
-          event.target
-        )
+        functionTableContent &&
+        typeof functionTableContent.contains ===
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.FUNCTION &&
+        !functionTableContent.contains(event.target)
       ) {
         this.isShowColFeature[this.selectedIndexFeature] = false;
       }

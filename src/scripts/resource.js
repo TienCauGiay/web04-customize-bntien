@@ -75,8 +75,8 @@ const MISAResource = {
             SCROLL:{
                 START:"start",
                 END:"end",
-            }
-
+            },
+            FUNCTION: "function",
         },
         FORM:{
             INFO_EMPLOYEE:"THÔNG TIN NHÂN VIÊN",
