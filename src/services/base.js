@@ -6,7 +6,7 @@ import axios from "axios";
  * created date: 02-06-2023 22:07:04
  */
 class BaseServices {
-    BASE_URL = "https://localhost:7156/api/v1";
+    BASE_URL = "https://localhost:7166/api/v1";
     controller = "";
 
     getBaseUrl(){

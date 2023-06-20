@@ -582,7 +582,7 @@ export default {
       try {
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          // this.getNewCode();
+          this.getNewCode();
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
           this.contentToastSuccess =
@@ -706,15 +706,25 @@ export default {
     },
 
     handleClickOutsideFeature(event) {
-      const functionTableContent =
-        this.$refs.functionTableContent[this.selectedIndexFeature];
-      if (
-        functionTableContent &&
-        typeof functionTableContent.contains ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.FUNCTION &&
-        !functionTableContent.contains(event.target)
-      ) {
-        this.isShowColFeature[this.selectedIndexFeature] = false;
+      try {
+        const functionTableContent =
+          this.$refs.functionTableContent[this.selectedIndexFeature];
+
+        // Kiểm tra nếu functionTableContent không undefined và không null
+        if (
+          functionTableContent !== undefined &&
+          functionTableContent !== null
+        ) {
+          // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
+          if (typeof functionTableContent.contains === "function") {
+            // Kiểm tra nếu event.target không nằm trong functionTableContent
+            if (!functionTableContent.contains(event.target)) {
+              this.isShowColFeature[this.selectedIndexFeature] = false;
+            }
+          }
+        }
+      } catch {
+        return;
       }
     },
   },
