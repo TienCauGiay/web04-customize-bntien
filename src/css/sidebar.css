@@ -34,6 +34,8 @@
 
 .menu-item {
     list-style: none;
+    height: 32px;
+    box-sizing: border-box;
 }
 
 .menu-item:hover{

@@ -49,7 +49,7 @@
                     .FULLNAME
                 }}
               </th>
-              <th style="width: 80px">
+              <th style="width: 120px">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
                 }}
@@ -118,9 +118,9 @@
             </tr>
           </thead>
           <!-- Kiểm tra list employees có rỗng hay không, nếu không rỗng mới hiển thị lên table -->
-          <tbody v-if="dataTable.length > 0">
+          <tbody v-if="dataTable.TotalRecord > 0">
             <tr
-              v-for="(item, index) in dataTable"
+              v-for="(item, index) in dataTable.Data"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
             >
@@ -215,7 +215,7 @@
     <div id="pagination" class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <b>{{ this.employees.length }}</b>
+        <b>{{ this.dataTable.TotalRecord }}</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
@@ -258,7 +258,7 @@
             </ul>
           </div>
         </div>
-        <div>
+        <div class="pagination-page-number">
           <ul class="page-number">
             <li
               @click="
@@ -337,7 +337,7 @@ export default {
   mounted() {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
-    window.addEventListener("click", this.handleClickOutsideFeature);
+    // window.addEventListener("click", this.handleClickOutsideFeature);
     this.getNewCode();
   },
   computed: {
@@ -347,10 +347,7 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     totalPages() {
-      if (this.textSearch.trim()) {
-        return Math.ceil(this.totalRecordSearch / this.selectedRecord);
-      }
-      return Math.ceil(this.employees.length / this.selectedRecord);
+      return Math.ceil(this.dataTable.TotalRecord / this.selectedRecord);
     },
     /**
      * Mô tả: Tính tổng số trang sẽ hiển thị
@@ -391,12 +388,8 @@ export default {
       isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
       // Khai báo trạng thái hiển thị của toast message
       isShowToastMessage: false,
-      // Khai báo list employee
-      employees: [],
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
-      // Khai báo biến lưu số bản ghi khi tìm kiếm
-      totalRecordSearch: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
@@ -442,15 +435,22 @@ export default {
     this.$_MISAEmitter.on("setFormModeAdd", () => {
       this.setFormModeAdd();
     });
+    this.$_MISAEmitter.on("refreshDataTable", () => {
+      this.getListEmployee();
+    });
   },
   methods: {
     async getNewCode() {
-      var maxEmployeeCode = await employeeService.getCodeMax();
-      this.newEmployeeCode = `NV-${(
-        parseInt(maxEmployeeCode.data.substring(3)) + 1
-      )
-        .toString()
-        .padStart(4, "0")}`;
+      try {
+        var maxEmployeeCode = await employeeService.getCodeMax();
+        this.newEmployeeCode = `NV-${(
+          parseInt(maxEmployeeCode.data.substring(3)) + 1
+        )
+          .toString()
+          .padStart(4, "0")}`;
+      } catch {
+        return;
+      }
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
@@ -480,19 +480,23 @@ export default {
      * created date: 29-05-2023 07:48:54
      */
     onShowColFeature(index) {
-      this.selectedIndexFeature = index;
-      this.isShowColFeature[index] = !this.isShowColFeature[index];
-      const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
-      const ulY =
-        this.$refs.functionTableContent[index].getBoundingClientRect().y;
+      try {
+        this.isShowColFeature[index] = !this.isShowColFeature[index];
+        // this.selectedIndexFeature = index;
+        // const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
+        // const ulY =
+        //   this.$refs.functionTableContent[index].getBoundingClientRect().y;
 
-      // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
-      if (tableY - ulY > -160) {
-        // Nếu bị che khuất ở trên, hiển thị xuống dưới
-        this.$refs.featureMenu[index].style.top = "15px";
-      } else {
-        // Nếu bị che khuất ở dưới, hiển thị lên trên
-        this.$refs.featureMenu[index].style.top = "-90px";
+        // // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
+        // if (tableY - ulY > -300) {
+        //   // Nếu bị che khuất ở trên, hiển thị xuống dưới
+        //   this.$refs.featureMenu[index].style.top = "15px";
+        // } else {
+        //   // Nếu bị che khuất ở dưới, hiển thị lên trên
+        //   this.$refs.featureMenu[index].style.top = "-90px";
+        // }
+      } catch {
+        return;
       }
     },
     /**
@@ -510,14 +514,12 @@ export default {
      */
     async getListEmployee() {
       try {
-        const res = await employeeService.getAll();
-        this.employees = res.data;
         const resfilter = await employeeService.getFilter(
           this.selectedRecord,
           this.currentPage,
           ""
         );
-        this.dataTable = resfilter.data.Data;
+        this.dataTable = resfilter.data;
       } catch (error) {
         console.log(error);
         return;
@@ -528,8 +530,9 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:31
      */
-    refreshData() {
-      this.getListEmployee();
+    async refreshData() {
+      // window.removeEventListener("click", this.handleClickOutsideFeature);
+      await this.getListEmployee();
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
     },
     /**
@@ -589,7 +592,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           // sau khi xóa thành công thì xóa trên table
-          this.dataTable = this.dataTable.filter((item, index) => {
+          this.dataTable.Data = this.dataTable.Data.filter((item, index) => {
             return this.selectedIndex !== index;
           });
         }
@@ -643,8 +646,7 @@ export default {
         this.currentPage,
         this.textSearch.trim()
       );
-      this.dataTable = filteredEmployees.data.Data;
-      this.totalRecordSearch = filteredEmployees.data.TotalRecord;
+      this.dataTable = filteredEmployees.data;
     },
     /**
      * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize
@@ -660,7 +662,7 @@ export default {
         this.currentPage,
         this.textSearch.trim()
       );
-      this.dataTable = resfilter.data.Data;
+      this.dataTable = resfilter.data;
     },
     /**
      * Mô tả: Di chuyển giữa các trang trong phân trang
@@ -705,28 +707,28 @@ export default {
       }
     },
 
-    handleClickOutsideFeature(event) {
-      try {
-        const functionTableContent =
-          this.$refs.functionTableContent[this.selectedIndexFeature];
+    // handleClickOutsideFeature(event) {
+    //   try {
+    //     const functionTableContent =
+    //       this.$refs.functionTableContent[this.selectedIndexFeature];
 
-        // Kiểm tra nếu functionTableContent không undefined và không null
-        if (
-          functionTableContent !== undefined &&
-          functionTableContent !== null
-        ) {
-          // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
-          if (typeof functionTableContent.contains === "function") {
-            // Kiểm tra nếu event.target không nằm trong functionTableContent
-            if (!functionTableContent.contains(event.target)) {
-              this.isShowColFeature[this.selectedIndexFeature] = false;
-            }
-          }
-        }
-      } catch {
-        return;
-      }
-    },
+    //     // Kiểm tra nếu functionTableContent không undefined và không null
+    //     if (
+    //       functionTableContent !== undefined &&
+    //       functionTableContent !== null
+    //     ) {
+    //       // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
+    //       if (typeof functionTableContent.contains === "function") {
+    //         // Kiểm tra nếu event.target không nằm trong functionTableContent
+    //         if (!functionTableContent.contains(event.target)) {
+    //           this.isShowColFeature[this.selectedIndexFeature] = false;
+    //         }
+    //       }
+    //     }
+    //   } catch {
+    //     return;
+    //   }
+    // },
   },
 
   beforeUnmount() {
@@ -734,8 +736,9 @@ export default {
     this.$_MISAEmitter.off("onShowToastMessage");
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");
+    this.$_MISAEmitter.off("refreshDataTable");
     window.removeEventListener("click", this.handleClickOutsidePaging);
-    window.removeEventListener("click", this.handleClickOutsideFeature);
+    // window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
 </script>
@@ -762,6 +765,8 @@ export default {
 
 input[type="checkbox"] {
   accent-color: #2ca01c;
+  width: 16px;
+  height: 16px;
 }
 
 input[type="search"]::-webkit-search-cancel-button {

@@ -22,7 +22,7 @@ export default {
 @import url(@/css/base/input.css);
 
 input {
-  height: 30px;
+  height: 32px;
   width: 100%;
 }
 </style>

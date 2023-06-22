@@ -564,7 +564,7 @@ export default {
      */
     async getListDepartment() {
       try {
-        const res = await departmentService.getAll();
+        const res = await departmentService.getByName("");
         this.listDepartment = res.data;
         this.listDepartmentSearch = res.data;
       } catch (error) {
@@ -765,6 +765,7 @@ export default {
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                     .SUCCESS_CTEATE
                 );
+                // this.$_MISAEmitter.emit("refreshDataTable");
               }
               this.$emit("closeFormDetail");
             } else {
