@@ -49,7 +49,7 @@
                     .FULLNAME
                 }}
               </th>
-              <th style="width: 120px">
+              <th style="width: 100px">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
                 }}
@@ -129,7 +129,7 @@
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
               <td>{{ item.FullName }}</td>
-              <td style="width: 80px">
+              <td style="width: 100px">
                 {{
                   item.Gender === 0
                     ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER

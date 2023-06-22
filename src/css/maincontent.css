@@ -164,11 +164,6 @@ tr th:first-child{
     z-index: 1000;
 }
 
-tbody tr:first{
-    height: 48px;
-    box-sizing: border-box;
-}
-
 .e-id{
     width: 150px;
 }

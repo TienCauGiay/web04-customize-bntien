@@ -121,7 +121,7 @@ const MISAResource = {
             NO:"Không",
             CANCEL:"Hủy",
             SAVE:"Cất",
-            SAVE_AND_CLOSE:"Cất và thêm",
+            SAVE_AND_CLOSE:"Cất và Thêm",
             AGREE: "Đồng ý",
             CLOSE: "Đóng",
         },

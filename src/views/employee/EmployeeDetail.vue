@@ -428,6 +428,8 @@ export default {
       indexDepartmentSelected: 0,
       // Tái sử dụng hàm kiểm tra ngày hợp lệ
       isInvalidDate: helperCommon.isInvalidDate,
+      // Khai báo biến xác định người dùng click nutton cất hay cất và thêm
+      isStatusButton: this.$_MISAEnum.STATUS_BUTTON.DEFAULT,
     };
   },
   watch: {
@@ -736,6 +738,7 @@ export default {
      * created date: 29-05-2023 07:55:05
      */
     async btnSave() {
+      this.isStatusButton = this.$_MISAEnum.STATUS_BUTTON.SAVE;
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu nhập vào hợp lệ
@@ -786,10 +789,14 @@ export default {
           ) {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
+            try {
+              const res = await employeeService.getByCode(
+                this.employee.EmployeeCode
+              );
+              employeeById = res.data;
+            } catch {
+              return;
+            }
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
             if (
               !employeeById ||
@@ -813,6 +820,7 @@ export default {
      * created date: 29-05-2023 07:55:23
      */
     async btnSaveAndAdd() {
+      this.isStatusButton = this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD;
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu hợp lệ
@@ -864,10 +872,14 @@ export default {
           ) {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
+            try {
+              const res = await employeeService.getByCode(
+                this.employee.EmployeeCode
+              );
+              employeeById = res.data;
+            } catch {
+              return;
+            }
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
             if (
               !employeeById ||
@@ -990,13 +1002,15 @@ export default {
           this.employeeSelected.EmployeeId,
           this.employee
         );
-        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-          this.isShowDialogDataChange = false;
-          this.employee = {};
-          this.$_MISAEmitter.emit("setFormModeAdd");
-          this.$refs.codeEmployee.$el.focus();
-        } else {
+        this.isShowDialogDataChange = false;
+        this.employee = {};
+        this.$_MISAEmitter.emit("setFormModeAdd");
+        if (this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE) {
           this.$emit("closeFormDetail");
+        } else if (
+          this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD
+        ) {
+          this.$refs.codeEmployee.$el.focus();
         }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.$_MISAEmitter.emit(
