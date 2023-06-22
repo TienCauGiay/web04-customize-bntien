@@ -406,8 +406,6 @@ export default {
       isShowSelectDepartment: false,
       // Khai báo đối tượng employee
       employee: {},
-      // Khai báo danh sách các đơn vị
-      listDepartment: [],
       // Khai báo danh sách đơn vị tìm kiếm
       listDepartmentSearch: [],
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
@@ -430,6 +428,8 @@ export default {
       isInvalidDate: helperCommon.isInvalidDate,
       // Khai báo biến xác định người dùng click nutton cất hay cất và thêm
       isStatusButton: this.$_MISAEnum.STATUS_BUTTON.DEFAULT,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
+      searchDepartmentTimeout: null,
     };
   },
   watch: {
@@ -522,23 +522,23 @@ export default {
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
-    onSearchChange() {
-      const newValue = event.target.value;
-      this.employee.DepartmentName = newValue;
-      const searchTerm = this.removeVietnameseAccents(
-        newValue.toLowerCase().trim()
-      );
-      if (!searchTerm) {
-        this.listDepartmentSearch = this.listDepartment;
-      } else {
-        const filteredDepartments = this.listDepartment.filter((u) => {
-          const uName = this.removeVietnameseAccents(
-            u.DepartmentName.toLowerCase()
-          );
-          return uName.includes(searchTerm);
-        });
-        this.listDepartmentSearch = filteredDepartments;
-        this.isShowSelectDepartment = true;
+    async onSearchChange() {
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchDepartmentTimeout);
+
+        let newValue = event.target.value;
+        this.employee.DepartmentName = newValue;
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchDepartmentTimeout = setTimeout(async () => {
+          const newListDepartment = await departmentService.getByName(newValue);
+          this.listDepartmentSearch = newListDepartment.data;
+          this.isShowSelectDepartment = true;
+        }, 500);
+      } catch {
+        return;
       }
     },
     /**
@@ -567,7 +567,6 @@ export default {
     async getListDepartment() {
       try {
         const res = await departmentService.getByName("");
-        this.listDepartment = res.data;
         this.listDepartmentSearch = res.data;
       } catch (error) {
         console.log(error);
@@ -754,11 +753,10 @@ export default {
             employeeById = res.data;
             if (!employeeById) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let departmentAdd = this.listDepartment.find(
-                (department) =>
-                  department.DepartmentName === this.employee.DepartmentName
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
               );
-              this.employee.DepartmentId = departmentAdd.DepartmentId;
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
               const res = await employeeService.create(this.employee);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
@@ -802,6 +800,10 @@ export default {
               !employeeById ||
               employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
             ) {
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
+              );
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
               this.isShowDialogDataChange = true;
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -836,11 +838,10 @@ export default {
             employeeById = res.data;
             if (!employeeById) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let departmentAdd = this.listDepartment.find(
-                (department) =>
-                  department.DepartmentName === this.employee.DepartmentName
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
               );
-              this.employee.DepartmentId = departmentAdd.DepartmentId;
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
               const res = await employeeService.create(this.employee);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
@@ -885,6 +886,10 @@ export default {
               !employeeById ||
               employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
             ) {
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
+              );
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
               this.isShowDialogDataChange = true;
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
