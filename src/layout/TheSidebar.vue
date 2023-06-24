@@ -117,7 +117,7 @@
             }}</span>
           </router-link>
         </li>
-        <li class="menu-item">
+        <!-- <li class="menu-item">
           <router-link to="/setting" class="menu-item-a">
             <i class="icon-tb budget-icon"></i>
             <span>{{
@@ -143,7 +143,7 @@
                 .FINANCE
             }}</span>
           </router-link>
-        </li>
+        </li> -->
         <li class="menu-item">
           <router-link to="/employee" class="menu-item-a">
             <i class="icon-tb employee-icon"></i>
