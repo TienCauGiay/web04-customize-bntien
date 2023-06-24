@@ -49,7 +49,7 @@
                     .FULLNAME
                 }}
               </th>
-              <th style="width: 100px">
+              <th class="e-gender-table">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
                 }}
@@ -129,7 +129,7 @@
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
               <td>{{ item.FullName }}</td>
-              <td style="width: 100px">
+              <td class="e-gender-table">
                 {{
                   item.Gender === 0
                     ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
@@ -151,8 +151,7 @@
               <td>{{ item.BankName }}</td>
               <td>{{ item.BankBranch }}</td>
               <td
-                class="text-center employee-border-right e-birthday"
-                id="function-table"
+                class="text-center employee-border-right e-birthday function-table"
                 @dblclick.stop
               >
                 <span>{{
@@ -727,10 +726,6 @@ export default {
 <style scoped>
 @import url(@/css/maincontent.css);
 @import url(@/css/pagingemployee.css);
-
-#function-table span:hover {
-  cursor: pointer;
-}
 
 .rotate-function-icon {
   transform: rotate(180deg);
