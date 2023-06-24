@@ -388,17 +388,13 @@ import departmentService from "@/services/department.js";
 import helperCommon from "@/scripts/helper";
 export default {
   name: "EmployeeDetail",
-  props: ["employeeSelected", "statusFormMode", "newCode"],
+  props: ["employeeSelected", "statusFormMode"],
   created() {
     this.loadData();
   },
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.$refs.codeEmployee.$el.focus();
-    // Nếu form ở trạng thái thêm mới thì sinh mã nhân viên tự động
-    if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-      this.employee.EmployeeCode = this.newCode;
-    }
   },
   data() {
     return {
@@ -430,6 +426,8 @@ export default {
       isStatusButton: this.$_MISAEnum.STATUS_BUTTON.DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
       searchDepartmentTimeout: null,
+      // Khai báo biên lưu mã nhân viên tự động sinh ra
+      newEmployeeCode: null,
     };
   },
   watch: {
@@ -447,6 +445,29 @@ export default {
     },
   },
   methods: {
+    /**
+     * Mô tả: Lấy nhân viên có giá trị lớn nhất trong hệ thống
+     * created by : BNTIEN
+     * created date: 24-06-2023 09:57:13
+     */
+    async getNewCode() {
+      try {
+        let maxEmployeeCode = await employeeService.getCodeMax();
+        let lenghtMaxCode = maxEmployeeCode.data.length;
+        this.newEmployeeCode = `NV-${(
+          parseInt(maxEmployeeCode.data.substring(3)) + 1
+        )
+          .toString()
+          .padStart(lenghtMaxCode - 3, "0")}`;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Xử lí chọn và bỏ chọn ô checkbox customer
+     * created by : BNTIEN
+     * created date: 24-06-2023 09:56:15
+     */
     handleCustomerCheckboxChange() {
       if (
         this.employee.CustomerOrProvider ===
@@ -458,6 +479,11 @@ export default {
           this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER;
       }
     },
+    /**
+     * Mô tả: xử lí chọn và bỏ chọn ô checkbox provider
+     * created by : BNTIEN
+     * created date: 24-06-2023 09:56:48
+     */
     handleProviderCheckboxChange() {
       if (
         this.employee.CustomerOrProvider ===
@@ -475,46 +501,50 @@ export default {
      * created date: 06-06-2023 22:02:18
      */
     onKeyDownDepartment(event) {
-      const maxLength = this.listDepartmentSearch.length;
-      if (maxLength == 0) {
-        return;
-      } else {
-        if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
-          // Bấm xuống
-          if (this.indexDepartmentSelected < maxLength - 1) {
-            this.indexDepartmentSelected++;
-          } else if (this.indexDepartmentSelected == maxLength - 1) {
-            this.indexDepartmentSelected = 0;
-          }
-          // scroll focus theo item được chọn
-          this.scrollIndex(
-            this.indexDepartmentSelected,
-            this.$_MISAEnum.KEY_CODE.DOWN
-          );
-        } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
-          // Bấm lên
-          if (this.indexDepartmentSelected > 0) {
-            this.indexDepartmentSelected--;
-          } else if (this.indexDepartmentSelected == 0) {
-            this.indexDepartmentSelected = maxLength - 1;
-          }
-          // scroll focus theo item được chọn
-          this.scrollIndex(
-            this.indexDepartmentSelected,
-            this.$_MISAEnum.KEY_CODE.UP
-          );
-        } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
-          // Bấm enter
-          if (this.isShowSelectDepartment) {
-            this.employee.DepartmentName =
-              this.listDepartmentSearch[
-                this.indexDepartmentSelected
-              ].DepartmentName;
-            this.isShowSelectDepartment = false;
-          } else {
-            this.isShowSelectDepartment = true;
+      try {
+        const maxLength = this.listDepartmentSearch.length;
+        if (maxLength == 0) {
+          return;
+        } else {
+          if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
+            // Bấm xuống
+            if (this.indexDepartmentSelected < maxLength - 1) {
+              this.indexDepartmentSelected++;
+            } else if (this.indexDepartmentSelected == maxLength - 1) {
+              this.indexDepartmentSelected = 0;
+            }
+            // scroll focus theo item được chọn
+            this.scrollIndex(
+              this.indexDepartmentSelected,
+              this.$_MISAEnum.KEY_CODE.DOWN
+            );
+          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+            // Bấm lên
+            if (this.indexDepartmentSelected > 0) {
+              this.indexDepartmentSelected--;
+            } else if (this.indexDepartmentSelected == 0) {
+              this.indexDepartmentSelected = maxLength - 1;
+            }
+            // scroll focus theo item được chọn
+            this.scrollIndex(
+              this.indexDepartmentSelected,
+              this.$_MISAEnum.KEY_CODE.UP
+            );
+          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+            // Bấm enter
+            if (this.isShowSelectDepartment) {
+              this.employee.DepartmentName =
+                this.listDepartmentSearch[
+                  this.indexDepartmentSelected
+                ].DepartmentName;
+              this.isShowSelectDepartment = false;
+            } else {
+              this.isShowSelectDepartment = true;
+            }
           }
         }
+      } catch {
+        return;
       }
     },
     /**
@@ -547,16 +577,21 @@ export default {
      * created date: 07-06-2023 08:37:33
      */
     scrollIndex(index, checkKeyCode) {
-      const element = this.$refs.listValueDepartment[index];
-      if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
-        element.scrollIntoView({
-          block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
-        });
-      } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
-        element.scrollIntoView({
-          block:
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
-        });
+      try {
+        const element = this.$refs.listValueDepartment[index];
+        if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
+          element.scrollIntoView({
+            block:
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+          });
+        } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
+          element.scrollIntoView({
+            block:
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+          });
+        }
+      } catch {
+        return;
       }
     },
     /**
@@ -578,11 +613,16 @@ export default {
      * created by : BNTIEN
      * created date: 30-05-2023 14:57:33
      */
-    loadData() {
-      this.getListDepartment();
+    async loadData() {
+      await this.getListDepartment();
+      await this.getNewCode();
       // Nếu form ở trạng thái thêm mới
       if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
         this.employee = {};
+        // Nếu form ở trạng thái thêm mới thì sinh mã nhân viên tự động
+        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+          this.employee.EmployeeCode = this.newEmployeeCode;
+        }
       } else {
         try {
           // Chuyển đối tượng sang chuỗi json
@@ -766,7 +806,7 @@ export default {
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                     .SUCCESS_CTEATE
                 );
-                // this.$_MISAEmitter.emit("refreshDataTable");
+                this.$_MISAEmitter.emit("refreshDataTable");
               }
               this.$emit("closeFormDetail");
             } else {
@@ -853,6 +893,8 @@ export default {
                 );
                 this.employee = {};
                 this.isBorderRed = {};
+                await this.getNewCode();
+                this.employee.EmployeeCode = this.newEmployeeCode;
                 this.$refs.codeEmployee.$el.focus();
               }
             } else {
@@ -1012,9 +1054,12 @@ export default {
         this.$_MISAEmitter.emit("setFormModeAdd");
         if (this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE) {
           this.$emit("closeFormDetail");
+          this.$_MISAEmitter.emit("refreshDataTable");
         } else if (
           this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD
         ) {
+          await this.getNewCode();
+          this.employee.EmployeeCode = this.newEmployeeCode;
           this.$refs.codeEmployee.$el.focus();
         }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {

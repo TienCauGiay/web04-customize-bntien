@@ -307,7 +307,6 @@
       @closeFormDetail="onCloseFormDetail"
       :employeeSelected="employeeUpdate"
       :statusFormMode="isStatusFormMode"
-      :newCode="newEmployeeCode"
     ></EmployeeDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
@@ -338,7 +337,6 @@ export default {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
     // window.addEventListener("click", this.handleClickOutsideFeature);
-    this.getNewCode();
   },
   computed: {
     /**
@@ -414,9 +412,7 @@ export default {
       currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo số trang tối đa hiển thị trong phân trang
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
-      // Khai báo biến lưu mã nhân viên tự động sinh
-      newEmployeeCode: null,
-      //
+      // Khai báo biến lưu chỉ số được chọn của menu item table
       selectedIndexFeature: null,
     };
   },
@@ -440,25 +436,12 @@ export default {
     });
   },
   methods: {
-    async getNewCode() {
-      try {
-        var maxEmployeeCode = await employeeService.getCodeMax();
-        this.newEmployeeCode = `NV-${(
-          parseInt(maxEmployeeCode.data.substring(3)) + 1
-        )
-          .toString()
-          .padStart(4, "0")}`;
-      } catch {
-        return;
-      }
-    },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:01
      */
     async btnOpenFormDetail() {
-      this.getNewCode();
       this.isShowFormDetail = true;
       this.isOverlay = true;
     },
@@ -468,7 +451,6 @@ export default {
      * created date: 29-05-2023 07:48:35
      */
     onCloseFormDetail() {
-      this.getNewCode();
       this.isShowFormDetail = false;
       this.isOverlay = false;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -585,7 +567,6 @@ export default {
       try {
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.getNewCode();
           this.isShowDialogConfirmDelete = false;
           this.isOverlay = false;
           this.contentToastSuccess =
