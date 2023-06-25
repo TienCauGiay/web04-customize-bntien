@@ -645,16 +645,20 @@ export default {
      * created date: 04-06-2023 00:20:21
      */
     async onSearchEmployee() {
-      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
-      if (!this.textSearch.trim()) {
-        this.textSearch = "";
+      try {
+        this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+        if (!this.textSearch.trim()) {
+          this.textSearch = "";
+        }
+        const filteredEmployees = await employeeService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          this.textSearch.trim()
+        );
+        this.dataTable = filteredEmployees.data;
+      } catch {
+        return;
       }
-      const filteredEmployees = await employeeService.getFilter(
-        this.selectedRecord,
-        this.currentPage,
-        this.textSearch.trim()
-      );
-      this.dataTable = filteredEmployees.data;
     },
     /**
      * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên currentPage và pageSize
@@ -662,15 +666,19 @@ export default {
      * created date: 04-06-2023 01:49:06
      */
     async updateDataTable() {
-      if (!this.textSearch.trim()) {
-        this.textSearch = "";
+      try {
+        if (!this.textSearch.trim()) {
+          this.textSearch = "";
+        }
+        const resfilter = await employeeService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          this.textSearch.trim()
+        );
+        this.dataTable = resfilter.data;
+      } catch {
+        return;
       }
-      const resfilter = await employeeService.getFilter(
-        this.selectedRecord,
-        this.currentPage,
-        this.textSearch.trim()
-      );
-      this.dataTable = resfilter.data;
     },
     /**
      * Mô tả: Di chuyển giữa các trang trong phân trang
@@ -770,6 +778,7 @@ input[type="checkbox"] {
   height: 16px;
 }
 
+/* Bỏ dấu x ở ô input có type = search */
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
