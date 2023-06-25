@@ -13,7 +13,7 @@
     <div class="employee-main">
       <div class="employee-title">
         <p>
-          <b>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.INFO_EMPLOYEE }}</b>
+          <b>{{ this.titleFormMode }}</b>
         </p>
         <div class="employee-check">
           <input
@@ -428,6 +428,8 @@ export default {
       searchDepartmentTimeout: null,
       // Khai báo biên lưu mã nhân viên tự động sinh ra
       newEmployeeCode: null,
+      // Khai báo biến lưu title form mode
+      titleFormMode: this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE,
     };
   },
   watch: {
@@ -619,16 +621,20 @@ export default {
       // Nếu form ở trạng thái thêm mới
       if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
         this.employee = {};
-        // Nếu form ở trạng thái thêm mới thì sinh mã nhân viên tự động
-        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-          this.employee.EmployeeCode = this.newEmployeeCode;
-        }
+        // Sinh mã tự động
+        this.employee.EmployeeCode = this.newEmployeeCode;
+        // Gán title cho form mode thêm mới
+        this.titleFormMode =
+          this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
       } else {
         try {
           // Chuyển đối tượng sang chuỗi json
           let res = JSON.stringify(this.employeeSelected);
           // Chuyển đổi chuỗi json thành đối tượng employee
           this.employee = JSON.parse(res);
+          // Gán title cho form mode thêm sửa
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
         } catch (error) {
           console.log(error);
           return;
@@ -1061,6 +1067,8 @@ export default {
           await this.getNewCode();
           this.employee.EmployeeCode = this.newEmployeeCode;
           this.$refs.codeEmployee.$el.focus();
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
         }
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.$_MISAEmitter.emit(

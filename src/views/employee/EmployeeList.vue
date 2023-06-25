@@ -464,18 +464,18 @@ export default {
       try {
         this.isShowColFeature[index] = !this.isShowColFeature[index];
         // this.selectedIndexFeature = index;
-        // const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
-        // const ulY =
-        //   this.$refs.functionTableContent[index].getBoundingClientRect().y;
+        const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
+        const ulY =
+          this.$refs.functionTableContent[index].getBoundingClientRect().y;
 
-        // // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
-        // if (tableY - ulY > -300) {
-        //   // Nếu bị che khuất ở trên, hiển thị xuống dưới
-        //   this.$refs.featureMenu[index].style.top = "15px";
-        // } else {
-        //   // Nếu bị che khuất ở dưới, hiển thị lên trên
-        //   this.$refs.featureMenu[index].style.top = "-90px";
-        // }
+        // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
+        if (tableY - ulY > -300) {
+          // Nếu bị che khuất ở trên, hiển thị xuống dưới
+          this.$refs.featureMenu[index].style.top = "15px";
+        } else {
+          // Nếu bị che khuất ở dưới, hiển thị lên trên
+          this.$refs.featureMenu[index].style.top = "-90px";
+        }
       } catch {
         return;
       }
@@ -693,16 +693,13 @@ export default {
     //       this.$refs.functionTableContent[this.selectedIndexFeature];
 
     //     // Kiểm tra nếu functionTableContent không undefined và không null
-    //     if (
-    //       functionTableContent !== undefined &&
-    //       functionTableContent !== null
-    //     ) {
-    //       // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
-    //       if (typeof functionTableContent.contains === "function") {
-    //         // Kiểm tra nếu event.target không nằm trong functionTableContent
-    //         if (!functionTableContent.contains(event.target)) {
-    //           this.isShowColFeature[this.selectedIndexFeature] = false;
-    //         }
+    //     if (functionTableContent) {
+    //       // Kiểm tra nếu event.target không nằm trong functionTableContent hoặc không phải là functionTableContent
+    //       if (
+    //         !functionTableContent.contains(event.target) &&
+    //         event.target !== functionTableContent
+    //       ) {
+    //         this.isShowColFeature[this.selectedIndexFeature] = false;
     //       }
     //     }
     //   } catch {

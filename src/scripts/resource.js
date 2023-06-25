@@ -79,7 +79,8 @@ const MISAResource = {
             FUNCTION: "function",
         },
         FORM:{
-            INFO_EMPLOYEE:"THÔNG TIN NHÂN VIÊN",
+            ADD_EMPLOYEE:"THÊM NHÂN VIÊN",
+            UPDATE_EMPLOYEE:"SỬA NHÂN VIÊN",
             IS_CUSTOMER:"Là khách hàng",
             IS_PROVIDER:"Là nhà cung cấp",
             CODE:"Mã",
