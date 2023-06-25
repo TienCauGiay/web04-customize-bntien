@@ -45,6 +45,7 @@ const MISAResource = {
             SUCCESS_DELETE : "Xóa thành công.",
             SUCCESS_CTEATE : "Thêm thành công.",
             SUCCESS_UPDATE : "Sửa thành công.",
+            SUCCESS_DUPLICATE : "Nhân bản thành công.",
             SPLIT_DATE : "T",
             GENDER:{
                 Male: "Nam",

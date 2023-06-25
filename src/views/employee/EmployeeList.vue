@@ -168,7 +168,7 @@
                       v-show="isShowColFeature[index]"
                       ref="featureMenu"
                     >
-                      <li>
+                      <li @click="onDupliCateEmployee(item)">
                         {{
                           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                             .DUPLICATE
@@ -389,6 +389,8 @@ export default {
       dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
+      // khai báo 1 nhân viên được chọn để nhân bản
+      employeeDuplidate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
@@ -610,6 +612,32 @@ export default {
      */
     btnCloseToastMessage() {
       this.isShowToastMessage = false;
+    },
+    async onDupliCateEmployee(employeeDup) {
+      try {
+        this.employeeDuplidate = employeeDup;
+        let maxEmployeeCode = await employeeService.getCodeMax();
+        let lenghtMaxCode = maxEmployeeCode.data.length;
+        const newEmployeeCode = `NV-${(
+          parseInt(maxEmployeeCode.data.substring(3)) + 1
+        )
+          .toString()
+          .padStart(lenghtMaxCode - 3, "0")}`;
+        console.log(newEmployeeCode);
+        this.employeeDuplidate.EmployeeCode = newEmployeeCode;
+        const res = await employeeService.create(this.employeeDuplidate);
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
+          this.contentToastSuccess =
+            this.$_MISAResource[
+              this.$_LANG_CODE
+            ].TEXT_CONTENT.SUCCESS_DUPLICATE;
+          this.onShowToastMessage();
+          await this.getListEmployee();
+          this.employeeDuplidate = {};
+        }
+      } catch {
+        return;
+      }
     },
     /**
      * Mô tả: Hàm tìm kiếm nhân viên theo mã hoặc tên

@@ -10,7 +10,7 @@
     <div class="menu">
       <ul class="nav">
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb overview-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -19,7 +19,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb cash-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -28,7 +28,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb deposits-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -37,7 +37,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb bag-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -46,7 +46,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb cart-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -55,7 +55,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb bill-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -64,7 +64,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb warehouse-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -73,7 +73,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb tool-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -82,7 +82,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb asset-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -91,7 +91,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb tax-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -100,7 +100,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb price-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -109,7 +109,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb synthetic-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -118,7 +118,7 @@
           </router-link>
         </li>
         <!-- <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb budget-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -127,7 +127,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb report-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
@@ -136,7 +136,7 @@
           </router-link>
         </li>
         <li class="menu-item">
-          <router-link to="/setting" class="menu-item-a">
+          <router-link to="/" class="menu-item-a">
             <i class="icon-tb finance-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
