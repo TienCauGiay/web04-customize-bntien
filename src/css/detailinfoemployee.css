@@ -247,19 +247,4 @@
     column-gap: 10px;
 }
 
-.loading {
-    position: fixed;
-    top: 60%;
-    left: 55%;
-    animation: spin 1s infinite linear;
-}
-
-@keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-}
   

@@ -129,7 +129,7 @@ const MISAResource = {
         },
         TOAST:{
             SUCCESS:"Thành công!",
-            UNDO:"Hoàn tác",
+            UNDO:"",
         }
     },
     'en-EN':{

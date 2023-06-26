@@ -394,7 +394,7 @@ export default {
   },
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
-    this.$refs.codeEmployee.$el.focus();
+    this.focusCode();
   },
   data() {
     return {
@@ -447,6 +447,14 @@ export default {
     },
   },
   methods: {
+    /**
+     * Mô tả: Hàm focus vào ô input mã nhân viên
+     * created by : BNTIEN
+     * created date: 27-06-2023 01:53:48
+     */
+    focusCode() {
+      this.$refs.codeEmployee.focus();
+    },
     /**
      * Mô tả: Lấy nhân viên có giá trị lớn nhất trong hệ thống
      * created by : BNTIEN
@@ -510,28 +518,36 @@ export default {
         } else {
           if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
             // Bấm xuống
-            if (this.indexDepartmentSelected < maxLength - 1) {
-              this.indexDepartmentSelected++;
-            } else if (this.indexDepartmentSelected == maxLength - 1) {
-              this.indexDepartmentSelected = 0;
+            if (this.isShowSelectDepartment) {
+              if (this.indexDepartmentSelected < maxLength - 1) {
+                this.indexDepartmentSelected++;
+              } else if (this.indexDepartmentSelected == maxLength - 1) {
+                this.indexDepartmentSelected = 0;
+              }
+              // scroll focus theo item được chọn
+              this.scrollIndex(
+                this.indexDepartmentSelected,
+                this.$_MISAEnum.KEY_CODE.DOWN
+              );
+            } else {
+              this.isShowSelectDepartment = true;
             }
-            // scroll focus theo item được chọn
-            this.scrollIndex(
-              this.indexDepartmentSelected,
-              this.$_MISAEnum.KEY_CODE.DOWN
-            );
           } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
             // Bấm lên
-            if (this.indexDepartmentSelected > 0) {
-              this.indexDepartmentSelected--;
-            } else if (this.indexDepartmentSelected == 0) {
-              this.indexDepartmentSelected = maxLength - 1;
+            if (this.isShowSelectDepartment) {
+              if (this.indexDepartmentSelected > 0) {
+                this.indexDepartmentSelected--;
+              } else if (this.indexDepartmentSelected == 0) {
+                this.indexDepartmentSelected = maxLength - 1;
+              }
+              // scroll focus theo item được chọn
+              this.scrollIndex(
+                this.indexDepartmentSelected,
+                this.$_MISAEnum.KEY_CODE.UP
+              );
+            } else {
+              this.isShowSelectDepartment = true;
             }
-            // scroll focus theo item được chọn
-            this.scrollIndex(
-              this.indexDepartmentSelected,
-              this.$_MISAEnum.KEY_CODE.UP
-            );
           } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
             // Bấm enter
             if (this.isShowSelectDepartment) {
@@ -812,9 +828,9 @@ export default {
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                     .SUCCESS_CTEATE
                 );
+                this.$emit("closeFormDetail");
                 this.$_MISAEmitter.emit("refreshDataTable");
               }
-              this.$emit("closeFormDetail");
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
               this.isShowDialogCodeExist = true;
@@ -899,9 +915,10 @@ export default {
                 );
                 this.employee = {};
                 this.isBorderRed = {};
+                this.$_MISAEmitter.emit("refreshDataTable");
                 await this.getNewCode();
                 this.employee.EmployeeCode = this.newEmployeeCode;
-                this.$refs.codeEmployee.$el.focus();
+                this.focusCode();
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -947,7 +964,7 @@ export default {
           } else {
             this.employee = {};
             this.$_MISAEmitter.emit("setFormModeAdd");
-            this.$refs.codeEmployee.$el.focus();
+            this.focusCode();
           }
         }
       }
@@ -961,7 +978,7 @@ export default {
       this.isShowDialogDataNotNull = false;
       this.dataNotNull = [];
       if (!this.employee.EmployeeCode) {
-        this.$refs.codeEmployee.$el.focus();
+        this.focusCode();
         return;
       } else {
         if (
@@ -969,33 +986,33 @@ export default {
             this.employee.EmployeeCode
           )
         ) {
-          this.$refs.codeEmployee.$el.focus();
+          this.focusCode();
           return;
         }
       }
       if (!this.employee.FullName) {
-        this.$refs.nameEmployee.$el.focus();
+        this.$refs.nameEmployee.focus();
         return;
       }
       if (!this.employee.DepartmentName) {
-        this.$refs.departmentEmployee.$el.focus();
+        this.$refs.departmentEmployee.focus();
         return;
       }
       if (this.employee.DateOfBirth) {
         if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.$refs.dobEmployee.$el.focus();
+          this.$refs.dobEmployee.focus();
           return;
         }
       }
-      if (this.employee.DateOfBirth) {
-        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.$refs.identityDateEmployee.$el.focus();
+      if (this.employee.IdentityDate) {
+        if (!this.isInvalidDate(this.employee.IdentityDate)) {
+          this.$refs.identityDateEmployee.focus();
           return;
         }
       }
       if (this.employee.Email) {
         if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
-          this.$refs.emailEmployee.$el.focus();
+          this.$refs.emailEmployee.focus();
           return;
         }
       }
@@ -1016,7 +1033,7 @@ export default {
      */
     btnCloseDialogIdExist() {
       this.isShowDialogCodeExist = false;
-      this.$refs.codeEmployee.$el.focus();
+      this.focusCode();
     },
 
     /**
@@ -1038,7 +1055,7 @@ export default {
         this.isShowDialogDataChange = false;
         this.employee = {};
         this.$_MISAEmitter.emit("setFormModeAdd");
-        this.$refs.codeEmployee.$el.focus();
+        this.focusCode();
       } else {
         this.$emit("closeFormDetail");
       }
@@ -1064,9 +1081,10 @@ export default {
         } else if (
           this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD
         ) {
+          this.$_MISAEmitter.emit("refreshDataTable");
           await this.getNewCode();
           this.employee.EmployeeCode = this.newEmployeeCode;
-          this.$refs.codeEmployee.$el.focus();
+          this.focusCode();
           this.titleFormMode =
             this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
         }
@@ -1088,7 +1106,7 @@ export default {
      * created date: 01-06-2023 14:24:19
      */
     resetTab() {
-      this.$refs.codeEmployee.$el.focus();
+      this.focusCode();
     },
   },
 

@@ -117,9 +117,9 @@
               </th>
             </tr>
           </thead>
-          <!-- Kiểm tra list employees có rỗng hay không, nếu không rỗng mới hiển thị lên table -->
-          <tbody v-if="dataTable.TotalRecord > 0">
+          <tbody>
             <tr
+              v-show="!isShowLoadding"
               v-for="(item, index) in dataTable.Data"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
@@ -200,9 +200,8 @@
                 </div>
               </td>
             </tr>
-          </tbody>
-          <tbody v-else>
             <img
+              v-show="isShowLoadding"
               class="loading"
               src="../../assets/img/loading.svg"
               alt="loading"
@@ -415,6 +414,8 @@ export default {
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
       // Khai báo biến lưu chỉ số được chọn của menu item table
       selectedIndexFeature: null,
+      // Khai báo biến quy định trạng thái hiển thị loadding
+      isShowLoadding: false,
     };
   },
   created() {
@@ -497,12 +498,14 @@ export default {
      */
     async getListEmployee() {
       try {
+        this.isShowLoadding = true;
         const resfilter = await employeeService.getFilter(
           this.selectedRecord,
           this.currentPage,
           ""
         );
         this.dataTable = resfilter.data;
+        this.isShowLoadding = false;
       } catch (error) {
         console.log(error);
         return;
@@ -573,10 +576,7 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          // sau khi xóa thành công thì xóa trên table
-          this.dataTable.Data = this.dataTable.Data.filter((item, index) => {
-            return this.selectedIndex !== index;
-          });
+          await this.getListEmployee();
         }
       } catch (error) {
         console.log(error);

@@ -116,6 +116,7 @@ td > span {
 
 .function-table-content{
     padding: 5px 10px;
+    border: 1px solid white;
 }
 
 .function-table-content:hover{
@@ -246,5 +247,22 @@ input.checkbox-select-row{
     color: var(--color-btn-default);
     background-color: var(--color-border-default);
     cursor: pointer;
+}
+
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    animation: spin 1s infinite linear;
+    z-index: 9999;
+}
+
+@keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
 }
 /* End css table employee */

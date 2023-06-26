@@ -5,6 +5,7 @@
     :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)"
     :title="titleContent"
+    ref="inputText"
   />
 </template>
 
@@ -14,6 +15,11 @@ export default {
   props: {
     modelValue: String,
     titleContent: String,
+  },
+  methods: {
+    focus() {
+      this.$refs.inputText.focus();
+    },
   },
 };
 </script>

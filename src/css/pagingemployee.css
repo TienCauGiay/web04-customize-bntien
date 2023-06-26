@@ -5,8 +5,7 @@
     align-items: center;
     box-sizing: border-box;
     justify-content: space-between;
-    padding: 3px 20px 3px 10px;
-    border-top: 1px solid var(--color-border-default);
+    padding: 5px 10px;
     margin-right: 40px;
     word-spacing: 2px;
 }
