@@ -160,7 +160,7 @@ tr:hover {
     cursor: pointer;
 }
 
-tr:hover td:first-child{
+tr:hover td:first-child,tr:hover td:last-child{
     background-color: #e7f5ec;
 }
 
@@ -176,6 +176,28 @@ tr th:first-child{
     left: 0px;
     z-index: 1000;
 }
+
+/* tr th:last-child{
+    z-index: 1000;
+    right: -1px;
+}
+
+tr td:last-child{
+    background-color: white;
+    z-index: 999;
+    position: sticky;
+    right: -1px;
+}
+
+th:last-child::before,td:last-child::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+    width: 1px;
+    background-color: var(--color-border-default);
+} */
 
 .e-id{
     width: 150px;
@@ -209,7 +231,7 @@ tr th:first-child{
     height: 100%;
     border-right: 1px solid var(--color-border-default);
     pointer-events: none; /* Vô hiệu hóa tương tác */
-  }
+}
 
 input.checkbox-select-row{
     margin: 0px;
