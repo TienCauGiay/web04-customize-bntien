@@ -78,11 +78,6 @@ const MISAEnum = {
         CUSTOMER: 1,
         PROVIDER: 2
     },
-    STATUS_BUTTON:{
-        DEFAULT: 0,
-        SAVE: 1,
-        SAVE_AND_ADD: 2
-    }
 } 
 
 export default MISAEnum;

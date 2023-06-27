@@ -427,8 +427,6 @@ export default {
       indexDepartmentSelected: 0,
       // Tái sử dụng hàm kiểm tra ngày hợp lệ
       isInvalidDate: helperCommon.isInvalidDate,
-      // Khai báo biến xác định người dùng click nutton cất hay cất và thêm
-      isStatusButton: this.$_MISAEnum.STATUS_BUTTON.DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
       searchDepartmentTimeout: null,
       // Khai báo biên lưu mã nhân viên tự động sinh ra
@@ -805,13 +803,12 @@ export default {
      * created date: 29-05-2023 07:55:05
      */
     async btnSave() {
-      this.isStatusButton = this.$_MISAEnum.STATUS_BUTTON.SAVE;
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu nhập vào hợp lệ
       if (!this.showDialogDataNotNull()) {
-        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
-          // Nếu form ở trạng thái thêm mới
+        // Nếu form ở trạng thái thêm mới
+        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
@@ -872,7 +869,20 @@ export default {
                 this.employee.DepartmentName
               );
               this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              this.isShowDialogDataChange = true;
+              const res = await employeeService.update(
+                this.employeeSelected.EmployeeId,
+                this.employee
+              );
+              this.$_MISAEmitter.emit("setFormModeAdd");
+              this.$emit("closeFormDetail");
+              this.$_MISAEmitter.emit("refreshDataTable");
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessageUpdate",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .SUCCESS_UPDATE
+                );
+              }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
               this.isShowDialogCodeExist = true;
@@ -890,13 +900,12 @@ export default {
      * created date: 29-05-2023 07:55:23
      */
     async btnSaveAndAdd() {
-      this.isStatusButton = this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD;
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu hợp lệ
       if (!this.showDialogDataNotNull()) {
+        // Nếu form ở trạng thái thêm mới
         if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-          // Nếu form ở trạng thái thêm mới
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
@@ -935,8 +944,8 @@ export default {
             console.log(error);
             return;
           }
-        } else {
           // Nếu form ở trạng thái sửa
+        } else {
           // Kiểm tra xem dữ liệu có thay đổi hay k
           if (
             JSON.stringify(this.employeeSelected) !==
@@ -961,7 +970,23 @@ export default {
                 this.employee.DepartmentName
               );
               this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              this.isShowDialogDataChange = true;
+              const res = await employeeService.update(
+                this.employeeSelected.EmployeeId,
+                this.employee
+              );
+              this.employee = {};
+              this.$_MISAEmitter.emit("setFormModeAdd");
+              await this.getNewCode();
+              this.employee.EmployeeCode = this.newEmployeeCode;
+              this.$refs.codeEmployee.$el.focus();
+              this.$_MISAEmitter.emit("refreshDataTable");
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessageUpdate",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .SUCCESS_UPDATE
+                );
+              }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
               this.isShowDialogCodeExist = true;
@@ -1068,83 +1093,7 @@ export default {
      */
     async onYesDialogDataChange() {
       this.isShowDialogDataChange = false;
-      try {
-        // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
-        this.validateData();
-        // Nếu dữ liệu nhập vào hợp lệ
-        if (!this.showDialogDataNotNull()) {
-          // Nếu form ở trạng thái thêm mới
-          if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống
-            if (!employeeById) {
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
-              );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              const res = await employeeService.create(this.employee);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
-              ) {
-                this.$emit("closeFormDetail");
-                this.$_MISAEmitter.emit("refreshDataTable");
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
-            }
-            // Nếu form ở trạng thái sửa
-          } else if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Edit) {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-            if (
-              !employeeById ||
-              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
-            ) {
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
-              );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              const res = await employeeService.update(
-                this.employeeSelected.EmployeeId,
-                this.employee
-              );
-              this.$_MISAEmitter.emit("setFormModeAdd");
-              this.$emit("closeFormDetail");
-              this.$_MISAEmitter.emit("refreshDataTable");
-              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessageUpdate",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_UPDATE
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
-            }
-          }
-        }
-      } catch {
-        return;
-      }
+      await this.btnSave();
     },
 
     /**
