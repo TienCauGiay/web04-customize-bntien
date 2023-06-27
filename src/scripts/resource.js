@@ -80,7 +80,7 @@ const MISAResource = {
             STOP_USING: "Ngưng sử dụng",
             TOTAL:"Tổng số",
             RECORD: "bản ghi",
-            RECORD_ON_PAGE: "bản ghi trên trang",
+            RECORD_ON_PAGE: "bản ghi trên 1 trang",
             PAGING_PRE: "Trước",
             PAGING_NEXT: "Sau",
             SCROLL:{

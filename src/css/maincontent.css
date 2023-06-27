@@ -214,6 +214,11 @@ th:last-child::before,td:last-child::before {
     box-sizing: border-box;
 }
 
+.e-fullname{
+    width: 180px;
+    box-sizing: border-box;
+}
+
 .employee-border-left {
     border-left: none;
     position: sticky;

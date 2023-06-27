@@ -21,6 +21,7 @@
           id="search-employee"
           v-model="textSearch"
           @keydown.enter="onSearchEmployee"
+          @input="autoSearch"
         />
         <div class="search-icon icon-tb" @click="onSearchEmployee"></div>
       </div>
@@ -44,7 +45,7 @@
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.CODE
                 }}
               </th>
-              <th>
+              <th class="e-fullname">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
                     .FULLNAME
@@ -128,7 +129,7 @@
                 <input class="checkbox-select-row" type="checkbox" />
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
-              <td>{{ item.FullName }}</td>
+              <td class="e-fullname">{{ item.FullName }}</td>
               <td class="e-gender-table">
                 {{
                   item.Gender === 0
@@ -245,7 +246,8 @@
                 class="menu-paging-record"
                 v-for="(record, index) in recordOptions"
                 :key="index"
-                @click="onSelectedRecord(record)"
+                @click="onSelectedRecord(record, index)"
+                :class="{ 'active-record-item': indecSelectedRecord === index }"
               >
                 {{ record }}
                 {{
@@ -258,37 +260,39 @@
         </div>
         <div class="pagination-page-number">
           <ul class="page-number">
-            <li
+            <button
               @click="
                 goToPage(
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
                     .PREVIOUS
                 )
               "
+              :disabled="isFirstPage"
             >
               {{
                 this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
               }}
-            </li>
-            <li
+            </button>
+            <button
               v-for="pageNumber in this.visiblePageNumbers"
               :key="pageNumber"
               @click="goToPage(pageNumber)"
               :class="{ 'active-page': pageNumber === this.currentPage }"
             >
               {{ pageNumber }}
-            </li>
-            <li
+            </button>
+            <button
               @click="
                 goToPage(
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
                 )
               "
+              :disabled="isLastPage"
             >
               {{
                 this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
               }}
-            </li>
+            </button>
           </ul>
         </div>
       </div>
@@ -344,6 +348,22 @@ export default {
      */
     totalPages() {
       return Math.ceil(this.dataTable.TotalRecord / this.selectedRecord);
+    },
+    /**
+     * Mô tả: Nếu đang ở trang đầu thì button prev không hoạt động
+     * created by : BNTIEN
+     * created date: 27-06-2023 11:19:25
+     */
+    isFirstPage() {
+      return this.currentPage === this.$_MISAEnum.RECORD.CURRENT_PAGE;
+    },
+    /**
+     * Mô tả: Nếu đang ở trang cuối thì button next không hoạt động
+     * created by : BNTIEN
+     * created date: 27-06-2023 11:19:25
+     */
+    isLastPage() {
+      return this.currentPage === this.totalPages;
     },
     /**
      * Mô tả: Tính tổng số trang sẽ hiển thị
@@ -416,6 +436,10 @@ export default {
       selectedIndexFeature: null,
       // Khai báo biến quy định trạng thái hiển thị loadding
       isShowLoadding: false,
+      // Khai báo biến lưu chỉ số index được chọn trong paging
+      indecSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
+      searchEmployeeTimeout: null,
     };
   },
   created() {
@@ -545,8 +569,9 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:06
      */
-    onSelectedRecord(record) {
+    onSelectedRecord(record, index) {
       this.selectedRecord = record;
+      this.indecSelectedRecord = index;
       this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
       this.updateDataTable();
     },
@@ -623,7 +648,6 @@ export default {
         )
           .toString()
           .padStart(lenghtMaxCode - 3, "0")}`;
-        console.log(newEmployeeCode);
         this.employeeDuplidate.EmployeeCode = newEmployeeCode;
         const res = await employeeService.create(this.employeeDuplidate);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
@@ -656,6 +680,21 @@ export default {
           this.textSearch.trim()
         );
         this.dataTable = filteredEmployees.data;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Tự động tìm kiếm sau 1 khoảng thời gian người dùng không nhập dữ liệu
+     * created by : BNTIEN
+     * created date: 27-06-2023 11:44:30
+     */
+    async autoSearch() {
+      try {
+        clearTimeout(this.searchEmployeeTimeout);
+        this.searchEmployeeTimeout = setTimeout(async () => {
+          await this.onSearchEmployee();
+        }, 500);
       } catch {
         return;
       }
@@ -783,5 +822,9 @@ input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
   display: none;
+}
+
+.active-record-item {
+  background-color: var(--color-btn-default);
 }
 </style>
