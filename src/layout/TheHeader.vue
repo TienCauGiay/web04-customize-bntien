@@ -11,7 +11,10 @@
       <div class="dropdown-grey-icon icon-tb"></div>
     </div>
     <div class="header-action">
-      <div class="toast-notification-icon icon-l"></div>
+      <div
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.ALERT"
+        class="toast-notification-icon icon-l"
+      ></div>
       <div class="info-user">
         <div class="avatar-icon icon-l"></div>
         <p>

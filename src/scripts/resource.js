@@ -1,18 +1,28 @@
 const MISAResource = {
     'vn-VI':{
+        TOOLTIP:{
+            ALERT: "Thông báo",
+            REFRESH:"Lấy lại dữ liệu",
+            IDENTITY_NUMBER:"Số chứng minh nhân dân",
+            BANK_BRANCH:"Chi nhánh tài khoản ngân hàng",
+            PHONE_NUMBER:"Điện thoại di động",
+            PHONE_LANDLINE:"Điện thoại cố định",
+            HELP:"Giúp (F1)",
+            EXIST:"Đóng (ESC)",
+            SAVE: "Cất (Ctrl + S)",
+            SAVE_AND_ADD:"Cất và thêm (Ctrl + Shift + S)"
+        },
         EMPLOYEE_COL_NAME:{
             CODE: "MÃ NHÂN VIÊN",
             FULLNAME: "TÊN NHÂN VIÊN",
             GENDER: "GIỚI TÍNH",
             DOB: "NGÀY SINH",
             IDENTITY_NUMBER: "SỐ CMND",
-            TITLE_IDENTITY_NUMBER: "Số chứng minh nhân dân",
             POSITION: "CHỨC DANH",
             DEPARTMENT: "TÊN ĐƠN VỊ",
             BANK_ACCOUNT: "SỐ TÀI KHOẢN",
             BANK_NAME: "TÊN NGÂN HÀNG",
             BANK_BRANCH: "CHI NHÁNH TK NGÂN HÀNG", 
-            TITLE_BANK_BRANCH: "Chi nhánh tài khoản ngân hàng", 
             FEATURE: "CHỨC NĂNG"
         },
         TEXT_CONTENT:{
@@ -96,9 +106,7 @@ const MISAResource = {
             IDENTITY_ADDRESS:"Nơi cấp",
             ADDRESS:"Địa chỉ",
             PHONE_NUMBER:"ĐT di động",
-            TITLE_PHONE_NUMBER:"Điện thoại di động",
             PHONE_LANDLINE:"ĐT cố định",
-            TITLE_PHONE_LANDLINE:"Điện thoại cố định",
             EMAIL:"Email",
             BANK_ACCOUNT:"Tài khoản ngân hàng",
             BANK_NAME:"Tên ngân hàng",
@@ -123,7 +131,7 @@ const MISAResource = {
             NO:"Không",
             CANCEL:"Hủy",
             SAVE:"Cất",
-            SAVE_AND_CLOSE:"Cất và Thêm",
+            SAVE_AND_ADD:"Cất và Thêm",
             AGREE: "Đồng ý",
             CLOSE: "Đóng",
         },

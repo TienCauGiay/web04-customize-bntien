@@ -28,6 +28,7 @@
         @click="refreshData"
         class="refresh-icon icon-tb"
         id="btn-refresh"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.REFRESH"
       ></div>
     </div>
     <div id="list-employee" class="list-employee">
@@ -62,8 +63,8 @@
               <th>
                 <span
                   :title="
-                    this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                      .TITLE_IDENTITY_NUMBER
+                    this.$_MISAResource[this.$_LANG_CODE].TOOLTIP
+                      .IDENTITY_NUMBER
                   "
                   >{{
                     this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
@@ -97,8 +98,7 @@
               </th>
               <th
                 :title="
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .TITLE_BANK_BRANCH
+                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.BANK_BRANCH
                 "
               >
                 {{

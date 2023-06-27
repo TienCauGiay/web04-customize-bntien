@@ -1,13 +1,18 @@
 <template>
   <div id="detail-info-employee" class="position-display-center">
     <div class="employee-toolbar">
-      <div class="question-icon icon-tb" :tabindex="21"></div>
+      <div
+        class="question-icon icon-tb"
+        :tabindex="21"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"
+      ></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
         id="employee-exit"
         :tabindex="22"
         @keydown.tab.prevent="resetTab($event.target.value)"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXIST"
       ></div>
     </div>
     <div class="employee-main">
@@ -199,8 +204,7 @@
           <div class="col-md-tb">
             <label
               :title="
-                this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                  .TITLE_IDENTITY_NUMBER
+                this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.IDENTITY_NUMBER
               "
               >{{
                 this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_NUMBER
@@ -261,7 +265,7 @@
             <div class="col-md-quater">
               <label
                 :title="
-                  this.$_MISAResource[this.$_LANG_CODE].FORM.TITLE_PHONE_NUMBER
+                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_NUMBER
                 "
                 >{{
                   this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_NUMBER
@@ -275,8 +279,7 @@
             <div class="col-md-quater">
               <label
                 :title="
-                  this.$_MISAResource[this.$_LANG_CODE].FORM
-                    .TITLE_PHONE_LANDLINE
+                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_LANDLINE
                 "
                 >{{
                   this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_LANDLINE
@@ -349,13 +352,15 @@
             :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE"
             @click="btnSave"
             :tabindex="19"
+            :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE"
           ></misa-button-extra>
           <misa-button-default
             :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_CLOSE
+              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD
             "
             @click="btnSaveAndAdd"
             :tabindex="20"
+            :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
           ></misa-button-default>
         </div>
       </div>
