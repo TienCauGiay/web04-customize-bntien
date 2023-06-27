@@ -468,12 +468,7 @@ export default {
     async getNewCode() {
       try {
         let maxEmployeeCode = await employeeService.getCodeMax();
-        let lenghtMaxCode = maxEmployeeCode.data.length;
-        this.newEmployeeCode = `NV-${(
-          parseInt(maxEmployeeCode.data.substring(3)) + 1
-        )
-          .toString()
-          .padStart(lenghtMaxCode - 3, "0")}`;
+        this.newEmployeeCode = maxEmployeeCode.data;
       } catch {
         return;
       }
@@ -667,9 +662,15 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:28
      */
-    onCloseFormDetail() {
-      // Gọi sự kiện đóng form chi tiết từ component cha (EmployeeList)
-      this.$emit("closeFormDetail");
+    async onCloseFormDetail() {
+      // Kiểm tra xem giữ liệu có thay đổi hay không (Trường hợp có thay đổi)
+      if (
+        JSON.stringify(this.employeeSelected) !== JSON.stringify(this.employee)
+      ) {
+        this.isShowDialogDataChange = true;
+      } else {
+        this.$emit("closeFormDetail");
+      }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện ẩn hiện options chọn đơn vị
@@ -768,7 +769,7 @@ export default {
         !this.employee.DepartmentName
       ) {
         this.isShowDialogDataNotNull = true;
-        return false;
+        return true;
       }
       if (
         !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
@@ -776,27 +777,27 @@ export default {
         )
       ) {
         this.isShowDialogDataNotNull = true;
-        return false;
+        return true;
       }
       if (this.employee.DateOfBirth) {
         if (!this.isInvalidDate(this.employee.DateOfBirth)) {
           this.isShowDialogDataNotNull = true;
-          return false;
+          return true;
         }
       }
       if (this.employee.IdentityDate) {
         if (!this.isInvalidDate(this.employee.IdentityDate)) {
           this.isShowDialogDataNotNull = true;
-          return false;
+          return true;
         }
       }
       if (this.employee.Email) {
         if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
           this.isShowDialogDataNotNull = true;
-          return false;
+          return true;
         }
       }
-      return true;
+      return false;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
@@ -808,7 +809,7 @@ export default {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu nhập vào hợp lệ
-      if (this.showDialogDataNotNull()) {
+      if (!this.showDialogDataNotNull()) {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Nếu form ở trạng thái thêm mới
           try {
@@ -847,7 +848,7 @@ export default {
           }
         } else {
           // Nếu form ở trạng thái sửa
-          // Kiểm tra xem dữ liệu có thay đổi hay k
+          // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
           if (
             JSON.stringify(this.employeeSelected) !==
             JSON.stringify(this.employee)
@@ -893,8 +894,8 @@ export default {
       // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
       this.validateData();
       // Nếu dữ liệu hợp lệ
-      if (this.showDialogDataNotNull()) {
-        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+      if (!this.showDialogDataNotNull()) {
+        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
           // Nếu form ở trạng thái thêm mới
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
@@ -1029,7 +1030,7 @@ export default {
      * created date: 29-05-2023 07:56:20
      */
     btnCancel() {
-      this.onCloseFormDetail();
+      this.$emit("closeFormDetail");
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng dialog cảnh báo mã nhân viên đã tồn tại
@@ -1048,6 +1049,7 @@ export default {
      */
     onCancelDialogDataChange() {
       this.isShowDialogDataChange = false;
+      this.focusCode();
     },
 
     /**
@@ -1056,14 +1058,7 @@ export default {
      * created date: 30-05-2023 23:42:10
      */
     onNoDialogDataChange() {
-      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-        this.isShowDialogDataChange = false;
-        this.employee = {};
-        this.$_MISAEmitter.emit("setFormModeAdd");
-        this.focusCode();
-      } else {
-        this.$emit("closeFormDetail");
-      }
+      this.$emit("closeFormDetail");
     },
 
     /**
@@ -1072,35 +1067,82 @@ export default {
      * created date: 30-05-2023 23:43:38
      */
     async onYesDialogDataChange() {
+      this.isShowDialogDataChange = false;
       try {
-        const res = await employeeService.update(
-          this.employeeSelected.EmployeeId,
-          this.employee
-        );
-        this.isShowDialogDataChange = false;
-        this.employee = {};
-        this.$_MISAEmitter.emit("setFormModeAdd");
-        if (this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE) {
-          this.$emit("closeFormDetail");
-          this.$_MISAEmitter.emit("refreshDataTable");
-        } else if (
-          this.isStatusButton === this.$_MISAEnum.STATUS_BUTTON.SAVE_AND_ADD
-        ) {
-          this.$_MISAEmitter.emit("refreshDataTable");
-          await this.getNewCode();
-          this.employee.EmployeeCode = this.newEmployeeCode;
-          this.focusCode();
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
+        // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
+        this.validateData();
+        // Nếu dữ liệu nhập vào hợp lệ
+        if (!this.showDialogDataNotNull()) {
+          // Nếu form ở trạng thái thêm mới
+          if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let employeeById = {};
+            const res = await employeeService.getByCode(
+              this.employee.EmployeeCode
+            );
+            employeeById = res.data;
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống
+            if (!employeeById) {
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
+              );
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
+              const res = await employeeService.create(this.employee);
+              if (
+                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+              ) {
+                this.$emit("closeFormDetail");
+                this.$_MISAEmitter.emit("refreshDataTable");
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessage",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .SUCCESS_CTEATE
+                );
+              }
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.isShowDialogCodeExist = true;
+              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            }
+            // Nếu form ở trạng thái sửa
+          } else if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Edit) {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let employeeById = {};
+            const res = await employeeService.getByCode(
+              this.employee.EmployeeCode
+            );
+            employeeById = res.data;
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+            if (
+              !employeeById ||
+              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
+            ) {
+              let departmentAdd = await departmentService.getByName(
+                this.employee.DepartmentName
+              );
+              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
+              const res = await employeeService.update(
+                this.employeeSelected.EmployeeId,
+                this.employee
+              );
+              this.$_MISAEmitter.emit("setFormModeAdd");
+              this.$emit("closeFormDetail");
+              this.$_MISAEmitter.emit("refreshDataTable");
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessageUpdate",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                    .SUCCESS_UPDATE
+                );
+              }
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.isShowDialogCodeExist = true;
+              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            }
+          }
         }
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.$_MISAEmitter.emit(
-            "onShowToastMessageUpdate",
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
-          );
-        }
-      } catch (error) {
-        console.log(error);
+      } catch {
         return;
       }
     },

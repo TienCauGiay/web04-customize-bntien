@@ -363,6 +363,9 @@ export default {
      * created date: 27-06-2023 11:19:25
      */
     isLastPage() {
+      if (!this.totalPages || this.totalPages === 0) {
+        return true;
+      }
       return this.currentPage === this.totalPages;
     },
     /**
@@ -371,6 +374,9 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     visiblePageNumbers() {
+      if (this.isShowLoadding) {
+        return [];
+      }
       let startPage = Math.max(
         this.currentPage - Math.floor(this.maxVisiblePages / 2),
         1
@@ -470,6 +476,7 @@ export default {
     async btnOpenFormDetail() {
       this.isShowFormDetail = true;
       this.isOverlay = true;
+      this.employeeUpdate.EmployeeCode = "";
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi click vào nút close trong form chi tiết
@@ -642,13 +649,7 @@ export default {
       try {
         this.employeeDuplidate = employeeDup;
         let maxEmployeeCode = await employeeService.getCodeMax();
-        let lenghtMaxCode = maxEmployeeCode.data.length;
-        const newEmployeeCode = `NV-${(
-          parseInt(maxEmployeeCode.data.substring(3)) + 1
-        )
-          .toString()
-          .padStart(lenghtMaxCode - 3, "0")}`;
-        this.employeeDuplidate.EmployeeCode = newEmployeeCode;
+        this.employeeDuplidate.EmployeeCode = maxEmployeeCode.data;
         const res = await employeeService.create(this.employeeDuplidate);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
           this.contentToastSuccess =
