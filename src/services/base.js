@@ -89,6 +89,22 @@ class BaseServices {
     }
 
     /**
+     * Mô tả: xóa nhiều bản ghi theo danh sách id
+     * created by : BNTIEN
+     * created date: 27-06-2023 23:05:28
+     */
+    async deleteMutiple(ids){
+        try{
+            const response = await axios.delete(`${this.getBaseUrl()}/ids`, ids);
+            return response;
+        }
+        catch(error){
+            console.log(error);
+            throw error;
+        }
+    }
+
+    /**
      * Mô tả: Tìm kiếm phân trang
      * created by : BNTIEN
      * created date: 17-06-2023 03:50:28

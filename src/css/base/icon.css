@@ -293,6 +293,12 @@
 	height: 5px;
 }
 
+.function-icon-disable{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1691px -570px;
+	width: 8px;
+	height: 5px;
+}
+
 .plus-icon {
 	background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -720px -1168px;
 	width: 24px;

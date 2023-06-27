@@ -10,6 +10,24 @@
   </div>
   <div class="content-main-body">
     <div class="content-action">
+      <button
+        :disabled="isDisableExcuteBatch"
+        class="delete-multiple-employee"
+        @click="onShowExcuteBatch"
+        :class="{ 'no-disable': !isDisableExcuteBatch }"
+        ref="deleteMulti"
+      >
+        <div class="select-function-delete">
+          <span>Thực hiện hàng loạt</span>
+          <div class="delete-multiple-employee-icon">
+            <div class="function-icon-disable"></div>
+          </div>
+        </div>
+        <div class="menu-delete" v-show="isShowMenuExcuteBatch">
+          <div class="menu-item-delete">Xóa</div>
+          <div class="menu-item-delete">Gộp</div>
+        </div>
+      </button>
       <div class="search-employee">
         <input
           type="search"
@@ -338,6 +356,7 @@ export default {
   mounted() {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
+    window.addEventListener("click", this.handleClickOutsideDeleteMulti);
     // window.addEventListener("click", this.handleClickOutsideFeature);
   },
   computed: {
@@ -395,6 +414,14 @@ export default {
 
       return visiblePages;
     },
+    /**
+     * Mô tả: Kiểm tra xem button thực hiện hàng loạt có ở trạng thái disable hay không
+     * created by : BNTIEN
+     * created date: 27-06-2023 23:26:41
+     */
+    isDisableExcuteBatch() {
+      return this.ids.length < 2;
+    },
   },
   data() {
     return {
@@ -446,6 +473,10 @@ export default {
       indecSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
       searchEmployeeTimeout: null,
+      // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
+      isShowMenuExcuteBatch: false,
+      // Khai báo biến lưu danh sách id cần xóa
+      ids: [],
     };
   },
   created() {
@@ -782,6 +813,21 @@ export default {
     //     return;
     //   }
     // },
+
+    handleClickOutsideDeleteMulti(event) {
+      if (!this.$refs.deleteMulti.contains(event.target)) {
+        this.isShowMenuExcuteBatch = false;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm ẩn hiện menu thực hiện hàng loạt
+     * created by : BNTIEN
+     * created date: 27-06-2023 23:37:04
+     */
+    onShowExcuteBatch() {
+      this.isShowMenuExcuteBatch = !this.isShowMenuExcuteBatch;
+    },
   },
 
   beforeUnmount() {
@@ -791,6 +837,7 @@ export default {
     this.$_MISAEmitter.off("setFormModeAdd");
     this.$_MISAEmitter.off("refreshDataTable");
     window.removeEventListener("click", this.handleClickOutsidePaging);
+    window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
     // window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
@@ -828,5 +875,14 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .active-record-item {
   background-color: var(--color-btn-default);
+}
+
+.no-disable {
+  border: 1px solid black;
+}
+
+.no-disable:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
 }
 </style>
