@@ -816,6 +816,7 @@ input[type="checkbox"] {
   accent-color: #2ca01c;
   width: 16px;
   height: 16px;
+  cursor: pointer;
 }
 
 /* Bỏ dấu x ở ô input có type = search */

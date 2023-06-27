@@ -23,10 +23,7 @@
         <div class="employee-check">
           <input
             type="checkbox"
-            :checked="
-              employee.CustomerOrProvider ===
-              this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER
-            "
+            :checked="employee.IsCustomer === this.$_MISAEnum.CUSTOMER"
             @change="handleCustomerCheckboxChange"
           />
           <span>{{
@@ -36,10 +33,7 @@
         <div class="employee-check">
           <input
             type="checkbox"
-            :checked="
-              employee.CustomerOrProvider ===
-              this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER
-            "
+            :checked="employee.IsProvider === this.$_MISAEnum.PROVIDER"
             @change="handleProviderCheckboxChange"
           />
           <span>{{
@@ -477,14 +471,10 @@ export default {
      * created date: 24-06-2023 09:56:15
      */
     handleCustomerCheckboxChange() {
-      if (
-        this.employee.CustomerOrProvider ===
-        this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER
-      ) {
-        this.employee.CustomerOrProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
+      if (this.employee.IsCustomer === this.$_MISAEnum.CUSTOMER) {
+        this.employee.IsCustomer = null; // Bỏ chọn ô input nếu đã được chọn trước đó
       } else {
-        this.employee.CustomerOrProvider =
-          this.$_MISAEnum.IS_CUSTOMER_PROVIDER.CUSTOMER;
+        this.employee.IsCustomer = this.$_MISAEnum.CUSTOMER;
       }
     },
     /**
@@ -493,14 +483,10 @@ export default {
      * created date: 24-06-2023 09:56:48
      */
     handleProviderCheckboxChange() {
-      if (
-        this.employee.CustomerOrProvider ===
-        this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER
-      ) {
-        this.employee.CustomerOrProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
+      if (this.employee.IsProvider === this.$_MISAEnum.PROVIDER) {
+        this.employee.IsProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
       } else {
-        this.employee.CustomerOrProvider =
-          this.$_MISAEnum.IS_CUSTOMER_PROVIDER.PROVIDER;
+        this.employee.IsProvider = this.$_MISAEnum.PROVIDER;
       }
     },
     /**
@@ -978,7 +964,7 @@ export default {
               this.$_MISAEmitter.emit("setFormModeAdd");
               await this.getNewCode();
               this.employee.EmployeeCode = this.newEmployeeCode;
-              this.$refs.codeEmployee.$el.focus();
+              this.focusCode();
               this.$_MISAEmitter.emit("refreshDataTable");
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
                 this.$_MISAEmitter.emit(
@@ -1169,12 +1155,10 @@ export default {
   border-radius: 4px 0px 0px 4px;
 }
 
+input[type="checkbox"],
 input[type="radio"] {
   accent-color: #2ca01c;
-}
-
-input[type="checkbox"] {
-  accent-color: #2ca01c;
+  cursor: pointer;
 }
 
 .cbb-selected {

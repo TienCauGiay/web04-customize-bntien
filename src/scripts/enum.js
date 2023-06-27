@@ -74,10 +74,8 @@ const MISAEnum = {
         UP: 38,
         ENTER: 13
     },
-    IS_CUSTOMER_PROVIDER:{
-        CUSTOMER: 1,
-        PROVIDER: 2
-    },
+    CUSTOMER: 1,
+    PROVIDER: 1,
 } 
 
 export default MISAEnum;
