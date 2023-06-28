@@ -187,7 +187,7 @@
                 class="text-center employee-border-right e-birthday function-table"
                 @dblclick.stop
               >
-                <span>{{
+                <span @click="onUpdateFormDetail(item)">{{
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
                 }}</span>
                 <div
@@ -444,6 +444,7 @@ export default {
      */
     isCheckAll() {
       if (!this.dataTable.Data) return false;
+      if (this.dataTable.Data.length == 0) return false;
       for (let i = 0; i < this.dataTable.Data.length; i++) {
         if (!this.ids.includes(this.dataTable.Data[i].EmployeeId)) {
           return false;
