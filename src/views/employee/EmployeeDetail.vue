@@ -619,8 +619,11 @@ export default {
       await this.getListDepartment();
       await this.getNewCode();
       // Nếu form ở trạng thái thêm mới
+      // Chuyển đối tượng sang chuỗi json
+      let res = JSON.stringify(this.employeeSelected);
+      // Chuyển đổi chuỗi json thành đối tượng employee
+      this.employee = JSON.parse(res);
       if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
-        this.employee = {};
         // Sinh mã tự động
         this.employee.EmployeeCode = this.newEmployeeCode;
         // Gán title cho form mode thêm mới
@@ -628,10 +631,6 @@ export default {
           this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
       } else {
         try {
-          // Chuyển đối tượng sang chuỗi json
-          let res = JSON.stringify(this.employeeSelected);
-          // Chuyển đổi chuỗi json thành đối tượng employee
-          this.employee = JSON.parse(res);
           // Gán title cho form mode thêm sửa
           this.titleFormMode =
             this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;

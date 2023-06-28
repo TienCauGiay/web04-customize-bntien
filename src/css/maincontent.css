@@ -48,6 +48,10 @@
     position: relative;
 }
 
+.delete-multiple-employee:disabled{
+    cursor: not-allowed;
+}
+
 .select-function-delete{
     display: flex;
     justify-content: center;

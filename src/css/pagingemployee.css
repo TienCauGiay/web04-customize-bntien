@@ -102,6 +102,10 @@
     background-color: white;
 }
 
+.page-number button:disabled{
+    cursor: not-allowed;
+}
+
 .page-number button:hover{
     background-color: var(--color-border-default);
     border-radius: 1px;

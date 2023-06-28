@@ -150,6 +150,7 @@
               v-for="(item, index) in dataTable.Data"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
+              :class="{ checkedRow: checkRow().includes(item.EmployeeId) }"
             >
               <td class="employee-border-left" @dblclick.stop>
                 <input
@@ -372,7 +373,6 @@ export default {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
     window.addEventListener("click", this.handleClickOutsideDeleteMulti);
-    // window.addEventListener("click", this.handleClickOutsideFeature);
   },
   computed: {
     /**
@@ -435,7 +435,7 @@ export default {
      * created date: 27-06-2023 23:26:41
      */
     isDisableExcuteBatch() {
-      return this.ids.length < 1;
+      return this.ids.length < 2;
     },
     /**
      * Mô tả: Kiểm tra list ids chứa tất cả id trong dataTable hay không
@@ -470,8 +470,6 @@ export default {
       dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
       employeeUpdate: {},
-      // khai báo 1 nhân viên được chọn để nhân bản
-      employeeDuplidate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
@@ -494,8 +492,6 @@ export default {
       currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo số trang tối đa hiển thị trong phân trang
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
-      // Khai báo biến lưu chỉ số được chọn của menu item table
-      selectedIndexFeature: null,
       // Khai báo biến quy định trạng thái hiển thị loadding
       isShowLoadding: false,
       // Khai báo biến lưu chỉ số index được chọn trong paging
@@ -557,24 +553,7 @@ export default {
      * created date: 29-05-2023 07:48:54
      */
     onShowColFeature(index) {
-      try {
-        this.isShowColFeature[index] = !this.isShowColFeature[index];
-        // this.selectedIndexFeature = index;
-        const tableY = this.$refs.tableEmployeeList.getBoundingClientRect().y;
-        const ulY =
-          this.$refs.functionTableContent[index].getBoundingClientRect().y;
-
-        // Kiểm tra nếu phần tử bị che khuất ở trên hoặc bị che khuất ở dưới
-        if (tableY - ulY > -300) {
-          // Nếu bị che khuất ở trên, hiển thị xuống dưới
-          this.$refs.featureMenu[index].style.top = "15px";
-        } else {
-          // Nếu bị che khuất ở dưới, hiển thị lên trên
-          this.$refs.featureMenu[index].style.top = "-90px";
-        }
-      } catch {
-        return;
-      }
+      this.isShowColFeature[index] = !this.isShowColFeature[index];
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
@@ -610,7 +589,6 @@ export default {
      * created date: 29-05-2023 07:49:31
      */
     async refreshData() {
-      // window.removeEventListener("click", this.handleClickOutsideFeature);
       await this.getListEmployee();
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
     },
@@ -710,21 +688,17 @@ export default {
     btnCloseToastMessage() {
       this.isShowToastMessage = false;
     },
+    /**
+     * Mô tả: Hàm nhân bản 1 nhân viên
+     * created by : BNTIEN
+     * created date: 28-06-2023 13:59:30
+     */
     async onDupliCateEmployee(employeeDup) {
       try {
-        this.employeeDuplidate = employeeDup;
-        let maxEmployeeCode = await employeeService.getCodeMax();
-        this.employeeDuplidate.EmployeeCode = maxEmployeeCode.data;
-        const res = await employeeService.create(this.employeeDuplidate);
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
-          this.contentToastSuccess =
-            this.$_MISAResource[
-              this.$_LANG_CODE
-            ].TEXT_CONTENT.SUCCESS_DUPLICATE;
-          this.onShowToastMessage();
-          await this.getListEmployee();
-          this.employeeDuplidate = {};
-        }
+        this.employeeUpdate = employeeDup;
+        this.isShowFormDetail = true;
+        this.isOverlay = true;
+        this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
       } catch {
         return;
       }
@@ -828,26 +802,6 @@ export default {
       }
     },
 
-    // handleClickOutsideFeature(event) {
-    //   try {
-    //     const functionTableContent =
-    //       this.$refs.functionTableContent[this.selectedIndexFeature];
-
-    //     // Kiểm tra nếu functionTableContent không undefined và không null
-    //     if (functionTableContent) {
-    //       // Kiểm tra nếu event.target không nằm trong functionTableContent hoặc không phải là functionTableContent
-    //       if (
-    //         !functionTableContent.contains(event.target) &&
-    //         event.target !== functionTableContent
-    //       ) {
-    //         this.isShowColFeature[this.selectedIndexFeature] = false;
-    //       }
-    //     }
-    //   } catch {
-    //     return;
-    //   }
-    // },
-
     handleClickOutsideDeleteMulti(event) {
       if (!this.$refs.deleteMulti.contains(event.target)) {
         this.isShowMenuExcuteBatch = false;
@@ -942,7 +896,6 @@ export default {
     this.$_MISAEmitter.off("refreshDataTable");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
-    // window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
 </script>
@@ -988,5 +941,14 @@ input[type="search"]::-webkit-search-cancel-button {
 .no-disable:hover {
   background-color: #e0e0e0;
   cursor: pointer;
+}
+
+.checkedRow {
+  background-color: #e7f5ec;
+}
+
+.checkedRow td:first-child,
+.checkedRow td:last-child {
+  background-color: #e7f5ec;
 }
 </style>
