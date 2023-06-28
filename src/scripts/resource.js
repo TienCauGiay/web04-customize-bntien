@@ -49,6 +49,7 @@ const MISAResource = {
                 SETTING:"Cài đặt",
             },
             EMPLOYEE:"Nhân viên",
+            EXCUTE_BATCH: "Thực hiện hàng loạt",
             ADD_EMPLOYEE:"Thêm nhân viên mới",
             PLACEHOLDER_SEARCH:"Tìm theo mã, tên nhân viên",
             DATE_NaN: "NaN/NaN/NaN",
@@ -120,6 +121,7 @@ const MISAResource = {
             },
             CONTENT:{
                 CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa nhân viên",
+                CONFIRM_DELETE_MULTIPLE: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
                 DATA_CHANGE: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
                 EXIST_PRE: "Mã nhân viên",
                 EXIST_END: "đã tồn tại trong hệ thống, vui lòng kiểm tra lại.",

@@ -18,14 +18,17 @@
         ref="deleteMulti"
       >
         <div class="select-function-delete">
-          <span>Thực hiện hàng loạt</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
+          }}</span>
           <div class="delete-multiple-employee-icon">
             <div class="function-icon-disable"></div>
           </div>
         </div>
         <div class="menu-delete" v-show="isShowMenuExcuteBatch">
-          <div class="menu-item-delete">Xóa</div>
-          <div class="menu-item-delete">Gộp</div>
+          <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+          </div>
         </div>
       </button>
       <div class="search-employee">
@@ -56,7 +59,12 @@
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
-                <input class="checkbox-select-row" type="checkbox" />
+                <input
+                  class="checkbox-select-row"
+                  type="checkbox"
+                  @click="checkAllSelect"
+                  :checked="isCheckAll"
+                />
               </th>
               <th class="e-id">
                 {{
@@ -144,7 +152,12 @@
               @dblclick="onUpdateFormDetail(item)"
             >
               <td class="employee-border-left" @dblclick.stop>
-                <input class="checkbox-select-row" type="checkbox" />
+                <input
+                  class="checkbox-select-row"
+                  type="checkbox"
+                  @click="checkRow(event, item.EmployeeId)"
+                  :checked="checkRow().includes(item.EmployeeId)"
+                />
               </td>
               <td class="e-id">{{ item.EmployeeCode }}</td>
               <td class="e-fullname">{{ item.FullName }}</td>
@@ -330,8 +343,10 @@
     ></EmployeeDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
+      :isDeleteMultiple="isDeleteMultipleDialog"
       :employeeCodeDelete="employeeCodeDeleteSelected"
       @confirmYesDeleteEmployee="btnConfirmYesDeleteEmployee"
+      @confirmYesDeleteMultiple="btnConfirmYesDeleteMultipleEmployee"
       @confirmNoDeleteEmployee="btnConfirmNoDeleteEmployee"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
@@ -420,7 +435,21 @@ export default {
      * created date: 27-06-2023 23:26:41
      */
     isDisableExcuteBatch() {
-      return this.ids.length < 2;
+      return this.ids.length < 1;
+    },
+    /**
+     * Mô tả: Kiểm tra list ids chứa tất cả id trong dataTable hay không
+     * created by : BNTIEN
+     * created date: 28-06-2023 08:41:29
+     */
+    isCheckAll() {
+      if (!this.dataTable.Data) return false;
+      for (let i = 0; i < this.dataTable.Data.length; i++) {
+        if (!this.ids.includes(this.dataTable.Data[i].EmployeeId)) {
+          return false;
+        }
+      }
+      return true;
     },
   },
   data() {
@@ -477,6 +506,8 @@ export default {
       isShowMenuExcuteBatch: false,
       // Khai báo biến lưu danh sách id cần xóa
       ids: [],
+      // Khai báo biến kiểm tra xem dialog hiển thị hỏi xóa ít hay xóa nhiều
+      isDeleteMultipleDialog: null,
     };
   },
   created() {
@@ -620,6 +651,7 @@ export default {
      */
     onDeleteEmployee(employeeID, employeeCode, index) {
       this.isShowDialogConfirmDelete = true;
+      this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
       this.employeeIdDeleteSelected = employeeID;
       this.employeeCodeDeleteSelected = employeeCode;
@@ -635,6 +667,7 @@ export default {
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           this.isShowDialogConfirmDelete = false;
+          this.isDeleteMultipleDialog = false;
           this.isOverlay = false;
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
@@ -653,6 +686,7 @@ export default {
      */
     btnConfirmNoDeleteEmployee() {
       this.isShowDialogConfirmDelete = false;
+      this.isDeleteMultipleDialog = false;
       this.isOverlay = false;
     },
 
@@ -756,7 +790,7 @@ export default {
      * created by : BNTIEN
      * created date: 04-06-2023 01:49:32
      */
-    goToPage(p) {
+    async goToPage(p) {
       let newPage;
       if (
         p ===
@@ -780,7 +814,7 @@ export default {
 
       if (newPage !== undefined && newPage !== this.currentPage) {
         this.currentPage = newPage;
-        this.updateDataTable();
+        await this.updateDataTable();
       }
     },
     /**
@@ -827,6 +861,76 @@ export default {
      */
     onShowExcuteBatch() {
       this.isShowMenuExcuteBatch = !this.isShowMenuExcuteBatch;
+    },
+
+    /**
+     * Mô tả: Hàm kiểm tra xem checkbox từng hàng đã chọn chưa, nếu rồi thì bỏ chọn và ngược lại
+     * created by : BNTIEN
+     * created date: 28-06-2023 09:30:13
+     */
+    checkRow(event, id) {
+      if (!id) return this.ids;
+      if (this.ids.includes(id)) {
+        this.ids.splice(this.ids.indexOf(id), 1);
+        return this.ids;
+      }
+      this.ids.push(id);
+      return this.ids;
+    },
+
+    /**
+     * Mô tả: Xử lí hàm chọn tất cả ở ô checkbox thead
+     * created by : BNTIEN
+     * created date: 28-06-2023 09:31:07
+     */
+    checkAllSelect() {
+      if (this.isCheckAll) {
+        this.dataTable.Data.map((item) => {
+          if (this.ids.includes(item.EmployeeId)) {
+            this.ids.splice(this.ids.indexOf(item.EmployeeId), 1);
+          }
+        });
+      } else {
+        if (this.dataTable.Data) {
+          this.dataTable.Data.map((item) => {
+            if (!this.ids.includes(item.EmployeeId)) {
+              this.ids.push(item.EmployeeId);
+            }
+          });
+        }
+      }
+    },
+    /**
+     * Mô tả: Hiển thị form xác nhận xóa nhiều
+     * created by : BNTIEN
+     * created date: 28-06-2023 10:34:10
+     */
+    onShowDialogDeleteMulti() {
+      this.isShowDialogConfirmDelete = !this.isShowDialogConfirmDelete;
+      this.isDeleteMultipleDialog = true;
+    },
+    /**
+     * Mô tả: Hàm thực hiện xóa nhiều nhân viên theo list id đã chọn
+     * created by : BNTIEN
+     * created date: 28-06-2023 09:36:08
+     */
+    async btnConfirmYesDeleteMultipleEmployee() {
+      try {
+        const res = await employeeService.deleteMutiple(this.ids);
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          this.ids = [];
+          this.isShowDialogConfirmDelete = false;
+          this.isDeleteMultipleDialog = false;
+          this.isOverlay = false;
+          this.contentToastSuccess =
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.onShowToastMessage();
+          await this.getListEmployee();
+        }
+      } catch (error) {
+        console.log(error);
+        return;
+      }
     },
   },
 

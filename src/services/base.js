@@ -95,7 +95,7 @@ class BaseServices {
      */
     async deleteMutiple(ids){
         try{
-            const response = await axios.delete(`${this.getBaseUrl()}/ids`, ids);
+            const response = await axios.delete(`${this.getBaseUrl()}/ids`, {data:ids});
             return response;
         }
         catch(error){

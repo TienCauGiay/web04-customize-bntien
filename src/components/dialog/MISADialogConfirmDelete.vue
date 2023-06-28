@@ -12,13 +12,19 @@
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
-        <p>
+        <p v-if="!this.isDeleteMultiple">
           {{
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
               .CONFIRM_DELETE_PRE
           }}
           &lt;{{ this.employeeCodeDelete }}&gt;
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
+        </p>
+        <p v-else>
+          {{
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+              .CONFIRM_DELETE_MULTIPLE
+          }}
         </p>
       </div>
     </div>
@@ -28,7 +34,7 @@
         :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.NO"
       ></misa-button-extra>
       <misa-button-default
-        @click="btnConfirmDelete"
+        @click="handleDelete"
         :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES"
       ></misa-button-default>
     </div>
@@ -38,8 +44,20 @@
 <script>
 export default {
   name: "MISADialogConfirmDelete",
-  props: ["employeeCodeDelete"],
+  props: ["employeeCodeDelete", "isDeleteMultiple"],
   methods: {
+    /**
+     * Mô tả: xử lí chọn hàm xóa nhiều hay xóa ít
+     * created by : BNTIEN
+     * created date: 28-06-2023 11:22:21
+     */
+    handleDelete() {
+      if (this.isDeleteMultiple) {
+        this.btnConfirmDeleteMultiple();
+      } else {
+        this.btnConfirmDelete();
+      }
+    },
     /**
      * Mô tả: Hàm gọi sự kiện xóa nhân viên khi người dùng chọn có trong component cha (EmployeeList)
      * created by : BNTIEN
@@ -47,6 +65,15 @@ export default {
      */
     btnConfirmDelete() {
       this.$emit("confirmYesDeleteEmployee");
+    },
+
+    /**
+     * Mô tả: Hàm gọi sự kiện xóa nhiều nhân viên
+     * created by : BNTIEN
+     * created date: 28-06-2023 11:23:05
+     */
+    btnConfirmDeleteMultiple() {
+      this.$emit("confirmYesDeleteMultiple");
     },
 
     /**
