@@ -49,10 +49,10 @@
               <span class="s-require">*</span></label
             >
             <misa-input
-              ref="codeEmployee"
+              ref="EmployeeCode"
               v-model="employee.EmployeeCode"
               :class="{
-                'border-red': isBorderRed.Code && !employee.EmployeeCode,
+                'border-red': isBorderRed.EmployeeCode,
               }"
               :tabindex="1"
               :titleContent="
@@ -69,9 +69,9 @@
               <span class="s-require">*</span></label
             >
             <misa-input
-              ref="nameEmployee"
+              ref="FullName"
               v-model="employee.FullName"
-              :class="{ 'border-red': isBorderRed.Name && !employee.FullName }"
+              :class="{ 'border-red': isBorderRed.FullName }"
               :tabindex="2"
               :titleContent="
                 !employee.FullName
@@ -91,9 +91,9 @@
               :value="formattedDate"
               :tabindex="5"
               :class="{
-                'border-red': isBorderRed.DOB && employee.DateOfBirth,
+                'border-red': isBorderRed.DateOfBirth,
               }"
-              ref="dobEmployee"
+              ref="DateOfBirth"
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -144,13 +144,12 @@
               class="e-cbb"
               id="e-cbb"
               :class="{
-                'border-red':
-                  isBorderRed.Department && !employee.DepartmentName,
+                'border-red': isBorderRed.DepartmentName,
               }"
             >
               <div class="e-textfield-cbb">
                 <misa-input
-                  ref="departmentEmployee"
+                  ref="DepartmentName"
                   :placeholder="
                     this.$_MISAResource[this.$_LANG_CODE].FORM
                       .PLACEHOLDER_DEPARTMENT
@@ -182,9 +181,7 @@
                 <li
                   v-for="(department, index) in listDepartmentSearch"
                   :key="index"
-                  @click="
-                    onSelectedDepartment(department.DepartmentName, index)
-                  "
+                  @click="onSelectedDepartment(department, index)"
                   :class="{ 'cbb-selected': index == indexDepartmentSelected }"
                   ref="listValueDepartment"
                 >
@@ -207,6 +204,10 @@
             <misa-input
               v-model="employee.IdentityNumber"
               :tabindex="9"
+              ref="IdentityNumber"
+              :class="{
+                'border-red': isBorderRed.IdentityNumber,
+              }"
             ></misa-input>
           </div>
           <div class="col-md-n">
@@ -219,9 +220,9 @@
               :value="formattedDateIdentity"
               :tabindex="9"
               :class="{
-                'border-red': isBorderRed.IdentityDate && employee.IdentityDate,
+                'border-red': isBorderRed.IdentityDate,
               }"
-              ref="identityDateEmployee"
+              ref="IdentityDate"
             ></misa-input>
           </div>
         </div>
@@ -233,6 +234,10 @@
             <misa-input
               v-model="employee.PositionName"
               :tabindex="4"
+              ref="PositionName"
+              :class="{
+                'border-red': isBorderRed.PositionName,
+              }"
             ></misa-input>
           </div>
         </div>
@@ -244,6 +249,10 @@
             <misa-input
               v-model="employee.IdentityPlace"
               :tabindex="10"
+              ref="IdentityPlace"
+              :class="{
+                'border-red': isBorderRed.IdentityPlace,
+              }"
             ></misa-input>
           </div>
         </div>
@@ -252,7 +261,14 @@
           <label>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS
           }}</label>
-          <misa-input v-model="employee.Address" :tabindex="11"></misa-input>
+          <misa-input
+            v-model="employee.Address"
+            :tabindex="11"
+            ref="Address"
+            :class="{
+              'border-red': isBorderRed.Address,
+            }"
+          ></misa-input>
         </div>
         <div class="full-content">
           <div class="full-content-quarter">
@@ -268,6 +284,10 @@
               <misa-input
                 v-model="employee.PhoneNumber"
                 :tabindex="12"
+                ref="PhoneNumber"
+                :class="{
+                  'border-red': isBorderRed.PhoneNumber,
+                }"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -282,6 +302,10 @@
               <misa-input
                 v-model="employee.PhoneLandline"
                 :tabindex="13"
+                ref="PhoneLandline"
+                :class="{
+                  'border-red': isBorderRed.PhoneLandline,
+                }"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -292,9 +316,9 @@
                 v-model="employee.Email"
                 :tabindex="14"
                 :class="{
-                  'border-red': isBorderRed.Email && employee.Email,
+                  'border-red': isBorderRed.Email,
                 }"
-                ref="emailEmployee"
+                ref="Email"
               ></misa-input>
             </div>
           </div>
@@ -308,6 +332,10 @@
               <misa-input
                 v-model="employee.BankAccount"
                 :tabindex="15"
+                ref="BankAccount"
+                :class="{
+                  'border-red': isBorderRed.BankAccount,
+                }"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -317,6 +345,10 @@
               <misa-input
                 v-model="employee.BankName"
                 :tabindex="16"
+                ref="BankName"
+                :class="{
+                  'border-red': isBorderRed.BankName,
+                }"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -326,6 +358,10 @@
               <misa-input
                 v-model="employee.BankBranch"
                 :tabindex="17"
+                ref="BankBranch"
+                :class="{
+                  'border-red': isBorderRed.BankBranch,
+                }"
               ></misa-input>
             </div>
           </div>
@@ -397,6 +433,24 @@ export default {
   },
   data() {
     return {
+      // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus
+      employeeProperty: [
+        "EmployeeCode",
+        "FullName",
+        "DepartmentName",
+        "PositionName",
+        "DateOfBirth",
+        "IdentityNumber",
+        "IdentityDate",
+        "IdentityPlace",
+        "Address",
+        "PhoneNumber",
+        "PhoneLandline",
+        "Email",
+        "BankAccount",
+        "BankName",
+        "BankBranch",
+      ],
       // Khai báo biến quy định trạng thái hiển thị của combobox chọn đơn vị
       isShowSelectDepartment: false,
       // Khai báo đối tượng employee
@@ -427,20 +481,20 @@ export default {
       newEmployeeCode: null,
       // Khai báo biến lưu title form mode
       titleFormMode: this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE,
+      // Khai báo biến chứa danh sách đối tượng lỗi
+      errors: {},
     };
   },
   watch: {
-    // Lắng nghe sự thay đổi dữ liệu trong ô input email
-    "employee.Email": function () {
-      this.isBorderRed.Email = false;
-    },
-    // Lắng nghe sự thay đổi dữ liệu trong ô input ngày sinh
-    "employee.DateOfBirth": function () {
-      this.isBorderRed.DOB = false;
-    },
-    // Lắng nghe sự thay đổi dữ liệu trong ô input ngày cấp
-    "employee.IdentityDate": function () {
-      this.isBorderRed.IdentityDate = false;
+    employee: {
+      handler: function () {
+        for (let key in this.employee) {
+          if (Object.prototype.hasOwnProperty.call(this.isBorderRed, key)) {
+            this.isBorderRed[key] = false;
+          }
+        }
+      },
+      deep: true,
     },
   },
   methods: {
@@ -450,7 +504,7 @@ export default {
      * created date: 27-06-2023 01:53:48
      */
     focusCode() {
-      this.$refs.codeEmployee.focus();
+      this.$refs.EmployeeCode.focus();
     },
     /**
      * Mô tả: Lấy nhân viên có giá trị lớn nhất trong hệ thống
@@ -539,6 +593,10 @@ export default {
                 this.listDepartmentSearch[
                   this.indexDepartmentSelected
                 ].DepartmentName;
+              this.employee.DepartmentId =
+                this.listDepartmentSearch[
+                  this.indexDepartmentSelected
+                ].DepartmentId;
               this.isShowSelectDepartment = false;
             } else {
               this.isShowSelectDepartment = true;
@@ -561,6 +619,7 @@ export default {
 
         let newValue = event.target.value;
         this.employee.DepartmentName = newValue;
+        delete this.employee.DepartmentId;
         if (!newValue.trim()) {
           newValue = "";
         }
@@ -669,118 +728,24 @@ export default {
      * created date: 29-05-2023 07:54:52`
      */
     onSelectedDepartment(department, index) {
-      this.employee.DepartmentName = department;
+      this.employee.DepartmentName = department.DepartmentName;
+      this.employee.DepartmentId = department.DepartmentId;
       this.indexDepartmentSelected = index;
     },
     /**
-     * Mô tả: Hàm kiểm tra các ô bắt buộc phải nhập dữ liệu
+     * Mô tả: Hàm xử lí lỗi nhập liệu người dùng
      * created by : BNTIEN
-     * created date: 02-06-2023 15:04:13
+     * created date: 29-06-2023 07:07:16
      */
-    validateData() {
-      // Nếu chưa nhập mã nhân viên
-      if (!this.employee.EmployeeCode) {
-        this.isBorderRed.Code = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CODE_NOT_NULL
-        );
-      } else {
-        // Nếu mã nhân viên k kết thúc bằng số
-        if (
-          !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
-            this.employee.EmployeeCode
-          )
-        ) {
-          this.isBorderRed.Code = true;
-          this.dataNotNull.push(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .CODE_END_MUST_NUMBER
-          );
-        }
+    handleErrorInput() {
+      delete this.errors.id;
+      for (let key in this.errors) {
+        this.dataNotNull.push(this.errors[key]);
+        this.isBorderRed[key] = true;
       }
-      // Nếu chưa nhập tên nhân viên
-      if (!this.employee.FullName) {
-        this.isBorderRed.Name = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME_NOT_NULL
-        );
-      }
-      // Nếu chưa chọn đơn vị
-      if (!this.employee.DepartmentName) {
-        this.isBorderRed.Department = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DEPARTMENT_NOT_NULL
-        );
-      }
-      // Nếu ngày sinh k hợp lệ
-      if (this.employee.DateOfBirth) {
-        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.isBorderRed.DOB = true;
-          this.dataNotNull.push(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DOB_ISVALID
-          );
-        }
-      }
-      // Nếu ngày cấp CMND k hợp lệ
-      if (this.employee.IdentityDate) {
-        if (!this.isInvalidDate(this.employee.IdentityDate)) {
-          this.isBorderRed.IdentityDate = true;
-          this.dataNotNull.push(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.CMNDDATE_ISVALID
-          );
-        }
-      }
-      // Nếu email có dữ liệu nhưng không đúng định dạng
-      if (this.employee.Email) {
-        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
-          this.isBorderRed.Email = true;
-          this.dataNotNull.push(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EMAIL_ISVALID
-          );
-        }
-      }
-    },
-    /**
-     * Mô tả: Hàm show dialog data not null
-     * created by : BNTIEN
-     * created date: 03-06-2023 14:27:28
-     */
-    showDialogDataNotNull() {
-      if (
-        !this.employee.EmployeeCode ||
-        !this.employee.FullName ||
-        !this.employee.DepartmentName
-      ) {
+      if (this.dataNotNull.length > 0) {
         this.isShowDialogDataNotNull = true;
-        return true;
       }
-      if (
-        !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
-          this.employee.EmployeeCode
-        )
-      ) {
-        this.isShowDialogDataNotNull = true;
-        return true;
-      }
-      if (this.employee.DateOfBirth) {
-        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.isShowDialogDataNotNull = true;
-          return true;
-        }
-      }
-      if (this.employee.IdentityDate) {
-        if (!this.isInvalidDate(this.employee.IdentityDate)) {
-          this.isShowDialogDataNotNull = true;
-          return true;
-        }
-      }
-      if (this.employee.Email) {
-        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
-          this.isShowDialogDataNotNull = true;
-          return true;
-        }
-      }
-      return false;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
@@ -788,12 +753,47 @@ export default {
      * created date: 29-05-2023 07:55:05
      */
     async btnSave() {
-      // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
-      this.validateData();
-      // Nếu dữ liệu nhập vào hợp lệ
-      if (!this.showDialogDataNotNull()) {
-        // Nếu form ở trạng thái thêm mới
-        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+      if (this.employee.EmployeeCode === "") {
+        delete this.employee.EmployeeCode;
+      }
+      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+        try {
+          // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+          let employeeById = {};
+          const res = await employeeService.getByCode(
+            this.employee.EmployeeCode
+          );
+          employeeById = res.data;
+          if (!employeeById) {
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống
+            const res = await employeeService.create(this.employee);
+            if (
+              this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+            ) {
+              this.$_MISAEmitter.emit(
+                "onShowToastMessage",
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                  .SUCCESS_CTEATE
+              );
+              this.$emit("closeFormDetail");
+              this.$_MISAEmitter.emit("refreshDataTable");
+            }
+          } else {
+            // Nếu mã nhân viên đã tồn tại trong hệ thống
+            this.isShowDialogCodeExist = true;
+            this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+          }
+        } catch (error) {
+          this.errors = error.response.data.Data;
+          this.handleErrorInput();
+        }
+      } else {
+        // Nếu form ở trạng thái sửa
+        // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
+        if (
+          JSON.stringify(this.employeeSelected) !==
+          JSON.stringify(this.employee)
+        ) {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
@@ -801,20 +801,20 @@ export default {
               this.employee.EmployeeCode
             );
             employeeById = res.data;
-            if (!employeeById) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+            if (
+              !employeeById ||
+              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
+            ) {
+              const res = await employeeService.update(
+                this.employeeSelected.EmployeeId,
+                this.employee
               );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              const res = await employeeService.create(this.employee);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
-              ) {
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
                 this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
+                  "onShowToastMessageUpdate",
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                    .SUCCESS_UPDATE
                 );
                 this.$emit("closeFormDetail");
                 this.$_MISAEmitter.emit("refreshDataTable");
@@ -825,59 +825,14 @@ export default {
               this.contentEmployeeCodeExist = employeeById.EmployeeCode;
             }
           } catch (error) {
-            console.log(error);
-            return;
+            this.errors = error.response.data.Data;
+            this.handleErrorInput();
           }
         } else {
-          // Nếu form ở trạng thái sửa
-          // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
-          if (
-            JSON.stringify(this.employeeSelected) !==
-            JSON.stringify(this.employee)
-          ) {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            try {
-              const res = await employeeService.getByCode(
-                this.employee.EmployeeCode
-              );
-              employeeById = res.data;
-            } catch {
-              return;
-            }
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-            if (
-              !employeeById ||
-              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
-            ) {
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
-              );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              const res = await employeeService.update(
-                this.employeeSelected.EmployeeId,
-                this.employee
-              );
-              this.$_MISAEmitter.emit("setFormModeAdd");
-              this.$emit("closeFormDetail");
-              this.$_MISAEmitter.emit("refreshDataTable");
-              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessageUpdate",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_UPDATE
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
-            }
-          } else {
-            this.$emit("closeFormDetail");
-          }
+          this.$emit("closeFormDetail");
         }
       }
+      // }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nut cất và thêm trên form chi tiết
@@ -885,12 +840,52 @@ export default {
      * created date: 29-05-2023 07:55:23
      */
     async btnSaveAndAdd() {
-      // Gọi hàm kiểm tra dữ liệu bắt buộc phải nhập
-      this.validateData();
-      // Nếu dữ liệu hợp lệ
-      if (!this.showDialogDataNotNull()) {
-        // Nếu form ở trạng thái thêm mới
-        if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+      if (this.employee.EmployeeCode === "") {
+        delete this.employee.EmployeeCode;
+      }
+      // Nếu form ở trạng thái thêm mới
+      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+        try {
+          // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+          let employeeById = {};
+          const res = await employeeService.getByCode(
+            this.employee.EmployeeCode
+          );
+          employeeById = res.data;
+          if (!employeeById) {
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống
+            const res = await employeeService.create(this.employee);
+            if (
+              this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+            ) {
+              this.$_MISAEmitter.emit(
+                "onShowToastMessage",
+                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
+                  .SUCCESS_CTEATE
+              );
+              this.employee = {};
+              this.isBorderRed = {};
+              this.$_MISAEmitter.emit("refreshDataTable");
+              await this.getNewCode();
+              this.employee.EmployeeCode = this.newEmployeeCode;
+              this.focusCode();
+            }
+          } else {
+            // Nếu mã nhân viên đã tồn tại trong hệ thống
+            this.isShowDialogCodeExist = true;
+            this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+          }
+        } catch (error) {
+          this.errors = error.response.data.Data;
+          this.handleErrorInput();
+        }
+        // Nếu form ở trạng thái sửa
+      } else {
+        // Kiểm tra xem dữ liệu có thay đổi hay k
+        if (
+          JSON.stringify(this.employeeSelected) !==
+          JSON.stringify(this.employee)
+        ) {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let employeeById = {};
@@ -898,63 +893,11 @@ export default {
               this.employee.EmployeeCode
             );
             employeeById = res.data;
-            if (!employeeById) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
-              );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
-              const res = await employeeService.create(this.employee);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
-              ) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
-                );
-                this.employee = {};
-                this.isBorderRed = {};
-                this.$_MISAEmitter.emit("refreshDataTable");
-                await this.getNewCode();
-                this.employee.EmployeeCode = this.newEmployeeCode;
-                this.focusCode();
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
-            }
-          } catch (error) {
-            console.log(error);
-            return;
-          }
-          // Nếu form ở trạng thái sửa
-        } else {
-          // Kiểm tra xem dữ liệu có thay đổi hay k
-          if (
-            JSON.stringify(this.employeeSelected) !==
-            JSON.stringify(this.employee)
-          ) {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            try {
-              const res = await employeeService.getByCode(
-                this.employee.EmployeeCode
-              );
-              employeeById = res.data;
-            } catch {
-              return;
-            }
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
             if (
               !employeeById ||
               employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
             ) {
-              let departmentAdd = await departmentService.getByName(
-                this.employee.DepartmentName
-              );
-              this.employee.DepartmentId = departmentAdd.data[0].DepartmentId;
               const res = await employeeService.update(
                 this.employeeSelected.EmployeeId,
                 this.employee
@@ -977,11 +920,14 @@ export default {
               this.isShowDialogCodeExist = true;
               this.contentEmployeeCodeExist = employeeById.EmployeeCode;
             }
-          } else {
-            this.employee = {};
-            this.$_MISAEmitter.emit("setFormModeAdd");
-            this.focusCode();
+          } catch (error) {
+            this.errors = error.response.data.Data;
+            this.handleErrorInput();
           }
+        } else {
+          this.employee = {};
+          this.$_MISAEmitter.emit("setFormModeAdd");
+          this.focusCode();
         }
       }
     },
@@ -993,42 +939,17 @@ export default {
     onCloseDialogSaveAndAdd() {
       this.isShowDialogDataNotNull = false;
       this.dataNotNull = [];
-      if (!this.employee.EmployeeCode) {
-        this.focusCode();
-        return;
-      } else {
-        if (
-          !this.$_MISAResource.REGEX.END_MUST_NUMBER.test(
-            this.employee.EmployeeCode
-          )
-        ) {
-          this.focusCode();
-          return;
+      let listPropError = [];
+      for (const key in this.isBorderRed) {
+        if (this.isBorderRed[key] === true) {
+          listPropError.push(key);
         }
       }
-      if (!this.employee.FullName) {
-        this.$refs.nameEmployee.focus();
-        return;
-      }
-      if (!this.employee.DepartmentName) {
-        this.$refs.departmentEmployee.focus();
-        return;
-      }
-      if (this.employee.DateOfBirth) {
-        if (!this.isInvalidDate(this.employee.DateOfBirth)) {
-          this.$refs.dobEmployee.focus();
-          return;
-        }
-      }
-      if (this.employee.IdentityDate) {
-        if (!this.isInvalidDate(this.employee.IdentityDate)) {
-          this.$refs.identityDateEmployee.focus();
-          return;
-        }
-      }
-      if (this.employee.Email) {
-        if (!this.$_MISAResource.REGEX.EMAIL.test(this.employee.Email)) {
-          this.$refs.emailEmployee.focus();
+      for (const prop of this.employeeProperty) {
+        if (listPropError.includes(prop)) {
+          this.$nextTick(() => {
+            this.$refs[prop].focus();
+          });
           return;
         }
       }
