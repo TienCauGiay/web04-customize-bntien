@@ -19,13 +19,8 @@ class BaseServices {
      * created date: 02-06-2023 22:07:48
      */
     async getAll(){
-        try {
-            const response = await axios.get(this.getBaseUrl());
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.get(this.getBaseUrl());
+        return response;
     }
 
     /**
@@ -34,13 +29,8 @@ class BaseServices {
      * created date: 02-06-2023 22:09:41
      */
     async getByCode(code){
-        try {
-            const response = await axios.get(`${this.getBaseUrl()}/code/${code}`);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.get(`${this.getBaseUrl()}/code/${code}`);
+        return response;
     }
 
     /**
@@ -49,13 +39,8 @@ class BaseServices {
      * created date: 02-06-2023 22:10:13
      */
     async create(obj){
-        try {
-            const response = await axios.post(this.getBaseUrl(), obj);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.post(this.getBaseUrl(), obj);
+        return response;
     }
 
     /**
@@ -64,13 +49,8 @@ class BaseServices {
      * created date: 02-06-2023 22:10:45
      */
     async update(id, obj){
-        try {
-            const response = await axios.put(`${this.getBaseUrl()}/${id}`, obj);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.put(`${this.getBaseUrl()}/${id}`, obj);
+        return response;
     }
     
     /**
@@ -79,13 +59,8 @@ class BaseServices {
      * created date: 02-06-2023 22:11:02
      */
     async delete(id){
-        try {
-            const response = await axios.delete(`${this.getBaseUrl()}/${id}`);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.delete(`${this.getBaseUrl()}/${id}`);
+        return response;
     }
 
     /**
@@ -94,14 +69,8 @@ class BaseServices {
      * created date: 27-06-2023 23:05:28
      */
     async deleteMutiple(ids){
-        try{
-            const response = await axios.delete(`${this.getBaseUrl()}/ids`, {data:ids});
-            return response;
-        }
-        catch(error){
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.delete(`${this.getBaseUrl()}/ids`, {data:ids});
+        return response;
     }
 
     /**
@@ -110,19 +79,14 @@ class BaseServices {
      * created date: 17-06-2023 03:50:28
      */ 
     async getFilter(pageSize, pageNumber, textSearch){
-        try{
-            const response = await axios.get(`${this.getBaseUrl()}/filter`, {
-                params: {
-                  pageSize: pageSize,
-                  pageNumber: pageNumber,
-                  textSearch: textSearch
-                }
-              });
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.get(`${this.getBaseUrl()}/filter`, {
+            params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                textSearch: textSearch
+            }
+            });
+        return response;
     }
 }
 

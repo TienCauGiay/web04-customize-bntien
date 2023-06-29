@@ -579,8 +579,7 @@ export default {
         );
         this.dataTable = resfilter.data;
         this.isShowLoadding = false;
-      } catch (error) {
-        console.log(error);
+      } catch {
         return;
       }
     },
@@ -653,8 +652,7 @@ export default {
           this.onShowToastMessage();
           await this.getListEmployee();
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
         return;
       }
     },
@@ -882,8 +880,7 @@ export default {
           this.onShowToastMessage();
           await this.getListEmployee();
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
         return;
       }
     },

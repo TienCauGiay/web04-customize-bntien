@@ -10,17 +10,12 @@ class DepartmentService extends BaseServices{
      * created date: 21-06-2023 15:17:53
      */
     async getByName(departmentName){
-        try{
-            const response = await axios.get(`${this.getBaseUrl()}/name/`, {
-                params: {
-                    departmentName: departmentName,
-                }
-              });
-            return response;
-        } catch(error){
-            console.log(error);
-            throw error;
-        }
+        const response = await axios.get(`${this.getBaseUrl()}/name/`, {
+            params: {
+                departmentName: departmentName,
+            }
+            });
+        return response;
     }
 }
 export default new DepartmentService();

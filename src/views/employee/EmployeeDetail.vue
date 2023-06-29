@@ -62,6 +62,7 @@
                   ? errors['EmployeeCode']
                   : ''
               "
+              @input="setIsBorderRed('EmployeeCode')"
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -79,6 +80,7 @@
                   ? errors['FullName']
                   : ''
               "
+              @input="setIsBorderRed('FullName')"
             ></misa-input>
           </div>
         </div>
@@ -95,6 +97,7 @@
               }"
               :title="isBorderRed.DateOfBirth ? errors['DateOfBirth'] : ''"
               ref="DateOfBirth"
+              @input="setIsBorderRed('DateOfBirth')"
             ></misa-input>
           </div>
           <div class="col-md-tb">
@@ -165,6 +168,8 @@
                   :title="
                     isBorderRed.DepartmentName || !employee.DepartmentName
                       ? errors['DepartmentName']
+                        ? errors['DepartmentName']
+                        : errors['DepartmentId']
                       : ''
                   "
                   @keydown="onKeyDownDepartment"
@@ -218,6 +223,7 @@
               :title="
                 isBorderRed.IdentityNumber ? errors['IdentityNumber'] : ''
               "
+              @input="setIsBorderRed('IdentityNumber')"
             ></misa-input>
           </div>
           <div class="col-md-n">
@@ -234,6 +240,7 @@
               }"
               :title="isBorderRed.IdentityDate ? errors['IdentityDate'] : ''"
               ref="IdentityDate"
+              @input="setIsBorderRed('IdentityDate')"
             ></misa-input>
           </div>
         </div>
@@ -250,6 +257,7 @@
                 'border-red': isBorderRed.PositionName,
               }"
               :title="isBorderRed.PositionName ? errors['PositionName'] : ''"
+              @input="setIsBorderRed('PositionName')"
             ></misa-input>
           </div>
         </div>
@@ -266,6 +274,7 @@
                 'border-red': isBorderRed.IdentityPlace,
               }"
               :title="isBorderRed.IdentityPlace ? errors['IdentityPlace'] : ''"
+              @input="setIsBorderRed('IdentityPlace')"
             ></misa-input>
           </div>
         </div>
@@ -282,6 +291,7 @@
               'border-red': isBorderRed.Address,
             }"
             :title="isBorderRed.Address ? errors['Address'] : ''"
+            @input="setIsBorderRed('Address')"
           ></misa-input>
         </div>
         <div class="full-content">
@@ -303,6 +313,7 @@
                   'border-red': isBorderRed.PhoneNumber,
                 }"
                 :title="isBorderRed.PhoneNumber ? errors['PhoneNumber'] : ''"
+                @input="setIsBorderRed('PhoneNumber')"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -324,6 +335,7 @@
                 :title="
                   isBorderRed.PhoneLandline ? errors['PhoneLandline'] : ''
                 "
+                @input="setIsBorderRed('PhoneLandline')"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -338,6 +350,7 @@
                 }"
                 :title="isBorderRed.Email ? errors['Email'] : ''"
                 ref="Email"
+                @input="setIsBorderRed('Email')"
               ></misa-input>
             </div>
           </div>
@@ -356,6 +369,7 @@
                   'border-red': isBorderRed.BankAccount,
                 }"
                 :title="isBorderRed.BankAccount ? errors['BankAccount'] : ''"
+                @input="setIsBorderRed('BankAccount')"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -370,6 +384,7 @@
                   'border-red': isBorderRed.BankName,
                 }"
                 :title="isBorderRed.BankName ? errors['BankName'] : ''"
+                @input="setIsBorderRed('BankName')"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -384,6 +399,7 @@
                   'border-red': isBorderRed.BankBranch,
                 }"
                 :title="isBorderRed.BankBranch ? errors['BankBranch'] : ''"
+                @input="setIsBorderRed('BankBranch')"
               ></misa-input>
             </div>
           </div>
@@ -509,18 +525,6 @@ export default {
       errors: {},
     };
   },
-  watch: {
-    employee: {
-      handler: function () {
-        for (let key in this.employee) {
-          if (Object.prototype.hasOwnProperty.call(this.isBorderRed, key)) {
-            this.isBorderRed[key] = false;
-          }
-        }
-      },
-      deep: true,
-    },
-  },
   methods: {
     /**
      * Mô tả: Hàm focus vào ô input mã nhân viên
@@ -637,6 +641,7 @@ export default {
      * created date: 06-06-2023 22:31:16
      */
     async onSearchChange() {
+      this.isBorderRed.DepartmentName = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchDepartmentTimeout);
@@ -688,8 +693,7 @@ export default {
       try {
         const res = await departmentService.getByName("");
         this.listDepartmentSearch = res.data;
-      } catch (error) {
-        console.log(error);
+      } catch {
         return;
       }
     },
@@ -699,28 +703,27 @@ export default {
      * created date: 30-05-2023 14:57:33
      */
     async loadData() {
-      await this.getListDepartment();
-      await this.getNewCode();
-      // Nếu form ở trạng thái thêm mới
-      // Chuyển đối tượng sang chuỗi json
-      let res = JSON.stringify(this.employeeSelected);
-      // Chuyển đổi chuỗi json thành đối tượng employee
-      this.employee = JSON.parse(res);
-      if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
-        // Sinh mã tự động
-        this.employee.EmployeeCode = this.newEmployeeCode;
-        // Gán title cho form mode thêm mới
-        this.titleFormMode =
-          this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
-      } else {
-        try {
+      try {
+        await this.getListDepartment();
+        await this.getNewCode();
+        // Nếu form ở trạng thái thêm mới
+        // Chuyển đối tượng sang chuỗi json
+        let res = JSON.stringify(this.employeeSelected);
+        // Chuyển đổi chuỗi json thành đối tượng employee
+        this.employee = JSON.parse(res);
+        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+          // Sinh mã tự động
+          this.employee.EmployeeCode = this.newEmployeeCode;
+          // Gán title cho form mode thêm mới
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
+        } else {
           // Gán title cho form mode thêm sửa
           this.titleFormMode =
             this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
-        } catch (error) {
-          console.log(error);
-          return;
         }
+      } catch {
+        return;
       }
     },
     /**
@@ -755,6 +758,7 @@ export default {
       this.employee.DepartmentName = department.DepartmentName;
       this.employee.DepartmentId = department.DepartmentId;
       this.indexDepartmentSelected = index;
+      this.isBorderRed.DepartmentName = false;
     },
     /**
      * Mô tả: Hàm xử lí lỗi nhập liệu người dùng
@@ -766,7 +770,11 @@ export default {
       for (const key of this.employeeProperty) {
         if (key in this.errors) {
           this.dataNotNull.push(this.errors[key]);
-          this.isBorderRed[key] = true;
+          if (key === "DepartmentId") {
+            this.isBorderRed["DepartmentName"] = true;
+          } else {
+            this.isBorderRed[key] = true;
+          }
         }
       }
       if (this.dataNotNull.length > 0) {
@@ -1020,6 +1028,17 @@ export default {
           }
           return;
         }
+      }
+    },
+
+    /**
+     * Mô tả: Hàm bỏ border red khi dữ liệu thay đổi
+     * created by : BNTIEN
+     * created date: 29-06-2023 22:03:38
+     */
+    setIsBorderRed(prop) {
+      if (prop in this.isBorderRed) {
+        this.isBorderRed[prop] = false;
       }
     },
 
