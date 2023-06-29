@@ -3,14 +3,14 @@
     <div class="employee-toolbar">
       <div
         class="question-icon icon-tb"
-        :tabindex="21"
+        :tabindex="23"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"
       ></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
         id="employee-exit"
-        :tabindex="22"
+        :tabindex="24"
         @keydown.tab.prevent="resetTab($event.target.value)"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXIST"
       ></div>
@@ -25,6 +25,7 @@
             type="checkbox"
             :checked="employee.IsCustomer === this.$_MISAEnum.CUSTOMER"
             @change="handleCustomerCheckboxChange"
+            :tabindex="18"
           />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
@@ -35,6 +36,7 @@
             type="checkbox"
             :checked="employee.IsProvider === this.$_MISAEnum.PROVIDER"
             @change="handleProviderCheckboxChange"
+            :tabindex="19"
           />
           <span>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER
@@ -55,7 +57,7 @@
                 'border-red': isBorderRed.EmployeeCode,
               }"
               :tabindex="1"
-              :titleContent="
+              :title="
                 !employee.EmployeeCode
                   ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                       .CODE_NOT_NULL
@@ -73,7 +75,7 @@
               v-model="employee.FullName"
               :class="{ 'border-red': isBorderRed.FullName }"
               :tabindex="2"
-              :titleContent="
+              :title="
                 !employee.FullName
                   ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                       .NAME_NOT_NULL
@@ -135,7 +137,11 @@
           </div>
         </div>
         <div class="half-content">
-          <div class="col-md-l" style="position: relative">
+          <div
+            class="col-md-l"
+            style="position: relative"
+            ref="MenuItemDepartment"
+          >
             <label
               >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DEPARTMENT }}
               <span class="s-require">*</span></label
@@ -157,7 +163,7 @@
                   :value="employee.DepartmentName"
                   @input="onSearchChange"
                   :tabindex="3"
-                  :titleContent="
+                  :title="
                     !employee.DepartmentName
                       ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                           .DEPARTMENT_NOT_NULL
@@ -172,7 +178,10 @@
             </div>
             <div
               class="col-md-l select-department"
-              :class="{ 'select-department-block': isShowSelectDepartment }"
+              :class="{
+                'select-department-block':
+                  isShowSelectDepartment && listDepartmentSearch.length > 0,
+              }"
             >
               <ul
                 v-show="isShowSelectDepartment"
@@ -183,7 +192,7 @@
                   :key="index"
                   @click="onSelectedDepartment(department, index)"
                   :class="{ 'cbb-selected': index == indexDepartmentSelected }"
-                  ref="listValueDepartment"
+                  ref="DepartmentSelectedItem"
                 >
                   {{ department.DepartmentName }}
                 </li>
@@ -374,14 +383,14 @@
               this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
             "
             @click="btnCancel"
-            :tabindex="18"
+            :tabindex="22"
           ></misa-button-extra>
         </div>
         <div class="action-right">
           <misa-button-extra
             :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE"
             @click="btnSave"
-            :tabindex="19"
+            :tabindex="20"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE"
           ></misa-button-extra>
           <misa-button-default
@@ -389,7 +398,7 @@
               this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD
             "
             @click="btnSaveAndAdd"
-            :tabindex="20"
+            :tabindex="21"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
           ></misa-button-default>
         </div>
@@ -430,6 +439,7 @@ export default {
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
+    window.addEventListener("click", this.handleClickOutsideMenuDepartment);
   },
   data() {
     return {
@@ -639,7 +649,7 @@ export default {
      */
     scrollIndex(index, checkKeyCode) {
       try {
-        const element = this.$refs.listValueDepartment[index];
+        const element = this.$refs.DepartmentSelectedItem[index];
         if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
           element.scrollIntoView({
             block:
@@ -945,8 +955,17 @@ export default {
           listPropError.push(key);
         }
       }
+      // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
+      if (
+        listPropError.includes("DepartmentId") &&
+        !listPropError.includes("DepartmentName")
+      ) {
+        listPropError.push("DepartmentName");
+      }
+      console.log(listPropError);
       for (const prop of this.employeeProperty) {
         if (listPropError.includes(prop)) {
+          // đợi DOM cập nhật trước khi thực thi focus
           this.$nextTick(() => {
             this.$refs[prop].focus();
           });
@@ -1010,6 +1029,12 @@ export default {
     resetTab() {
       this.focusCode();
     },
+
+    handleClickOutsideMenuDepartment(event) {
+      if (!this.$refs.MenuItemDepartment.contains(event.target)) {
+        this.isShowSelectDepartment = false;
+      }
+    },
   },
 
   computed: {
@@ -1054,6 +1079,10 @@ export default {
         this.employee.IdentityDate = newDate;
       },
     },
+  },
+
+  beforeUnmount() {
+    window.removeEventListener("click", this.handleClickOutsideMenuDepartment);
   },
 };
 </script>
