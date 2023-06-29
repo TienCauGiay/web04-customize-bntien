@@ -63,13 +63,6 @@ const MISAResource = {
                 Female: "Nữ",
                 Other: "Khác"
             },
-            CODE_NOT_NULL: "Mã nhân viên không được để trống.",
-            NAME_NOT_NULL: "Tên nhân viên không được để trống.",
-            DEPARTMENT_NOT_NULL: "Đơn vị nhân viên không được để trống.",
-            CODE_END_MUST_NUMBER: "Mã nhân viên phải kết thúc bằng số",
-            DOB_ISVALID:"Ngày sinh không hợp lệ",
-            CMNDDATE_ISVALID : "Ngày cấp không hợp lệ",
-            EMAIL_ISVALID: "Email không đúng định dạng",
             PAGE:{
                 PREVIOUS: "previous",
                 NEXT: "next",
@@ -125,6 +118,7 @@ const MISAResource = {
                 DATA_CHANGE: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
                 EXIST_PRE: "Mã nhân viên",
                 EXIST_END: "đã tồn tại trong hệ thống, vui lòng kiểm tra lại.",
+                EXIST_DETAIL_END: "đã tồn tại trong hệ thống.",
                 END: "không?"
             },
         },

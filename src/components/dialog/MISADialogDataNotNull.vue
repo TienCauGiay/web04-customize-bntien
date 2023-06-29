@@ -45,6 +45,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(@/css/base/dialog.css);
+
+.dialog-content-main {
+  max-height: 64px;
+  overflow-y: auto;
+}
+
+.dialog-content-main li {
+  line-height: 1.5;
+}
 </style>

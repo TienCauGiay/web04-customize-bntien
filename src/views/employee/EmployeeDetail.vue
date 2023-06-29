@@ -58,9 +58,8 @@
               }"
               :tabindex="1"
               :title="
-                !employee.EmployeeCode
-                  ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .CODE_NOT_NULL
+                isBorderRed.EmployeeCode || !employee.EmployeeCode
+                  ? errors['EmployeeCode']
                   : ''
               "
             ></misa-input>
@@ -76,9 +75,8 @@
               :class="{ 'border-red': isBorderRed.FullName }"
               :tabindex="2"
               :title="
-                !employee.FullName
-                  ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .NAME_NOT_NULL
+                isBorderRed.FullName || !employee.FullName
+                  ? errors['FullName']
                   : ''
               "
             ></misa-input>
@@ -95,6 +93,7 @@
               :class="{
                 'border-red': isBorderRed.DateOfBirth,
               }"
+              :title="isBorderRed.DateOfBirth ? errors['DateOfBirth'] : ''"
               ref="DateOfBirth"
             ></misa-input>
           </div>
@@ -164,9 +163,8 @@
                   @input="onSearchChange"
                   :tabindex="3"
                   :title="
-                    !employee.DepartmentName
-                      ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                          .DEPARTMENT_NOT_NULL
+                    isBorderRed.DepartmentName || !employee.DepartmentName
+                      ? errors['DepartmentName']
                       : ''
                   "
                   @keydown="onKeyDownDepartment"
@@ -217,6 +215,9 @@
               :class="{
                 'border-red': isBorderRed.IdentityNumber,
               }"
+              :title="
+                isBorderRed.IdentityNumber ? errors['IdentityNumber'] : ''
+              "
             ></misa-input>
           </div>
           <div class="col-md-n">
@@ -231,6 +232,7 @@
               :class="{
                 'border-red': isBorderRed.IdentityDate,
               }"
+              :title="isBorderRed.IdentityDate ? errors['IdentityDate'] : ''"
               ref="IdentityDate"
             ></misa-input>
           </div>
@@ -247,6 +249,7 @@
               :class="{
                 'border-red': isBorderRed.PositionName,
               }"
+              :title="isBorderRed.PositionName ? errors['PositionName'] : ''"
             ></misa-input>
           </div>
         </div>
@@ -262,6 +265,7 @@
               :class="{
                 'border-red': isBorderRed.IdentityPlace,
               }"
+              :title="isBorderRed.IdentityPlace ? errors['IdentityPlace'] : ''"
             ></misa-input>
           </div>
         </div>
@@ -277,6 +281,7 @@
             :class="{
               'border-red': isBorderRed.Address,
             }"
+            :title="isBorderRed.Address ? errors['Address'] : ''"
           ></misa-input>
         </div>
         <div class="full-content">
@@ -297,6 +302,7 @@
                 :class="{
                   'border-red': isBorderRed.PhoneNumber,
                 }"
+                :title="isBorderRed.PhoneNumber ? errors['PhoneNumber'] : ''"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -315,6 +321,9 @@
                 :class="{
                   'border-red': isBorderRed.PhoneLandline,
                 }"
+                :title="
+                  isBorderRed.PhoneLandline ? errors['PhoneLandline'] : ''
+                "
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -327,6 +336,7 @@
                 :class="{
                   'border-red': isBorderRed.Email,
                 }"
+                :title="isBorderRed.Email ? errors['Email'] : ''"
                 ref="Email"
               ></misa-input>
             </div>
@@ -345,6 +355,7 @@
                 :class="{
                   'border-red': isBorderRed.BankAccount,
                 }"
+                :title="isBorderRed.BankAccount ? errors['BankAccount'] : ''"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -358,6 +369,7 @@
                 :class="{
                   'border-red': isBorderRed.BankName,
                 }"
+                :title="isBorderRed.BankName ? errors['BankName'] : ''"
               ></misa-input>
             </div>
             <div class="col-md-quater">
@@ -371,6 +383,7 @@
                 :class="{
                   'border-red': isBorderRed.BankBranch,
                 }"
+                :title="isBorderRed.BankBranch ? errors['BankBranch'] : ''"
               ></misa-input>
             </div>
           </div>
@@ -447,6 +460,7 @@ export default {
       employeeProperty: [
         "EmployeeCode",
         "FullName",
+        "DepartmentId",
         "DepartmentName",
         "PositionName",
         "DateOfBirth",
@@ -749,9 +763,11 @@ export default {
      */
     handleErrorInput() {
       delete this.errors.id;
-      for (let key in this.errors) {
-        this.dataNotNull.push(this.errors[key]);
-        this.isBorderRed[key] = true;
+      for (const key of this.employeeProperty) {
+        if (key in this.errors) {
+          this.dataNotNull.push(this.errors[key]);
+          this.isBorderRed[key] = true;
+        }
       }
       if (this.dataNotNull.length > 0) {
         this.isShowDialogDataNotNull = true;
@@ -791,6 +807,13 @@ export default {
           } else {
             // Nếu mã nhân viên đã tồn tại trong hệ thống
             this.isShowDialogCodeExist = true;
+            this.isBorderRed.EmployeeCode = true;
+            this.errors["EmployeeCode"] = `${
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+            } ${employeeById.EmployeeCode} ${
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+                .EXIST_DETAIL_END
+            }`;
             this.contentEmployeeCodeExist = employeeById.EmployeeCode;
           }
         } catch (error) {
@@ -832,6 +855,13 @@ export default {
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
               this.isShowDialogCodeExist = true;
+              this.isBorderRed.EmployeeCode = true;
+              this.errors["EmployeeCode"] = `${
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+              } ${employeeById.EmployeeCode} ${
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+                  .EXIST_DETAIL_END
+              }`;
               this.contentEmployeeCodeExist = employeeById.EmployeeCode;
             }
           } catch (error) {
@@ -883,6 +913,13 @@ export default {
           } else {
             // Nếu mã nhân viên đã tồn tại trong hệ thống
             this.isShowDialogCodeExist = true;
+            this.isBorderRed.EmployeeCode = true;
+            this.errors["EmployeeCode"] = `${
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+            } ${employeeById.EmployeeCode} ${
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+                .EXIST_DETAIL_END
+            }`;
             this.contentEmployeeCodeExist = employeeById.EmployeeCode;
           }
         } catch (error) {
@@ -928,6 +965,13 @@ export default {
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
               this.isShowDialogCodeExist = true;
+              this.isBorderRed.EmployeeCode = true;
+              this.errors["EmployeeCode"] = `${
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+              } ${employeeById.EmployeeCode} ${
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+                  .EXIST_DETAIL_END
+              }`;
               this.contentEmployeeCodeExist = employeeById.EmployeeCode;
             }
           } catch (error) {
@@ -962,13 +1006,18 @@ export default {
       ) {
         listPropError.push("DepartmentName");
       }
-      console.log(listPropError);
       for (const prop of this.employeeProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
-          this.$nextTick(() => {
-            this.$refs[prop].focus();
-          });
+          if (prop === "DepartmentId") {
+            this.$nextTick(() => {
+              this.$refs["DepartmentName"].focus();
+            });
+          } else {
+            this.$nextTick(() => {
+              this.$refs[prop].focus();
+            });
+          }
           return;
         }
       }
@@ -1107,6 +1156,10 @@ export default {
 input[type="checkbox"],
 input[type="radio"] {
   accent-color: #2ca01c;
+  cursor: pointer;
+}
+
+input[type="date"]:hover {
   cursor: pointer;
 }
 
