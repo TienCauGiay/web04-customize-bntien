@@ -366,14 +366,92 @@ import helperCommon from "@/scripts/helper.js";
 import employeeService from "@/services/employee.js";
 export default {
   name: "EmployeeList",
+
   components: {
     EmployeeDetail,
   },
+
+  created() {
+    // Gọi hàm lấy dữ liệu danh sách nhân viên
+    this.getListEmployee();
+    // Đăng kí các sự kiện
+    this.$_MISAEmitter.on("onShowToastMessage", (data) => {
+      this.contentToastSuccess = data;
+      this.onShowToastMessage();
+    });
+    this.$_MISAEmitter.on("onShowToastMessageUpdate", (data) => {
+      this.contentToastSuccess = data;
+      this.onShowToastMessage();
+    });
+    this.$_MISAEmitter.on("setFormModeAdd", () => {
+      this.setFormModeAdd();
+    });
+    this.$_MISAEmitter.on("refreshDataTable", () => {
+      this.getListEmployee();
+    });
+  },
+
   mounted() {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
     window.addEventListener("click", this.handleClickOutsideDeleteMulti);
   },
+
+  data() {
+    return {
+      // Khai báo biến quy định trạng thái hiển thị của form chi tiết
+      isShowFormDetail: false,
+      // Khai báo biến quy định trạng thái hiển thị overlay
+      isOverlay: false,
+      // Khai báo mảng quy định trạng thái hiển thị của các chức năng ở cột cuối của table
+      isShowColFeature: [],
+      // Khai báo biến quy định trạng thái hiển thị của các item select paging
+      isShowPaging: false,
+      // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
+      isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
+      // Khai báo trạng thái hiển thị của toast message
+      isShowToastMessage: false,
+      // Khai báo dữ liệu duyệt trên 1 trang table
+      dataTable: [],
+      // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
+      employeeUpdate: {},
+      // Khai báo số bản ghi mặc định được hiển thi trên table
+      selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
+      // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
+      recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
+      // Khai báo EmployeeId của nhân viên cần xóa
+      employeeIdDeleteSelected: "",
+      // Khai báo EmployeeCode của nhân viên cần xóa
+      employeeCodeDeleteSelected: "",
+      // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
+      isShowDialogConfirmDelete: false,
+      // Khai báo biến lưu nội dung của toast message
+      contentToastSuccess: "",
+      // Tái sử dụng hàm formatDate trong helperCommon
+      formatDate: helperCommon.formatDate,
+      // Khai báo biến lưu chỉ số index được chọn để xóa trong table
+      selectedIndex: null,
+      // Khai báo biến lưu nội dung tìm kiếm
+      textSearch: "",
+      // Khai báo trang hiện tại trong phân trang
+      currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo số trang tối đa hiển thị trong phân trang
+      maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
+      // Khai báo biến quy định trạng thái hiển thị loadding
+      isShowLoadding: false,
+      // Khai báo biến lưu chỉ số index được chọn trong paging
+      indecSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
+      searchEmployeeTimeout: null,
+      // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
+      isShowMenuExcuteBatch: false,
+      // Khai báo biến lưu danh sách id cần xóa
+      ids: [],
+      // Khai báo biến kiểm tra xem dialog hiển thị hỏi xóa ít hay xóa nhiều
+      isDeleteMultipleDialog: null,
+    };
+  },
+
   computed: {
     /**
      * Mô tả: Tính tổng số trang trong phân trang
@@ -453,80 +531,36 @@ export default {
       return true;
     },
   },
-  data() {
-    return {
-      // Khai báo biến quy định trạng thái hiển thị của form chi tiết
-      isShowFormDetail: false,
-      // Khai báo biến quy định trạng thái hiển thị overlay
-      isOverlay: false,
-      // Khai báo mảng quy định trạng thái hiển thị của các chức năng ở cột cuối của table
-      isShowColFeature: [],
-      // Khai báo biến quy định trạng thái hiển thị của các item select paging
-      isShowPaging: false,
-      // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
-      isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
-      // Khai báo trạng thái hiển thị của toast message
-      isShowToastMessage: false,
-      // Khai báo dữ liệu duyệt trên 1 trang table
-      dataTable: [],
-      // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
-      employeeUpdate: {},
-      // Khai báo số bản ghi mặc định được hiển thi trên table
-      selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
-      // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
-      recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
-      // Khai báo EmployeeId của nhân viên cần xóa
-      employeeIdDeleteSelected: "",
-      // Khai báo EmployeeCode của nhân viên cần xóa
-      employeeCodeDeleteSelected: "",
-      // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
-      isShowDialogConfirmDelete: false,
-      // Khai báo biến lưu nội dung của toast message
-      contentToastSuccess: "",
-      // Tái sử dụng hàm formatDate trong helperCommon
-      formatDate: helperCommon.formatDate,
-      // Khai báo biến lưu chỉ số index được chọn để xóa trong table
-      selectedIndex: null,
-      // Khai báo biến lưu nội dung tìm kiếm
-      textSearch: "",
-      // Khai báo trang hiện tại trong phân trang
-      currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
-      // Khai báo số trang tối đa hiển thị trong phân trang
-      maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
-      // Khai báo biến quy định trạng thái hiển thị loadding
-      isShowLoadding: false,
-      // Khai báo biến lưu chỉ số index được chọn trong paging
-      indecSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
-      // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
-      searchEmployeeTimeout: null,
-      // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
-      isShowMenuExcuteBatch: false,
-      // Khai báo biến lưu danh sách id cần xóa
-      ids: [],
-      // Khai báo biến kiểm tra xem dialog hiển thị hỏi xóa ít hay xóa nhiều
-      isDeleteMultipleDialog: null,
-    };
-  },
-  created() {
-    // Gọi hàm lấy dữ liệu danh sách nhân viên
-    this.getListEmployee();
-    // Đăng kí các sự kiện
-    this.$_MISAEmitter.on("onShowToastMessage", (data) => {
-      this.contentToastSuccess = data;
-      this.onShowToastMessage();
-    });
-    this.$_MISAEmitter.on("onShowToastMessageUpdate", (data) => {
-      this.contentToastSuccess = data;
-      this.onShowToastMessage();
-    });
-    this.$_MISAEmitter.on("setFormModeAdd", () => {
-      this.setFormModeAdd();
-    });
-    this.$_MISAEmitter.on("refreshDataTable", () => {
-      this.getListEmployee();
-    });
-  },
+
   methods: {
+    /**
+     * Mô tả: Hàm lấy dữ liệu nhân viên từ api
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:49:20
+     */
+    async getListEmployee() {
+      try {
+        this.isShowLoadding = true;
+        const resfilter = await employeeService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          ""
+        );
+        this.dataTable = resfilter.data;
+        this.isShowLoadding = false;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiên load lại toàn bộ dữ liệu khi click vào icon refresh
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:49:31
+     */
+    async refreshData() {
+      await this.getListEmployee();
+      this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
+    },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
      * created by : BNTIEN
@@ -563,34 +597,6 @@ export default {
      */
     onShowSelectPaging() {
       this.isShowPaging = !this.isShowPaging;
-    },
-    /**
-     * Mô tả: Hàm lấy dữ liệu nhân viên từ api
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:49:20
-     */
-    async getListEmployee() {
-      try {
-        this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          ""
-        );
-        this.dataTable = resfilter.data;
-        this.isShowLoadding = false;
-      } catch {
-        return;
-      }
-    },
-    /**
-     * Mô tả: Hàm xử lí sự kiên load lại toàn bộ dữ liệu khi click vào icon refresh
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:49:31
-     */
-    async refreshData() {
-      await this.getListEmployee();
-      this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
     },
     /**
      * Mô tả: Hàm xử lí cập nhật thông tin nhân viên

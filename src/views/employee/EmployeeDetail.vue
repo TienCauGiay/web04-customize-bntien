@@ -458,21 +458,24 @@
 <script>
 import employeeService from "@/services/employee.js";
 import departmentService from "@/services/department.js";
-import helperCommon from "@/scripts/helper";
 export default {
   name: "EmployeeDetail",
+
   props: ["employeeSelected", "statusFormMode"],
+
   created() {
     this.loadData();
   },
+
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
     window.addEventListener("click", this.handleClickOutsideMenuDepartment);
   },
+
   data() {
     return {
-      // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus
+      // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
       employeeProperty: [
         "EmployeeCode",
         "FullName",
@@ -509,12 +512,8 @@ export default {
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
-      // Tái sử dụng hàm xóa dấu tiếng việt
-      removeVietnameseAccents: helperCommon.removeVietnameseAccents,
       // Khai báo chỉ số đang được chọn trong combobox
       indexDepartmentSelected: 0,
-      // Tái sử dụng hàm kiểm tra ngày hợp lệ
-      isInvalidDate: helperCommon.isInvalidDate,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
       searchDepartmentTimeout: null,
       // Khai báo biên lưu mã nhân viên tự động sinh ra
@@ -525,15 +524,52 @@ export default {
       errors: {},
     };
   },
-  methods: {
+
+  computed: {
     /**
-     * Mô tả: Hàm focus vào ô input mã nhân viên
+     * Mô tả: Hàm tính toán ngày sinh nhật
      * created by : BNTIEN
-     * created date: 27-06-2023 01:53:48
+     * created date: 01-06-2023 02:41:01
      */
-    focusCode() {
-      this.$refs.EmployeeCode.focus();
+    formattedDate: {
+      get() {
+        if (this.employee.DateOfBirth) {
+          const isoDate = this.employee.DateOfBirth;
+          const formattedDate = isoDate.split(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
+          )[0];
+          return formattedDate;
+        }
+        return "";
+      },
+      set(newDate) {
+        this.employee.DateOfBirth = newDate;
+      },
     },
+
+    /**
+     * Mô tả: Hàm tính toán ngày cấp chứng minh nhân dân
+     * created by : BNTIEN
+     * created date: 01-06-2023 02:41:35
+     */
+    formattedDateIdentity: {
+      get() {
+        if (this.employee.IdentityDate) {
+          const isoDateIdentity = this.employee.IdentityDate;
+          const formattedDateIdentity = isoDateIdentity.split(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
+          )[0];
+          return formattedDateIdentity;
+        }
+        return "";
+      },
+      set(newDate) {
+        this.employee.IdentityDate = newDate;
+      },
+    },
+  },
+
+  methods: {
     /**
      * Mô tả: Lấy nhân viên có giá trị lớn nhất trong hệ thống
      * created by : BNTIEN
@@ -546,6 +582,56 @@ export default {
       } catch {
         return;
       }
+    },
+    /**
+     * Mô tả: Hàm lấy danh sách department từ api
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:56:10
+     */
+    async getListDepartment() {
+      try {
+        const res = await departmentService.getByName("");
+        this.listDepartmentSearch = res.data;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: gọi api lấy dữ liệu
+     * created by : BNTIEN
+     * created date: 30-05-2023 14:57:33
+     */
+    async loadData() {
+      try {
+        await this.getListDepartment();
+        await this.getNewCode();
+        // Nếu form ở trạng thái thêm mới
+        // Chuyển đối tượng sang chuỗi json
+        let res = JSON.stringify(this.employeeSelected);
+        // Chuyển đổi chuỗi json thành đối tượng employee
+        this.employee = JSON.parse(res);
+        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+          // Sinh mã tự động
+          this.employee.EmployeeCode = this.newEmployeeCode;
+          // Gán title cho form mode thêm mới
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
+        } else {
+          // Gán title cho form mode thêm sửa
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
+        }
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Hàm focus vào ô input mã nhân viên
+     * created by : BNTIEN
+     * created date: 27-06-2023 01:53:48
+     */
+    focusCode() {
+      this.$refs.EmployeeCode.focus();
     },
     /**
      * Mô tả: Xử lí chọn và bỏ chọn ô checkbox customer
@@ -626,6 +712,7 @@ export default {
                   this.indexDepartmentSelected
                 ].DepartmentId;
               this.isShowSelectDepartment = false;
+              this.isBorderRed.DepartmentName = false;
             } else {
               this.isShowSelectDepartment = true;
             }
@@ -684,47 +771,16 @@ export default {
         return;
       }
     },
+
     /**
-     * Mô tả: Hàm lấy danh sách department từ api
+     * Mô tả: Hàm kiểm tra xem employee có thay đổi sau khi mở form detail không
      * created by : BNTIEN
-     * created date: 29-05-2023 07:56:10
+     * created date: 30-06-2023 00:21:22
      */
-    async getListDepartment() {
-      try {
-        const res = await departmentService.getByName("");
-        this.listDepartmentSearch = res.data;
-      } catch {
-        return;
-      }
-    },
-    /**
-     * Mô tả: gọi api lấy dữ liệu
-     * created by : BNTIEN
-     * created date: 30-05-2023 14:57:33
-     */
-    async loadData() {
-      try {
-        await this.getListDepartment();
-        await this.getNewCode();
-        // Nếu form ở trạng thái thêm mới
-        // Chuyển đối tượng sang chuỗi json
-        let res = JSON.stringify(this.employeeSelected);
-        // Chuyển đổi chuỗi json thành đối tượng employee
-        this.employee = JSON.parse(res);
-        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
-          // Sinh mã tự động
-          this.employee.EmployeeCode = this.newEmployeeCode;
-          // Gán title cho form mode thêm mới
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
-        } else {
-          // Gán title cho form mode thêm sửa
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
-        }
-      } catch {
-        return;
-      }
+    hasDataChanged() {
+      return (
+        JSON.stringify(this.employeeSelected) !== JSON.stringify(this.employee)
+      );
     },
     /**
      * Mô tả: Hàm sử lí sự kiện khi click vào icon close
@@ -733,9 +789,7 @@ export default {
      */
     async onCloseFormDetail() {
       // Kiểm tra xem giữ liệu có thay đổi hay không (Trường hợp có thay đổi)
-      if (
-        JSON.stringify(this.employeeSelected) !== JSON.stringify(this.employee)
-      ) {
+      if (this.hasDataChanged()) {
         this.isShowDialogDataChange = true;
       } else {
         this.$emit("closeFormDetail");
@@ -782,6 +836,34 @@ export default {
       }
     },
     /**
+     * Mô tả: Hàm kiểm tra xem mã nhân viên đã tồn tại trong database hay chưa
+     * created by : BNTIEN
+     * created date: 29-06-2023 23:46:11
+     */
+    async checkEmployeeExists() {
+      try {
+        const res = await employeeService.getByCode(this.employee.EmployeeCode);
+        return res.data;
+      } catch {
+        return null;
+      }
+    },
+    /**
+     * Mô tả: Hàm xử lí khi mã nhân viên đã tồn tại trong hệ thống
+     * created by : BNTIEN
+     * created date: 30-06-2023 00:30:22
+     */
+    handleEmployeeExisted(employeeExisted) {
+      this.isShowDialogCodeExist = true;
+      this.isBorderRed.EmployeeCode = true;
+      this.errors["EmployeeCode"] = `${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+      } ${employeeExisted.EmployeeCode} ${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
+      }`;
+      this.contentEmployeeCodeExist = employeeExisted.EmployeeCode;
+    },
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:05
@@ -793,12 +875,8 @@ export default {
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
         try {
           // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-          let employeeById = {};
-          const res = await employeeService.getByCode(
-            this.employee.EmployeeCode
-          );
-          employeeById = res.data;
-          if (!employeeById) {
+          let employeeByCode = await this.checkEmployeeExists();
+          if (!employeeByCode) {
             // Nếu mã nhân viên chưa tồn tại trong hệ thống
             const res = await employeeService.create(this.employee);
             if (
@@ -814,15 +892,7 @@ export default {
             }
           } else {
             // Nếu mã nhân viên đã tồn tại trong hệ thống
-            this.isShowDialogCodeExist = true;
-            this.isBorderRed.EmployeeCode = true;
-            this.errors["EmployeeCode"] = `${
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
-            } ${employeeById.EmployeeCode} ${
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-                .EXIST_DETAIL_END
-            }`;
-            this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            this.handleEmployeeExisted(employeeByCode);
           }
         } catch (error) {
           this.errors = error.response.data.Data;
@@ -831,21 +901,14 @@ export default {
       } else {
         // Nếu form ở trạng thái sửa
         // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
-        if (
-          JSON.stringify(this.employeeSelected) !==
-          JSON.stringify(this.employee)
-        ) {
+        if (this.hasDataChanged()) {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
+            let employeeByCode = await this.checkEmployeeExists();
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
             if (
-              !employeeById ||
-              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
+              !employeeByCode ||
+              employeeByCode.EmployeeCode === this.employeeSelected.EmployeeCode
             ) {
               const res = await employeeService.update(
                 this.employeeSelected.EmployeeId,
@@ -862,15 +925,7 @@ export default {
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.isBorderRed.EmployeeCode = true;
-              this.errors["EmployeeCode"] = `${
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
-              } ${employeeById.EmployeeCode} ${
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-                  .EXIST_DETAIL_END
-              }`;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+              this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
             this.errors = error.response.data.Data;
@@ -895,12 +950,8 @@ export default {
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
         try {
           // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-          let employeeById = {};
-          const res = await employeeService.getByCode(
-            this.employee.EmployeeCode
-          );
-          employeeById = res.data;
-          if (!employeeById) {
+          let employeeByCode = await this.checkEmployeeExists();
+          if (!employeeByCode) {
             // Nếu mã nhân viên chưa tồn tại trong hệ thống
             const res = await employeeService.create(this.employee);
             if (
@@ -920,15 +971,7 @@ export default {
             }
           } else {
             // Nếu mã nhân viên đã tồn tại trong hệ thống
-            this.isShowDialogCodeExist = true;
-            this.isBorderRed.EmployeeCode = true;
-            this.errors["EmployeeCode"] = `${
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
-            } ${employeeById.EmployeeCode} ${
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-                .EXIST_DETAIL_END
-            }`;
-            this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+            this.handleEmployeeExisted(employeeByCode);
           }
         } catch (error) {
           this.errors = error.response.data.Data;
@@ -937,21 +980,14 @@ export default {
         // Nếu form ở trạng thái sửa
       } else {
         // Kiểm tra xem dữ liệu có thay đổi hay k
-        if (
-          JSON.stringify(this.employeeSelected) !==
-          JSON.stringify(this.employee)
-        ) {
+        if (this.hasDataChanged()) {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeById = {};
-            const res = await employeeService.getByCode(
-              this.employee.EmployeeCode
-            );
-            employeeById = res.data;
+            let employeeByCode = await this.checkEmployeeExists();
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
             if (
-              !employeeById ||
-              employeeById.EmployeeCode === this.employeeSelected.EmployeeCode
+              !employeeByCode ||
+              employeeByCode.EmployeeCode === this.employeeSelected.EmployeeCode
             ) {
               const res = await employeeService.update(
                 this.employeeSelected.EmployeeId,
@@ -972,15 +1008,7 @@ export default {
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.isShowDialogCodeExist = true;
-              this.isBorderRed.EmployeeCode = true;
-              this.errors["EmployeeCode"] = `${
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
-              } ${employeeById.EmployeeCode} ${
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-                  .EXIST_DETAIL_END
-              }`;
-              this.contentEmployeeCodeExist = employeeById.EmployeeCode;
+              this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
             this.errors = error.response.data.Data;
@@ -1098,6 +1126,11 @@ export default {
       this.focusCode();
     },
 
+    /**
+     * Mô tả: Xử lí sự kiện click bên ngoài menu select department thì đóng menu lại
+     * created by : BNTIEN
+     * created date: 30-06-2023 00:39:00
+     */
     handleClickOutsideMenuDepartment(event) {
       if (!this.$refs.MenuItemDepartment.contains(event.target)) {
         this.isShowSelectDepartment = false;
@@ -1105,51 +1138,8 @@ export default {
     },
   },
 
-  computed: {
-    /**
-     * Mô tả: Hàm tính toán ngày sinh nhật
-     * created by : BNTIEN
-     * created date: 01-06-2023 02:41:01
-     */
-    formattedDate: {
-      get() {
-        if (this.employee.DateOfBirth) {
-          const isoDate = this.employee.DateOfBirth;
-          const formattedDate = isoDate.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
-          return formattedDate;
-        }
-        return "";
-      },
-      set(newDate) {
-        this.employee.DateOfBirth = newDate;
-      },
-    },
-
-    /**
-     * Mô tả: Hàm tính toán ngày cấp chứng minh nhân dân
-     * created by : BNTIEN
-     * created date: 01-06-2023 02:41:35
-     */
-    formattedDateIdentity: {
-      get() {
-        if (this.employee.IdentityDate) {
-          const isoDateIdentity = this.employee.IdentityDate;
-          const formattedDateIdentity = isoDateIdentity.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
-          return formattedDateIdentity;
-        }
-        return "";
-      },
-      set(newDate) {
-        this.employee.IdentityDate = newDate;
-      },
-    },
-  },
-
   beforeUnmount() {
+    // Xóa sự kiện click outside ở ment department
     window.removeEventListener("click", this.handleClickOutsideMenuDepartment);
   },
 };
