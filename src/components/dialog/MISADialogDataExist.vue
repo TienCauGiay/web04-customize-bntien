@@ -26,6 +26,9 @@
             this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE
           "
           @click="btnAgree"
+          ref="Agree"
+          :tabindex="300"
+          @keydown.tab.prevent="resetTab($event.target.value)"
         ></misa-button-default>
       </div>
     </div>
@@ -36,7 +39,13 @@
 export default {
   name: "MISADialogDataExist",
   props: ["textEmployeeCodeExist"],
+  mounted() {
+    this.resetTab();
+  },
   methods: {
+    resetTab() {
+      this.$refs.Agree.$el.focus();
+    },
     /**
      * Mô tả: Hàm gọi sự kiện đóng dialog mã nhân viên đã tồn tại từ component cha (EmployeeDetail)
      * created by : BNTIEN

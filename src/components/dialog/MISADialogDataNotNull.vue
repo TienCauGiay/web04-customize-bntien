@@ -24,6 +24,9 @@
             this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE
           "
           @click="btnClose"
+          ref="CloseForm"
+          :tabindex="200"
+          @keydown.tab.prevent="resetTab($event.target.value)"
         ></misa-button-default>
       </div>
     </div>
@@ -34,7 +37,13 @@
 export default {
   name: "MISADialogDataNotNull",
   props: ["valueNotNull"],
+  mounted() {
+    this.resetTab();
+  },
   methods: {
+    resetTab() {
+      this.$refs.CloseForm.$el.focus();
+    },
     /**
      * Mô tả: Hàm gọi sự kiện cất và thêm trong component cha (EmployeeDetail)
      * created by : BNTIEN

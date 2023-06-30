@@ -1,5 +1,9 @@
 <template>
-  <div id="detail-info-employee" class="position-display-center">
+  <div
+    id="detail-info-employee"
+    class="position-display-center"
+    ref="FormDetail"
+  >
     <div class="employee-toolbar">
       <div
         class="question-icon icon-tb"
@@ -470,7 +474,9 @@ export default {
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
+    // Đăng kí các sự kiện
     window.addEventListener("click", this.handleClickOutsideMenuDepartment);
+    this.$refs.FormDetail.addEventListener("keydown", this.handleKeyDown);
   },
 
   data() {
@@ -1136,11 +1142,30 @@ export default {
         this.isShowSelectDepartment = false;
       }
     },
+
+    /**
+     * Mô tả: xử lí sự kiện khi bấm esc khi đang ở form detail
+     * created by : BNTIEN
+     * created date: 01-07-2023 01:05:25
+     */
+    async handleKeyDown(event) {
+      if (event.key === "Escape") {
+        // Nếu phím được nhấn là Esc, thực hiện hàm onCloseFormDetail
+        await this.onCloseFormDetail();
+      } else if (event.ctrlKey && event.key === "s") {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn phím Ctrl + S
+        this.btnSave(); // Gọi hàm btnSave
+      } else if (event.ctrlKey && event.shiftKey && event.key === "S") {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn tổ hợp phím Ctrl + Shift + S
+        this.btnSaveAndAdd(); // Gọi hàm btnSave
+      }
+    },
   },
 
   beforeUnmount() {
-    // Xóa sự kiện click outside ở ment department
+    // Xóa các sự kiện đã đăng kí
     window.removeEventListener("click", this.handleClickOutsideMenuDepartment);
+    this.$refs.FormDetail.removeEventListener("keydown", this.handleKeyDown);
   },
 };
 </script>
@@ -1165,5 +1190,11 @@ export default {
 .cbb-selected {
   background-color: var(--color-border-default);
   color: var(--color-btn-default);
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 1px solid black;
+  border-radius: 50%;
 }
 </style>

@@ -28,12 +28,15 @@
             "
             class="btn-no-minwwidth"
             @click="btnCancel"
+            :tabindex="102"
+            @keydown.tab.prevent="resetTab($event.target.value)"
           ></misa-button-extra>
         </div>
         <div class="dialog-question-footer-right">
           <misa-button-extra
             :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.NO"
             @click="btnNo"
+            :tabindex="101"
           ></misa-button-extra>
           <misa-button-default
             :textButtonDefault="
@@ -41,6 +44,8 @@
             "
             class="btn-no-minwwidth"
             @click="btnYes"
+            :tabindex="100"
+            ref="SaveRecord"
           ></misa-button-default>
         </div>
       </div>
@@ -51,7 +56,13 @@
 <script>
 export default {
   name: "MISADialogDataChange",
+  mounted() {
+    this.resetTab();
+  },
   methods: {
+    resetTab() {
+      this.$refs.SaveRecord.$el.focus();
+    },
     /**
      * Mô tả: Hàm xử lí sự kiện đồng ý thay đổi dữ liệu
      * created by : BNTIEN

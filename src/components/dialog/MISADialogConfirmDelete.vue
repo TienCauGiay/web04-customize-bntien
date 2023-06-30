@@ -32,10 +32,14 @@
       <misa-button-extra
         @click="btnNoConfirmDelete"
         :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.NO"
+        :tabindex="400"
+        ref="NoConfirmDelete"
       ></misa-button-extra>
       <misa-button-default
         @click="handleDelete"
         :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES"
+        :tabindex="401"
+        @keydown.tab.prevent="resetTab($event.target.value)"
       ></misa-button-default>
     </div>
   </div>
@@ -45,7 +49,13 @@
 export default {
   name: "MISADialogConfirmDelete",
   props: ["employeeCodeDelete", "isDeleteMultiple"],
+  mounted() {
+    this.resetTab();
+  },
   methods: {
+    resetTab() {
+      this.$refs.NoConfirmDelete.$el.focus();
+    },
     /**
      * Mô tả: xử lí chọn hàm xóa nhiều hay xóa ít
      * created by : BNTIEN
