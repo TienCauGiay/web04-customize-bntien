@@ -15,7 +15,7 @@
         class="delete-multiple-employee"
         @click="onShowExcuteBatch"
         :class="{ 'no-disable': !isDisableExcuteBatch }"
-        ref="deleteMulti"
+        ref="DeleteMulti"
       >
         <div class="select-function-delete">
           <span>{{
@@ -55,7 +55,7 @@
     </div>
     <div id="list-employee" class="list-employee">
       <form action="">
-        <table id="tbEmployeeList" ref="tableEmployeeList">
+        <table id="tbEmployeeList">
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
@@ -193,14 +193,13 @@
                 <div
                   class="function-table-content"
                   @click="onShowColFeature(index)"
-                  ref="functionTableContent"
+                  ref="FeatureMenu"
                 >
                   <div class="function-icon-table function-icon-select">
                     <div
                       class="menu-function-select"
                       v-show="isShowColFeature[index]"
-                      ref="featureMenu"
-                      :class="{ 'reverse-feature-menu': index > 5 }"
+                      :class="{ 'reverse-feature-menu': index > 4 }"
                     >
                       <div @click="onDupliCateEmployee(item)">
                         {{
@@ -254,7 +253,7 @@
         <div
           class="pagination-detail-pagesize"
           :class="{ 'active-record': isShowPaging }"
-          ref="pagingMenu"
+          ref="PagingMenu"
         >
           <div
             id="pagination-detail-pagesize-content"
@@ -396,6 +395,7 @@ export default {
     // Lắng nghe sự kiện click trên toàn bộ màn hình
     window.addEventListener("click", this.handleClickOutsidePaging);
     window.addEventListener("click", this.handleClickOutsideDeleteMulti);
+    window.addEventListener("click", this.handleClickOutsideFeature);
   },
 
   data() {
@@ -450,6 +450,8 @@ export default {
       ids: [],
       // Khai báo biến kiểm tra xem dialog hiển thị hỏi xóa ít hay xóa nhiều
       isDeleteMultipleDialog: null,
+      // Khai báo biến lưu giá trị index được chọn khi show feature menu
+      selectedIndexFeature: null,
     };
   },
 
@@ -590,6 +592,7 @@ export default {
      */
     onShowColFeature(index) {
       this.isShowColFeature[index] = !this.isShowColFeature[index];
+      this.selectedIndexFeature = index;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
@@ -803,14 +806,38 @@ export default {
      * created date: 08-06-2023 04:50:25
      */
     handleClickOutsidePaging(event) {
-      if (!this.$refs.pagingMenu.contains(event.target)) {
+      if (!this.$refs.PagingMenu.contains(event.target)) {
         this.isShowPaging = false;
       }
     },
 
+    /**
+     * Mô tả: xử lí sự kiện click ra ngoài menu thực hiện hàng loạt
+     * created by : BNTIEN
+     * created date: 30-06-2023 21:53:38
+     */
     handleClickOutsideDeleteMulti(event) {
-      if (!this.$refs.deleteMulti.contains(event.target)) {
+      if (!this.$refs.DeleteMulti.contains(event.target)) {
         this.isShowMenuExcuteBatch = false;
+      }
+    },
+
+    handleClickOutsideFeature(event) {
+      try {
+        const featureMenuSelected =
+          this.$refs.FeatureMenu[this.selectedIndexFeature];
+        // Kiểm tra nếu functionTableContent không undefined và không null
+        if (featureMenuSelected !== undefined && featureMenuSelected !== null) {
+          // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
+          if (typeof featureMenuSelected.contains === "function") {
+            // Kiểm tra nếu event.target không nằm trong functionTableContent
+            if (!featureMenuSelected.contains(event.target)) {
+              this.isShowColFeature[this.selectedIndexFeature] = false;
+            }
+          }
+        }
+      } catch {
+        return;
       }
     },
 
@@ -901,6 +928,7 @@ export default {
     this.$_MISAEmitter.off("refreshDataTable");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
+    window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
 </script>
