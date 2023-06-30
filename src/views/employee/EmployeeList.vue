@@ -196,18 +196,19 @@
                   ref="functionTableContent"
                 >
                   <div class="function-icon-table function-icon-select">
-                    <ul
+                    <div
                       class="menu-function-select"
                       v-show="isShowColFeature[index]"
                       ref="featureMenu"
+                      :class="{ 'reverse-feature-menu': index > 5 }"
                     >
-                      <li @click="onDupliCateEmployee(item)">
+                      <div @click="onDupliCateEmployee(item)">
                         {{
                           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                             .DUPLICATE
                         }}
-                      </li>
-                      <li
+                      </div>
+                      <div
                         class="menu-function-select-delete-employee"
                         @click="
                           onDeleteEmployee(
@@ -221,14 +222,14 @@
                           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                             .DELETE
                         }}
-                      </li>
-                      <li>
+                      </div>
+                      <div>
                         {{
                           this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                             .STOP_USING
                         }}
-                      </li>
-                    </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -954,5 +955,9 @@ input[type="search"]::-webkit-search-cancel-button {
 .checkedRow td:first-child,
 .checkedRow td:last-child {
   background-color: #e7f5ec;
+}
+
+.reverse-feature-menu {
+  top: -90px;
 }
 </style>

@@ -62,14 +62,16 @@
     box-sizing: border-box;
 }
 
-.employee-title p{
-    font-size: 14px;
+.employee-title p b{
+    font-size: 24px;
     margin: 0;
+    font-weight: 500;
 }
 
 .employee-check{
     display: flex;
     align-items: center;
+    column-gap: 8px;
 }
 
 .employee-check input{

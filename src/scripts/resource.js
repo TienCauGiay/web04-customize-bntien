@@ -84,8 +84,8 @@ const MISAResource = {
             FUNCTION: "function",
         },
         FORM:{
-            ADD_EMPLOYEE:"THÊM NHÂN VIÊN",
-            UPDATE_EMPLOYEE:"SỬA NHÂN VIÊN",
+            ADD_EMPLOYEE:"Thêm nhân viên",
+            UPDATE_EMPLOYEE:"Sửa nhân viên",
             IS_CUSTOMER:"Là khách hàng",
             IS_PROVIDER:"Là nhà cung cấp",
             CODE:"Mã",

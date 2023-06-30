@@ -17,6 +17,7 @@
 
 .content-title h1{
     font-size: 20px;
+    font-weight: 700;
 }
 
 .content-main-body{
@@ -60,7 +61,6 @@
 }
 
 .select-function-delete span{
-    font-family: RobotoBold;
     font-weight: 500;
 }
 
@@ -115,7 +115,7 @@
 
 .search-employee input::placeholder{
     font-style: italic;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .list-employee{
@@ -222,6 +222,7 @@ th{
     position: sticky;
     top: 0;
     z-index: 999;
+    font-weight: 700;
 }
 
 tr th:first-child{
@@ -231,14 +232,13 @@ tr th:first-child{
 }
 
 /* tr th:last-child{
-    z-index: 1000;
-    right: 0px;
+    right: 0;
 }
 
 tr td:last-child{
-    background-color: white;
     position: sticky;
-    right: 0px;
+    right: 0;
+    background-color: #FFFFFF;
 } */
 
 .e-id{
@@ -295,8 +295,8 @@ input.checkbox-select-row{
 .menu-function-select{
     position: absolute;
     top: 15px;
-    left: -80px;
-    width: 100px;
+    left: -90px;
+    width: 115px;
     border: 1px solid var(--color-border-default);
     padding-left: 0px;
     background-color: white;
@@ -304,15 +304,15 @@ input.checkbox-select-row{
     z-index: 2000;
 }
 
-.menu-function-select li{
+.menu-function-select div{
     display: block;
     text-align: left;
-    padding: 5px;
+    padding: 5px 8px;
     list-style: none;
     font-style: normal;
 }
 
-.menu-function-select li:hover{
+.menu-function-select div:hover{
     color: var(--color-btn-default);
     background-color: var(--color-border-default);
     cursor: pointer;

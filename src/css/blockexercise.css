@@ -1,19 +1,34 @@
 @font-face {
-    font-family: RobotoRegular;
-    src: url('../assets/font/Roboto-Regular.ttf'); 
+    font-family: Roboto;
+    src: url("../assets/font/Roboto-Regular.ttf");
+    font-weight: 400;
+}
+  
+@font-face {
+    font-family: Roboto;
+    src: url("../assets/font/Roboto-Italic.ttf");
+    font-style: italic;
+}
+  
+@font-face {
+    font-family: Roboto;
+    src: url("../assets/font/Roboto-Medium.ttf");
+    font-weight: 500;
+}
+  
+@font-face {
+    font-family: Roboto;
+    src: url("../assets/font/Roboto-Bold.ttf");
+    font-weight: 700;
 }
 
-@font-face {
-    font-family: RobotoBold;
-    src: url('../assets/font/Roboto-Bold.ttf');
-}
 /* Start sss chung */
-html, body {
+*{
+    font-family: Roboto;
+    font-size: 14px;
     box-sizing: border-box;
     padding: 0px;
     margin: 0px;
-    font-size: 13px;
-    font-family: RobotoRegular;
     outline: none;
     border: none;
     scrollbar-width: none;

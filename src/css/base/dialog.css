@@ -6,7 +6,7 @@
     bottom: 0;
     right: 0;
     z-index: 9000;
-}
+}   
 
 .dialog{
     box-sizing: border-box;
@@ -28,8 +28,8 @@
 }
 
 .title-dialog h1{
-    font-family: RobotoBold;
-    font-weight: bold;
+    font-style: Bold;
+    font-weight: 700;
     font-size: 20px;
     text-align: left;
     padding: 0px;
@@ -71,6 +71,7 @@
     row-gap: 8px;
     width: 280px;
     box-sizing: border-box;
+    font-weight: 400;
 }
 
 .dialog-content-main p{

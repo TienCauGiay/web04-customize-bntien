@@ -1,7 +1,6 @@
 label{
     display: block;
     margin-bottom: 8px;
-    font-family: RobotoBold;
     font-weight: 500;
 }
 
@@ -13,11 +12,13 @@ label{
     border-radius: 4px;
     border: 1px solid var(--color-border-default);
     box-sizing: border-box;
+    font-weight: 400;
 }
 
 .textfield::placeholder{
     font-size: 14px;
-    color: #999999;
+    color: #9E9E9E;
+    font-weight: 400;
 }
 
 .textfield:hover{

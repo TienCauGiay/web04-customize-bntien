@@ -6,6 +6,8 @@
     color: white;
     box-sizing: border-box;
     overflow-y: auto;
+    font-weight: 500;
+    font-style: Medium;
 }
 
 .content{
