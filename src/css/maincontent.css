@@ -225,6 +225,12 @@ th{
     font-weight: 700;
 }
 
+td:not(td:last-child){
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 tr th:first-child{
     background-color: #e0e0e0;
     left: 0px;
@@ -242,23 +248,52 @@ tr td:last-child{
 } */
 
 .e-id{
-    width: 150px;
-    box-sizing: border-box;
-}
-
-.e-birthday{
-    width: 120px;
-    box-sizing: border-box;
-}
-
-.e-gender-table{
-    width: 100px;
-    box-sizing: border-box;
+    width: 140px;
+    max-width: 140px;
 }
 
 .e-fullname{
     width: 180px;
-    box-sizing: border-box;
+    max-width: 180px;
+}
+
+.e-gender-table{
+    width: 100px;
+    max-width: 100px;
+}
+
+.e-birthday{
+    width: 120px;
+    max-width: 120px;
+}
+
+.e-identity-number{
+    width: 140px;
+    max-width: 140px;
+}
+
+.e-position{
+    width: 120px;
+    max-width: 120px;
+}
+
+.e-department{
+    width: 220px;
+    max-width: 220px;
+}
+
+.e-bank-account{
+    width: 140px;
+    max-width: 140px;
+}
+
+.e-bank-name{
+    width: 160px;
+    max-width: 160px;
+}
+
+.e-bank-branch{
+    max-width: 250px;
 }
 
 .employee-border-left {

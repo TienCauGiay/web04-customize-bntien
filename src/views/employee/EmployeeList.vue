@@ -87,7 +87,7 @@
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DOB
                 }}
               </th>
-              <th>
+              <th class="e-identity-number">
                 <span
                   :title="
                     this.$_MISAResource[this.$_LANG_CODE].TOOLTIP
@@ -99,25 +99,25 @@
                   }}</span
                 >
               </th>
-              <th>
+              <th class="e-position">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
                     .POSITION
                 }}
               </th>
-              <th>
+              <th class="e-department">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
                     .DEPARTMENT
                 }}
               </th>
-              <th>
+              <th class="e-bank-account">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
                     .BANK_ACCOUNT
                 }}
               </th>
-              <th>
+              <th class="e-bank-name">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
                     .BANK_NAME
@@ -127,6 +127,7 @@
                 :title="
                   this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.BANK_BRANCH
                 "
+                class="e-bank-branch"
               >
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
@@ -160,8 +161,12 @@
                   :checked="checkRow().includes(item.EmployeeId)"
                 />
               </td>
-              <td class="e-id">{{ item.EmployeeCode }}</td>
-              <td class="e-fullname">{{ item.FullName }}</td>
+              <td class="e-id" :title="item.EmployeeCode">
+                {{ item.EmployeeCode }}
+              </td>
+              <td class="e-fullname" :title="item.FullName">
+                {{ item.FullName }}
+              </td>
               <td class="e-gender-table">
                 {{
                   item.Gender === 0
@@ -177,12 +182,24 @@
               <td class="text-center e-birthday">
                 {{ formatDate(item.DateOfBirth) }}
               </td>
-              <td>{{ item.IdentityNumber }}</td>
-              <td>{{ item.PositionName }}</td>
-              <td>{{ item.DepartmentName }}</td>
-              <td>{{ item.BankAccount }}</td>
-              <td>{{ item.BankName }}</td>
-              <td>{{ item.BankBranch }}</td>
+              <td class="e-identity-number" :title="item.IdentityNumber">
+                {{ item.IdentityNumber }}
+              </td>
+              <td class="e-position" :title="item.PositionName">
+                {{ item.PositionName }}
+              </td>
+              <td class="e-department" :title="item.DepartmentName">
+                {{ item.DepartmentName }}
+              </td>
+              <td class="e-bank-account" :title="item.BankAccount">
+                {{ item.BankAccount }}
+              </td>
+              <td class="e-bank-name" :title="item.BankName">
+                {{ item.BankName }}
+              </td>
+              <td class="e-bank-branch" :title="item.BankBranch">
+                {{ item.BankBranch }}
+              </td>
               <td
                 class="text-center employee-border-right e-birthday function-table"
                 @dblclick.stop
