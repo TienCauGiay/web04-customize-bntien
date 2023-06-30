@@ -1162,16 +1162,6 @@ export default {
   border-radius: 4px 0px 0px 4px;
 }
 
-input[type="checkbox"],
-input[type="radio"] {
-  accent-color: #2ca01c;
-  cursor: pointer;
-}
-
-input[type="date"]:hover {
-  cursor: pointer;
-}
-
 .cbb-selected {
   background-color: var(--color-border-default);
   color: var(--color-btn-default);

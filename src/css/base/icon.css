@@ -16,6 +16,10 @@
     cursor: pointer;
 }
 
+.icon-l:focus, .icon-tb:focus, .icon-n:focus{
+    outline: 1px solid black;
+}
+
 .toggle-icon {
     background: url("../../assets/icon/Sprites.64af8f61.svg") no-repeat -428px -92px;
     width: 16px;

@@ -74,6 +74,22 @@
     column-gap: 8px;
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #2ca01c;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 1px solid black;
+  border-radius: 50%;
+}
+
+input[type="date"]:hover {
+  cursor: pointer;
+}
+
 .employee-check input{
     width: 16px;
     height: 16px;
