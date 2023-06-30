@@ -90,4 +90,8 @@ export default {
 
 <style>
 @import url(@/css/base/dialog.css);
+
+p {
+  line-height: 1.5;
+}
 </style>

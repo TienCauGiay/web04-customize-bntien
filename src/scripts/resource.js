@@ -108,9 +108,9 @@ const MISAResource = {
         },
         DIALOG:{
             TITLE:{
-                DEFAULT: "Thông báo",
+                CLOSE_RECORD: "Cất bản ghi?",
                 CONFIRM_DELETE: "Xác nhận xóa?",
-                NOTE: "Lưu ý !",
+                DATA_INVALID: "Dữ liệu không hợp lệ!",
             },
             CONTENT:{
                 CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa nhân viên",

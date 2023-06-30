@@ -5,7 +5,9 @@
       id="dialog-danger-employee"
     >
       <div class="title-dialog">
-        <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.NOTE }}</h1>
+        <h1>
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
+        </h1>
         <div class="close-icon" @click="btnClose"></div>
       </div>
       <div class="dialog-content">
@@ -51,9 +53,5 @@ export default {
 .dialog-content-main {
   max-height: 64px;
   overflow-y: auto;
-}
-
-.dialog-content-main li {
-  line-height: 1.5;
 }
 </style>

@@ -6,7 +6,7 @@
     >
       <div class="title-dialog">
         <h1>
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DEFAULT }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
         </h1>
         <div class="close-icon" @click="btnAgree"></div>
       </div>
@@ -49,6 +49,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(@/css/base/dialog.css);
+
+p {
+  line-height: 1.5;
+}
 </style>

@@ -6,7 +6,7 @@
     >
       <div class="title-dialog">
         <h1>
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DEFAULT }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CLOSE_RECORD }}
         </h1>
         <div class="close-icon" @click="btnCancel"></div>
       </div>
