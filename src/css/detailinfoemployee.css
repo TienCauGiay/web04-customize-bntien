@@ -1,5 +1,5 @@
 #detail-info-employee {
-    height: 90%;
+    height: 95%;
     background-color: white;
     z-index: 8888;
     border-radius: 4px;
@@ -117,7 +117,7 @@ input[type="date"]:hover {
 
 .half-content{
     width: calc(50% - 10px);
-    height: 50px;
+    height: 56px;
     display: flex;
     column-gap: 10px;
     box-sizing: border-box;
@@ -125,26 +125,26 @@ input[type="date"]:hover {
 
 .full-content{
     width: 100%;
-    height: 50px;
+    height: 56px;
     box-sizing: border-box;
     margin-right: 10px;
 }
 
 .col-md-n{
     width: 150px;
-    height: 50px;
+    height: 56px;
     box-sizing: border-box;
 }
 
 .col-md-tb{
     width: calc(100% - 150px);
-    height: 50px;
+    height: 56px;
     box-sizing: border-box;
 }
 
 .col-md-quater{
     width: 25%;
-    height: 50px;
+    height: 56px;
     box-sizing: border-box;
 }
 
@@ -258,5 +258,3 @@ input[type="date"]:hover {
     align-items: center;
     column-gap: 10px;
 }
-
-  

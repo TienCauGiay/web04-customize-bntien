@@ -186,8 +186,7 @@
             <div
               class="col-md-l select-department"
               :class="{
-                'select-department-block':
-                  isShowSelectDepartment && listDepartmentSearch.length > 0,
+                'select-department-block': isShowSelectDepartment,
               }"
             >
               <ul
@@ -202,6 +201,9 @@
                   ref="DepartmentSelectedItem"
                 >
                   {{ department.DepartmentName }}
+                </li>
+                <li v-if="!listDepartmentSearch.length">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
                 </li>
               </ul>
             </div>

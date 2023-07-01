@@ -30,6 +30,7 @@ const MISAResource = {
             NAME_COMPANY_SELECTED: "CÔNG TY TNHH SẢN XUẤT - THƯƠNG MẠI - DỊCH VỤ QUI PHÚC",
             NAME_ACCOUNT_LOGIN:"Bùi Ngọc Tiến",
             ACCOUNTANT:"KẾ TOÁN",
+            NO_DATA:"Không có dữ liệu",
             ITEM_SIDEBAR:{
                 OVERVIEW:"Tổng quan",
                 CASH:"Tiền mặt",
@@ -106,6 +107,7 @@ const MISAResource = {
             BANK_ACCOUNT:"Tài khoản ngân hàng",
             BANK_NAME:"Tên ngân hàng",
             BANK_BRANCH:"Chi nhánh",
+            NOT_FOUND: "Không tìm thấy",
         },
         DIALOG:{
             TITLE:{

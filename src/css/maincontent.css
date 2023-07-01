@@ -356,7 +356,7 @@ input.checkbox-select-row{
 .loading {
     position: fixed;
     top: 50%;
-    left: 50%;
+    left: 55%;
     animation: spin 1s infinite linear;
     z-index: 9999;
 }
