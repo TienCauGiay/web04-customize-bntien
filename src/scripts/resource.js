@@ -3,6 +3,7 @@ const MISAResource = {
         TOOLTIP:{
             ALERT: "Thông báo",
             REFRESH:"Lấy lại dữ liệu",
+            EXCEL:"Xuất dữ liệu",
             IDENTITY_NUMBER:"Số chứng minh nhân dân",
             BANK_BRANCH:"Chi nhánh tài khoản ngân hàng",
             PHONE_NUMBER:"Điện thoại di động",

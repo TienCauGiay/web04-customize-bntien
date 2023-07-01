@@ -365,3 +365,10 @@
 	width: 16px;
 	height: 16px;
 }
+
+.excel-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -614px -834px;
+	width: 34px;
+	height: 30px;
+    scale: 0.7 0.7;
+}

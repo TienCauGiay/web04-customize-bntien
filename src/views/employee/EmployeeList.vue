@@ -49,8 +49,12 @@
       <div
         @click="refreshData"
         class="refresh-icon icon-tb"
-        id="btn-refresh"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.REFRESH"
+      ></div>
+      <div
+        @click="exportData"
+        class="excel-icon icon-tb"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
       ></div>
     </div>
     <div id="list-employee" class="list-employee">
@@ -263,7 +267,7 @@
     <div id="pagination" class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <b>{{ this.dataTable.TotalRecord }}</b>
+        <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
