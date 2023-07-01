@@ -385,6 +385,7 @@
 import EmployeeDetail from "./EmployeeDetail.vue";
 import helperCommon from "@/scripts/helper.js";
 import employeeService from "@/services/employee.js";
+import excelEmployeeService from "@/services/excelemployee.js";
 export default {
   name: "EmployeeList",
 
@@ -934,6 +935,26 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListEmployee();
+        }
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Xử lí xuất dữ liệu ra excel
+     * created by : BNTIEN
+     * created date: 01-07-2023 22:35:32
+     */
+    async exportData() {
+      try {
+        const res = await excelEmployeeService.ExportEmployees(
+          this.dataTable.Data
+        );
+        if (res.data > 0) {
+          this.$_MISAEmitter.emit(
+            "onShowToastMessage",
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_EXPORT
+          );
         }
       } catch {
         return;

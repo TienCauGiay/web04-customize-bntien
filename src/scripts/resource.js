@@ -53,10 +53,10 @@ const MISAResource = {
             EXCUTE_BATCH: "Thực hiện hàng loạt",
             ADD_EMPLOYEE:"Thêm nhân viên mới",
             PLACEHOLDER_SEARCH:"Tìm theo mã, tên nhân viên",
-            DATE_NaN: "NaN/NaN/NaN",
             SUCCESS_DELETE : "Xóa thành công.",
             SUCCESS_CTEATE : "Thêm thành công.",
             SUCCESS_UPDATE : "Sửa thành công.",
+            SUCCESS_EXPORT : "Xuất dữ liệu thành công.",
             SUCCESS_DUPLICATE : "Nhân bản thành công.",
             SPLIT_DATE : "T",
             GENDER:{
@@ -139,7 +139,6 @@ const MISAResource = {
     },
     'en-EN':{
         TEXT_CONTENT:{
-            DATE_NaN: "NaN/NaN/NaN",
             SUCCESS_DELETE : "Successful delele",
             SUCCESS_CTEATE : "Successful add",
             SUCCESS_UPDATE : "Successful update",
