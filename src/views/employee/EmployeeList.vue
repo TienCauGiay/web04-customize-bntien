@@ -151,7 +151,7 @@
           </thead>
           <tbody>
             <tr
-              v-show="!isShowLoadding"
+              v-show="dataTable.TotalRecord"
               v-for="(item, index) in dataTable.Data"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"

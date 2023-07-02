@@ -57,7 +57,7 @@ const MISAResource = {
             SUCCESS_DELETE : "Xóa thành công.",
             SUCCESS_CTEATE : "Thêm thành công.",
             SUCCESS_UPDATE : "Sửa thành công.",
-            SUCCESS_EXPORT : "Xuất dữ liệu thành công.",
+            SUCCESS_EXPORT : "Xuất dữ liệu thành công, xem ở Downloads",
             SUCCESS_DUPLICATE : "Nhân bản thành công.",
             SPLIT_DATE : "T",
             GENDER:{

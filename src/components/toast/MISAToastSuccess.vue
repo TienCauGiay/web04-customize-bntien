@@ -3,7 +3,7 @@
     <div class="toast-info">
       <div class="check-green-icon"></div>
       <p>
-        <b>{{ this.$_MISAResource[this.$_LANG_CODE].TOAST.SUCCESS }}</b>
+        <b>{{ this.$_MISAResource[this.$_LANG_CODE].TOAST.SUCCESS }} </b>
         {{ this.contentToast }}
       </p>
     </div>
