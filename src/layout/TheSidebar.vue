@@ -72,7 +72,7 @@
             }}</span>
           </router-link>
         </li>
-        <li class="menu-item">
+        <!-- <li class="menu-item">
           <router-link to="/" class="menu-item-a">
             <i class="icon-tb tool-icon"></i>
             <span>{{
@@ -80,7 +80,7 @@
                 .TOOL
             }}</span>
           </router-link>
-        </li>
+        </li> -->
         <li class="menu-item">
           <router-link to="/" class="menu-item-a">
             <i class="icon-tb asset-icon"></i>

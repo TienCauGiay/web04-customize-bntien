@@ -237,7 +237,7 @@ tr th:first-child{
     z-index: 1000;
 }
 
-/* tr th:last-child{
+tr th:last-child{
     right: 0;
 }
 
@@ -245,7 +245,7 @@ tr td:last-child{
     position: sticky;
     right: 0;
     background-color: #FFFFFF;
-} */
+}
 
 .e-id{
     width: 140px;
@@ -329,8 +329,8 @@ input.checkbox-select-row{
 
 .menu-function-select{
     position: absolute;
-    top: 15px;
-    left: -90px;
+    top: 0;
+    left: 0;
     width: 115px;
     border: 1px solid var(--color-border-default);
     padding-left: 0px;

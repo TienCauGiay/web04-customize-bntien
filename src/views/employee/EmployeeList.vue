@@ -152,7 +152,7 @@
           <tbody>
             <tr
               v-show="dataTable.TotalRecord"
-              v-for="(item, index) in dataTable.Data"
+              v-for="item in dataTable.Data"
               :key="item.EmployeeId"
               @dblclick="onUpdateFormDetail(item)"
               :class="{ checkedRow: checkRow().includes(item.EmployeeId) }"
@@ -213,46 +213,38 @@
                 }}</span>
                 <div
                   class="function-table-content"
-                  @click="onShowColFeature(index)"
-                  ref="FeatureMenu"
+                  @click="onOpenFeatureMenu($event, item)"
                 >
-                  <div class="function-icon-table function-icon-select">
-                    <div
-                      class="menu-function-select"
-                      v-show="isShowColFeature[index]"
-                      :class="{ 'reverse-feature-menu': index > 4 }"
-                    >
-                      <div @click="onDupliCateEmployee(item)">
-                        {{
-                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                            .DUPLICATE
-                        }}
-                      </div>
-                      <div
-                        class="menu-function-select-delete-employee"
-                        @click="
-                          onDeleteEmployee(item.EmployeeId, item.EmployeeCode)
-                        "
-                      >
-                        {{
-                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                            .DELETE
-                        }}
-                      </div>
-                      <div>
-                        {{
-                          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                            .STOP_USING
-                        }}
-                      </div>
-                    </div>
-                  </div>
+                  <div class="function-icon-table function-icon-select"></div>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
       </form>
+      <teleport to="#app">
+        <div
+          class="menu-function-select"
+          v-show="isShowColFeature"
+          :style="{
+            left: this.positionFeatureMenu.left + 'px',
+            top: this.positionFeatureMenu.top + 'px',
+          }"
+        >
+          <div @click="onDupliCateEmployee">
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
+          </div>
+          <div
+            class="menu-function-select-delete-employee"
+            @click="onDeleteEmployee"
+          >
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+          </div>
+          <div>
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING }}
+          </div>
+        </div>
+      </teleport>
       <img
         v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
         class="loading"
@@ -429,8 +421,8 @@ export default {
       isShowFormDetail: false,
       // Khai báo biến quy định trạng thái hiển thị overlay
       isOverlay: false,
-      // Khai báo mảng quy định trạng thái hiển thị của các chức năng ở cột cuối của table
-      isShowColFeature: [],
+      // Khai báo biến quy định trạng thái hiển thị của các chức năng ở cột cuối của table
+      isShowColFeature: false,
       // Khai báo biến quy định trạng thái hiển thị của các item select paging
       isShowPaging: false,
       // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
@@ -475,6 +467,8 @@ export default {
       isDeleteMultipleDialog: null,
       // Khai báo biến lưu giá trị index được chọn khi show feature menu
       selectedIndexFeature: null,
+      // Khai báo biến tùy chỉnh top, left cho feature menu
+      positionFeatureMenu: {},
     };
   },
 
@@ -512,7 +506,7 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     visiblePageNumbers() {
-      if (this.isShowLoadding) {
+      if (!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0) {
         return [];
       }
       let startPage = Math.max(
@@ -609,13 +603,27 @@ export default {
       this.employeeUpdate = {};
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện đóng mở các item ở cột cuối của table khi click vào icon drop
+     * Mô tả: Hàm xử lí sự kiện đóng mở các menu feature ở cột cuối của table khi click vào icon drop
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:54
      */
-    onShowColFeature(index) {
-      this.isShowColFeature[index] = !this.isShowColFeature[index];
-      this.selectedIndexFeature = index;
+    onOpenFeatureMenu(e, employee) {
+      try {
+        e.stopPropagation();
+        this.employeeUpdate = employee;
+        this.isShowColFeature = true;
+        const positionIcon = e.target.getBoundingClientRect();
+        const left = positionIcon.right - 110;
+        let top = 0;
+        if (positionIcon.bottom > 500) {
+          top = positionIcon.bottom - 100;
+        } else {
+          top = positionIcon.bottom + 10;
+        }
+        this.positionFeatureMenu = { left: left, top: top };
+      } catch {
+        return;
+      }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
@@ -660,12 +668,12 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
-    onDeleteEmployee(employeeID, employeeCode) {
+    onDeleteEmployee() {
       this.isShowDialogConfirmDelete = true;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
-      this.employeeIdDeleteSelected = employeeID;
-      this.employeeCodeDeleteSelected = employeeCode;
+      this.employeeIdDeleteSelected = this.employeeUpdate.EmployeeId;
+      this.employeeCodeDeleteSelected = this.employeeUpdate.EmployeeCode;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa
@@ -684,6 +692,7 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
+          this.employeeUpdate = {};
           await this.getListEmployee();
         }
       } catch {
@@ -699,6 +708,7 @@ export default {
       this.isShowDialogConfirmDelete = false;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = false;
+      this.employeeUpdate = {};
     },
 
     /**
@@ -726,9 +736,8 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
-    async onDupliCateEmployee(employeeDup) {
+    async onDupliCateEmployee() {
       try {
-        this.employeeUpdate = employeeDup;
         this.isShowFormDetail = true;
         this.isOverlay = true;
         this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -850,23 +859,13 @@ export default {
       }
     },
 
-    handleClickOutsideFeature(event) {
-      try {
-        const featureMenuSelected =
-          this.$refs.FeatureMenu[this.selectedIndexFeature];
-        // Kiểm tra nếu functionTableContent không undefined và không null
-        if (featureMenuSelected !== undefined && featureMenuSelected !== null) {
-          // Kiểm tra nếu functionTableContent chứa thuộc tính contains và nó là một hàm
-          if (typeof featureMenuSelected.contains === "function") {
-            // Kiểm tra nếu event.target không nằm trong functionTableContent
-            if (!featureMenuSelected.contains(event.target)) {
-              this.isShowColFeature[this.selectedIndexFeature] = false;
-            }
-          }
-        }
-      } catch {
-        return;
-      }
+    /**
+     * Mô tả: xử lí sự kiện click ngoài menu feature
+     * created by : BNTIEN
+     * created date: 03-07-2023 00:03:06
+     */
+    handleClickOutsideFeature() {
+      this.isShowColFeature = false;
     },
 
     /**
@@ -1035,10 +1034,6 @@ input[type="search"]::-webkit-search-cancel-button {
 .checkedRow td:first-child,
 .checkedRow td:last-child {
   background-color: #e7f5ec;
-}
-
-.reverse-feature-menu {
-  top: -90px;
 }
 
 .loadding-form-detail {
