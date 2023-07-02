@@ -231,11 +231,7 @@
                       <div
                         class="menu-function-select-delete-employee"
                         @click="
-                          onDeleteEmployee(
-                            item.EmployeeId,
-                            item.EmployeeCode,
-                            index
-                          )
+                          onDeleteEmployee(item.EmployeeId, item.EmployeeCode)
                         "
                       >
                         {{
@@ -459,8 +455,6 @@ export default {
       contentToastSuccess: "",
       // Tái sử dụng hàm formatDate trong helperCommon
       formatDate: helperCommon.formatDate,
-      // Khai báo biến lưu chỉ số index được chọn để xóa trong table
-      selectedIndex: null,
       // Khai báo biến lưu nội dung tìm kiếm
       textSearch: "",
       // Khai báo trang hiện tại trong phân trang
@@ -666,13 +660,12 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
-    onDeleteEmployee(employeeID, employeeCode, index) {
+    onDeleteEmployee(employeeID, employeeCode) {
       this.isShowDialogConfirmDelete = true;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
       this.employeeIdDeleteSelected = employeeID;
       this.employeeCodeDeleteSelected = employeeCode;
-      this.selectedIndex = index;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa
