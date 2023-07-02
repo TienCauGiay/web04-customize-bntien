@@ -68,7 +68,11 @@
               ></misa-input>
               <div
                 class="misa-tooltip"
-                v-if="isHovering.EmployeeCode && isBorderRed.EmployeeCode"
+                v-if="
+                  isHovering.EmployeeCode &&
+                  (isBorderRed.EmployeeCode || !employee.EmployeeCode) &&
+                  errors['EmployeeCode']
+                "
               >
                 {{ errors["EmployeeCode"] }}
               </div>
@@ -91,7 +95,11 @@
               ></misa-input>
               <div
                 class="misa-tooltip"
-                v-if="isHovering.FullName && isBorderRed.FullName"
+                v-if="
+                  isHovering.FullName &&
+                  (isBorderRed.FullName || !employee.FullName) &&
+                  errors['FullName']
+                "
               >
                 {{ errors["FullName"] }}
               </div>
@@ -196,7 +204,10 @@
                   <div
                     class="misa-tooltip"
                     v-if="
-                      isHovering.DepartmentName && isBorderRed.DepartmentName
+                      isHovering.DepartmentName &&
+                      (isBorderRed.DepartmentName ||
+                        !employee.DepartmentName) &&
+                      (errors['DepartmentName'] || errors['DepartmentId'])
                     "
                   >
                     {{
