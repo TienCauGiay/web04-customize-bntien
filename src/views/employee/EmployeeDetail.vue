@@ -54,55 +54,74 @@
               >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.CODE }}
               <span class="s-require">*</span></label
             >
-            <misa-input
-              ref="EmployeeCode"
-              v-model="employee.EmployeeCode"
-              :class="{
-                'border-red': isBorderRed.EmployeeCode,
-              }"
-              :tabindex="1"
-              :title="
-                isBorderRed.EmployeeCode || !employee.EmployeeCode
-                  ? errors['EmployeeCode']
-                  : ''
-              "
-              @input="setIsBorderRed('EmployeeCode')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                ref="EmployeeCode"
+                v-model="employee.EmployeeCode"
+                :class="{
+                  'border-red': isBorderRed.EmployeeCode,
+                }"
+                :tabindex="1"
+                @input="setIsBorderRed('EmployeeCode')"
+                @mouseenter="isHovering.EmployeeCode = true"
+                @mouseleave="isHovering.EmployeeCode = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.EmployeeCode && isBorderRed.EmployeeCode"
+              >
+                {{ errors["EmployeeCode"] }}
+              </div>
+            </div>
           </div>
           <div class="col-md-tb">
             <label
               >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.NAME }}
               <span class="s-require">*</span></label
             >
-            <misa-input
-              ref="FullName"
-              v-model="employee.FullName"
-              :class="{ 'border-red': isBorderRed.FullName }"
-              :tabindex="2"
-              :title="
-                isBorderRed.FullName || !employee.FullName
-                  ? errors['FullName']
-                  : ''
-              "
-              @input="setIsBorderRed('FullName')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                ref="FullName"
+                v-model="employee.FullName"
+                :class="{ 'border-red': isBorderRed.FullName }"
+                :tabindex="2"
+                @input="setIsBorderRed('FullName')"
+                @mouseenter="isHovering.FullName = true"
+                @mouseleave="isHovering.FullName = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.FullName && isBorderRed.FullName"
+              >
+                {{ errors["FullName"] }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="half-content">
           <div class="col-md-n">
             <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DOB }}</label>
-            <misa-input
-              type="date"
-              v-model="employee.DateOfBirth"
-              :value="formattedDate"
-              :tabindex="5"
-              :class="{
-                'border-red': isBorderRed.DateOfBirth,
-              }"
-              :title="isBorderRed.DateOfBirth ? errors['DateOfBirth'] : ''"
-              ref="DateOfBirth"
-              @input="setIsBorderRed('DateOfBirth')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                type="date"
+                v-model="employee.DateOfBirth"
+                :value="formattedDate"
+                :tabindex="5"
+                :class="{
+                  'border-red': isBorderRed.DateOfBirth,
+                }"
+                ref="DateOfBirth"
+                @input="setIsBorderRed('DateOfBirth')"
+                @mouseenter="isHovering.DateOfBirth = true"
+                @mouseleave="isHovering.DateOfBirth = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.DateOfBirth && isBorderRed.DateOfBirth"
+              >
+                {{ errors["DateOfBirth"] }}
+              </div>
+            </div>
           </div>
           <div class="col-md-tb">
             <label>{{
@@ -160,24 +179,33 @@
               }"
             >
               <div class="e-textfield-cbb">
-                <misa-input
-                  ref="DepartmentName"
-                  :placeholder="
-                    this.$_MISAResource[this.$_LANG_CODE].FORM
-                      .PLACEHOLDER_DEPARTMENT
-                  "
-                  :value="employee.DepartmentName"
-                  @input="onSearchChange"
-                  :tabindex="3"
-                  :title="
-                    isBorderRed.DepartmentName || !employee.DepartmentName
-                      ? errors['DepartmentName']
-                        ? errors['DepartmentName']
-                        : errors['DepartmentId']
-                      : ''
-                  "
-                  @keydown="onKeyDownDepartment"
-                ></misa-input>
+                <div class="container-input">
+                  <misa-input
+                    ref="DepartmentName"
+                    :placeholder="
+                      this.$_MISAResource[this.$_LANG_CODE].FORM
+                        .PLACEHOLDER_DEPARTMENT
+                    "
+                    :value="employee.DepartmentName"
+                    @input="onSearchChange"
+                    :tabindex="3"
+                    @keydown="onKeyDownDepartment"
+                    @mouseenter="isHovering.DepartmentName = true"
+                    @mouseleave="isHovering.DepartmentName = false"
+                  ></misa-input>
+                  <div
+                    class="misa-tooltip"
+                    v-if="
+                      isHovering.DepartmentName && isBorderRed.DepartmentName
+                    "
+                  >
+                    {{
+                      errors["DepartmentName"]
+                        ? errors["DepartmentName"]
+                        : errors["DepartmentId"]
+                    }}
+                  </div>
+                </div>
               </div>
               <div class="e-icon-cbb" @click="onShowSelectDepartment">
                 <div class="function-icon"></div>
@@ -219,35 +247,51 @@
                 this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_NUMBER
               }}</label
             >
-            <misa-input
-              v-model="employee.IdentityNumber"
-              :tabindex="9"
-              ref="IdentityNumber"
-              :class="{
-                'border-red': isBorderRed.IdentityNumber,
-              }"
-              :title="
-                isBorderRed.IdentityNumber ? errors['IdentityNumber'] : ''
-              "
-              @input="setIsBorderRed('IdentityNumber')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                v-model="employee.IdentityNumber"
+                :tabindex="9"
+                ref="IdentityNumber"
+                :class="{
+                  'border-red': isBorderRed.IdentityNumber,
+                }"
+                @input="setIsBorderRed('IdentityNumber')"
+                @mouseenter="isHovering.IdentityNumber = true"
+                @mouseleave="isHovering.IdentityNumber = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.IdentityNumber && isBorderRed.IdentityNumber"
+              >
+                {{ errors["IdentityNumber"] }}
+              </div>
+            </div>
           </div>
           <div class="col-md-n">
             <label>{{
               this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_DATE
             }}</label>
-            <misa-input
-              type="date"
-              v-model="employee.IdentityDate"
-              :value="formattedDateIdentity"
-              :tabindex="9"
-              :class="{
-                'border-red': isBorderRed.IdentityDate,
-              }"
-              :title="isBorderRed.IdentityDate ? errors['IdentityDate'] : ''"
-              ref="IdentityDate"
-              @input="setIsBorderRed('IdentityDate')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                type="date"
+                v-model="employee.IdentityDate"
+                :value="formattedDateIdentity"
+                :tabindex="9"
+                :class="{
+                  'border-red': isBorderRed.IdentityDate,
+                }"
+                ref="IdentityDate"
+                @input="setIsBorderRed('IdentityDate')"
+                @mouseenter="isHovering.IdentityDate = true"
+                @mouseleave="isHovering.IdentityDate = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.IdentityDate && isBorderRed.IdentityDate"
+              >
+                {{ errors["IdentityDate"] }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="half-content">
@@ -255,16 +299,25 @@
             <label>{{
               this.$_MISAResource[this.$_LANG_CODE].FORM.POSITION
             }}</label>
-            <misa-input
-              v-model="employee.PositionName"
-              :tabindex="4"
-              ref="PositionName"
-              :class="{
-                'border-red': isBorderRed.PositionName,
-              }"
-              :title="isBorderRed.PositionName ? errors['PositionName'] : ''"
-              @input="setIsBorderRed('PositionName')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                v-model="employee.PositionName"
+                :tabindex="4"
+                ref="PositionName"
+                :class="{
+                  'border-red': isBorderRed.PositionName,
+                }"
+                @input="setIsBorderRed('PositionName')"
+                @mouseenter="isHovering.PositionName = true"
+                @mouseleave="isHovering.PositionName = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.PositionName && isBorderRed.PositionName"
+              >
+                {{ errors["PositionName"] }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="half-content">
@@ -272,16 +325,25 @@
             <label>{{
               this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESS
             }}</label>
-            <misa-input
-              v-model="employee.IdentityPlace"
-              :tabindex="10"
-              ref="IdentityPlace"
-              :class="{
-                'border-red': isBorderRed.IdentityPlace,
-              }"
-              :title="isBorderRed.IdentityPlace ? errors['IdentityPlace'] : ''"
-              @input="setIsBorderRed('IdentityPlace')"
-            ></misa-input>
+            <div class="container-input">
+              <misa-input
+                v-model="employee.IdentityPlace"
+                :tabindex="10"
+                ref="IdentityPlace"
+                :class="{
+                  'border-red': isBorderRed.IdentityPlace,
+                }"
+                @input="setIsBorderRed('IdentityPlace')"
+                @mouseenter="isHovering.IdentityPlace = true"
+                @mouseleave="isHovering.IdentityPlace = false"
+              ></misa-input>
+              <div
+                class="misa-tooltip"
+                v-if="isHovering.IdentityPlace && isBorderRed.IdentityPlace"
+              >
+                {{ errors["IdentityPlace"] }}
+              </div>
+            </div>
           </div>
         </div>
         <div class="full-content" id="content-null"></div>
@@ -289,16 +351,25 @@
           <label>{{
             this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS
           }}</label>
-          <misa-input
-            v-model="employee.Address"
-            :tabindex="11"
-            ref="Address"
-            :class="{
-              'border-red': isBorderRed.Address,
-            }"
-            :title="isBorderRed.Address ? errors['Address'] : ''"
-            @input="setIsBorderRed('Address')"
-          ></misa-input>
+          <div class="container-input">
+            <misa-input
+              v-model="employee.Address"
+              :tabindex="11"
+              ref="Address"
+              :class="{
+                'border-red': isBorderRed.Address,
+              }"
+              @input="setIsBorderRed('Address')"
+              @mouseenter="isHovering.Address = true"
+              @mouseleave="isHovering.Address = false"
+            ></misa-input>
+            <div
+              class="misa-tooltip"
+              v-if="isHovering.Address && isBorderRed.Address"
+            >
+              {{ errors["Address"] }}
+            </div>
+          </div>
         </div>
         <div class="full-content">
           <div class="full-content-quarter">
@@ -311,16 +382,25 @@
                   this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_NUMBER
                 }}</label
               >
-              <misa-input
-                v-model="employee.PhoneNumber"
-                :tabindex="12"
-                ref="PhoneNumber"
-                :class="{
-                  'border-red': isBorderRed.PhoneNumber,
-                }"
-                :title="isBorderRed.PhoneNumber ? errors['PhoneNumber'] : ''"
-                @input="setIsBorderRed('PhoneNumber')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.PhoneNumber"
+                  :tabindex="12"
+                  ref="PhoneNumber"
+                  :class="{
+                    'border-red': isBorderRed.PhoneNumber,
+                  }"
+                  @input="setIsBorderRed('PhoneNumber')"
+                  @mouseenter="isHovering.PhoneNumber = true"
+                  @mouseleave="isHovering.PhoneNumber = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.PhoneNumber && isBorderRed.PhoneNumber"
+                >
+                  {{ errors["PhoneNumber"] }}
+                </div>
+              </div>
             </div>
             <div class="col-md-quater">
               <label
@@ -331,33 +411,49 @@
                   this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_LANDLINE
                 }}</label
               >
-              <misa-input
-                v-model="employee.PhoneLandline"
-                :tabindex="13"
-                ref="PhoneLandline"
-                :class="{
-                  'border-red': isBorderRed.PhoneLandline,
-                }"
-                :title="
-                  isBorderRed.PhoneLandline ? errors['PhoneLandline'] : ''
-                "
-                @input="setIsBorderRed('PhoneLandline')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.PhoneLandline"
+                  :tabindex="13"
+                  ref="PhoneLandline"
+                  :class="{
+                    'border-red': isBorderRed.PhoneLandline,
+                  }"
+                  @input="setIsBorderRed('PhoneLandline')"
+                  @mouseenter="isHovering.PhoneLandline = true"
+                  @mouseleave="isHovering.PhoneLandline = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.PhoneLandline && isBorderRed.PhoneLandline"
+                >
+                  {{ errors["PhoneLandline"] }}
+                </div>
+              </div>
             </div>
             <div class="col-md-quater">
               <label>{{
                 this.$_MISAResource[this.$_LANG_CODE].FORM.EMAIL
               }}</label>
-              <misa-input
-                v-model="employee.Email"
-                :tabindex="14"
-                :class="{
-                  'border-red': isBorderRed.Email,
-                }"
-                :title="isBorderRed.Email ? errors['Email'] : ''"
-                ref="Email"
-                @input="setIsBorderRed('Email')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.Email"
+                  :tabindex="14"
+                  :class="{
+                    'border-red': isBorderRed.Email,
+                  }"
+                  ref="Email"
+                  @input="setIsBorderRed('Email')"
+                  @mouseenter="isHovering.Email = true"
+                  @mouseleave="isHovering.Email = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.Email && isBorderRed.Email"
+                >
+                  {{ errors["Email"] }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -367,46 +463,73 @@
               <label>{{
                 this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_ACCOUNT
               }}</label>
-              <misa-input
-                v-model="employee.BankAccount"
-                :tabindex="15"
-                ref="BankAccount"
-                :class="{
-                  'border-red': isBorderRed.BankAccount,
-                }"
-                :title="isBorderRed.BankAccount ? errors['BankAccount'] : ''"
-                @input="setIsBorderRed('BankAccount')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.BankAccount"
+                  :tabindex="15"
+                  ref="BankAccount"
+                  :class="{
+                    'border-red': isBorderRed.BankAccount,
+                  }"
+                  @input="setIsBorderRed('BankAccount')"
+                  @mouseenter="isHovering.BankAccount = true"
+                  @mouseleave="isHovering.BankAccount = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.BankAccount && isBorderRed.BankAccount"
+                >
+                  {{ errors["BankAccount"] }}
+                </div>
+              </div>
             </div>
             <div class="col-md-quater">
               <label>{{
                 this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_NAME
               }}</label>
-              <misa-input
-                v-model="employee.BankName"
-                :tabindex="16"
-                ref="BankName"
-                :class="{
-                  'border-red': isBorderRed.BankName,
-                }"
-                :title="isBorderRed.BankName ? errors['BankName'] : ''"
-                @input="setIsBorderRed('BankName')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.BankName"
+                  :tabindex="16"
+                  ref="BankName"
+                  :class="{
+                    'border-red': isBorderRed.BankName,
+                  }"
+                  @input="setIsBorderRed('BankName')"
+                  @mouseenter="isHovering.BankName = true"
+                  @mouseleave="isHovering.BankName = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.BankName && isBorderRed.BankName"
+                >
+                  {{ errors["BankName"] }}
+                </div>
+              </div>
             </div>
             <div class="col-md-quater">
               <label>{{
                 this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_BRANCH
               }}</label>
-              <misa-input
-                v-model="employee.BankBranch"
-                :tabindex="17"
-                ref="BankBranch"
-                :class="{
-                  'border-red': isBorderRed.BankBranch,
-                }"
-                :title="isBorderRed.BankBranch ? errors['BankBranch'] : ''"
-                @input="setIsBorderRed('BankBranch')"
-              ></misa-input>
+              <div class="container-input">
+                <misa-input
+                  v-model="employee.BankBranch"
+                  :tabindex="17"
+                  ref="BankBranch"
+                  :class="{
+                    'border-red': isBorderRed.BankBranch,
+                  }"
+                  @input="setIsBorderRed('BankBranch')"
+                  @mouseenter="isHovering.BankBranch = true"
+                  @mouseleave="isHovering.BankBranch = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.BankBranch && isBorderRed.BankBranch"
+                >
+                  {{ errors["BankBranch"] }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -530,6 +653,8 @@ export default {
       titleFormMode: this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE,
       // Khai báo biến chứa danh sách đối tượng lỗi
       errors: {},
+      // Khai báo biến chứa danh sách các ô input khi hover
+      isHovering: {},
     };
   },
 
