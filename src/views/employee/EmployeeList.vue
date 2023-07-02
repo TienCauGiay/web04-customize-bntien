@@ -161,7 +161,7 @@
                 <input
                   class="checkbox-select-row"
                   type="checkbox"
-                  @click="checkRow(event, item.EmployeeId)"
+                  @click="checkRow(item.EmployeeId)"
                   :checked="checkRow().includes(item.EmployeeId)"
                 />
               </td>
@@ -227,8 +227,8 @@
           class="menu-function-select"
           v-show="isShowColFeature"
           :style="{
-            left: this.positionFeatureMenu.left + 'px',
-            top: this.positionFeatureMenu.top + 'px',
+            left: `${this.positionFeatureMenu.left}px`,
+            top: `${this.positionFeatureMenu.top}px`,
           }"
         >
           <div @click="onDupliCateEmployee">
@@ -580,6 +580,7 @@ export default {
     async refreshData() {
       await this.getListEmployee();
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
+      this.textSearch = "";
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
@@ -609,6 +610,7 @@ export default {
      */
     onOpenFeatureMenu(e, employee) {
       try {
+        // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
         this.employeeUpdate = employee;
         this.isShowColFeature = true;
@@ -882,7 +884,7 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 09:30:13
      */
-    checkRow(event, id) {
+    checkRow(id) {
       if (!id) return this.ids;
       if (this.ids.includes(id)) {
         this.ids.splice(this.ids.indexOf(id), 1);
