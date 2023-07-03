@@ -373,6 +373,7 @@
       :contentToast="contentToastSuccess"
       @closeToastMessage="btnCloseToastMessage"
     ></misa-toast-success>
+    <a href="" ref="ExportListEmployee" v-show="false"></a>
   </div>
 </template>
 
@@ -380,7 +381,6 @@
 import EmployeeDetail from "./EmployeeDetail.vue";
 import helperCommon from "@/scripts/helper.js";
 import employeeService from "@/services/employee.js";
-import excelEmployeeService from "@/services/excelemployee.js";
 export default {
   name: "EmployeeList",
 
@@ -469,6 +469,8 @@ export default {
       selectedIndexFeature: null,
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
+      // Khai báo biến lưu employee khi bấm vào col feature
+      selectedEmployee: {},
     };
   },
 
@@ -612,7 +614,7 @@ export default {
       try {
         // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
-        this.employeeUpdate = employee;
+        this.selectedEmployee = employee;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
         const left = positionIcon.right - 110;
@@ -674,8 +676,8 @@ export default {
       this.isShowDialogConfirmDelete = true;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
-      this.employeeIdDeleteSelected = this.employeeUpdate.EmployeeId;
-      this.employeeCodeDeleteSelected = this.employeeUpdate.EmployeeCode;
+      this.employeeIdDeleteSelected = this.selectedEmployee.EmployeeId;
+      this.employeeCodeDeleteSelected = this.selectedEmployee.EmployeeCode;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa
@@ -694,7 +696,6 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          this.employeeUpdate = {};
           await this.getListEmployee();
         }
       } catch {
@@ -710,7 +711,6 @@ export default {
       this.isShowDialogConfirmDelete = false;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = false;
-      this.employeeUpdate = {};
     },
 
     /**
@@ -740,6 +740,7 @@ export default {
      */
     async onDupliCateEmployee() {
       try {
+        this.employeeUpdate = this.selectedEmployee;
         this.isShowFormDetail = true;
         this.isOverlay = true;
         this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -956,17 +957,10 @@ export default {
      */
     async exportData() {
       try {
+        const link = this.$refs.ExportListEmployee;
         this.isShowLoadding = true;
-        const res = await excelEmployeeService.ExportEmployees(
-          this.dataTable.Data
-        );
+        await employeeService.exportData(link);
         this.isShowLoadding = false;
-        if (res.data > 0) {
-          this.$_MISAEmitter.emit(
-            "onShowToastMessage",
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_EXPORT
-          );
-        }
       } catch {
         return;
       }
@@ -1018,6 +1012,7 @@ input[type="search"]::-webkit-search-cancel-button {
 
 .active-record-item {
   background-color: var(--color-btn-default);
+  color: white;
 }
 
 .no-disable {

@@ -241,7 +241,12 @@
                 >
                   {{ department.DepartmentName }}
                 </li>
-                <li v-if="!listDepartmentSearch.length">
+                <li
+                  v-if="!listDepartmentSearch.length"
+                  :class="{
+                    'not-found-department': !listDepartmentSearch.length,
+                  }"
+                >
                   {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
                 </li>
               </ul>
@@ -1334,5 +1339,10 @@ input[type="checkbox"]:focus,
 input[type="radio"]:focus {
   outline: 1px solid black;
   border-radius: 50%;
+}
+
+.not-found-department {
+  text-align: center;
+  opacity: 0.5;
 }
 </style>
