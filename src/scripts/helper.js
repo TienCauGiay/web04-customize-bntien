@@ -40,6 +40,25 @@ const helperCommon = {
       else{
         return true;
       }
+    },
+    /**
+     * Mô tả: Hàm xử lí lỗi nhập liệu của thực thể khi input, update
+     * created by : BNTIEN
+     * created date: 04-07-2023 14:43:43
+     */
+    handleErrorInput: (errors, objectProperty) => {
+      const dataNotNull = [];
+      const isBorderRed = {};
+      for (const key of objectProperty) {
+        if (key in errors) {
+          dataNotNull.push(errors[key]);
+          isBorderRed[key] = true;
+        }
+      }
+      return {
+        'dataNotNull': dataNotNull,
+        'isBorderRed': isBorderRed
+      }
     }
 }
 

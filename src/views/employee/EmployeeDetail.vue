@@ -183,7 +183,8 @@
               class="e-cbb"
               id="e-cbb"
               :class="{
-                'border-red': isBorderRed.DepartmentName,
+                'border-red':
+                  isBorderRed.DepartmentName || isBorderRed.DepartmentId,
               }"
             >
               <div class="e-textfield-cbb">
@@ -206,6 +207,7 @@
                     v-if="
                       isHovering.DepartmentName &&
                       (isBorderRed.DepartmentName ||
+                        isBorderRed.DepartmentId ||
                         !employee.DepartmentName) &&
                       (errors['DepartmentName'] || errors['DepartmentId'])
                     "
@@ -603,6 +605,7 @@
 <script>
 import employeeService from "@/services/employee.js";
 import departmentService from "@/services/department.js";
+import helperCommon from "@/scripts/helper.js";
 export default {
   name: "EmployeeDetail",
 
@@ -878,6 +881,7 @@ export default {
      */
     async onSearchChange() {
       this.isBorderRed.DepartmentName = false;
+      this.isBorderRed.DepartmentId = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchDepartmentTimeout);
@@ -968,18 +972,13 @@ export default {
      * created by : BNTIEN
      * created date: 29-06-2023 07:07:16
      */
-    handleErrorInput() {
-      delete this.errors.id;
-      for (const key of this.employeeProperty) {
-        if (key in this.errors) {
-          this.dataNotNull.push(this.errors[key]);
-          if (key === "DepartmentId") {
-            this.isBorderRed["DepartmentName"] = true;
-          } else {
-            this.isBorderRed[key] = true;
-          }
-        }
-      }
+    handleErrorInputEmployee(errors, employeeProperty) {
+      const responseHandle = helperCommon.handleErrorInput(
+        errors,
+        employeeProperty
+      );
+      this.isBorderRed = responseHandle.isBorderRed;
+      this.dataNotNull = responseHandle.dataNotNull;
       if (this.dataNotNull.length > 0) {
         this.isShowDialogDataNotNull = true;
       }
@@ -1045,7 +1044,7 @@ export default {
           }
         } catch (error) {
           this.errors = error.response.data.Data;
-          this.handleErrorInput();
+          this.handleErrorInputEmployee(this.errors, this.employeeProperty);
         }
       } else {
         // Nếu form ở trạng thái sửa
@@ -1078,7 +1077,7 @@ export default {
             }
           } catch (error) {
             this.errors = error.response.data.Data;
-            this.handleErrorInput();
+            this.handleErrorInputEmployee(this.errors, this.employeeProperty);
           }
         } else {
           this.$emit("closeFormDetail");
@@ -1124,7 +1123,7 @@ export default {
           }
         } catch (error) {
           this.errors = error.response.data.Data;
-          this.handleErrorInput();
+          this.handleErrorInputEmployee(this.errors, this.employeeProperty);
         }
         // Nếu form ở trạng thái sửa
       } else {
@@ -1161,7 +1160,7 @@ export default {
             }
           } catch (error) {
             this.errors = error.response.data.Data;
-            this.handleErrorInput();
+            this.handleErrorInputEmployee(this.errors, this.employeeProperty);
           }
         } else {
           this.employee = {};
