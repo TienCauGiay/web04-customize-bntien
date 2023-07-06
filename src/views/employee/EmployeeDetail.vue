@@ -179,80 +179,19 @@
               >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DEPARTMENT }}
               <span class="s-require">*</span></label
             >
-            <div
-              class="e-cbb"
-              id="e-cbb"
-              :class="{
-                'border-red':
-                  isBorderRed.DepartmentName || isBorderRed.DepartmentId,
-              }"
-            >
-              <div class="e-textfield-cbb">
-                <div class="container-input">
-                  <misa-input
-                    ref="DepartmentName"
-                    :placeholder="
-                      this.$_MISAResource[this.$_LANG_CODE].FORM
-                        .PLACEHOLDER_DEPARTMENT
-                    "
-                    :value="employee.DepartmentName"
-                    @input="onSearchChange"
-                    :tabindex="3"
-                    @keydown="onKeyDownDepartment"
-                    @mouseenter="isHovering.DepartmentName = true"
-                    @mouseleave="isHovering.DepartmentName = false"
-                  ></misa-input>
-                  <div
-                    class="misa-tooltip"
-                    v-if="
-                      isHovering.DepartmentName &&
-                      (isBorderRed.DepartmentName ||
-                        isBorderRed.DepartmentId ||
-                        !employee.DepartmentName) &&
-                      (errors['DepartmentName'] || errors['DepartmentId'])
-                    "
-                  >
-                    {{
-                      errors["DepartmentName"]
-                        ? errors["DepartmentName"]
-                        : errors["DepartmentId"]
-                    }}
-                  </div>
-                </div>
-              </div>
-              <div class="e-icon-cbb" @click="onShowSelectDepartment">
-                <div class="function-icon"></div>
-              </div>
-            </div>
-            <div
-              class="col-md-l select-department"
-              :class="{
-                'select-department-block': isShowSelectDepartment,
-              }"
-            >
-              <ul
-                v-show="isShowSelectDepartment"
-                @click="onShowSelectDepartment"
-              >
-                <li
-                  v-for="(department, index) in listDepartmentSearch"
-                  :key="index"
-                  @click="onSelectedDepartment(department, index)"
-                  :class="{ 'cbb-selected': index == indexDepartmentSelected }"
-                  ref="DepartmentSelectedItem"
-                >
-                  {{ department.DepartmentName }}
-                </li>
-                <li
-                  v-if="!listDepartmentSearch.length"
-                  :class="{
-                    'not-found-department': !listDepartmentSearch.length,
-                  }"
-                >
-                  {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
-                </li>
-              </ul>
-            </div>
+            <misa-combobox
+              :isBorderRedCBB="isBorderRed"
+              :entityCBB="employee"
+              :errorsCBB="errors"
+              :tabindexCBB="3"
+              :listEntitySearchCBB="listDepartmentSearch"
+              :propName="'DepartmentName'"
+              :propId="'DepartmentId'"
+              :placeholderInputCBB="
+                this.$_MISAResource[this.$_LANG_CODE].FORM
+                  .PLACEHOLDER_DEPARTMENT
+              "
+            ></misa-combobox>
           </div>
         </div>
         <div class="half-content">
@@ -613,6 +552,20 @@ export default {
 
   created() {
     this.loadData();
+
+    this.$_MISAEmitter.on("onSelectedEntityCBB", (data) => {
+      this.onSelectedDepartment(data);
+    });
+    this.$_MISAEmitter.on("onSearchChangeCBB", (newValue) => {
+      this.onSearchChange(newValue);
+    });
+    this.$_MISAEmitter.on("onKeyDownEntityCBB", (index) => {
+      this.employee.DepartmentName =
+        this.listDepartmentSearch[index].DepartmentName;
+      this.employee.DepartmentId =
+        this.listDepartmentSearch[index].DepartmentId;
+      this.isBorderRed.DepartmentName = false;
+    });
   },
 
   mounted() {
@@ -644,8 +597,6 @@ export default {
         "BankName",
         "BankBranch",
       ],
-      // Khai báo biến quy định trạng thái hiển thị của combobox chọn đơn vị
-      isShowSelectDepartment: false,
       // Khai báo đối tượng employee
       employee: {},
       // Khai báo danh sách đơn vị tìm kiếm
@@ -809,84 +760,18 @@ export default {
         this.employee.IsProvider = this.$_MISAEnum.PROVIDER;
       }
     },
-    /**
-     * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
-     * created by : BNTIEN
-     * created date: 06-06-2023 22:02:18
-     */
-    onKeyDownDepartment(event) {
-      try {
-        const maxLength = this.listDepartmentSearch.length;
-        if (maxLength == 0) {
-          return;
-        } else {
-          if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
-            // Bấm xuống
-            if (this.isShowSelectDepartment) {
-              if (this.indexDepartmentSelected < maxLength - 1) {
-                this.indexDepartmentSelected++;
-              } else if (this.indexDepartmentSelected == maxLength - 1) {
-                this.indexDepartmentSelected = 0;
-              }
-              // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexDepartmentSelected,
-                this.$_MISAEnum.KEY_CODE.DOWN
-              );
-            } else {
-              this.isShowSelectDepartment = true;
-            }
-          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
-            // Bấm lên
-            if (this.isShowSelectDepartment) {
-              if (this.indexDepartmentSelected > 0) {
-                this.indexDepartmentSelected--;
-              } else if (this.indexDepartmentSelected == 0) {
-                this.indexDepartmentSelected = maxLength - 1;
-              }
-              // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexDepartmentSelected,
-                this.$_MISAEnum.KEY_CODE.UP
-              );
-            } else {
-              this.isShowSelectDepartment = true;
-            }
-          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
-            // Bấm enter
-            if (this.isShowSelectDepartment) {
-              this.employee.DepartmentName =
-                this.listDepartmentSearch[
-                  this.indexDepartmentSelected
-                ].DepartmentName;
-              this.employee.DepartmentId =
-                this.listDepartmentSearch[
-                  this.indexDepartmentSelected
-                ].DepartmentId;
-              this.isShowSelectDepartment = false;
-              this.isBorderRed.DepartmentName = false;
-            } else {
-              this.isShowSelectDepartment = true;
-            }
-          }
-        }
-      } catch {
-        return;
-      }
-    },
+
     /**
      * Mô tả: Lắng nghe sự thay đổi text trong input search department và tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
-    async onSearchChange() {
+    async onSearchChange(newValue) {
       this.isBorderRed.DepartmentName = false;
       this.isBorderRed.DepartmentId = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchDepartmentTimeout);
-
-        let newValue = event.target.value;
         this.employee.DepartmentName = newValue;
         delete this.employee.DepartmentId;
         if (!newValue.trim()) {
@@ -895,31 +780,7 @@ export default {
         this.searchDepartmentTimeout = setTimeout(async () => {
           const newListDepartment = await departmentService.getByName(newValue);
           this.listDepartmentSearch = newListDepartment.data;
-          this.isShowSelectDepartment = true;
         }, 500);
-      } catch {
-        return;
-      }
-    },
-    /**
-     * Mô tả: Hàm xử scroll theo khi bấm lên xuống
-     * created by : BNTIEN
-     * created date: 07-06-2023 08:37:33
-     */
-    scrollIndex(index, checkKeyCode) {
-      try {
-        const element = this.$refs.DepartmentSelectedItem[index];
-        if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
-          element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
-          });
-        } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
-          element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
-          });
-        }
       } catch {
         return;
       }
@@ -948,23 +809,15 @@ export default {
         this.$emit("closeFormDetail");
       }
     },
-    /**
-     * Mô tả: Hàm xử lí sự kiện ẩn hiện options chọn đơn vị
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:54:42
-     */
-    onShowSelectDepartment() {
-      this.isShowSelectDepartment = !this.isShowSelectDepartment;
-    },
+
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng chọn đơn vị
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
      */
-    onSelectedDepartment(department, index) {
+    onSelectedDepartment(department) {
       this.employee.DepartmentName = department.DepartmentName;
       this.employee.DepartmentId = department.DepartmentId;
-      this.indexDepartmentSelected = index;
       this.isBorderRed.DepartmentName = false;
     },
     /**
@@ -1193,9 +1046,9 @@ export default {
       for (const prop of this.employeeProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
-          if (prop === "DepartmentId") {
+          if (prop === "DepartmentId" || prop === "DepartmentName") {
             this.$nextTick(() => {
-              this.$refs["DepartmentName"].focus();
+              this.$_MISAEmitter.emit("focusInputCBB");
             });
           } else {
             this.$nextTick(() => {
@@ -1281,7 +1134,7 @@ export default {
      */
     handleClickOutsideMenuDepartment(event) {
       if (!this.$refs.MenuItemDepartment.contains(event.target)) {
-        this.isShowSelectDepartment = false;
+        this.$_MISAEmitter.emit("closeMenuItemCBB");
       }
     },
 
@@ -1305,6 +1158,9 @@ export default {
   },
 
   beforeUnmount() {
+    this.$_MISAEmitter.off("onSelectedEntityCBB");
+    this.$_MISAEmitter.off("onSearchChangeCBB");
+    this.$_MISAEmitter.off("onKeyDownEntityCBB");
     // Xóa các sự kiện đã đăng kí
     window.removeEventListener("click", this.handleClickOutsideMenuDepartment);
     this.$refs.FormDetail.removeEventListener("keydown", this.handleKeyDown);
@@ -1315,33 +1171,13 @@ export default {
 <style scoped>
 @import url(@/css/detailinfoemployee.css);
 
-.select-department-block {
-  background-color: #fff;
-  border: 1px solid var(--color-border-default);
-  z-index: 100;
-}
-
 .border-red {
   border: 1px solid red;
-}
-
-.e-textfield-cbb .textfield {
-  border-radius: 4px 0px 0px 4px;
-}
-
-.cbb-selected {
-  background-color: var(--color-border-default);
-  color: var(--color-btn-default);
 }
 
 input[type="checkbox"]:focus,
 input[type="radio"]:focus {
   outline: 1px solid black;
   border-radius: 50%;
-}
-
-.not-found-department {
-  text-align: center;
-  opacity: 0.5;
 }
 </style>

@@ -8,6 +8,7 @@ import MISADialogDataNotNull from './components/dialog/MISADialogDataNotNull.vue
 import MISAButtonDefault from './components/button/MISAButtonDefault.vue';
 import MISAButtonExtra from './components/button/MISAButtonExtra.vue';
 import MISAToastSuccess from './components/toast/MISAToastSuccess.vue';
+import MISACombobox from './components/combobox/MISACombobox.vue';
 import MISAEnum from './scripts/enum.js';
 import MISAResource from './scripts/resource.js';
 import vueRouter from './router/router.js';
@@ -22,6 +23,7 @@ app.component("misa-dialog-data-not-null", MISADialogDataNotNull);
 app.component("misa-button-default", MISAButtonDefault);
 app.component("misa-button-extra", MISAButtonExtra);
 app.component("misa-toast-success", MISAToastSuccess);
+app.component("misa-combobox", MISACombobox);
 app.config.globalProperties.$_MISAEnum = MISAEnum;
 app.config.globalProperties.$_MISAResource = MISAResource;
 app.config.globalProperties.$_MISAEmitter = MISAEmitter;
