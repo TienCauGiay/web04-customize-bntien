@@ -295,7 +295,7 @@
                 v-for="(record, index) in recordOptions"
                 :key="index"
                 @click="onSelectedRecord(record, index)"
-                :class="{ 'active-record-item': indecSelectedRecord === index }"
+                :class="{ 'active-record-item': indexSelectedRecord === index }"
               >
                 {{ record }}
                 {{
@@ -456,7 +456,7 @@ export default {
       // Khai báo biến quy định trạng thái hiển thị loadding
       isShowLoadding: false,
       // Khai báo biến lưu chỉ số index được chọn trong paging
-      indecSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
+      indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
       searchEmployeeTimeout: null,
       // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
@@ -580,16 +580,16 @@ export default {
      * created date: 29-05-2023 07:49:31
      */
     async refreshData() {
-      await this.getListEmployee();
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
       this.textSearch = "";
+      await this.getListEmployee();
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:01
      */
-    async btnOpenFormDetail() {
+    btnOpenFormDetail() {
       this.isShowFormDetail = true;
       this.isOverlay = true;
       this.employeeUpdate.EmployeeCode = "";
@@ -663,7 +663,7 @@ export default {
      */
     onSelectedRecord(record, index) {
       this.selectedRecord = record;
-      this.indecSelectedRecord = index;
+      this.indexSelectedRecord = index;
       this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
       this.updateDataTable();
     },
@@ -680,7 +680,7 @@ export default {
       this.employeeCodeDeleteSelected = this.selectedEmployee.EmployeeCode;
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa
+     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhân viên
      * created by : BNTIEN
      * created date: 28-05-2023 21:09:01
      */
@@ -738,7 +738,7 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
-    async onDupliCateEmployee() {
+    onDupliCateEmployee() {
       try {
         this.employeeUpdate = this.selectedEmployee;
         this.isShowFormDetail = true;
@@ -886,13 +886,17 @@ export default {
      * created date: 28-06-2023 09:30:13
      */
     checkRow(id) {
-      if (!id) return this.ids;
-      if (this.ids.includes(id)) {
-        this.ids.splice(this.ids.indexOf(id), 1);
+      try {
+        if (!id) return this.ids;
+        if (this.ids.includes(id)) {
+          this.ids.splice(this.ids.indexOf(id), 1);
+          return this.ids;
+        }
+        this.ids.push(id);
         return this.ids;
+      } catch {
+        return;
       }
-      this.ids.push(id);
-      return this.ids;
     },
 
     /**
@@ -901,20 +905,24 @@ export default {
      * created date: 28-06-2023 09:31:07
      */
     checkAllSelect() {
-      if (this.isCheckAll) {
-        this.dataTable.Data.map((item) => {
-          if (this.ids.includes(item.EmployeeId)) {
-            this.ids.splice(this.ids.indexOf(item.EmployeeId), 1);
-          }
-        });
-      } else {
-        if (this.dataTable.Data) {
+      try {
+        if (this.isCheckAll) {
           this.dataTable.Data.map((item) => {
-            if (!this.ids.includes(item.EmployeeId)) {
-              this.ids.push(item.EmployeeId);
+            if (this.ids.includes(item.EmployeeId)) {
+              this.ids.splice(this.ids.indexOf(item.EmployeeId), 1);
             }
           });
+        } else {
+          if (this.dataTable.Data) {
+            this.dataTable.Data.map((item) => {
+              if (!this.ids.includes(item.EmployeeId)) {
+                this.ids.push(item.EmployeeId);
+              }
+            });
+          }
         }
+      } catch {
+        return;
       }
     },
     /**
