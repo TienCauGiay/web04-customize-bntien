@@ -2,10 +2,8 @@
   <div
     class="e-cbb"
     id="e-cbb"
-    :class="{
-      'border-red': isBorderRedCBB[propName] || isBorderRedCBB[propId],
-    }"
-  >
+    :class="{ 'border-red': isBorderRedCBB[propName] || isBorderRedCBB[propId] }"
+    >
     <div class="e-textfield-cbb">
       <div class="container-input">
         <misa-input
@@ -20,13 +18,8 @@
         ></misa-input>
         <div
           class="misa-tooltip"
-          v-if="
-            isHoveringCBB &&
-            (isBorderRedCBB[propName] ||
-              isBorderRedCBB[propId] ||
-              !entityCBB[propName]) &&
-            (errorsCBB[propName] || errorsCBB[propId])
-          "
+          v-if="isHoveringCBB && (isBorderRedCBB[propName] || isBorderRedCBB[propId] || !entityCBB[propName]) &&
+            (errorsCBB[propName] || errorsCBB[propId])"
         >
           {{ errorsCBB[propName] ? errorsCBB[propName] : errorsCBB[propId] }}
         </div>
@@ -38,9 +31,7 @@
   </div>
   <div
     class="col-md-l select-entity"
-    :class="{
-      'select-entity-block': isShowSelectEntity,
-    }"
+    :class="{ 'select-entity-block': isShowSelectEntity }"
   >
     <ul v-show="isShowSelectEntity" @click="onShowSelectEntity">
       <li
@@ -54,9 +45,7 @@
       </li>
       <li
         v-if="!listEntitySearchCBB.length"
-        :class="{
-          'not-found-entity': !listEntitySearchCBB.length,
-        }"
+        :class="{ 'not-found-entity': !listEntitySearchCBB.length }"
       >
         {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
       </li>
@@ -141,13 +130,11 @@ export default {
         const element = this.$refs.EntitySelectedItem[index];
         if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
           element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END
           });
         } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
           element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START
           });
         }
       } catch {
@@ -175,10 +162,7 @@ export default {
                 this.indexEntitySelected = 0;
               }
               // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexEntitySelected,
-                this.$_MISAEnum.KEY_CODE.DOWN
-              );
+              this.scrollIndex(this.indexEntitySelected, this.$_MISAEnum.KEY_CODE.DOWN);
             } else {
               this.isShowSelectEntity = true;
             }
@@ -191,20 +175,14 @@ export default {
                 this.indexEntitySelected = maxLength - 1;
               }
               // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexEntitySelected,
-                this.$_MISAEnum.KEY_CODE.UP
-              );
+              this.scrollIndex(this.indexEntitySelected, this.$_MISAEnum.KEY_CODE.UP);
             } else {
               this.isShowSelectEntity = true;
             }
           } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
             // Bấm enter
             if (this.isShowSelectEntity) {
-              this.$_MISAEmitter.emit(
-                "onKeyDownEntityCBB",
-                this.indexEntitySelected
-              );
+              this.$_MISAEmitter.emit("onKeyDownEntityCBB", this.indexEntitySelected);
               this.isShowSelectEntity = false;
             } else {
               this.isShowSelectEntity = true;

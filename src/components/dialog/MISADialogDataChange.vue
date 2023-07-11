@@ -5,27 +5,19 @@
       id="dialog-question-employee"
     >
       <div class="title-dialog">
-        <h1>
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CLOSE_RECORD }}
-        </h1>
+        <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CLOSE_RECORD }}</h1>
         <div class="close-icon" @click="btnCancel"></div>
       </div>
       <div class="dialog-content">
         <div class="question-blue-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
-          <p>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.DATA_CHANGE
-            }}
-          </p>
+          <p>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.DATA_CHANGE }}</p>
         </div>
       </div>
       <div class="dialog-question-footer">
         <div class="dialog-question-footer-left">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL"
             class="btn-no-minwwidth"
             @click="btnCancel"
             :tabindex="102"
@@ -39,9 +31,7 @@
             :tabindex="101"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES
-            "
+            :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES"
             class="btn-no-minwwidth"
             @click="btnYes"
             :tabindex="100"

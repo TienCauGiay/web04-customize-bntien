@@ -3,10 +3,7 @@
     <div class="header-title">
       <div id="gn" class="three-dashes-icon icon-tb"></div>
       <p>
-        {{
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-            .NAME_COMPANY_SELECTED
-        }}
+        {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME_COMPANY_SELECTED }}
       </p>
       <div class="dropdown-grey-icon icon-tb"></div>
     </div>
@@ -18,10 +15,7 @@
       <div class="info-user">
         <div class="avatar-icon icon-l"></div>
         <p>
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .NAME_ACCOUNT_LOGIN
-          }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NAME_ACCOUNT_LOGIN }}
         </p>
         <div class="dropdown-grey-icon icon-tb"></div>
       </div>

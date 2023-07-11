@@ -4,27 +4,18 @@
     id="dialog-warning-delete-employee"
   >
     <div class="title-dialog">
-      <h1>
-        {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CONFIRM_DELETE }}
-      </h1>
+      <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CONFIRM_DELETE }}</h1>
       <div class="close-icon" @click="btnNoConfirmDelete"></div>
     </div>
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
         <p v-if="!this.isDeleteMultiple">
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-              .CONFIRM_DELETE_PRE
-          }}
-          &lt;{{ this.employeeCodeDelete }}&gt;
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.CONFIRM_DELETE_PRE }}
+          &lt;{{ this.employeeCodeDelete }}&gt; {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
         </p>
         <p v-else>
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-              .CONFIRM_DELETE_MULTIPLE
-          }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.CONFIRM_DELETE_MULTIPLE }}
         </p>
       </div>
     </div>
