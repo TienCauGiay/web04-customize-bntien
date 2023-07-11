@@ -1,15 +1,8 @@
 <template>
-  <div
-    id="detail-info-employee"
-    class="position-display-center"
-    ref="FormDetail"
-  >
+  <div id="detail-info-employee" class="position-display-center" ref="FormDetail">
     <div class="employee-toolbar">
-      <div
-        class="question-icon icon-tb"
-        :tabindex="23"
-        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"
-      ></div>
+      <div class="question-icon icon-tb" :tabindex="23"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
@@ -31,9 +24,7 @@
             @change="handleCustomerCheckboxChange"
             :tabindex="18"
           />
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER }}</span>
         </div>
         <div class="employee-check">
           <input
@@ -42,25 +33,21 @@
             @change="handleProviderCheckboxChange"
             :tabindex="19"
           />
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.IS_PROVIDER }}</span>
         </div>
       </div>
       <div class="employee-content">
         <div class="half-content">
           <div class="col-md-n">
-            <label
-              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.CODE }}
-              <span class="s-require">*</span></label
-            >
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.CODE }}
+              <span class="s-require">*</span>
+            </label>
             <div class="container-input">
               <misa-input
                 ref="EmployeeCode"
                 v-model="employee.EmployeeCode"
-                :class="{
-                  'border-red': isBorderRed.EmployeeCode,
-                }"
+                :class="{ 'border-red': isBorderRed.EmployeeCode }"
                 :tabindex="1"
                 @input="setIsBorderRed('EmployeeCode')"
                 @mouseenter="isHovering.EmployeeCode = true"
@@ -79,10 +66,10 @@
             </div>
           </div>
           <div class="col-md-tb">
-            <label
-              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.NAME }}
-              <span class="s-require">*</span></label
-            >
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NAME }}
+              <span class="s-require">*</span>
+            </label>
             <div class="container-input">
               <misa-input
                 ref="FullName"
@@ -123,18 +110,13 @@
                 @mouseenter="isHovering.DateOfBirth = true"
                 @mouseleave="isHovering.DateOfBirth = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.DateOfBirth && isBorderRed.DateOfBirth"
-              >
+              <div class="misa-tooltip" v-if="isHovering.DateOfBirth && isBorderRed.DateOfBirth">
                 {{ errors["DateOfBirth"] }}
               </div>
             </div>
           </div>
           <div class="col-md-tb">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].FORM.GENDER
-            }}</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.GENDER }}</label>
             <div class="e-gender">
               <input
                 v-model="employee.Gender"
@@ -143,9 +125,7 @@
                 name="gender"
                 :tabindex="6"
               />
-              <span>{{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
-              }}</span>
+              <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male }}</span>
               <input
                 v-model="employee.Gender"
                 :value="this.$_MISAEnum.GENDER.Female"
@@ -153,9 +133,7 @@
                 name="gender"
                 :tabindex="7"
               />
-              <span>{{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Female
-              }}</span>
+              <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Female }}</span>
               <input
                 v-model="employee.Gender"
                 :value="this.$_MISAEnum.GENDER.Other"
@@ -163,22 +141,16 @@
                 name="gender"
                 :tabindex="8"
               />
-              <span>{{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Other
-              }}</span>
+              <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Other }}</span>
             </div>
           </div>
         </div>
         <div class="half-content">
-          <div
-            class="col-md-l"
-            style="position: relative"
-            ref="MenuItemDepartment"
-          >
-            <label
-              >{{ this.$_MISAResource[this.$_LANG_CODE].FORM.DEPARTMENT }}
-              <span class="s-require">*</span></label
-            >
+          <div class="col-md-l" style="position: relative" ref="MenuItemDepartment">
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.DEPARTMENT }}
+              <span class="s-require">*</span>
+            </label>
             <misa-combobox
               :isBorderRedCBB="isBorderRed"
               :entityCBB="employee"
@@ -187,65 +159,47 @@
               :listEntitySearchCBB="listDepartmentSearch"
               :propName="'DepartmentName'"
               :propId="'DepartmentId'"
-              :placeholderInputCBB="
-                this.$_MISAResource[this.$_LANG_CODE].FORM
-                  .PLACEHOLDER_DEPARTMENT
-              "
+              :placeholderInputCBB="this.$_MISAResource[this.$_LANG_CODE].FORM.PLACEHOLDER_DEPARTMENT"
             ></misa-combobox>
           </div>
         </div>
         <div class="half-content">
           <div class="col-md-tb">
-            <label
-              :title="
-                this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.IDENTITY_NUMBER
-              "
-              >{{
-                this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_NUMBER
-              }}</label
-            >
+            <label :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.IDENTITY_NUMBER">
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_NUMBER }}
+            </label>
             <div class="container-input">
               <misa-input
                 v-model="employee.IdentityNumber"
                 :tabindex="9"
                 ref="IdentityNumber"
-                :class="{
-                  'border-red': isBorderRed.IdentityNumber,
-                }"
+                :class="{ 'border-red': isBorderRed.IdentityNumber }"
                 @input="setIsBorderRed('IdentityNumber')"
                 @mouseenter="isHovering.IdentityNumber = true"
                 @mouseleave="isHovering.IdentityNumber = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.IdentityNumber && isBorderRed.IdentityNumber"
-              >
+              <div class="misa-tooltip" v-if="isHovering.IdentityNumber && isBorderRed.IdentityNumber">
                 {{ errors["IdentityNumber"] }}
               </div>
             </div>
           </div>
           <div class="col-md-n">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_DATE
-            }}</label>
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_DATE }}
+            </label>
             <div class="container-input">
               <misa-input
                 type="date"
                 v-model="employee.IdentityDate"
                 :value="formattedDateIdentity"
                 :tabindex="9"
-                :class="{
-                  'border-red': isBorderRed.IdentityDate,
-                }"
+                :class="{ 'border-red': isBorderRed.IdentityDate }"
                 ref="IdentityDate"
                 @input="setIsBorderRed('IdentityDate')"
                 @mouseenter="isHovering.IdentityDate = true"
                 @mouseleave="isHovering.IdentityDate = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.IdentityDate && isBorderRed.IdentityDate"
-              >
+              <div class="misa-tooltip" v-if="isHovering.IdentityDate && isBorderRed.IdentityDate">
                 {{ errors["IdentityDate"] }}
               </div>
             </div>
@@ -253,25 +207,20 @@
         </div>
         <div class="half-content">
           <div class="col-md-l">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].FORM.POSITION
-            }}</label>
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.POSITION }}
+            </label>
             <div class="container-input">
               <misa-input
                 v-model="employee.PositionName"
                 :tabindex="4"
                 ref="PositionName"
-                :class="{
-                  'border-red': isBorderRed.PositionName,
-                }"
+                :class="{ 'border-red': isBorderRed.PositionName }"
                 @input="setIsBorderRed('PositionName')"
                 @mouseenter="isHovering.PositionName = true"
                 @mouseleave="isHovering.PositionName = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.PositionName && isBorderRed.PositionName"
-              >
+              <div class="misa-tooltip" v-if="isHovering.PositionName && isBorderRed.PositionName">
                 {{ errors["PositionName"] }}
               </div>
             </div>
@@ -279,25 +228,20 @@
         </div>
         <div class="half-content">
           <div class="col-md-l">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESS
-            }}</label>
+            <label>
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESSm}}
+            </label>
             <div class="container-input">
               <misa-input
                 v-model="employee.IdentityPlace"
                 :tabindex="10"
                 ref="IdentityPlace"
-                :class="{
-                  'border-red': isBorderRed.IdentityPlace,
-                }"
+                :class="{ 'border-red': isBorderRed.IdentityPlace }"
                 @input="setIsBorderRed('IdentityPlace')"
                 @mouseenter="isHovering.IdentityPlace = true"
                 @mouseleave="isHovering.IdentityPlace = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.IdentityPlace && isBorderRed.IdentityPlace"
-              >
+              <div class="misa-tooltip" v-if="isHovering.IdentityPlace && isBorderRed.IdentityPlace">
                 {{ errors["IdentityPlace"] }}
               </div>
             </div>
@@ -305,25 +249,19 @@
         </div>
         <div class="full-content" id="content-null"></div>
         <div class="full-content">
-          <label>{{
-            this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS
-          }}</label>
+          <label>
+            {{ this.$_MISAResource[this.$_LANG_CODE].FORM.ADDRESS }}</label>
           <div class="container-input">
             <misa-input
               v-model="employee.Address"
               :tabindex="11"
               ref="Address"
-              :class="{
-                'border-red': isBorderRed.Address,
-              }"
+              :class="{ 'border-red': isBorderRed.Address }"
               @input="setIsBorderRed('Address')"
               @mouseenter="isHovering.Address = true"
               @mouseleave="isHovering.Address = false"
             ></misa-input>
-            <div
-              class="misa-tooltip"
-              v-if="isHovering.Address && isBorderRed.Address"
-            >
+            <div class="misa-tooltip" v-if="isHovering.Address && isBorderRed.Address">
               {{ errors["Address"] }}
             </div>
           </div>
@@ -331,83 +269,58 @@
         <div class="full-content">
           <div class="full-content-quarter">
             <div class="col-md-quater">
-              <label
-                :title="
-                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_NUMBER
-                "
-                >{{
-                  this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_NUMBER
-                }}</label
-              >
+              <label :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_NUMBER">
+                {{ this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_NUMBER }}
+              </label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.PhoneNumber"
                   :tabindex="12"
                   ref="PhoneNumber"
-                  :class="{
-                    'border-red': isBorderRed.PhoneNumber,
-                  }"
+                  :class="{ 'border-red': isBorderRed.PhoneNumber }"
                   @input="setIsBorderRed('PhoneNumber')"
                   @mouseenter="isHovering.PhoneNumber = true"
                   @mouseleave="isHovering.PhoneNumber = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.PhoneNumber && isBorderRed.PhoneNumber"
-                >
+                <div class="misa-tooltip" v-if="isHovering.PhoneNumber && isBorderRed.PhoneNumber">
                   {{ errors["PhoneNumber"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-quater">
-              <label
-                :title="
-                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_LANDLINE
-                "
-                >{{
-                  this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_LANDLINE
-                }}</label
-              >
+              <label :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.PHONE_LANDLINE">
+                {{ this.$_MISAResource[this.$_LANG_CODE].FORM.PHONE_LANDLINE}}
+              </label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.PhoneLandline"
                   :tabindex="13"
                   ref="PhoneLandline"
-                  :class="{
-                    'border-red': isBorderRed.PhoneLandline,
-                  }"
+                  :class="{ 'border-red': isBorderRed.PhoneLandline }"
                   @input="setIsBorderRed('PhoneLandline')"
                   @mouseenter="isHovering.PhoneLandline = true"
                   @mouseleave="isHovering.PhoneLandline = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.PhoneLandline && isBorderRed.PhoneLandline"
-                >
+                <div class="misa-tooltip" v-if="isHovering.PhoneLandline && isBorderRed.PhoneLandline">
                   {{ errors["PhoneLandline"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-quater">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].FORM.EMAIL
-              }}</label>
+              <label>
+                {{ this.$_MISAResource[this.$_LANG_CODE].FORM.EMAIL }}
+              </label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.Email"
                   :tabindex="14"
-                  :class="{
-                    'border-red': isBorderRed.Email,
-                  }"
+                  :class="{ 'border-red': isBorderRed.Email }"
                   ref="Email"
                   @input="setIsBorderRed('Email')"
                   @mouseenter="isHovering.Email = true"
                   @mouseleave="isHovering.Email = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.Email && isBorderRed.Email"
-                >
+                <div class="misa-tooltip" v-if="isHovering.Email && isBorderRed.Email">
                   {{ errors["Email"] }}
                 </div>
               </div>
@@ -417,73 +330,52 @@
         <div class="full-content">
           <div class="full-content-quarter">
             <div class="col-md-quater">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_ACCOUNT
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_ACCOUNT }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.BankAccount"
                   :tabindex="15"
                   ref="BankAccount"
-                  :class="{
-                    'border-red': isBorderRed.BankAccount,
-                  }"
+                  :class="{ 'border-red': isBorderRed.BankAccount }"
                   @input="setIsBorderRed('BankAccount')"
                   @mouseenter="isHovering.BankAccount = true"
                   @mouseleave="isHovering.BankAccount = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.BankAccount && isBorderRed.BankAccount"
-                >
+                <div class="misa-tooltip" v-if="isHovering.BankAccount && isBorderRed.BankAccount">
                   {{ errors["BankAccount"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-quater">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_NAME
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_NAME }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.BankName"
                   :tabindex="16"
                   ref="BankName"
-                  :class="{
-                    'border-red': isBorderRed.BankName,
-                  }"
+                  :class="{ 'border-red': isBorderRed.BankName }"
                   @input="setIsBorderRed('BankName')"
                   @mouseenter="isHovering.BankName = true"
                   @mouseleave="isHovering.BankName = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.BankName && isBorderRed.BankName"
-                >
+                <div class="misa-tooltip" v-if="isHovering.BankName && isBorderRed.BankName">
                   {{ errors["BankName"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-quater">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_BRANCH
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].FORM.BANK_BRANCH }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="employee.BankBranch"
                   :tabindex="17"
                   ref="BankBranch"
-                  :class="{
-                    'border-red': isBorderRed.BankBranch,
-                  }"
+                  :class="{ 'border-red': isBorderRed.BankBranch }"
                   @input="setIsBorderRed('BankBranch')"
                   @mouseenter="isHovering.BankBranch = true"
                   @mouseleave="isHovering.BankBranch = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.BankBranch && isBorderRed.BankBranch"
-                >
+                <div class="misa-tooltip" v-if="isHovering.BankBranch && isBorderRed.BankBranch">
                   {{ errors["BankBranch"] }}
                 </div>
               </div>
@@ -494,9 +386,7 @@
       <div class="employee-action">
         <div class="action-left">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL"
             @click="btnCancel"
             :tabindex="22"
           ></misa-button-extra>
@@ -509,9 +399,7 @@
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD
-            "
+            :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD"
             @click="btnSaveAndAdd"
             :tabindex="21"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
@@ -545,6 +433,7 @@
 import employeeService from "@/services/employee.js";
 import departmentService from "@/services/department.js";
 import helperCommon from "@/scripts/helper.js";
+
 export default {
   name: "EmployeeDetail",
 
@@ -638,9 +527,7 @@ export default {
       get() {
         if (this.employee.DateOfBirth) {
           const isoDate = this.employee.DateOfBirth;
-          const formattedDate = isoDate.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
+          const formattedDate = isoDate.split(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE)[0];
           return formattedDate;
         }
         return "";
@@ -660,8 +547,7 @@ export default {
         if (this.employee.IdentityDate) {
           const isoDateIdentity = this.employee.IdentityDate;
           const formattedDateIdentity = isoDateIdentity.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE)[0];
           return formattedDateIdentity;
         }
         return "";
@@ -717,12 +603,10 @@ export default {
           // Sinh mã tự động
           this.employee.EmployeeCode = this.newEmployeeCode;
           // Gán title cho form mode thêm mới
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
         } else {
           // Gán title cho form mode thêm sửa
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
         }
       } catch {
         return;
@@ -829,21 +713,16 @@ export default {
       try {
         this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].VALIDATE[key];
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].VALIDATE[key]
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].VALIDATE[key]);
       } catch {
         return;
       }
     },
     setErrorMaxLength(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning;
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning;
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning);
       } catch {
         return;
       }
@@ -864,10 +743,8 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.employee[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                    .Limit
-                )
-              ) {
+                  this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput].Limit)) 
+              {
                 this.setErrorMaxLength(refInput);
               }
               break;
@@ -891,10 +768,8 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.employee[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                      .Limit
-                  )
-                ) {
+                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput].Limit)) 
+                {
                   this.setErrorMaxLength(refInput);
                 } else if (
                   helperCommon.isFormatEmail(this.employee[refInput])
@@ -908,10 +783,8 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.employee[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                      .Limit
-                  )
-                ) {
+                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput].Limit)) 
+                {
                   this.setErrorMaxLength(refInput);
                 }
               }
@@ -928,10 +801,7 @@ export default {
      * created date: 29-06-2023 07:07:16
      */
     handleErrorInputEmployee(errors, employeeProperty) {
-      const responseHandle = helperCommon.handleErrorInput(
-        errors,
-        employeeProperty
-      );
+      const responseHandle = helperCommon.handleErrorInput(errors, employeeProperty);
       this.errors = responseHandle.error;
       this.isBorderRed = responseHandle.isBorderRed;
       this.dataNotNull = responseHandle.dataNotNull;
@@ -960,11 +830,8 @@ export default {
     handleEmployeeExisted(employeeExisted) {
       this.isShowDialogCodeExist = true;
       this.isBorderRed.EmployeeCode = true;
-      this.errors["EmployeeCode"] = `${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
-      } ${employeeExisted.EmployeeCode} ${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
-      }`;
+      this.errors["EmployeeCode"] = `${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE}
+       ${employeeExisted.EmployeeCode} ${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END}`;
       this.contentEmployeeCodeExist = employeeExisted.EmployeeCode;
     },
     /**
@@ -984,14 +851,9 @@ export default {
             if (!employeeByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await employeeService.create(this.employee);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
-              ) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
-                );
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
+                this.$_MISAEmitter.emit("onShowToastMessage",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE);
                 this.$emit("closeFormDetail");
                 this.$_MISAEmitter.emit("refreshDataTable");
               }
@@ -1015,23 +877,11 @@ export default {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let employeeByCode = await this.checkEmployeeExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-              if (
-                !employeeByCode ||
-                employeeByCode.EmployeeCode ===
-                  this.employeeSelected.EmployeeCode
-              ) {
-                const res = await employeeService.update(
-                  this.employeeSelected.EmployeeId,
-                  this.employee
-                );
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)
-                ) {
-                  this.$_MISAEmitter.emit(
-                    "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
-                  );
+              if (!employeeByCode || employeeByCode.EmployeeCode === this.employeeSelected.EmployeeCode) {
+                const res = await employeeService.update(this.employeeSelected.EmployeeId,this.employee);
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+                  this.$_MISAEmitter.emit("onShowToastMessageUpdate",
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE);
                   this.$emit("closeFormDetail");
                   this.$_MISAEmitter.emit("refreshDataTable");
                 }
@@ -1067,14 +917,9 @@ export default {
             if (!employeeByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await employeeService.create(this.employee);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
-              ) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
-                );
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)) {
+                this.$_MISAEmitter.emit("onShowToastMessage",
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE);
                 this.employee = {};
                 this.isBorderRed = {};
                 this.$_MISAEmitter.emit("refreshDataTable");
@@ -1102,29 +947,18 @@ export default {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let employeeByCode = await this.checkEmployeeExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
-              if (
-                !employeeByCode ||
-                employeeByCode.EmployeeCode ===
-                  this.employeeSelected.EmployeeCode
-              ) {
-                const res = await employeeService.update(
-                  this.employeeSelected.EmployeeId,
-                  this.employee
-                );
+              if (!employeeByCode || employeeByCode.EmployeeCode === this.employeeSelected.EmployeeCode) {
+                const res = await employeeService.update(this.employeeSelected.EmployeeId, this.employee);
                 this.employee = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 await this.getNewCode();
                 this.employee.EmployeeCode = this.newEmployeeCode;
                 this.focusCode();
                 this.$_MISAEmitter.emit("refreshDataTable");
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)
-                ) {
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
-                  );
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE);
                 }
               } else {
                 // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -1156,10 +990,7 @@ export default {
         }
       }
       // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
-      if (
-        listPropError.includes("DepartmentId") &&
-        !listPropError.includes("DepartmentName")
-      ) {
+      if (listPropError.includes("DepartmentId") && !listPropError.includes("DepartmentName")) {
         listPropError.push("DepartmentName");
       }
       for (const prop of this.employeeProperty) {
