@@ -35,10 +35,10 @@ const helperCommon = {
       const dob = new Date(value);      
       const dateToday = new Date();
       if(dob > dateToday){
-        return false;
+        return true;
       }
       else{
-        return true;
+        return false;
       }
     },
     /**
@@ -56,9 +56,47 @@ const helperCommon = {
         }
       }
       return {
+        'error': errors,
         'dataNotNull': dataNotNull,
         'isBorderRed': isBorderRed
       }
+    },
+    /**
+     * Mô tả: Hàm kiểm tra dữ liệu rỗng
+     * created by : BNTIEN
+     * created date: 11-07-2023 13:29:51
+     */
+    isEmptyInput: (text) =>{
+      if(!text){
+        return true;
+      }
+      return false;
+    },
+    /**
+     * Mô tả: Hàm kiểm tra dữ liệu vượt quá số kí tự cho phép
+     * created by : BNTIEN
+     * created date: 11-07-2023 14:01:11
+     */
+    isMaxLengthInput: (text, length) => {
+      if(!text) return false;
+      if(text.length > length){
+        return true;
+      }
+      return false;
+    },
+
+    /**
+     * Mô tả: Hàm kiểm tra định dạng email 
+     * created by : BNTIEN
+     * created date: 11-07-2023 16:26:14
+     */
+    isFormatEmail: (text) =>{
+      if(!text) return false;
+      const regex = /^\S+@\S+\.\S+$/;
+      if(!regex.test(text)){
+        return true;
+      }
+      return false;
     }
 }
 

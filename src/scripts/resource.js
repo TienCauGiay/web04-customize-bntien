@@ -1,5 +1,27 @@
 const MISAResource = {
     'vn-VI':{
+        VALIDATE:{
+            "EmployeeCode": "Mã nhân viên không được phép để trống",
+            "FullName": "Họ tên không được phép để trống",
+            "DepartmentName": "Đơn vị không được phép để trống",
+            "DateOfBirth": "Ngày sinh lớn hơn ngày hiện tại",
+            "IdentityDate": "Ngày cấp lớn hơn ngày hiện tại",
+            "Email": "Email không đúng định dạng",
+        },
+        MAXLENGTH:{
+            "EmployeeCode": {Limit: 20, Warning : "Mã nhân viên tối đa 20 kí tự"},
+            "FullName": {Limit: 100, Warning : "Họ tên tối đa 100 kí tự"},
+            "IdentityNumber": {Limit: 25, Warning : "Số chứng minh tối đa 25 kí tự"},
+            "IdentityPlace": {Limit: 255, Warning : "Nơi cấp tối đa 255 kí tự"},
+            "PositionName": {Limit: 255, Warning : "Chức danh tối đa 255 kí tự"},
+            "Address": {Limit: 255, Warning : "Địa chỉ tối đa 255 kí tự"},
+            "PhoneNumber": {Limit: 50, Warning : "Điện thoại di động tối đa 50 kí tự"},
+            "PhoneLandline": {Limit: 50, Warning : "Điện thoại cố định tối đa 50 kí tự"},
+            "Email": {Limit: 100, Warning : "Email tối đa 100 kí tự"},
+            "BankAccount": {Limit: 50, Warning : "Số tài khoản tối đa 50 kí tự"},
+            "BankName": {Limit: 255, Warning : "Tên ngân hàng tối đa 255 kí tự"},
+            "BankBranch": {Limit: 255, Warning : "Chi nhánh tối đa 255 kí tự"},
+        },
         TOOLTIP:{
             ALERT: "Thông báo",
             REFRESH:"Lấy lại dữ liệu",
