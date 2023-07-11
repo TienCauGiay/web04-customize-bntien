@@ -896,8 +896,7 @@ export default {
             this.handleEmployeeExisted(employeeByCode);
           }
         } catch (error) {
-          this.errors = error.response.data.Data;
-          this.handleErrorInputEmployee(this.errors, this.employeeProperty);
+          this.handleErrorInputEmployee(error, this.employeeProperty);
         }
       } else {
         // Nếu form ở trạng thái sửa
@@ -929,8 +928,7 @@ export default {
               this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
-            this.errors = error.response.data.Data;
-            this.handleErrorInputEmployee(this.errors, this.employeeProperty);
+            this.handleErrorInputEmployee(error, this.employeeProperty);
           }
         } else {
           this.$emit("closeFormDetail");
@@ -975,8 +973,7 @@ export default {
             this.handleEmployeeExisted(employeeByCode);
           }
         } catch (error) {
-          this.errors = error.response.data.Data;
-          this.handleErrorInputEmployee(this.errors, this.employeeProperty);
+          this.handleErrorInputEmployee(error, this.employeeProperty);
         }
         // Nếu form ở trạng thái sửa
       } else {
@@ -1012,8 +1009,7 @@ export default {
               this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
-            this.errors = error.response.data.Data;
-            this.handleErrorInputEmployee(this.errors, this.employeeProperty);
+            this.handleErrorInputEmployee(error, this.employeeProperty);
           }
         } else {
           this.employee = {};

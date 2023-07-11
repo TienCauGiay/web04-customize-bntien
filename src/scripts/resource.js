@@ -27,6 +27,7 @@ const MISAResource = {
             FEATURE: "CHỨC NĂNG"
         },
         TEXT_CONTENT:{
+            FILE_NAME:"Danh_sach_nhan_vien",
             NAME_COMPANY_SELECTED: "CÔNG TY TNHH SẢN XUẤT - THƯƠNG MẠI - DỊCH VỤ QUI PHÚC",
             NAME_ACCOUNT_LOGIN:"Bùi Ngọc Tiến",
             ACCOUNTANT:"KẾ TOÁN",

@@ -1,5 +1,5 @@
-import axios from "axios";
 import BaseServices from "./base";
+import MISAResource from "@/scripts/resource.js";
 
 class EmployeeService extends BaseServices {
     controller = "Employees";
@@ -10,7 +10,7 @@ class EmployeeService extends BaseServices {
      * created date: 17-06-2023 05:36:33
      */
     async getCodeMax(){
-        var response = await axios.get(`${this.getBaseUrl()}/maxcode`);
+        var response = await this.entity.get(`${this.getBaseUrl()}/maxcode`);
         return response;
     }
 
@@ -20,11 +20,11 @@ class EmployeeService extends BaseServices {
      * created date: 04-07-2023 00:34:50
      */
     async exportData(link){
-        const response = await axios.get(`${this.getBaseUrl()}/export`, { responseType: 'blob' });
+        const response = await this.entity.get(`${this.getBaseUrl()}/export`, { responseType: 'blob' });
         const file = new Blob([response.data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
         const url = window.URL.createObjectURL(file);
         link.href = url;
-        link.setAttribute('download', "Danh_sach_nhan_vien");
+        link.setAttribute('download', MISAResource["vn-VI"].TEXT_CONTENT.FILE_NAME);
         link.click();
         return response;
     }

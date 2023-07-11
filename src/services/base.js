@@ -1,4 +1,4 @@
-import axios from "axios";
+import entity from "./entity";
 
 /**
  * Mô tả: tạo class cha để thực hiện kế thừa khi call api
@@ -6,11 +6,11 @@ import axios from "axios";
  * created date: 02-06-2023 22:07:04
  */
 class BaseServices {
-    BASE_URL = "https://localhost:7166/api/v1";
+    entity = entity;
     controller = "";
 
     getBaseUrl(){
-        return `${this.BASE_URL}/${this.controller}`;
+        return `/${this.controller}`;
     }
 
     /**
@@ -19,7 +19,7 @@ class BaseServices {
      * created date: 02-06-2023 22:07:48
      */
     async getAll(){
-        const response = await axios.get(this.getBaseUrl());
+        const response = await this.entity.get(this.getBaseUrl());
         return response;
     }
 
@@ -29,7 +29,7 @@ class BaseServices {
      * created date: 02-06-2023 22:09:41
      */
     async getByCode(code){
-        const response = await axios.get(`${this.getBaseUrl()}/code/${code}`);
+        const response = await this.entity.get(`${this.getBaseUrl()}/code/${code}`);
         return response;
     }
 
@@ -39,7 +39,7 @@ class BaseServices {
      * created date: 02-06-2023 22:10:13
      */
     async create(obj){
-        const response = await axios.post(this.getBaseUrl(), obj);
+        const response = await this.entity.post(this.getBaseUrl(), obj);
         return response;
     }
 
@@ -49,7 +49,7 @@ class BaseServices {
      * created date: 02-06-2023 22:10:45
      */
     async update(id, obj){
-        const response = await axios.put(`${this.getBaseUrl()}/${id}`, obj);
+        const response = await this.entity.put(`${this.getBaseUrl()}/${id}`, obj);
         return response;
     }
     
@@ -59,7 +59,7 @@ class BaseServices {
      * created date: 02-06-2023 22:11:02
      */
     async delete(id){
-        const response = await axios.delete(`${this.getBaseUrl()}/${id}`);
+        const response = await this.entity.delete(`${this.getBaseUrl()}/${id}`);
         return response;
     }
 
@@ -69,7 +69,7 @@ class BaseServices {
      * created date: 27-06-2023 23:05:28
      */
     async deleteMutiple(ids){
-        const response = await axios.delete(`${this.getBaseUrl()}/ids`, {data:ids});
+        const response = await this.entity.delete(`${this.getBaseUrl()}/ids`, {data:ids});
         return response;
     }
 
@@ -79,13 +79,13 @@ class BaseServices {
      * created date: 17-06-2023 03:50:28
      */ 
     async getFilter(pageSize, pageNumber, textSearch){
-        const response = await axios.get(`${this.getBaseUrl()}/filter`, {
+        const response = await this.entity.get(`${this.getBaseUrl()}/filter`, {
             params: {
                 pageSize: pageSize,
                 pageNumber: pageNumber,
-                textSearch: textSearch
+                textSearch: textSearch,
             }
-            });
+        });
         return response;
     }
 }
