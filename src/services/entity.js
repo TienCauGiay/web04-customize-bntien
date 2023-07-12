@@ -8,7 +8,7 @@ const entity = axios.create({
 
 entity.interceptors.response.use(
     res => res,
-    error => {throw error.response.data.Data;}
+    error => { throw error.response.data.Data; }
 );
 
 export default entity;

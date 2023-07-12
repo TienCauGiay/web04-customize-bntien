@@ -229,7 +229,7 @@
         <div class="half-content">
           <div class="col-md-l">
             <label>
-              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESSm}}
+              {{ this.$_MISAResource[this.$_LANG_CODE].FORM.IDENTITY_ADDRESS }}
             </label>
             <div class="container-input">
               <misa-input
