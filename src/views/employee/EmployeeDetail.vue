@@ -449,10 +449,8 @@ export default {
       this.onSearchChange(newValue);
     });
     this.$_MISAEmitter.on("onKeyDownEntityCBB", (index) => {
-      this.employee.DepartmentName =
-        this.listDepartmentSearch[index].DepartmentName;
-      this.employee.DepartmentId =
-        this.listDepartmentSearch[index].DepartmentId;
+      this.employee.DepartmentName = this.listDepartmentSearch[index].DepartmentName;
+      this.employee.DepartmentId = this.listDepartmentSearch[index].DepartmentId;
       this.isBorderRed.DepartmentName = false;
     });
   },

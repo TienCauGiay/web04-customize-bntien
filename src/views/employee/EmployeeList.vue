@@ -313,8 +313,8 @@ export default {
     this.$_MISAEmitter.on("setFormModeAdd", () => {
       this.setFormModeAdd();
     });
-    this.$_MISAEmitter.on("refreshDataTable", () => {
-      this.getListEmployee();
+    this.$_MISAEmitter.on("refreshDataTable", async () => {
+      await this.getListEmployee();
     });
   },
 
