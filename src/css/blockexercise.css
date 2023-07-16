@@ -52,3 +52,17 @@ body::-webkit-scrollbar {
     transform: translate(-50%, -50%);
 }
 /* End css position display */
+
+/* .dp__main{
+    height: 32px;
+    border: 1px solid var(--color-border-default);
+}
+
+.dp__input {
+    font-family: Roboto;
+    color: #000;
+    max-height: 30px ;
+    box-sizing: border-box;
+    border: none !important;
+    font-weight: 400;
+} */

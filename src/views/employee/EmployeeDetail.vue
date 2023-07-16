@@ -110,6 +110,21 @@
                 @mouseenter="isHovering.DateOfBirth = true"
                 @mouseleave="isHovering.DateOfBirth = false"
               ></misa-input>
+              <!-- <VueDatePicker 
+                :class="{ 'border-red': isBorderRed.DateOfBirth }" 
+                v-model="employee.DateOfBirth" 
+                :format="'dd/MM/yyyy'" 
+                auto-apply 
+                :clearable="false"
+                :placeholder="'dd/mm/yyyy'"
+                :tabindex="5"
+                ref="DateOfBirth" 
+                @mouseenter="isHovering.DateOfBirth = true"
+                @mouseleave="isHovering.DateOfBirth = false"
+              ></VueDatePicker>
+              <div class="misa-tooltip" v-if="!isShowDialogDataNotNull ? isHovering.DateOfBirth && isBorderRed.DateOfBirth : false">
+                {{ errors["DateOfBirth"] }}
+              </div> -->
               <div class="misa-tooltip" v-if="isHovering.DateOfBirth && isBorderRed.DateOfBirth">
                 {{ errors["DateOfBirth"] }}
               </div>
@@ -199,6 +214,21 @@
                 @mouseenter="isHovering.IdentityDate = true"
                 @mouseleave="isHovering.IdentityDate = false"
               ></misa-input>
+              <!-- <VueDatePicker 
+                :class="{ 'border-red': isBorderRed.IdentityDate }" 
+                v-model="employee.IdentityDate" 
+                :format="'dd/MM/yyyy'" 
+                auto-apply 
+                :clearable="false"
+                :placeholder="'dd/mm/yyyy'"
+                :tabindex="9"
+                ref="IdentityDate" 
+                @mouseenter="isHovering.IdentityDate = true"
+                @mouseleave="isHovering.IdentityDate = false"
+              ></VueDatePicker>
+              <div class="misa-tooltip" v-if="!isShowDialogDataNotNull ? isHovering.IdentityDate && isBorderRed.IdentityDate : false">
+                {{ errors["IdentityDate"] }}
+              </div> -->
               <div class="misa-tooltip" v-if="isHovering.IdentityDate && isBorderRed.IdentityDate">
                 {{ errors["IdentityDate"] }}
               </div>
@@ -433,11 +463,15 @@
 import employeeService from "@/services/employee.js";
 import departmentService from "@/services/department.js";
 import helperCommon from "@/scripts/helper.js";
+// import VueDatePicker from '@vuepic/vue-datepicker';
+// import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
   name: "EmployeeDetail",
 
   props: ["employeeSelected", "statusFormMode"],
+
+  // components: { VueDatePicker },
 
   created() {
     this.loadData();
@@ -555,6 +589,18 @@ export default {
       },
     },
   },
+
+  // watch: {
+  //   'employee.DateOfBirth': function() {
+  //     this.isBorderRed.DateOfBirth = false;
+  //     this.isHovering.DateOfBirth = false;
+  //   },
+
+  //   'employee.IdentityDate': function() {
+  //     this.isBorderRed.IdentityDate = false;
+  //     this.isHovering.IdentityDate = false;
+  //   }
+  // },
 
   methods: {
     /**
@@ -1005,6 +1051,12 @@ export default {
           }
           return;
         }
+
+        // else if(prop === "DateOfBirth" || prop === "IdentityDate"){
+        //     this.$nextTick(() => {
+        //       this.$refs[prop].$el.focus();
+        //     });
+        //   }
       }
     },
 
@@ -1128,4 +1180,9 @@ input[type="radio"]:focus {
   outline: 1px solid black;
   border-radius: 50%;
 }
+
+/* .dp__main, .dp__input_wrap, .dp__input{
+  border-radius: 4px;
+  height: 32px;
+} */
 </style>

@@ -11,7 +11,10 @@
       <div class="dialog-content">
         <div class="danger-red-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
-          <li v-for="(item, index) in this.valueNotNull" :key="index">{{ item }}</li>
+          <li 
+            v-for="(item, index) in this.valueNotNull" :key="index"
+             :class="{'list-item' : this.valueNotNull.length < 2}"
+          >{{ item }}</li>
         </div>
       </div>
       <div class="dialog-danger-footer">
@@ -56,5 +59,9 @@ export default {
 .dialog-content-main {
   max-height: 64px;
   overflow-y: auto;
+}
+
+.list-item{
+  list-style: none;
 }
 </style>
