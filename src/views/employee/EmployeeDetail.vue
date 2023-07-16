@@ -807,6 +807,21 @@ export default {
                 }
               }
               break;
+            case "IdentityNumber":
+              if(this.employee[refInput]){
+                if (
+                  helperCommon.isMaxLengthInput(
+                    this.employee[refInput],
+                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput].Limit)) 
+                {
+                  this.setErrorMaxLength(refInput);
+                } else if (
+                  helperCommon.isNumber(this.employee[refInput])
+                ) {
+                  this.setError(refInput);
+                }
+              }
+              break;
             case "Email":
               if (this.employee[refInput]) {
                 if (

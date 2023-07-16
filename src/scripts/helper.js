@@ -90,9 +90,23 @@ const helperCommon = {
      * created by : BNTIEN
      * created date: 11-07-2023 16:26:14
      */
-    isFormatEmail: (text) =>{
+    isFormatEmail: (text) => {
       if(!text) return false;
       const regex = /^\S+@\S+\.\S+$/;
+      if(!regex.test(text)){
+        return true;
+      }
+      return false;
+    },
+
+    /**
+     * Mô tả: Hàm kiểm tra chuỗi có phải toàn số không
+     * created by : BNTIEN
+     * created date: 16-07-2023 14:45:44
+     */
+    isNumber: (text) => {
+      if(!text) return false;
+      const regex = /^[0-9]+$/;
       if(!regex.test(text)){
         return true;
       }

@@ -7,6 +7,7 @@ const MISAResource = {
             "DateOfBirth": "Ngày sinh lớn hơn ngày hiện tại",
             "IdentityDate": "Ngày cấp lớn hơn ngày hiện tại",
             "Email": "Email không đúng định dạng",
+            "IdentityNumber": "Số chứng minh không đúng",
         },
         MAXLENGTH:{
             "EmployeeCode": {Limit: 20, Warning : "Mã nhân viên tối đa 20 kí tự"},
