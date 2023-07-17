@@ -1,18 +1,17 @@
 /* Start css sidebar */
 .sidebar{
-    width: 180px;
+    width: 200px;
     height: 100vh;
     background-color: #041434;
     color: white;
     box-sizing: border-box;
-    overflow-y: auto;
     font-weight: 500;
     font-style: Medium;
 }
 
 .content{
     background-color: white;
-    width: calc(100% - 180px);
+    width: calc(100% - 200px);
     height: 100vh;
     box-sizing: border-box;
 }
@@ -24,6 +23,11 @@
 
 .toggle{
     margin-left: 32px;
+}
+
+.menu{
+    height: calc(100vh - 45px);
+    overflow: auto;
 }
 
 .nav {

@@ -230,6 +230,19 @@
 	width: 20px;
 	height: 22px;
 }
+
+.messenger-icon {
+	background: url('../../assets/icon/Sprites.64af8f61.svg')no-repeat -899px -30px;
+	width: 24px;
+	height: 25px;
+}
+
+.download-icon {
+	background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1516px -1342px;
+	width: 36px;
+	height: 36px;
+    scale: 0.8 0.8;
+}
   
 .sprite-done-icon {
     background: url("../../assets/icon/Sprites.64af8f61.svg") no-repeat -1602px -258px;
@@ -277,6 +290,19 @@
     background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1129px -365px;
 	width: 14px;
 	height: 8px;
+}
+
+.dropdown-white-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -852px -365px;
+	width: 8px;
+	height: 5px;
+    position: relative;
+}
+
+.prev-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg')  no-repeat -228px -362px;
+	width: 8px;
+	height: 12px;
 }
 
 .question-icon {

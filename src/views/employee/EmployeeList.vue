@@ -1,10 +1,12 @@
 <template>
   <div class="content-title">
     <h1>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EMPLOYEE }}</h1>
-    <misa-button-default
-      :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE"
-      @click="btnOpenFormDetail"
-    ></misa-button-default>
+    <div class="all-category">
+      <div class="prev-icon icon-tb"></div>
+      <router-link to="/category">
+        <div class="all-category-text">{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ALL_CATEGORY }}</div>
+      </router-link>
+    </div>
   </div>
   <div class="content-main-body">
     <div class="content-action">
@@ -49,6 +51,24 @@
         class="excel-icon icon-tb"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
       ></div>
+      <div
+        class="setting-icon icon-tb"
+        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"
+      ></div>
+      <div class="utilities" @click="isShowUtilities = !isShowUtilities">
+        <div class="utilities-text">{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES }}</div>
+        <div class="function-icon-disable"></div>
+        <div class="utilities-synchronized" v-if="isShowUtilities">
+          {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES_SYNCHRONIZED }}
+        </div>
+      </div>
+      <div class="insert-data">
+        <misa-button-default
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE"
+          @click="btnOpenFormDetail"
+        ></misa-button-default>
+        <misa-button-icon></misa-button-icon>
+      </div>
     </div>
     <div id="list-employee" class="list-employee">
       <form action="">
@@ -381,6 +401,8 @@ export default {
       positionFeatureMenu: {},
       // Khai báo biến lưu employee khi bấm vào col feature
       selectedEmployee: {},
+      // Khai báo biến quy định trạng thái hiển thị tiện ích
+      isShowUtilities: false,
     };
   },
 
