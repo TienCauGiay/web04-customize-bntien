@@ -5,7 +5,9 @@
       id="dialog-warning-employee"
     >
       <div class="title-dialog">
-        <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}</h1>
+        <h1>
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
+        </h1>
         <div class="close-icon" @click="btnAgree"></div>
       </div>
       <div class="dialog-content">
@@ -20,7 +22,9 @@
       </div>
       <div class="dialog-warning-footer">
         <misa-button-default
-          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE"
+          :textButtonDefault="
+            this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE
+          "
           @click="btnAgree"
           ref="Agree"
           :tabindex="300"

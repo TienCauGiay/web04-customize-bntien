@@ -108,7 +108,7 @@
     margin-right: 15px;
 }
 
-.search-employee{
+.search-employee, .search-account{
     display: flex;
     align-items: center;
     border: 1px solid black;
@@ -118,7 +118,7 @@
     position: relative;
 }
 
-.search-employee:focus-within {
+.search-employee:focus-within, .search-account:focus-within {
     border: 1px solid var(--color-btn-default);
 }
 
@@ -141,7 +141,8 @@
     width: 200px;
 }
 
-.search-employee input::placeholder{
+.search-employee input::placeholder, 
+.search-account input::placeholder{
     font-style: italic;
     font-weight: 400;
 }
@@ -218,7 +219,7 @@
     background-color: var(--color-btn-default-hover);
 }
 
-.list-employee{
+.list-entity{
     margin: 15px 20px 0px 10px;
     height: calc(100% - 100px);
     box-sizing: border-box;

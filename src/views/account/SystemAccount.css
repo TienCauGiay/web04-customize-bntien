@@ -1,0 +1,20 @@
+.search-account {
+    margin-left: 10px;
+    margin-right: auto;
+}
+
+.search-account input{
+    width: 250px;
+    height: 32px;
+    box-sizing: border-box;
+    padding: 0px 12px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+}
+
+.extend-account{
+    color: #007AFF;
+    cursor: pointer;
+}

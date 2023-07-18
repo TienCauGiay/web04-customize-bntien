@@ -5,21 +5,28 @@
       id="dialog-danger-employee"
     >
       <div class="title-dialog">
-        <h1>{{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}</h1>
+        <h1>
+          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
+        </h1>
         <div class="close-icon" @click="btnClose"></div>
       </div>
       <div class="dialog-content">
         <div class="danger-red-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
-          <li 
-            v-for="(item, index) in this.valueNotNull" :key="index"
-             :class="{'list-item' : this.valueNotNull.length < 2}"
-          >{{ item }}</li>
+          <li
+            v-for="(item, index) in this.valueNotNull"
+            :key="index"
+            :class="{ 'list-item': this.valueNotNull.length < 2 }"
+          >
+            {{ item }}
+          </li>
         </div>
       </div>
       <div class="dialog-danger-footer">
         <misa-button-default
-          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"
+          :textButtonDefault="
+            this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE
+          "
           @click="btnClose"
           ref="CloseForm"
           :tabindex="200"
@@ -61,7 +68,7 @@ export default {
   overflow-y: auto;
 }
 
-.list-item{
+.list-item {
   list-style: none;
 }
 </style>
