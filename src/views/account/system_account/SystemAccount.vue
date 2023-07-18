@@ -169,9 +169,9 @@ export default {
   data() {
     return {
       // Khai báo biến quy định trạng thái hiển thị overlay
-      isOverlay: true,
+      isOverlay: false,
       // Khai báo biến quy định trang thái hiển thị form detail
-      isShowFormDetail: true,
+      isShowFormDetail: false,
     };
   },
 

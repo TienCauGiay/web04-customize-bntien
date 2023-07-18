@@ -60,16 +60,44 @@
         <div class="half-content">
           <div class="col-md-half">
             <label> Tài khoản tổng hợp </label>
-            <misa-combobox
-              :isBorderRedCBB="isBorderRed"
-              :entityCBB="tktk"
-              :errorsCBB="errors"
-              :listEntitySearchCBB="listtkthearch"
-              :propName="'tName'"
-              :propId="'tID'"
-            ></misa-combobox>
+            <div class="form-cbb">
+              <div class="e-textfield-cbb">
+                <misa-input></misa-input>
+              </div>
+              <div class="e-icon-cbb" @click="onShowSelectEntity">
+                <div class="function-icon"></div>
+              </div>
+              <div class="form-cbb-menu" v-if="false">
+                <div class="form-cbb-menu-title">
+                  <div>Số tài khoản</div>
+                  <div>Tên tài khoản</div>
+                </div>
+                <div class="form-cbb-menu-item">
+                  <div class="form-cbb-menu-item-1">111</div>
+                  <div>Tiền mặt</div>
+                </div>
+                <div class="form-cbb-menu-item">
+                  <div class="form-cbb-menu-item-3">111</div>
+                  <div>Tiền mặt</div>
+                </div>
+                <div class="form-cbb-menu-item">
+                  <div class="form-cbb-menu-item-2">111</div>
+                  <div>Tiền mặt</div>
+                </div>
+                <div
+                  class="form-cbb-menu-item"
+                  style="justify-content: center; position: relative"
+                >
+                  <img
+                    class="form-cbb-loading"
+                    src="../../../assets/img/loading.svg"
+                    alt="loading"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-half">
+          <div class="col-md-half" style="position: relative">
             <label>
               Tính chất
               <span class="s-require">*</span>
@@ -235,7 +263,7 @@ export default {
 <style scoped>
 @import url(./SystemAccountDetail.css);
 
-input {
+input:not(.form-cbb .e-textfield-cbb input) {
   height: 26px !important;
 }
 </style>
