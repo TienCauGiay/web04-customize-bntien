@@ -2,7 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import EmployeeList from '@/views/employee/EmployeeList';
 import SettingPage from '@/views/setting/Setting';
 import CategoryPage from '@/views/category/Category';
-import SystemAccount from '@/views/account/SystemAccount';
+import SystemAccount from '@/views/account/system_account/SystemAccount';
 
 /**
  * Mô tả: Định nghĩa các router

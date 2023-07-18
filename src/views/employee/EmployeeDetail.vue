@@ -4,7 +4,7 @@
     class="position-display-center"
     ref="FormDetail"
   >
-    <div class="employee-toolbar">
+    <div class="form-detail-toolbar">
       <div
         class="question-icon icon-tb"
         :tabindex="23"
@@ -19,7 +19,7 @@
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXIST"
       ></div>
     </div>
-    <div class="employee-main">
+    <div class="form-detail-main">
       <div class="employee-title">
         <p>
           <b>{{ this.titleFormMode }}</b>
@@ -47,7 +47,7 @@
           }}</span>
         </div>
       </div>
-      <div class="employee-content">
+      <div class="form-detail-content">
         <div class="half-content">
           <div class="col-md-n">
             <label>
@@ -494,7 +494,7 @@
           </div>
         </div>
       </div>
-      <div class="employee-action">
+      <div class="form-detail-action">
         <div class="action-left">
           <misa-button-extra
             :textButtonExtra="

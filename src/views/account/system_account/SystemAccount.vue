@@ -141,12 +141,51 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="isOverlay"
+      id="container-overlay"
+      class="container-overlay"
+      @closeFormDetail="onCloseFormDetail"
+    ></div>
+    <SystemAccountDetail
+      v-if="isShowFormDetail"
+      @closeFormDetail="onCloseFormDetail"
+      :employeeSelected="employeeUpdate"
+      :statusFormMode="isStatusFormMode"
+    ></SystemAccountDetail>
   </div>
 </template>
 
 <script>
+import SystemAccountDetail from "../system_account_detail/SystemAccountDetail.vue";
+
 export default {
   name: "SystemAccount",
+
+  components: {
+    SystemAccountDetail,
+  },
+
+  data() {
+    return {
+      // Khai báo biến quy định trạng thái hiển thị overlay
+      isOverlay: true,
+      // Khai báo biến quy định trang thái hiển thị form detail
+      isShowFormDetail: true,
+    };
+  },
+
+  methods: {
+    /**
+     * Mô tả: Hàm mở form detail
+     * created by : BNTIEN
+     * created date: 18-07-2023 08:35:50
+     */
+    btnOpenFormDetail() {
+      this.isOverlay = true;
+      this.isShowFormDetail = true;
+    },
+  },
 };
 </script>
 
