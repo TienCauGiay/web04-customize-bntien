@@ -168,7 +168,7 @@
               </th>
               <th
                 type="feat"
-                class="text-center employee-border-right e-birthday"
+                class="text-center entity-border-right e-birthday"
               >
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
@@ -233,7 +233,7 @@
                 {{ item.BankBranch }}
               </td>
               <td
-                class="text-center employee-border-right e-birthday function-table"
+                class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop
               >
                 <span @click="onUpdateFormDetail(item)">

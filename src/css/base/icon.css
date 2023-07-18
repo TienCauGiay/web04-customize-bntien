@@ -398,3 +398,17 @@
 	height: 30px;
     scale: 0.7 0.7;
 }
+
+.plus-square-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg')  no-repeat -426px -146px;
+	width: 20px;
+	height: 20px;
+    scale: 0.8 0.8;
+}
+
+.minus-square-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg')  no-repeat -370px -146px;
+	width: 20px;
+	height: 20px;
+    scale: 0.8 0.8;
+}

@@ -257,6 +257,17 @@ export default {
       errors: { tName: "", tID: "" },
     };
   },
+
+  methods: {
+    /**
+     * Mô tả: Gọi hàm đóng form detail
+     * created by : BNTIEN
+     * created date: 18-07-2023 17:00:02
+     */
+    onCloseFormDetail() {
+      this.$emit("closeFormDetail");
+    },
+  },
 };
 </script>
 

@@ -290,7 +290,7 @@ th:not(:first-child), td:not(:first-child){
     padding: 0 16px;
 }
 
-th:first-child, td:first-child{
+/* th:first-child, td:first-child{
     width: 48px;
     box-sizing: border-box;
     border: 1px solid var(--color-border-default);
@@ -298,7 +298,7 @@ th:first-child, td:first-child{
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-}
+} */
 
 tr{
     height: 48px;
@@ -396,11 +396,16 @@ tr td:last-child{
 }
 
 .employee-border-left {
-    border-left: none;
     position: sticky;
     left: 0px;
     background-color: white;
     width: 48px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-border-default);
+    border-left: none;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
 } 
 
 .employee-border-left::before {
@@ -418,7 +423,7 @@ input.checkbox-select-row{
     margin: 0px;
 }
 
-.employee-border-right{
+.entity-border-right{
     border-right: none;
 }
 

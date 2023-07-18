@@ -54,7 +54,81 @@
         <misa-button-icon></misa-button-icon>
       </div>
     </div>
-    <div class="list-entity"></div>
+    <div id="list-account-system" class="list-entity">
+      <form action="">
+        <table>
+          <thead>
+            <tr>
+              <th class="as-account-number">Số tài khoản</th>
+              <th class="as-account-name">Tên tài khoản</th>
+              <th class="as-nature">Tính chất</th>
+              <th class="as-name-english">Tên tiếng anh</th>
+              <th class="as-explain">Diễn giải</th>
+              <th class="as-status">Trạng thái</th>
+              <th
+                class="text-center as-feature entity-border-right function-table"
+              >
+                Chức năng
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="as-account-number">
+                <span class="plus-square-icon"></span>
+                <span>111</span>
+              </td>
+              <td class="as-account-name">Tiền mặt</td>
+              <td class="as-nature">Dư nợ</td>
+              <td class="as-name-english">Cash</td>
+              <td class="as-explain"></td>
+              <td class="as-status">Đang sử dụng</td>
+              <td
+                class="text-center as-feature entity-border-right function-table"
+              >
+                <span @click="onUpdateFormDetail(item)">
+                  {{
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
+                  }}
+                </span>
+                <div
+                  class="function-table-content"
+                  @click="onOpenFeatureMenu($event)"
+                >
+                  <div class="function-icon-table function-icon-select"></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+      <teleport to="#app">
+        <div class="menu-function-select" v-if="isShowColFeature">
+          <div @click="onDupliCateEmployee">
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
+          </div>
+          <div
+            class="menu-function-select-delete-employee"
+            @click="onDeleteEmployee"
+          >
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+          </div>
+          <div>
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING }}
+          </div>
+        </div>
+      </teleport>
+      <img
+        v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
+        class="loading"
+        :class="{ 'loadding-form-detail': isShowFormDetail }"
+        src="../../../assets/img/loading.svg"
+        alt="loading"
+      />
+      <div v-if="false" class="no-data">
+        {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
+      </div>
+    </div>
     <div class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
@@ -172,6 +246,8 @@ export default {
       isOverlay: false,
       // Khai báo biến quy định trang thái hiển thị form detail
       isShowFormDetail: false,
+      // Khai báo biến quy định trạng thái hiển thị columns feature
+      isShowColFeature: false,
     };
   },
 
@@ -184,6 +260,40 @@ export default {
     btnOpenFormDetail() {
       this.isOverlay = true;
       this.isShowFormDetail = true;
+    },
+
+    /**
+     * Mô tả: Hàm đóng form detail
+     * created by : BNTIEN
+     * created date: 18-07-2023 16:56:27
+     */
+    onCloseFormDetail() {
+      this.isOverlay = false;
+      this.isShowFormDetail = false;
+    },
+
+    /**
+     * Mô tả: Hiển thị menu feature
+     * created by : BNTIEN
+     * created date: 18-07-2023 17:15:45
+     */
+    onOpenFeatureMenu(e) {
+      try {
+        // chặn sự liện lan ra các phần tử cha
+        e.stopPropagation();
+        this.isShowColFeature = true;
+        const positionIcon = e.target.getBoundingClientRect();
+        const left = positionIcon.right - 110;
+        let top = 0;
+        if (positionIcon.bottom > 500) {
+          top = positionIcon.bottom - 100;
+        } else {
+          top = positionIcon.bottom + 10;
+        }
+        this.positionFeatureMenu = { left: left, top: top };
+      } catch {
+        return;
+      }
     },
   },
 };
