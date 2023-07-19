@@ -24,7 +24,7 @@
 }
 
 #list-account-system table{
-    min-width: 100%;
+    min-width: 1368px;
 }
 
 .as-name-english{
@@ -32,10 +32,30 @@
     max-width: 250px;
 }
 
-#list-account-system .as-account-number{
-    width: 130px;
-    max-width: 130px;
+#list-account-system .as-account-number-1
+{
+    width: 150px;
+    max-width: 150px;
     padding-left: 16px;
+    left: unset;
+}
+
+#list-account-system .as-account-number-2{
+    width: 150px;
+    max-width: 150px;
+    padding-left: 24px;
+}
+
+#list-account-system .as-account-number-3{
+    width: 150px;
+    max-width: 150px;
+    padding-left: 32px;
+}
+
+#list-account-system .as-account-number-4{
+    width: 150px;
+    max-width: 150px;
+    padding-left: 40px;
 }
 
 #list-account-system tr td:first-child{
@@ -43,13 +63,18 @@
     border-left: none;
 }
 
-#list-account-system .as-account-number span:first-child{
+#list-account-system .as-account-number-1 span:first-child,
+#list-account-system .as-account-number-2 span:first-child,
+#list-account-system .as-account-number-3 span:first-child,
+#list-account-system .as-account-number-4 span:first-child{
+    width: 20px;
+    height: 20px;
     margin-right: 5px;
 }
 
 .as-nature{
-    width: 100px;
-    max-width: 100px;
+    width: 200px;
+    max-width: 200px;
 }
 
 #list-account-system .as-feature{
@@ -58,6 +83,6 @@
 }
 
 .as-status{
-    width: 120px;
-    max-width: 120px;
+    width: 150px;
+    max-width: 150px;
 }

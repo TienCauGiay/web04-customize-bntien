@@ -18,10 +18,10 @@
           placeholder="Tìm kiếm theo số, tên tài khoản"
           name="search-account"
           v-model="textSearch"
-          @keydown.enter="onSearchEmployee"
+          @keydown.enter="onSearchAccount"
           @input="autoSearch"
         />
-        <div class="search-icon icon-tb" @click="onSearchEmployee"></div>
+        <div class="search-icon icon-tb" @click="onSearchAccount"></div>
       </div>
       <div class="extend-account">Mở rộng</div>
       <div
@@ -59,7 +59,7 @@
         <table>
           <thead>
             <tr>
-              <th class="as-account-number">Số tài khoản</th>
+              <th class="as-account-number-1">Số tài khoản</th>
               <th class="as-account-name">Tên tài khoản</th>
               <th class="as-nature">Tính chất</th>
               <th class="as-name-english">Tên tiếng anh</th>
@@ -73,16 +73,34 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="as-account-number">
-                <span class="plus-square-icon"></span>
-                <span>111</span>
+            <tr
+              v-for="(item, index) in dataTable.Data"
+              :key="index"
+              :class="{ 'text-bold': item.IsParent == 1 }"
+            >
+              <td :class="`as-account-number-${item.Grade}`">
+                <span
+                  :class="[
+                    {
+                      'plus-square-icon':
+                        item.IsParent == 1 && !isMinus[item.AccountId],
+                    },
+                    {
+                      'minus-square-icon':
+                        item.IsParent == 1 && isMinus[item.AccountId],
+                    },
+                  ]"
+                  @click="toggleTreeAccount(item, index)"
+                ></span>
+                <span>{{ item.AccountNumber }}</span>
               </td>
-              <td class="as-account-name">Tiền mặt</td>
-              <td class="as-nature">Dư nợ</td>
-              <td class="as-name-english">Cash</td>
-              <td class="as-explain"></td>
-              <td class="as-status">Đang sử dụng</td>
+              <td class="as-account-name">{{ item.AccountName }}</td>
+              <td class="as-nature">{{ item.Nature }}</td>
+              <td class="as-name-english">{{ item.AccountNameEnglish }}</td>
+              <td class="as-explain">{{ item.Explain }}</td>
+              <td class="as-status">
+                {{ item.State == 1 ? "Đang sử dụng" : "Ngưng sử dụng" }}
+              </td>
               <td
                 class="text-center as-feature entity-border-right function-table"
               >
@@ -103,13 +121,20 @@
         </table>
       </form>
       <teleport to="#app">
-        <div class="menu-function-select" v-if="isShowColFeature">
-          <div @click="onDupliCateEmployee">
+        <div
+          class="menu-function-select"
+          v-if="isShowColFeature"
+          :style="{
+            left: `${this.positionFeatureMenu.left}px`,
+            top: `${this.positionFeatureMenu.top}px`,
+          }"
+        >
+          <div @click="onDupliCateAccount">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
           <div
             class="menu-function-select-delete-employee"
-            @click="onDeleteEmployee"
+            @click="onDeleteAccount"
           >
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
@@ -132,7 +157,7 @@
     <div class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <b>0</b>
+        <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
@@ -224,7 +249,7 @@
     <SystemAccountDetail
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
-      :employeeSelected="employeeUpdate"
+      :accountSelected="accountUpdate"
       :statusFormMode="isStatusFormMode"
     ></SystemAccountDetail>
   </div>
@@ -232,12 +257,39 @@
 
 <script>
 import SystemAccountDetail from "../system_account_detail/SystemAccountDetail.vue";
+import accountService from "@/services/account.js";
 
 export default {
   name: "SystemAccount",
 
   components: {
     SystemAccountDetail,
+  },
+
+  created() {
+    //Gọi hàm lấy danh sách tài khoản hệ thống
+    this.getListAccount();
+    // Đăng kí các sự kiện
+    this.$_MISAEmitter.on("onShowToastMessage", (data) => {
+      this.contentToastSuccess = data;
+      this.onShowToastMessage();
+    });
+    this.$_MISAEmitter.on("onShowToastMessageUpdate", (data) => {
+      this.contentToastSuccess = data;
+      this.onShowToastMessage();
+    });
+    this.$_MISAEmitter.on("setFormModeAdd", () => {
+      this.setFormModeAdd();
+    });
+    this.$_MISAEmitter.on("refreshDataTable", async () => {
+      await this.getListAccount();
+    });
+  },
+
+  mounted() {
+    // Lắng nghe sự kiện click trên toàn bộ màn hình
+    window.addEventListener("click", this.handleClickOutsidePaging);
+    window.addEventListener("click", this.handleClickOutsideFeature);
   },
 
   data() {
@@ -248,10 +300,143 @@ export default {
       isShowFormDetail: false,
       // Khai báo biến quy định trạng thái hiển thị columns feature
       isShowColFeature: false,
+      // Khai báo biến quy định trạng thái hiển thị loading
+      isShowLoadding: false,
+      // Khai báo dữ liệu duyệt trên 1 trang table
+      dataTable: [],
+      // Khai báo biến quy định icon dấu cộng hay dấu trừ
+      isMinus: {},
+      // Khai báo biến lưu danh sách khi toggle icon plus
+      subList: [],
+      // Khai báo số bản ghi mặc định được hiển thi trên table
+      selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
+      // Khai báo trang hiện tại trong phân trang
+      currentPage: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
+      recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
+      // Khai báo số trang tối đa hiển thị trong phân trang
+      maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
+      // Khai báo biến quy định trạng thái hiển thị của các item select paging
+      isShowPaging: false,
+      // Khai báo biến lưu chỉ số index được chọn trong paging
+      indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
+      // Khai báo biến tùy chỉnh top, left cho feature menu
+      positionFeatureMenu: {},
+      // Khai báo biến kiểm tra xem form chi tiết đang ở trạng thái thêm hay sửa
+      isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
+      // Khai báo trạng thái hiển thị của toast message
+      isShowToastMessage: false,
+      // Khai báo 1 tài khoản được chọn để xử lí hàm sửa
+      accountUpdate: {},
+      // Khai báo AccountId của tài khoản cần xóa
+      accountIdDeleteSelected: "",
+      // Khai báo AccountNumber của tài khoản cần xóa
+      accountNumberDeleteSelected: "",
+      // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
+      isShowDialogConfirmDelete: false,
+      // Khai báo biến lưu nội dung của toast message
+      contentToastSuccess: "",
+      // Khai báo biến lưu nội dung tìm kiếm
+      textSearch: "",
+      // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
+      searchAccountTimeout: null,
+      // Khai báo biến lưu account khi bấm vào col feature
+      selectedAccount: {},
     };
   },
 
+  computed: {
+    /**
+     * Mô tả: Tính tổng số trang trong phân trang
+     * created by : BNTIEN
+     * created date: 04-06-2023 02:49:32
+     */
+    totalPages() {
+      return Math.ceil(this.dataTable.TotalRecord / this.selectedRecord);
+    },
+    /**
+     * Mô tả: Nếu đang ở trang đầu thì button prev không hoạt động
+     * created by : BNTIEN
+     * created date: 27-06-2023 11:19:25
+     */
+    isFirstPage() {
+      return this.currentPage === this.$_MISAEnum.RECORD.CURRENT_PAGE;
+    },
+    /**
+     * Mô tả: Nếu đang ở trang cuối thì button next không hoạt động
+     * created by : BNTIEN
+     * created date: 27-06-2023 11:19:25
+     */
+    isLastPage() {
+      if (!this.totalPages || this.totalPages === 0) {
+        return true;
+      }
+      return this.currentPage === this.totalPages;
+    },
+    /**
+     * Mô tả: Tính tổng số trang sẽ hiển thị
+     * created by : BNTIEN
+     * created date: 04-06-2023 02:49:32
+     */
+    visiblePageNumbers() {
+      if (!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0) {
+        return [];
+      }
+
+      let startPage = Math.max(
+        this.currentPage - Math.floor(this.maxVisiblePages / 2),
+        1
+      );
+      let endPage = startPage + this.maxVisiblePages - 1;
+      if (endPage > this.totalPages) {
+        endPage = this.totalPages;
+        startPage = Math.max(endPage - this.maxVisiblePages + 1, 1);
+      }
+
+      const visiblePages = [];
+      for (let i = startPage; i <= endPage; i++) {
+        visiblePages.push(i);
+      }
+
+      return visiblePages;
+    },
+  },
+
   methods: {
+    /**
+     * Mô tả: Hàm lấy dữ liệu tài khoản từ api
+     * created by : BNTIEN
+     * created date: 19-07-2023 03:36:08
+     */
+    async getListAccount() {
+      try {
+        this.isShowLoadding = true;
+        const resfilter = await accountService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          "",
+          true,
+          1,
+          ""
+        );
+        this.isShowLoadding = false;
+        this.dataTable = resfilter.data;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiên load lại toàn bộ dữ liệu khi click vào icon refresh
+     * created by : BNTIEN
+     * created date: 20-07-2023 04:59:26
+     */
+    async refreshData() {
+      this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
+      (this.indexSelectedRecord =
+        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
+        (this.textSearch = "");
+      await this.getListAccount();
+    },
     /**
      * Mô tả: Hàm mở form detail
      * created by : BNTIEN
@@ -295,10 +480,379 @@ export default {
         return;
       }
     },
+    containsArray(arr1, arr2) {
+      // Chuyển mỗi phần tử trong mảng thành chuỗi JSON để so sánh
+      const arr1Strings = arr1.map((obj) => JSON.stringify(obj));
+      const arr2Strings = arr2.map((obj) => JSON.stringify(obj));
+
+      // Kiểm tra xem mảng đầu tiên có chứa mảng thứ hai hay không
+      return arr1Strings.some((item) => arr2Strings.includes(item));
+    },
+    /**
+     * Mô tả: Hàm đóng mở cây account
+     * created by : BNTIEN
+     * created date: 19-07-2023 09:11:35
+     */
+    async toggleTreeAccount(item, index) {
+      try {
+        if (!this.isMinus[item.AccountId]) {
+          this.isShowLoadding = true;
+          const resfilter = await accountService.getFilter(
+            this.selectedRecord,
+            this.currentPage,
+            "",
+            false,
+            item.Grade + 1,
+            item.AccountNumber
+          );
+          console.log(resfilter.data.Data);
+          this.isShowLoadding = false;
+          if (!this.containsArray(this.subList, resfilter.data.Data)) {
+            Array.prototype.splice.apply(
+              this.subList,
+              [this.subList.length, 0].concat(resfilter.data.Data)
+            );
+          }
+          if (!this.containsArray(this.dataTable.Data, resfilter.data.Data)) {
+            Array.prototype.splice.apply(
+              this.dataTable.Data,
+              [index + 1, 0].concat(resfilter.data.Data)
+            );
+            this.isMinus[item.AccountId] = !this.isMinus[item.AccountId];
+          }
+        } else {
+          // this.dataTable.Data = this.dataTable.Data.filter(
+          //   (x) => x.ParentId == "" || x.AccountId.includes(item.AccountId)
+          // );
+          let res = [];
+          res = this.dataTable.Data.filter(
+            (x) => x.Grade > item.Grade && x.ParentId != item.ParentId
+          );
+          this.dataTable.Data = this.dataTable.Data.filter(
+            (x) => !res.includes(x)
+          );
+          for (const key in this.isMinus) {
+            if (Object.hasOwnProperty.call(this.isMinus, key)) {
+              this.isMinus[key] = !this.isMinus[key];
+            }
+          }
+        }
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Cập nhật danh sách dữ liệu hiển thị dựa trên dataTable
+     * created by : BNTIEN
+     * created date: 19-07-2023 16:01:27
+     */
+    async updateDataTable() {
+      try {
+        this.isShowLoadding = true;
+        const resfilter = await accountService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          "",
+          true,
+          1,
+          ""
+        );
+        this.isShowLoadding = false;
+        this.dataTable = resfilter.data;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiện click vào các item lựa chọn số bản ghi hiển thị trên table
+     * created by : BNTIEN
+     * created date: 19-07-2023 15:22:52
+     */
+    onSelectedRecord(record, index) {
+      this.selectedRecord = record;
+      this.indexSelectedRecord = index;
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+      this.updateDataTable();
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa tài khoản thì hiển thị dialog xác nhận xóa
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:06:02
+     */
+    onDeleteAccount() {
+      this.isShowDialogConfirmDelete = true;
+      this.isOverlay = true;
+      this.accountIdDeleteSelected = this.selectedAccount.AccountId;
+      this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
+    },
+    /**
+     * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
+     * created by : BNTIEN
+     * created date: 19-07-2023 15:29:36
+     */
+    onShowSelectPaging() {
+      this.isShowPaging = !this.isShowPaging;
+    },
+    /**
+     * Mô tả: Hàm xử lí cập nhật thông tin tài khoản
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:01:16
+     */
+    onUpdateFormDetail(account) {
+      this.accountUpdate = account;
+      this.isShowFormDetail = true;
+      this.isOverlay = true;
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
+    },
+    /**
+     * Mô tả: Hàm set isStatusFormMode = ADD
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:04:23
+     */
+    setFormModeAdd() {
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
+    },
+
+    /**
+     * Mô tả:  Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 tài khoản
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:25:57
+     */
+    async btnConfirmYesDeleteAccount() {
+      try {
+        this.isShowLoadding = true;
+        const res = await accountService.delete(this.accountIdDeleteSelected);
+        this.isShowLoadding = false;
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          this.isShowDialogConfirmDelete = false;
+          this.isOverlay = false;
+          this.contentToastSuccess =
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.onShowToastMessage();
+          await this.getListAccount();
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện khi click vào button không trong dialog xác nhận xóa
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:25:11
+     */
+    btnConfirmNoDeleteAccount() {
+      this.isShowDialogConfirmDelete = false;
+      this.isOverlay = false;
+    },
+
+    /**
+     * Mô tả:  Hàm xử lí sự kiện mở toast mesage
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:24:56
+     */
+    onShowToastMessage() {
+      this.isShowToastMessage = true;
+      setTimeout(() => {
+        this.isShowToastMessage = false;
+      }, 3000);
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện đóng toast mesage
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:24:42
+     */
+    btnCloseToastMessage() {
+      this.isShowToastMessage = false;
+    },
+    /**
+     * Mô tả: Hàm nhân bản 1 tài khoản
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:24:04
+     */
+    onDupliCateAccount() {
+      try {
+        this.accountUpdate = this.selectedAccount;
+        this.isShowFormDetail = true;
+        this.isOverlay = true;
+        this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Hàm tìm kiếm tài khoản theo mã hoặc tên
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:20:10
+     */
+    async onSearchAccount() {
+      try {
+        this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+        if (!this.textSearch.trim()) {
+          this.textSearch = "";
+        }
+        this.isShowLoadding = true;
+        const filteredAccounts = await accountService.getFilter(
+          this.selectedRecord,
+          this.currentPage,
+          this.textSearch.trim(),
+          true,
+          1,
+          ""
+        );
+        this.isShowLoadding = false;
+        this.dataTable = filteredAccounts.data;
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Tự động tìm kiếm sau 1 khoảng thời gian người dùng không nhập dữ liệu
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:15:41
+     */
+    async autoSearch() {
+      try {
+        clearTimeout(this.searchAccountTimeout);
+        this.searchAccountTimeout = setTimeout(async () => {
+          await this.onSearchAccount();
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Di chuyển giữa các trang trong phân trang
+     * created by : BNTIEN
+     * created date: 04-06-2023 01:49:32
+     */
+    async goToPage(p) {
+      let newPage;
+      if (
+        p ===
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
+        this.currentPage > 1
+      ) {
+        newPage = this.currentPage - 1;
+      } else if (
+        p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
+        this.currentPage < this.totalPages
+      ) {
+        newPage = this.currentPage + 1;
+      } else if (
+        typeof p ===
+          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        p >= 1 &&
+        p <= this.totalPages
+      ) {
+        newPage = p;
+      }
+
+      if (newPage !== undefined && newPage !== this.currentPage) {
+        this.currentPage = newPage;
+        await this.updateDataTable();
+      }
+    },
+    /**
+     * Mô tả: xử lí sự kiện khi người dùng click ra ngoài select paging
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:12:13
+     */
+    handleClickOutsidePaging(event) {
+      if (!this.$refs.PagingMenu.contains(event.target)) {
+        this.isShowPaging = false;
+      }
+    },
+    /**
+     * Mô tả: xử lí sự kiện click ngoài menu feature
+     * created by : BNTIEN
+     * created date: 20-07-2023 05:11:58
+     */
+    handleClickOutsideFeature() {
+      this.isShowColFeature = false;
+    },
+  },
+
+  beforeUnmount() {
+    // Hủy các sự kiện đã đăng kí
+    this.$_MISAEmitter.off("onShowToastMessage");
+    this.$_MISAEmitter.off("onShowToastMessageUpdate");
+    this.$_MISAEmitter.off("setFormModeAdd");
+    this.$_MISAEmitter.off("refreshDataTable");
+    window.removeEventListener("click", this.handleClickOutsidePaging);
+    window.removeEventListener("click", this.handleClickOutsideFeature);
   },
 };
 </script>
 
 <style scoped>
 @import url(./SystemAccount.css);
+
+.text-bold {
+  font-weight: 700;
+}
+
+.text-bold td:last-child {
+  font-weight: 400;
+}
+
+.rotate-function-icon {
+  transform: rotate(180deg);
+}
+
+.active-page {
+  border: 1px solid var(--color-border-default);
+}
+
+.active-record {
+  border: 1px solid var(--color-btn-default);
+}
+
+input[type="checkbox"] {
+  accent-color: #2ca01c;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Bỏ dấu x ở ô input có type = search */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.active-record-item {
+  background-color: var(--color-btn-default);
+  color: white;
+}
+
+.no-disable {
+  border: 1px solid black;
+}
+
+.no-disable:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.checkedRow {
+  background-color: #e7f5ec;
+}
+
+.checkedRow td:first-child,
+.checkedRow td:last-child {
+  background-color: #e7f5ec;
+}
+
+.loadding-form-detail {
+  left: 50%;
+}
+
+.no-data {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
 </style>

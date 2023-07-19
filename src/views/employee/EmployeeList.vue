@@ -496,8 +496,6 @@ export default {
       ids: [],
       // Khai báo biến kiểm tra xem dialog hiển thị hỏi xóa ít hay xóa nhiều
       isDeleteMultipleDialog: null,
-      // Khai báo biến lưu giá trị index được chọn khi show feature menu
-      selectedIndexFeature: null,
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
       // Khai báo biến lưu employee khi bấm vào col feature
@@ -614,7 +612,9 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      this.textSearch = "";
+      (this.indexSelectedRecord =
+        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
+        (this.textSearch = "");
       await this.getListEmployee();
     },
     /**
