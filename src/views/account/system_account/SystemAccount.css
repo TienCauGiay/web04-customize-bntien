@@ -43,19 +43,19 @@
 #list-account-system .as-account-number-2{
     width: 150px;
     max-width: 150px;
-    padding-left: 24px;
+    padding-left: 28px;
 }
 
 #list-account-system .as-account-number-3{
     width: 150px;
     max-width: 150px;
-    padding-left: 32px;
+    padding-left: 40px;
 }
 
 #list-account-system .as-account-number-4{
     width: 150px;
     max-width: 150px;
-    padding-left: 40px;
+    padding-left: 44px;
 }
 
 #list-account-system tr td:first-child{

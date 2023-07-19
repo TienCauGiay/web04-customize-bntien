@@ -36,13 +36,13 @@
       ></div>
       <div class="utilities" @click="isShowUtilities = !isShowUtilities">
         <div class="utilities-text">Chuyển tài khoản hạch toán</div>
-        <div class="function-icon-disable"></div>
+        <!-- <div class="function-icon-disable"></div>
         <div class="utilities-synchronized" v-if="isShowUtilities">
           {{
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
               .UTILITIES_SYNCHRONIZED
           }}
-        </div>
+        </div> -->
       </div>
       <div class="insert-data">
         <misa-button-default
@@ -258,6 +258,7 @@
 <script>
 import SystemAccountDetail from "../system_account_detail/SystemAccountDetail.vue";
 import accountService from "@/services/account.js";
+import helperCommon from "@/scripts/helper.js";
 
 export default {
   name: "SystemAccount",
@@ -480,14 +481,7 @@ export default {
         return;
       }
     },
-    containsArray(arr1, arr2) {
-      // Chuyển mỗi phần tử trong mảng thành chuỗi JSON để so sánh
-      const arr1Strings = arr1.map((obj) => JSON.stringify(obj));
-      const arr2Strings = arr2.map((obj) => JSON.stringify(obj));
 
-      // Kiểm tra xem mảng đầu tiên có chứa mảng thứ hai hay không
-      return arr1Strings.some((item) => arr2Strings.includes(item));
-    },
     /**
      * Mô tả: Hàm đóng mở cây account
      * created by : BNTIEN
@@ -505,15 +499,19 @@ export default {
             item.Grade + 1,
             item.AccountNumber
           );
-          console.log(resfilter.data.Data);
           this.isShowLoadding = false;
-          if (!this.containsArray(this.subList, resfilter.data.Data)) {
+          if (!helperCommon.containsArray(this.subList, resfilter.data.Data)) {
             Array.prototype.splice.apply(
               this.subList,
               [this.subList.length, 0].concat(resfilter.data.Data)
             );
           }
-          if (!this.containsArray(this.dataTable.Data, resfilter.data.Data)) {
+          if (
+            !helperCommon.containsArray(
+              this.dataTable.Data,
+              resfilter.data.Data
+            )
+          ) {
             Array.prototype.splice.apply(
               this.dataTable.Data,
               [index + 1, 0].concat(resfilter.data.Data)
@@ -521,21 +519,26 @@ export default {
             this.isMinus[item.AccountId] = !this.isMinus[item.AccountId];
           }
         } else {
-          // this.dataTable.Data = this.dataTable.Data.filter(
-          //   (x) => x.ParentId == "" || x.AccountId.includes(item.AccountId)
-          // );
-          let res = [];
-          res = this.dataTable.Data.filter(
-            (x) => x.Grade > item.Grade && x.ParentId != item.ParentId
+          let listDelete = [];
+          // listDelete là các dòng trên table có cấp lớn hơn cấp của dòng được bấm và phải có cùng gốc
+          // Ở đây sử dụng startsWith để kiểm tra xem 1 chuỗi có bắt đầu bằng 1 chuỗi nào đó không
+          listDelete = this.dataTable.Data.filter(
+            (x) =>
+              x.Grade > item.Grade &&
+              x.AccountNumber.startsWith(item.AccountNumber)
           );
+          // Xóa những dòng có trong listDelete khỏi dataTable
           this.dataTable.Data = this.dataTable.Data.filter(
-            (x) => !res.includes(x)
+            (x) => !listDelete.includes(x)
           );
-          for (const key in this.isMinus) {
-            if (Object.hasOwnProperty.call(this.isMinus, key)) {
-              this.isMinus[key] = !this.isMinus[key];
+          // toggle icon plus/minus
+          for (const rowDelete of listDelete) {
+            if (rowDelete.AccountId in this.isMinus) {
+              this.isMinus[rowDelete.AccountId] =
+                !this.isMinus[rowDelete.AccountId];
             }
           }
+          this.isMinus[item.AccountId] = !this.isMinus[item.AccountId];
         }
       } catch {
         return;
