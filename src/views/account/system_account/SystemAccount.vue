@@ -73,50 +73,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(item, index) in dataTable.Data"
-              :key="index"
-              :class="{ 'text-bold': item.IsParent == 1 }"
-            >
-              <td :class="`as-account-number-${item.Grade}`">
-                <span
-                  :class="[
-                    {
-                      'plus-square-icon':
-                        item.IsParent == 1 && !isMinus[item.AccountId],
-                    },
-                    {
-                      'minus-square-icon':
-                        item.IsParent == 1 && isMinus[item.AccountId],
-                    },
-                  ]"
-                  @click="toggleTreeAccount(item, index)"
-                ></span>
-                <span>{{ item.AccountNumber }}</span>
-              </td>
-              <td class="as-account-name">{{ item.AccountName }}</td>
-              <td class="as-nature">{{ item.Nature }}</td>
-              <td class="as-name-english">{{ item.AccountNameEnglish }}</td>
-              <td class="as-explain">{{ item.Explain }}</td>
-              <td class="as-status">
-                {{ item.State == 1 ? "Đang sử dụng" : "Ngưng sử dụng" }}
-              </td>
-              <td
-                class="text-center as-feature entity-border-right function-table"
-              >
-                <span @click="onUpdateFormDetail(item)">
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                  }}
-                </span>
-                <div
-                  class="function-table-content"
-                  @click="onOpenFeatureMenu($event)"
+            <template v-for="(item, index) in dataTable.Data" :key="index">
+              <tr :class="{ 'text-bold': item.IsParent == 1 }">
+                <td :class="`as-account-number-${item.Grade}`">
+                  <span
+                    :class="[
+                      {
+                        'plus-square-icon':
+                          item.IsParent == 1 && !isMinus[item.AccountId],
+                      },
+                      {
+                        'minus-square-icon':
+                          item.IsParent == 1 && isMinus[item.AccountId],
+                      },
+                    ]"
+                    @click="toggleTreeAccount(item, index)"
+                  ></span>
+                  <span>{{ item.AccountNumber }}</span>
+                </td>
+                <td class="as-account-name">{{ item.AccountName }}</td>
+                <td class="as-nature">{{ item.Nature }}</td>
+                <td class="as-name-english">{{ item.AccountNameEnglish }}</td>
+                <td class="as-explain">{{ item.Explain }}</td>
+                <td class="as-status">
+                  {{ item.State == 1 ? "Đang sử dụng" : "Ngưng sử dụng" }}
+                </td>
+                <td
+                  class="text-center as-feature entity-border-right function-table"
                 >
-                  <div class="function-icon-table function-icon-select"></div>
-                </div>
-              </td>
-            </tr>
+                  <span @click="onUpdateFormDetail(item)">
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
+                    }}
+                  </span>
+                  <div
+                    class="function-table-content"
+                    @click="onOpenFeatureMenu($event)"
+                  >
+                    <div class="function-icon-table function-icon-select"></div>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </form>
@@ -500,12 +498,12 @@ export default {
             item.AccountNumber
           );
           this.isShowLoadding = false;
-          if (!helperCommon.containsArray(this.subList, resfilter.data.Data)) {
-            Array.prototype.splice.apply(
-              this.subList,
-              [this.subList.length, 0].concat(resfilter.data.Data)
-            );
-          }
+          // if (!helperCommon.containsArray(this.subList, resfilter.data.Data)) {
+          //   Array.prototype.splice.apply(
+          //     this.subList,
+          //     [this.subList.length, 0].concat(resfilter.data.Data)
+          //   );
+          // }
           if (
             !helperCommon.containsArray(
               this.dataTable.Data,
@@ -534,11 +532,12 @@ export default {
           // toggle icon plus/minus
           for (const rowDelete of listDelete) {
             if (rowDelete.AccountId in this.isMinus) {
-              this.isMinus[rowDelete.AccountId] =
-                !this.isMinus[rowDelete.AccountId];
+              // this.isMinus[rowDelete.AccountId] =
+              //   !this.isMinus[rowDelete.AccountId];
+              delete this.isMinus[rowDelete.AccountId];
             }
           }
-          this.isMinus[item.AccountId] = !this.isMinus[item.AccountId];
+          this.isMinus[item.AccountId] = false;
         }
       } catch {
         return;
