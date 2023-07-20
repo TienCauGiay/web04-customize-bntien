@@ -73,21 +73,33 @@
             </tr>
           </thead>
           <tbody>
-            <template v-for="(item, index) in dataTable.Data" :key="index">
-              <tr :class="{ 'text-bold': item.IsParent == 1 }">
+            <template
+              v-for="(item, index) in dataTable.Data"
+              :key="item.AccountId"
+            >
+              <tr
+                :class="{ 'text-bold': item.IsParent == 1 }"
+                v-if="
+                  item.IsRoot ||
+                  (this.rowParents[item.ParentId].isMinus &&
+                    this.rowParents[item.ParentId].showChildren)
+                "
+              >
                 <td :class="`as-account-number-${item.Grade}`">
                   <span
                     :class="[
                       {
                         'plus-square-icon':
-                          item.IsParent == 1 && !isMinus[item.AccountId],
+                          item.IsParent == 1 &&
+                          !this.rowParents[item.AccountId].isMinus,
                       },
                       {
                         'minus-square-icon':
-                          item.IsParent == 1 && isMinus[item.AccountId],
+                          item.IsParent == 1 &&
+                          this.rowParents[item.AccountId].isMinus,
                       },
                     ]"
-                    @click="toggleTreeAccount(item, index)"
+                    @click="handleToggleRow(item, index)"
                   ></span>
                   <span>{{ item.AccountNumber }}</span>
                 </td>
@@ -256,7 +268,6 @@
 <script>
 import SystemAccountDetail from "../system_account_detail/SystemAccountDetail.vue";
 import accountService from "@/services/account.js";
-import helperCommon from "@/scripts/helper.js";
 
 export default {
   name: "SystemAccount",
@@ -303,10 +314,6 @@ export default {
       isShowLoadding: false,
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
-      // Khai báo biến quy định icon dấu cộng hay dấu trừ
-      isMinus: {},
-      // Khai báo biến lưu danh sách khi toggle icon plus
-      subList: [],
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo trang hiện tại trong phân trang
@@ -341,6 +348,8 @@ export default {
       searchAccountTimeout: null,
       // Khai báo biến lưu account khi bấm vào col feature
       selectedAccount: {},
+      // Khai báo biến lưu các dòng có con
+      rowParents: {},
     };
   },
 
@@ -420,6 +429,18 @@ export default {
         );
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
+
+        // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
+        for (const row of this.dataTable.Data) {
+          if (row.IsParent == 1) {
+            this.rowParents[row.AccountId] = {
+              isMinus: false,
+              isClicked: false,
+              showChildren: false,
+              parentId: row.ParentId,
+            };
+          }
+        }
       } catch {
         return;
       }
@@ -481,63 +502,62 @@ export default {
     },
 
     /**
+     * Mô tả: Hàm cập nhật trạng thái show/hide cho dòng con parentId và gọi đệ quy
+     * created by : BNTIEN
+     * created date: 20-07-2023 20:59:17
+     */
+    updateStatusShowChildren(parentId, status) {
+      // Nếu rowParents tồn tại key là parentId
+      if (this.rowParents[parentId]) {
+        this.rowParents[parentId].showChildren = status;
+        // Lấy mảng các key trong rowParents sau đó map để duyệt từng key
+        Object.keys(this.rowParents).map((key) => {
+          if (this.rowParents[key].parentId == parentId) {
+            this.updateStatusShowChildren(key, status);
+          }
+        });
+      }
+    },
+
+    /**
      * Mô tả: Hàm đóng mở cây account
      * created by : BNTIEN
      * created date: 19-07-2023 09:11:35
      */
-    async toggleTreeAccount(item, index) {
+    async handleToggleRow(item, index) {
       try {
-        if (!this.isMinus[item.AccountId]) {
-          this.isShowLoadding = true;
-          const resfilter = await accountService.getFilter(
-            this.selectedRecord,
-            this.currentPage,
-            "",
-            false,
-            item.Grade + 1,
-            item.AccountNumber
-          );
-          this.isShowLoadding = false;
-          // if (!helperCommon.containsArray(this.subList, resfilter.data.Data)) {
-          //   Array.prototype.splice.apply(
-          //     this.subList,
-          //     [this.subList.length, 0].concat(resfilter.data.Data)
-          //   );
-          // }
-          if (
-            !helperCommon.containsArray(
-              this.dataTable.Data,
-              resfilter.data.Data
-            )
-          ) {
-            Array.prototype.splice.apply(
-              this.dataTable.Data,
-              [index + 1, 0].concat(resfilter.data.Data)
+        if (!this.rowParents[item.AccountId].isMinus) {
+          if (!this.rowParents[item.AccountId].isClicked) {
+            let resfilter = null;
+            this.isShowLoadding = true;
+            resfilter = await accountService.getFilter(
+              this.selectedRecord,
+              this.currentPage,
+              "",
+              false,
+              item.Grade + 1,
+              item.AccountNumber
             );
-            this.isMinus[item.AccountId] = !this.isMinus[item.AccountId];
-          }
-        } else {
-          let listDelete = [];
-          // listDelete là các dòng trên table có cấp lớn hơn cấp của dòng được bấm và phải có cùng gốc
-          // Ở đây sử dụng startsWith để kiểm tra xem 1 chuỗi có bắt đầu bằng 1 chuỗi nào đó không
-          listDelete = this.dataTable.Data.filter(
-            (x) =>
-              x.Grade > item.Grade &&
-              x.AccountNumber.startsWith(item.AccountNumber)
-          );
-          // Xóa những dòng có trong listDelete khỏi dataTable
-          this.dataTable.Data = this.dataTable.Data.filter(
-            (x) => !listDelete.includes(x)
-          );
-          // toggle icon plus/minus
-          for (const rowDelete of listDelete) {
-            if (rowDelete.AccountId in this.isMinus) {
-              // this.isMinus[rowDelete.AccountId] =
-              //   !this.isMinus[rowDelete.AccountId];
-              delete this.isMinus[rowDelete.AccountId];
+            this.isShowLoadding = false;
+            this.dataTable.Data.splice(index + 1, 0, ...resfilter.data.Data);
+            // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
+            for (const row of resfilter.data.Data) {
+              if (row.IsParent == 1) {
+                this.rowParents[row.AccountId] = {
+                  isMinus: false,
+                  isClicked: false,
+                  showChildren: false,
+                  parentId: row.ParentId,
+                };
+              }
             }
+            this.rowParents[item.AccountId].isClicked = true;
           }
-          this.isMinus[item.AccountId] = false;
+          this.rowParents[item.AccountId].isMinus = true;
+          this.updateStatusShowChildren(item.AccountId, true);
+        } else {
+          this.rowParents[item.AccountId].isMinus = false;
+          this.updateStatusShowChildren(item.AccountId, false);
         }
       } catch {
         return;

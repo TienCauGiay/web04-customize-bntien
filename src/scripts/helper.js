@@ -112,19 +112,6 @@ const helperCommon = {
       }
       return false;
     },
-    /**
-     * Mô tả: Kiểm tra mảng có chứa 1 mảng khác không
-     * created by : BNTIEN
-     * created date: 20-07-2023 06:34:35
-     */
-    containsArray : (arr1, arr2) => {
-      // Chuyển mỗi phần tử trong mảng thành chuỗi JSON để so sánh
-      const arr1Strings = arr1.map((obj) => JSON.stringify(obj));
-      const arr2Strings = arr2.map((obj) => JSON.stringify(obj));
-
-      // Kiểm tra xem mảng đầu tiên có chứa mảng thứ hai hay không
-      return arr1Strings.some((item) => arr2Strings.includes(item));
-    },
 }
 
 export default helperCommon;
