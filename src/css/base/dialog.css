@@ -48,7 +48,7 @@
     column-gap: 8px;
 }
 /* Start css dialog employee */
-.dialog-employee{
+.dialog-entity{
     width: 400px;
     box-sizing: border-box;
     background-color: #FFFFFF;
@@ -90,7 +90,7 @@
     justify-content: flex-end;
 }
 
-#dialog-danger-employee .dialog-content .dialog-content-icon{
+#dialog-danger-entity .dialog-content .dialog-content-icon{
     margin-right: 24px;
 }
 
@@ -111,11 +111,11 @@
     column-gap: 8px;
 }
 
-#dialog-question-employee .dialog-content .dialog-content-icon{
+#dialog-question-entity .dialog-content .dialog-content-icon{
     margin-right: 20px;
 }
 
-#dialog-warning-employee .dialog-content{
+#dialog-warning-entity .dialog-content{
     column-gap: 10px;
 }
 /* End css dialog employee */

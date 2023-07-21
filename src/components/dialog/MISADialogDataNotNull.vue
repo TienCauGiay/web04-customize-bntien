@@ -1,8 +1,8 @@
 <template>
   <div class="overlay-dialog">
     <div
-      class="dialog-employee position-display-center"
-      id="dialog-danger-employee"
+      class="dialog-entity position-display-center"
+      id="dialog-danger-entity"
     >
       <div class="title-dialog">
         <h1>
@@ -49,12 +49,12 @@ export default {
       this.$refs.CloseForm.$el.focus();
     },
     /**
-     * Mô tả: Hàm gọi sự kiện cất và thêm trong component cha (EmployeeDetail)
+     * Mô tả: Hàm đóng dialog
      * created by : BNTIEN
      * created date: 29-05-2023 08:35:28
      */
     btnClose() {
-      this.$emit("closeBtnSaveAndAdd");
+      this.$_MISAEmitter.emit("closeBtnSaveAndAdd");
     },
   },
 };

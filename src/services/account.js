@@ -21,6 +21,16 @@ class AccountService extends BaseServices {
         });
         return response;
     }
+
+    /**
+     * Mô tả: Tìm kiếm danh sách con theo accountNumber cha
+     * created by : BNTIEN
+     * created date: 21-07-2023 11:27:18
+     */
+    async getAllChildren(accountNumber){
+        const response = await this.entity.get(`${this.getBaseUrl()}/children`, {params:{accountNumber: accountNumber}});
+        return response;
+    }
 }
 
 export default new AccountService();

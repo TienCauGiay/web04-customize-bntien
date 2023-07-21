@@ -110,6 +110,7 @@ const MISAResource = {
             UPDATE:"Sửa",
             DUPLICATE: "Nhân bản",
             DELETE: "Xóa",
+            TRANFER_ACCOUNT: "Chuyển tài khoản hạch toán",
             STOP_USING: "Ngưng sử dụng",
             TOTAL:"Tổng số",
             RECORD: "bản ghi",
@@ -153,7 +154,7 @@ const MISAResource = {
                 DATA_INVALID: "Dữ liệu không hợp lệ!",
             },
             CONTENT:{
-                CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa nhân viên",
+                CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa",
                 CONFIRM_DELETE_MULTIPLE: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
                 DATA_CHANGE: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
                 EXIST_PRE: "Mã nhân viên",

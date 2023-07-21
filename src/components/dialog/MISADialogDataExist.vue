@@ -1,8 +1,8 @@
 <template>
   <div class="overlay-dialog">
     <div
-      class="dialog-employee position-display-center"
-      id="dialog-warning-employee"
+      class="dialog-entity position-display-center"
+      id="dialog-warning-entity"
     >
       <div class="title-dialog">
         <h1>
@@ -14,8 +14,8 @@
         <div class="warning-yellow-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
           <p>
-            {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE }}
-            &lt;{{ this.textEmployeeCodeExist }}&gt;
+            {{ this.textProp }}
+            &lt;{{ this.textEntityCodeExist }}&gt;
             {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_END }}
           </p>
         </div>
@@ -38,7 +38,7 @@
 <script>
 export default {
   name: "MISADialogDataExist",
-  props: ["textEmployeeCodeExist"],
+  props: ["textProp", "textEntityCodeExist"],
   mounted() {
     this.resetTab();
   },
@@ -47,12 +47,12 @@ export default {
       this.$refs.Agree.$el.focus();
     },
     /**
-     * Mô tả: Hàm gọi sự kiện đóng dialog mã nhân viên đã tồn tại từ component cha (EmployeeDetail)
+     * Mô tả: Hàm gọi sự kiện đóng dialog code đã tồn tại
      * created by : BNTIEN
      * created date: 29-05-2023 08:32:41
      */
     btnAgree() {
-      this.$emit("closeDialogCodeExist");
+      this.$_MISAEmitter.emit("closeDialogCodeExist");
     },
   },
 };

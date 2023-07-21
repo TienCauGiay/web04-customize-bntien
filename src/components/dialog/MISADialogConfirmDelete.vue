@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="dialog-employee position-display-center"
-    id="dialog-warning-delete-employee"
-  >
+  <div class="dialog-entity position-display-center">
     <div class="title-dialog">
       <h1>
         {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CONFIRM_DELETE }}
@@ -17,7 +14,8 @@
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
               .CONFIRM_DELETE_PRE
           }}
-          &lt;{{ this.employeeCodeDelete }}&gt;
+          {{ this.entityName }}
+          &lt;{{ this.entityCodeDelete }}&gt;
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
         </p>
         <p v-else>
@@ -48,7 +46,7 @@
 <script>
 export default {
   name: "MISADialogConfirmDelete",
-  props: ["employeeCodeDelete", "isDeleteMultiple"],
+  props: ["entityName", "entityCodeDelete", "isDeleteMultiple"],
   mounted() {
     this.resetTab();
   },
@@ -69,12 +67,12 @@ export default {
       }
     },
     /**
-     * Mô tả: Hàm gọi sự kiện xóa nhân viên khi người dùng chọn có trong component cha (EmployeeList)
+     * Mô tả: Hàm gọi sự kiện xóa thực thể khi người dùng chọn có
      * created by : BNTIEN
      * created date: 29-05-2023 08:33:41
      */
     btnConfirmDelete() {
-      this.$emit("confirmYesDeleteEmployee");
+      this.$_MISAEmitter.emit("confirmYesDeleteEntity");
     },
 
     /**
@@ -83,16 +81,16 @@ export default {
      * created date: 28-06-2023 11:23:05
      */
     btnConfirmDeleteMultiple() {
-      this.$emit("confirmYesDeleteMultiple");
+      this.$_MISAEmitter.emit("confirmYesDeleteMultiple");
     },
 
     /**
-     * Mô tả: Hàm gọi sự kiện hủy xóa nhân viên khi người dùng chọn không trong component cha (EmployeeList)
+     * Mô tả: Hàm gọi sự kiện hủy xóa thực thể khi người dùng chọn không
      * created by : BNTIEN
      * created date: 29-05-2023 08:35:00
      */
     btnNoConfirmDelete() {
-      this.$emit("confirmNoDeleteEmployee");
+      this.$_MISAEmitter.emit("confirmNoDeleteEntity");
     },
   },
 };

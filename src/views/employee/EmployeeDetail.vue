@@ -526,20 +526,16 @@
     <misa-dialog-data-not-null
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
-      @closeBtnSaveAndAdd="onCloseDialogSaveAndAdd"
     ></misa-dialog-data-not-null>
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
       v-if="isShowDialogCodeExist"
-      :textEmployeeCodeExist="contentEmployeeCodeExist"
-      @closeDialogCodeExist="btnCloseDialogIdExist"
+      :textProp="this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE"
+      :textEntityCodeExist="contentEmployeeCodeExist"
     ></misa-dialog-data-exist>
     <!-- dialog employee save and close -->
     <misa-dialog-data-change
       v-if="isShowDialogDataChange"
-      @cancelDialogDataChange="onCancelDialogDataChange"
-      @noDialogDataChange="onNoDialogDataChange"
-      @yesDialogDataChange="onYesDialogDataChange"
     ></misa-dialog-data-change>
   </div>
 </template>
@@ -560,6 +556,24 @@ export default {
 
   created() {
     this.loadData();
+
+    this.$_MISAEmitter.on("cancelDialogDataChange", () => {
+      this.onCancelDialogDataChange();
+    });
+    this.$_MISAEmitter.on("noDialogDataChange", () => {
+      this.onNoDialogDataChange();
+    });
+    this.$_MISAEmitter.on("yesDialogDataChange", async () => {
+      await this.onYesDialogDataChange();
+    });
+
+    this.$_MISAEmitter.on("closeDialogCodeExist", () => {
+      this.btnCloseDialogIdExist();
+    });
+
+    this.$_MISAEmitter.on("closeBtnSaveAndAdd", () => {
+      this.onCloseDialogSaveAndAdd();
+    });
 
     this.$_MISAEmitter.on("onSelectedEntityCBB", (data) => {
       this.onSelectedDepartment(data);
@@ -1319,6 +1333,11 @@ export default {
   },
 
   beforeUnmount() {
+    this.$_MISAEmitter.off("cancelDialogDataChange");
+    this.$_MISAEmitter.off("noDialogDataChange");
+    this.$_MISAEmitter.off("yesDialogDataChange");
+    this.$_MISAEmitter.off("closeDialogCodeExist");
+    this.$_MISAEmitter.off("closeBtnSaveAndAdd");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSearchChangeCBB");
     this.$_MISAEmitter.off("onKeyDownEntityCBB");

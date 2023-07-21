@@ -391,17 +391,18 @@
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :employeeCodeDelete="employeeCodeDeleteSelected"
-      @confirmYesDeleteEmployee="btnConfirmYesDeleteEmployee"
-      @confirmYesDeleteMultiple="btnConfirmYesDeleteMultipleEmployee"
-      @confirmNoDeleteEmployee="btnConfirmNoDeleteEmployee"
+      :entityCodeDelete="employeeCodeDeleteSelected"
+      :entityName="
+        this.$_MISAResource[
+          this.$_LANG_CODE
+        ].TEXT_CONTENT.EMPLOYEE.toLowerCase()
+      "
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
       :contentToast="contentToastSuccess"
-      @closeToastMessage="btnCloseToastMessage"
     ></misa-toast-success>
     <a href="" ref="ExportListEmployee" v-show="false"></a>
   </div>
@@ -436,6 +437,18 @@ export default {
     });
     this.$_MISAEmitter.on("refreshDataTable", async () => {
       await this.getListEmployee();
+    });
+    this.$_MISAEmitter.on("confirmYesDeleteEntity", async () => {
+      await this.btnConfirmYesDeleteEmployee();
+    });
+    this.$_MISAEmitter.on("confirmNoDeleteEntity", () => {
+      this.btnConfirmNoDeleteEmployee();
+    });
+    this.$_MISAEmitter.on("confirmYesDeleteMultiple", async () => {
+      await this.btnConfirmYesDeleteMultipleEmployee();
+    });
+    this.$_MISAEmitter.on("closeToastMessage", () => {
+      this.btnCloseToastMessage();
     });
   },
 
@@ -1014,6 +1027,10 @@ export default {
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");
     this.$_MISAEmitter.off("refreshDataTable");
+    this.$_MISAEmitter.off("confirmYesDeleteEntity");
+    this.$_MISAEmitter.off("confirmNoDeleteEntity");
+    this.$_MISAEmitter.off("confirmYesDeleteMultiple");
+    this.$_MISAEmitter.off("closeToastMessage");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
     window.removeEventListener("click", this.handleClickOutsideFeature);

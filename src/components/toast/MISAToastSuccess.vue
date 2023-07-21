@@ -20,7 +20,7 @@ export default {
   props: ["contentToast"],
   methods: {
     onCloseToastMessage() {
-      this.$emit("closeToastMessage");
+      this.$_MISAEmitter.emit("closeToastMessage");
     },
   },
 };

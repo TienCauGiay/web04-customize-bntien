@@ -1,8 +1,8 @@
 <template>
   <div class="overlay-dialog">
     <div
-      class="dialog-employee position-display-center"
-      id="dialog-question-employee"
+      class="dialog-entity position-display-center"
+      id="dialog-question-entity"
     >
       <div class="title-dialog">
         <h1>
@@ -69,7 +69,7 @@ export default {
      * created date: 31-05-2023 13:56:30
      */
     btnYes() {
-      this.$emit("yesDialogDataChange");
+      this.$_MISAEmitter.emit("yesDialogDataChange");
     },
 
     /**
@@ -78,7 +78,7 @@ export default {
      * created date: 31-05-2023 13:57:26
      */
     btnNo() {
-      this.$emit("noDialogDataChange");
+      this.$_MISAEmitter.emit("noDialogDataChange");
     },
 
     /**
@@ -87,7 +87,7 @@ export default {
      * created date: 31-05-2023 13:57:52
      */
     btnCancel() {
-      this.$emit("cancelDialogDataChange");
+      this.$_MISAEmitter.emit("cancelDialogDataChange");
     },
   },
 };

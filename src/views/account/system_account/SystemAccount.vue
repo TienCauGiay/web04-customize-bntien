@@ -132,6 +132,7 @@
       </form>
       <teleport to="#app">
         <div
+          id="menu-function-select-account"
           class="menu-function-select"
           v-if="isShowColFeature"
           :style="{
@@ -147,6 +148,11 @@
             @click="onDeleteAccount"
           >
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+          </div>
+          <div>
+            {{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT
+            }}
           </div>
           <div>
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING }}
@@ -488,7 +494,7 @@ export default {
         e.stopPropagation();
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
-        const left = positionIcon.right - 110;
+        const left = positionIcon.right - 190;
         let top = 0;
         if (positionIcon.bottom > 500) {
           top = positionIcon.bottom - 100;
@@ -528,20 +534,15 @@ export default {
       try {
         if (!this.rowParents[item.AccountId].isMinus) {
           if (!this.rowParents[item.AccountId].isClicked) {
-            let resfilter = null;
+            let reschildrens = null;
             this.isShowLoadding = true;
-            resfilter = await accountService.getFilter(
-              this.selectedRecord,
-              this.currentPage,
-              "",
-              false,
-              item.Grade + 1,
+            reschildrens = await accountService.getAllChildren(
               item.AccountNumber
             );
             this.isShowLoadding = false;
-            this.dataTable.Data.splice(index + 1, 0, ...resfilter.data.Data);
+            this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
-            for (const row of resfilter.data.Data) {
+            for (const row of reschildrens.data) {
               if (row.IsParent == 1) {
                 this.rowParents[row.AccountId] = {
                   isMinus: false,
