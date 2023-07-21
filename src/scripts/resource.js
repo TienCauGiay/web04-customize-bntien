@@ -1,4 +1,5 @@
-import COMPONENT_CATEGORY from '@/scripts/resource_component/category.js'
+import COMPONENT_CATEGORY from '@/scripts/resource_component/rc_category.js'
+import SYSTEM_ACCOUNT from '@/scripts/resource_component/rc_account.js'
 
 const MISAResource = {
     'vn-VI':{
@@ -177,6 +178,7 @@ const MISAResource = {
             UNDO:"",
         },
         CATEGORY: COMPONENT_CATEGORY,
+        ACCOUNT: SYSTEM_ACCOUNT
     },
     'en-EN':{
         TEXT_CONTENT:{

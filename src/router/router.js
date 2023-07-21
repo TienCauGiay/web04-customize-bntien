@@ -1,6 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import EmployeeList from '@/views/employee/EmployeeList';
-import SettingPage from '@/views/setting/Setting';
 import CategoryPage from '@/views/category/Category';
 import SystemAccount from '@/views/account/system_account/SystemAccount';
 
@@ -11,7 +10,6 @@ import SystemAccount from '@/views/account/system_account/SystemAccount';
  */
 const routers = [
     {path: "/employee", component: EmployeeList, name: "EmployeeListRouter"},
-    {path: "/setting", component: SettingPage, name: "SettingRouter"},
     {path: "/category", component: CategoryPage, name: "CategoryRouter"},
     {path: "/system-account", component: SystemAccount, name: "SystemAccountRouter"},
 ]

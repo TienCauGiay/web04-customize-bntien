@@ -76,6 +76,11 @@ const MISAEnum = {
     },
     CUSTOMER: 1,
     PROVIDER: 1,
+
+    BOOL: {
+        TRUE: 1,
+        FALSE: 0
+    }
 } 
 
 export default MISAEnum;

@@ -1,6 +1,6 @@
 <template>
   <div class="content-title">
-    <h1>Hệ thống tài khoản</h1>
+    <h1>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.title }}</h1>
     <div class="all-category">
       <div class="prev-icon icon-tb"></div>
       <router-link to="/category">
@@ -15,7 +15,9 @@
       <div class="search-account">
         <input
           type="search"
-          placeholder="Tìm kiếm theo số, tên tài khoản"
+          :placeholder="
+            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.placeholderSearch
+          "
           name="search-account"
           v-model="textSearch"
           @keydown.enter="onSearchAccount"
@@ -23,7 +25,9 @@
         />
         <div class="search-icon icon-tb" @click="onSearchAccount"></div>
       </div>
-      <div class="extend-account">Mở rộng</div>
+      <div class="extend-account">
+        {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.extend }}
+      </div>
       <div
         @click="refreshData"
         class="refresh-icon icon-tb"
@@ -35,14 +39,9 @@
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
       ></div>
       <div class="utilities" @click="isShowUtilities = !isShowUtilities">
-        <div class="utilities-text">Chuyển tài khoản hạch toán</div>
-        <!-- <div class="function-icon-disable"></div>
-        <div class="utilities-synchronized" v-if="isShowUtilities">
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .UTILITIES_SYNCHRONIZED
-          }}
-        </div> -->
+        <div class="utilities-text">
+          {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.tranferAccount }}
+        </div>
       </div>
       <div class="insert-data">
         <misa-button-default
@@ -59,16 +58,49 @@
         <table>
           <thead>
             <tr>
-              <th class="as-account-number-1">Số tài khoản</th>
-              <th class="as-account-name">Tên tài khoản</th>
-              <th class="as-nature">Tính chất</th>
-              <th class="as-name-english">Tên tiếng anh</th>
-              <th class="as-explain">Diễn giải</th>
-              <th class="as-status">Trạng thái</th>
+              <th class="as-account-number-1">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .accountNumber
+                }}
+              </th>
+              <th class="as-account-name">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .accountName
+                }}
+              </th>
+              <th class="as-nature">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .nature
+                }}
+              </th>
+              <th class="as-name-english">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .accountNameEnglish
+                }}
+              </th>
+              <th class="as-explain">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .explain
+                }}
+              </th>
+              <th class="as-status">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .state
+                }}
+              </th>
               <th
                 class="text-center as-feature entity-border-right function-table"
               >
-                Chức năng
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
+                    .feature
+                }}
               </th>
             </tr>
           </thead>
@@ -78,7 +110,9 @@
               :key="item.AccountId"
             >
               <tr
-                :class="{ 'text-bold': item.IsParent == 1 }"
+                :class="{
+                  'text-bold': item.IsParent == this.$_MISAEnum.BOOL.TRUE,
+                }"
                 v-if="
                   item.IsRoot ||
                   (this.rowParents[item.ParentId].isMinus &&
@@ -90,12 +124,12 @@
                     :class="[
                       {
                         'plus-square-icon':
-                          item.IsParent == 1 &&
+                          item.IsParent == this.$_MISAEnum.BOOL.TRUE &&
                           !this.rowParents[item.AccountId].isMinus,
                       },
                       {
                         'minus-square-icon':
-                          item.IsParent == 1 &&
+                          item.IsParent == this.$_MISAEnum.BOOL.TRUE &&
                           this.rowParents[item.AccountId].isMinus,
                       },
                     ]"
@@ -108,7 +142,13 @@
                 <td class="as-name-english">{{ item.AccountNameEnglish }}</td>
                 <td class="as-explain">{{ item.Explain }}</td>
                 <td class="as-status">
-                  {{ item.State == 1 ? "Đang sử dụng" : "Ngưng sử dụng" }}
+                  {{
+                    item.State == this.$_MISAEnum.BOOL.TRUE
+                      ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
+                          .usingAccount
+                      : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
+                          .stopUsingAccount
+                  }}
                 </td>
                 <td
                   class="text-center as-feature entity-border-right function-table"
@@ -438,7 +478,7 @@ export default {
 
         // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
         for (const row of this.dataTable.Data) {
-          if (row.IsParent == 1) {
+          if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
             this.rowParents[row.AccountId] = {
               isMinus: false,
               isClicked: false,
@@ -543,7 +583,7 @@ export default {
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
             for (const row of reschildrens.data) {
-              if (row.IsParent == 1) {
+              if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
                 this.rowParents[row.AccountId] = {
                   isMinus: false,
                   isClicked: false,
