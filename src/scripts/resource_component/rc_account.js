@@ -1,7 +1,8 @@
 const SYSTEM_ACCOUNT = {
     title: "Hệ thống tài khoản",
     placeholderSearch: "Tìm kiếm theo số, tên tài khoản",
-    extend: "Mở rộng",
+    expand: "Mở rộng",
+    unExpand: "Thu gọn",
     tranferAccount: "Chuyển tài khoản hạch toán",
     colTableName: {
         accountNumber: "Số tài khoản",
