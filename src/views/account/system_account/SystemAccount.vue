@@ -164,7 +164,7 @@
                   </span>
                   <div
                     class="function-table-content"
-                    @click="onOpenFeatureMenu($event)"
+                    @click="onOpenFeatureMenu($event, item)"
                   >
                     <div class="function-icon-table function-icon-select"></div>
                   </div>
@@ -210,7 +210,10 @@
         src="../../../assets/img/loading.svg"
         alt="loading"
       />
-      <div v-if="false" class="no-data">
+      <div
+        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
+        class="no-data"
+      >
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
@@ -306,12 +309,30 @@
       class="container-overlay"
       @closeFormDetail="onCloseFormDetail"
     ></div>
+    <!-- form thêm mới, sửa tìa khoản -->
     <SystemAccountDetail
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
       :accountSelected="accountUpdate"
       :statusFormMode="isStatusFormMode"
     ></SystemAccountDetail>
+    <!-- dialog account confirm delete -->
+    <misa-dialog-confirm-delete
+      :entityCodeDelete="accountNumberDeleteSelected"
+      :entityName="'tài khoản'"
+      v-if="isShowDialogConfirmDelete"
+    ></misa-dialog-confirm-delete>
+    <!-- dialog account error -->
+    <misa-dialog-data-not-null
+      v-if="isShowDialogDataError"
+      :valueNotNull="dataError"
+      :title="'Xóa không thành công'"
+    ></misa-dialog-data-not-null>
+    <!-- toast message -->
+    <misa-toast-success
+      v-if="isShowToastMessage"
+      :contentToast="contentToastSuccess"
+    ></misa-toast-success>
   </div>
 </template>
 
@@ -330,6 +351,17 @@ export default {
     //Gọi hàm lấy danh sách tài khoản hệ thống
     this.getListAccount();
     // Đăng kí các sự kiện
+    this.$_MISAEmitter.on("closeDialogDataError", () => {
+      this.isOverlay = false;
+      this.isShowDialogDataError = false;
+      this.dataError = [];
+    });
+    this.$_MISAEmitter.on("confirmYesDeleteEntity", async () => {
+      await this.btnConfirmYesDeleteAccount();
+    });
+    this.$_MISAEmitter.on("confirmNoDeleteEntity", () => {
+      this.btnConfirmNoDeleteAccount();
+    });
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
       this.onShowToastMessage();
@@ -343,6 +375,9 @@ export default {
     });
     this.$_MISAEmitter.on("refreshDataTable", async () => {
       await this.getListAccount();
+    });
+    this.$_MISAEmitter.on("closeToastMessage", () => {
+      this.isShowToastMessage = false;
     });
   },
 
@@ -402,6 +437,10 @@ export default {
       rowParents: {},
       // Khai báo biến quy định có đang ở trạng thái mở rộng hay không
       statusExpand: { isExpand: false, isClicked: false },
+      // Khai báo biến quy định trạng thái hiển thị dialog dataError
+      isShowDialogDataError: false,
+      // Danh sách dữ liệu lỗi của dialog dataError
+      dataError: [],
     };
   },
 
@@ -528,10 +567,11 @@ export default {
      * created by : BNTIEN
      * created date: 18-07-2023 17:15:45
      */
-    onOpenFeatureMenu(e) {
+    onOpenFeatureMenu(e, account) {
       try {
         // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
+        this.selectedAccount = account;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
         const left = positionIcon.right - 190;
@@ -737,11 +777,23 @@ export default {
      * created by : BNTIEN
      * created date: 20-07-2023 05:06:02
      */
-    onDeleteAccount() {
-      this.isShowDialogConfirmDelete = true;
-      this.isOverlay = true;
+    async onDeleteAccount() {
       this.accountIdDeleteSelected = this.selectedAccount.AccountId;
       this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
+
+      // Kiểm tra nếu dòng xóa đang là cha của các dòng khác thì không cho xóa
+      const rowDelete = await accountService.getByCode(
+        this.accountNumberDeleteSelected
+      );
+      if (rowDelete.data.IsParent == this.$_MISAEnum.BOOL.TRUE) {
+        this.isShowDialogDataError = true;
+        this.dataError.push(
+          "Xóa không thành công. Không thể xóa danh mục cha nếu chưa xóa danh mục con."
+        );
+      } else {
+        this.isShowDialogConfirmDelete = true;
+      }
+      this.isOverlay = true;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở lựa chọn số phần tử hiển thị trên 1 trang trong table
@@ -939,10 +991,14 @@ export default {
 
   beforeUnmount() {
     // Hủy các sự kiện đã đăng kí
+    this.$_MISAEmitter.off("closeDialogDataError");
+    this.$_MISAEmitter.off("confirmYesDeleteEntity");
+    this.$_MISAEmitter.off("confirmNoDeleteEntity");
     this.$_MISAEmitter.off("onShowToastMessage");
     this.$_MISAEmitter.off("onShowToastMessageUpdate");
     this.$_MISAEmitter.off("setFormModeAdd");
     this.$_MISAEmitter.off("refreshDataTable");
+    this.$_MISAEmitter.off("closeToastMessage");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideFeature);
   },
@@ -979,34 +1035,9 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Bỏ dấu x ở ô input có type = search */
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
-}
-
 .active-record-item {
   background-color: var(--color-btn-default);
   color: white;
-}
-
-.no-disable {
-  border: 1px solid black;
-}
-
-.no-disable:hover {
-  background-color: #e0e0e0;
-  cursor: pointer;
-}
-
-.checkedRow {
-  background-color: #e7f5ec;
-}
-
-.checkedRow td:first-child,
-.checkedRow td:last-child {
-  background-color: #e7f5ec;
 }
 
 .loadding-form-detail {

@@ -6,7 +6,7 @@
     >
       <div class="title-dialog">
         <h1>
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
+          {{ this.title }}
         </h1>
         <div class="close-icon" @click="btnClose"></div>
       </div>
@@ -40,7 +40,7 @@
 <script>
 export default {
   name: "MISADialogDataNotNull",
-  props: ["valueNotNull"],
+  props: ["valueNotNull", "title"],
   mounted() {
     this.resetTab();
   },
@@ -54,7 +54,7 @@ export default {
      * created date: 29-05-2023 08:35:28
      */
     btnClose() {
-      this.$_MISAEmitter.emit("closeBtnSaveAndAdd");
+      this.$_MISAEmitter.emit("closeDialogDataError");
     },
   },
 };

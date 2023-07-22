@@ -58,6 +58,13 @@ body::-webkit-scrollbar {
     right: 0;
     transform: translate(0, -50%);
 }
+
+/* Bỏ dấu x ở ô input có type = search */
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
 /* End css position display */
 
 /* .dp__main{

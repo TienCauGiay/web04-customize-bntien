@@ -1061,13 +1061,6 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-/* Bỏ dấu x ở ô input có type = search */
-input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-  appearance: none;
-  display: none;
-}
-
 .active-record-item {
   background-color: var(--color-btn-default);
   color: white;

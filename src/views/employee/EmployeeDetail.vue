@@ -526,6 +526,7 @@
     <misa-dialog-data-not-null
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
+      :title="this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID"
     ></misa-dialog-data-not-null>
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
@@ -571,7 +572,7 @@ export default {
       this.btnCloseDialogIdExist();
     });
 
-    this.$_MISAEmitter.on("closeBtnSaveAndAdd", () => {
+    this.$_MISAEmitter.on("closeDialogDataError", () => {
       this.onCloseDialogSaveAndAdd();
     });
 
@@ -1337,7 +1338,7 @@ export default {
     this.$_MISAEmitter.off("noDialogDataChange");
     this.$_MISAEmitter.off("yesDialogDataChange");
     this.$_MISAEmitter.off("closeDialogCodeExist");
-    this.$_MISAEmitter.off("closeBtnSaveAndAdd");
+    this.$_MISAEmitter.off("closeDialogDataError");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSearchChangeCBB");
     this.$_MISAEmitter.off("onKeyDownEntityCBB");
