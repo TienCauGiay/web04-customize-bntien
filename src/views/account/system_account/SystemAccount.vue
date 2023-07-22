@@ -27,7 +27,7 @@
       </div>
       <div class="expand-account" @click="expandTree">
         {{
-          isExpand
+          statusExpand.isExpand
             ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.unExpand
             : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.expand
         }}
@@ -118,7 +118,7 @@
                   'text-bold': item.IsParent == this.$_MISAEnum.BOOL.TRUE,
                 }"
                 v-if="
-                  item.IsRoot ||
+                  item.IsRoot == this.$_MISAEnum.BOOL.TRUE ||
                   (this.rowParents[item.ParentId].isMinus &&
                     this.rowParents[item.ParentId].showChildren)
                 "
@@ -401,7 +401,7 @@ export default {
       // Khai báo biến lưu các dòng có con
       rowParents: {},
       // Khai báo biến quy định có đang ở trạng thái mở rộng hay không
-      isExpand: false,
+      statusExpand: { isExpand: false, isClicked: false },
     };
   },
 
@@ -483,16 +483,8 @@ export default {
         this.dataTable = resfilter.data;
 
         // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
-        for (const row of this.dataTable.Data) {
-          if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-            this.rowParents[row.AccountId] = {
-              isMinus: false,
-              isClicked: false,
-              showChildren: false,
-              parentId: row.ParentId,
-            };
-          }
-        }
+        this.rowParents = {};
+        this.setRowParent(this.dataTable.Data, false);
       } catch {
         return;
       }
@@ -503,6 +495,8 @@ export default {
      * created date: 20-07-2023 04:59:26
      */
     async refreshData() {
+      this.statusExpand.isExpand = false;
+      this.statusExpand.isClicked = false;
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
       (this.indexSelectedRecord =
         this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
@@ -572,6 +566,24 @@ export default {
     },
 
     /**
+     * Mô tả: Hàm set giá trị cho rowParents
+     * created by : BNTIEN
+     * created date: 22-07-2023 12:47:33
+     */
+    setRowParent(data, status) {
+      for (const row of data) {
+        if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
+          this.rowParents[row.AccountId] = {
+            isMinus: status,
+            isClicked: status,
+            showChildren: status,
+            parentId: row.ParentId,
+          };
+        }
+      }
+    },
+
+    /**
      * Mô tả: Hàm đóng mở cây account
      * created by : BNTIEN
      * created date: 19-07-2023 09:11:35
@@ -588,16 +600,7 @@ export default {
             this.isShowLoadding = false;
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
-            for (const row of reschildrens.data) {
-              if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-                this.rowParents[row.AccountId] = {
-                  isMinus: false,
-                  isClicked: false,
-                  showChildren: false,
-                  parentId: row.ParentId,
-                };
-              }
-            }
+            this.setRowParent(reschildrens.data, false);
             this.rowParents[item.AccountId].isClicked = true;
           }
           this.rowParents[item.AccountId].isMinus = true;
@@ -617,55 +620,77 @@ export default {
      * created date: 22-07-2023 01:23:49
      */
     async expandTree() {
-      if (!this.isExpand) {
-        let parents = [];
-        // Lấy danh sách các dòng hện đang là cha trong dataTable
-        parents = this.dataTable.Data.filter(
-          (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE
-        );
-        // Thay đổi trạng thái của icon, click và showChildren cho các node đó
-        parents.map((row) => {
-          this.rowParents[row.AccountId].isMinus = true;
-          this.rowParents[row.AccountId].isClicked = true;
-          this.rowParents[row.AccountId].showChildren = true;
-        });
-        // Duyệt đến khi không có dòng nào là cha nữa
-        while (parents.length > 0) {
-          // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
-          const childrens = await accountService.getAllChildren(
-            parents[0].AccountNumber
+      // Mở rộng dataTable
+      if (!this.statusExpand.isExpand) {
+        // Nếu chưa mở rộng lần nào, tức là chưa gọi api
+        if (!this.statusExpand.isClicked) {
+          let parents = [];
+          // Lấy danh sách các dòng hện đang là cha trong dataTable
+          parents = this.dataTable.Data.filter(
+            (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE
           );
-          // Thêm vào dataTable
-          this.dataTable.Data.splice(
-            this.dataTable.Data.indexOf(parents[0]) + 1,
-            0,
-            ...childrens.data
-          );
-          // Cập nhật trạng thái cho các dòng vừa mới thêm vào dataTable
-          for (const row of childrens.data) {
-            if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-              this.rowParents[row.AccountId] = {
-                isMinus: true,
-                isClicked: true,
-                showChildren: true,
-                parentId: row.ParentId,
-              };
-            }
-          }
-          // Kiểm tra xem trong số những dòng con vừa tìm được có dòng nào là cha của các dòng khác không
-          // Nếu có thì thêm vào danh sách các dòng hiện đang là cha
-          childrens.data.map((row) => {
-            if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-              parents.push(row);
-            }
+          // Thay đổi trạng thái của icon, click và showChildren cho các node đó
+          parents.map((row) => {
+            this.rowParents[row.AccountId].isMinus = true;
+            this.rowParents[row.AccountId].isClicked = true;
+            this.rowParents[row.AccountId].showChildren = true;
           });
-          // Xóa phần tử đầu tiên trong danh sách những dòng hiện đang là cha sau khi đã duyệt xong
-          parents.splice(0, 1);
+          // Duyệt đến khi không có dòng nào là cha nữa
+          while (parents.length > 0) {
+            // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
+            const childrens = await accountService.getAllChildren(
+              parents[0].AccountNumber
+            );
+            // Thêm vào dataTable
+            this.dataTable.Data.splice(
+              this.dataTable.Data.indexOf(parents[0]) + 1,
+              0,
+              ...childrens.data
+            );
+            // Cập nhật trạng thái cho các dòng vừa mới thêm vào dataTable
+            for (const row of childrens.data) {
+              // Kiểm tra xem trong số những dòng con vừa tìm được có dòng nào là cha của các dòng khác không
+              if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
+                this.rowParents[row.AccountId] = {
+                  isMinus: true,
+                  isClicked: true,
+                  showChildren: true,
+                  parentId: row.ParentId,
+                };
+                // Thêm dòng cha mới vào danh sách các dòng hiện đang là cha
+                parents.push(row);
+              }
+            }
+
+            // Xóa phần tử đầu tiên trong danh sách những dòng hiện đang là cha sau khi đã duyệt xong
+            parents.splice(0, 1);
+          }
+        } else {
+          // Nếu đã mở rộng ít nhất 1 lần
+          this.dataTable.Data.filter(
+            (x) =>
+              (x.IsRoot == this.$_MISAEnum.BOOL.TRUE ||
+                (!this.rowParents[x.ParentId].isMinus &&
+                  !this.rowParents[x.ParentId].showChildren)) &&
+              x.IsParent == this.$_MISAEnum.BOOL.TRUE
+          ).map((row) => {
+            this.rowParents[row.AccountId].isMinus = true;
+            this.updateStatusShowChildren(row.AccountId, true);
+          });
         }
       } else {
-        // do sothing
+        // Thu gọn dataTable
+        this.dataTable.Data.filter(
+          (x) =>
+            x.IsRoot == this.$_MISAEnum.BOOL.TRUE &&
+            x.IsParent == this.$_MISAEnum.BOOL.TRUE
+        ).map((row) => {
+          this.rowParents[row.AccountId].isMinus = false;
+          this.updateStatusShowChildren(row.AccountId, false);
+        });
       }
-      this.isExpand = !this.isExpand;
+      this.statusExpand.isClicked = true;
+      this.statusExpand.isExpand = !this.statusExpand.isExpand;
     },
 
     /**
@@ -686,6 +711,12 @@ export default {
         );
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
+
+        this.statusExpand.isExpand = false;
+        this.statusExpand.isClicked = false;
+
+        this.rowParents = {};
+        this.setRowParent(this.dataTable.Data, false);
       } catch {
         return;
       }
@@ -830,6 +861,11 @@ export default {
         );
         this.isShowLoadding = false;
         this.dataTable = filteredAccounts.data;
+
+        this.statusExpand.isExpand = false;
+        this.statusExpand.isClicked = false;
+        this.rowParents = {};
+        this.setRowParent(this.dataTable.Data, false);
       } catch {
         return;
       }
