@@ -669,9 +669,11 @@ export default {
         // Nếu chưa mở rộng lần nào, tức là chưa gọi api
         if (!this.statusExpand.isClicked) {
           let parents = [];
-          // Lấy danh sách các dòng hện đang là cha trong dataTable
+          // Lấy danh sách các dòng hện đang là cha trong dataTable và đang có trạng thái dấu cộng
           parents = this.dataTable.Data.filter(
-            (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE
+            (row) =>
+              row.IsParent == this.$_MISAEnum.BOOL.TRUE &&
+              !this.rowParents[row.AccountId].isMinus
           );
           // Thay đổi trạng thái của icon, click và showChildren cho các node đó
           parents.map((row) => {
