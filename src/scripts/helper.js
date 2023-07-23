@@ -85,6 +85,20 @@ const helperCommon = {
       return false;
     },
 
+
+    /**
+     * Mô tả: Hàm kiểm tra dữ liệu tối thiểu là bao nhiêu
+     * created by : BNTIEN
+     * created date: 23-07-2023 12:10:12
+     */
+    isMinLengthInput: (text, length) => {
+      if(!text) return false;
+      if(text.length < length){
+        return true;
+      }
+      return false;
+    },
+
     /**
      * Mô tả: Hàm kiểm tra định dạng email 
      * created by : BNTIEN

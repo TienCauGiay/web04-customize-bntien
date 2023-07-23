@@ -636,8 +636,6 @@ export default {
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
-      // Khai báo chỉ số đang được chọn trong combobox
-      indexDepartmentSelected: 0,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
       searchDepartmentTimeout: null,
       // Khai báo biên lưu mã nhân viên tự động sinh ra
@@ -871,6 +869,11 @@ export default {
         return;
       }
     },
+    /**
+     * Mô tả: Hàm set các lỗi nhập liệu phía fontend
+     * created by : BNTIEN
+     * created date: 11-07-2023 16:36:05
+     */
     setErrorMaxLength(key) {
       try {
         this.errors[key] =

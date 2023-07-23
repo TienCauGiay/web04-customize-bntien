@@ -122,6 +122,7 @@
                   (this.rowParents[item.ParentId].isMinus &&
                     this.rowParents[item.ParentId].showChildren)
                 "
+                @dblclick="onUpdateFormDetail(item)"
               >
                 <td :class="`as-account-number-${item.Grade}`">
                   <span
@@ -156,6 +157,7 @@
                 </td>
                 <td
                   class="text-center as-feature entity-border-right function-table"
+                  @dblclick.stop
                 >
                   <span @click="onUpdateFormDetail(item)">
                     {{
@@ -198,7 +200,7 @@
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT
             }}
           </div>
-          <div>
+          <div @click="onStopUsing">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING }}
           </div>
         </div>
@@ -319,14 +321,14 @@
     <!-- dialog account confirm delete -->
     <misa-dialog-confirm-delete
       :entityCodeDelete="accountNumberDeleteSelected"
-      :entityName="'tài khoản'"
+      :entityName="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.textAccount"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- dialog account error -->
     <misa-dialog-data-not-null
       v-if="isShowDialogDataError"
       :valueNotNull="dataError"
-      :title="'Xóa không thành công'"
+      :title="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.deleteFailed"
     ></misa-dialog-data-not-null>
     <!-- toast message -->
     <misa-toast-success
@@ -560,6 +562,8 @@ export default {
     onCloseFormDetail() {
       this.isOverlay = false;
       this.isShowFormDetail = false;
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
+      this.accountUpdate = {};
     },
 
     /**
@@ -678,9 +682,11 @@ export default {
           // Duyệt đến khi không có dòng nào là cha nữa
           while (parents.length > 0) {
             // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
+            this.isShowLoadding = true;
             const childrens = await accountService.getAllChildren(
               parents[0].AccountNumber
             );
+            this.isShowLoadding = false;
             // Thêm vào dataTable
             this.dataTable.Data.splice(
               this.dataTable.Data.indexOf(parents[0]) + 1,
@@ -788,7 +794,7 @@ export default {
       if (rowDelete.data.IsParent == this.$_MISAEnum.BOOL.TRUE) {
         this.isShowDialogDataError = true;
         this.dataError.push(
-          "Xóa không thành công. Không thể xóa danh mục cha nếu chưa xóa danh mục con."
+          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDeleteFailed
         );
       } else {
         this.isShowDialogConfirmDelete = true;
@@ -890,6 +896,15 @@ export default {
       } catch {
         return;
       }
+    },
+
+    /**
+     * Mô tả: Hàm ngưng sử dụng 1 tài khoản
+     * created by : BNTIEN
+     * created date: 22-07-2023 14:15:53
+     */
+    onStopUsing() {
+      // do something
     },
     /**
      * Mô tả: Hàm tìm kiếm tài khoản theo mã hoặc tên

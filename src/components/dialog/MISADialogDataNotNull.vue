@@ -64,7 +64,7 @@ export default {
 @import url(@/css/base/dialog.css);
 
 .dialog-content-main {
-  max-height: 64px;
+  max-height: 66px;
   overflow-y: auto;
 }
 
