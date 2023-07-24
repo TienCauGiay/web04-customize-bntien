@@ -27,7 +27,10 @@
         <div class="full-content">
           <div class="col-md-quater">
             <label>
-              Số tài khoản
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountNumber
+              }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -55,7 +58,10 @@
         <div class="half-content">
           <div class="col-md-l">
             <label>
-              Tên tài khoản
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountName
+              }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -82,7 +88,12 @@
         </div>
         <div class="half-content">
           <div class="col-md-l">
-            <label> Tên tiếng anh </label>
+            <label>
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountNameEnglish
+              }}
+            </label>
             <div class="container-input">
               <misa-input
                 ref="AccountNameEnglish"
@@ -106,7 +117,12 @@
         </div>
         <div class="half-content">
           <div class="col-md-half">
-            <label> Tài khoản tổng hợp </label>
+            <label>
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountGeneral
+              }}
+            </label>
             <div class="form-cbb">
               <div class="e-textfield-cbb">
                 <div class="container-input">
@@ -127,8 +143,18 @@
               </div>
               <div class="form-cbb-menu" v-if="isShowMenuGeneralAccount">
                 <div class="form-cbb-menu-title">
-                  <div>Số tài khoản</div>
-                  <div>Tên tài khoản</div>
+                  <div>
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                        .textProperty.accountNumber
+                    }}
+                  </div>
+                  <div>
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                        .textProperty.accountName
+                    }}
+                  </div>
                 </div>
                 <template v-for="item in accounts.Data" :key="item.AccountId">
                   <div
@@ -159,7 +185,10 @@
           </div>
           <div class="col-md-half" style="position: relative">
             <label>
-              Tính chất
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .nature
+              }}
               <span class="s-require">*</span>
             </label>
             <misa-combobox
@@ -174,7 +203,12 @@
         </div>
         <div class="full-content-area">
           <div class="col-md-l">
-            <label> Diễn giải </label>
+            <label
+              >{{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .explain
+              }}
+            </label>
             <misa-input-textarea
               v-model="account.Explain"
             ></misa-input-textarea>
@@ -183,7 +217,10 @@
         <div class="full-content">
           <div class="employee-check">
             <input type="checkbox" />
-            <span>Có hạch toán ngoại tệ</span>
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                .foreignCurrencyAccounting
+            }}</span>
           </div>
         </div>
         <div class="system-account-track-detail">
@@ -191,21 +228,32 @@
             <div class="title-track-detail-icon">
               <div class="function-icon" style="scale: 1.5 1.5"></div>
             </div>
-            <div class="title-track-detail-text">Theo dõi chi tiết theo</div>
+            <div class="title-track-detail-text">
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .trackDetail
+              }}
+            </div>
           </div>
           <div class="content-track-detail">
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Đối tượng</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.obj
+                  }}</span>
                 </div>
                 <misa-select-option></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Tài khoản ngân hàng</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.bankAccount
+                  }}</span>
                 </div>
               </div>
             </div>
@@ -213,46 +261,20 @@
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Đối tượng THCP</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.objTHCP
+                  }}</span>
                 </div>
                 <misa-select-option></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Công trình</span>
-                </div>
-                <misa-select-option></misa-select-option>
-              </div>
-            </div>
-            <div class="content-track-detail-row">
-              <div class="content-track-detail-halfrow">
-                <div class="employee-check">
-                  <input type="checkbox" />
-                  <span>Đơn đặt hàng</span>
-                </div>
-                <misa-select-option></misa-select-option>
-              </div>
-              <div class="content-track-detail-halfrow">
-                <div class="employee-check">
-                  <input type="checkbox" />
-                  <span>Hợp đồng bán</span>
-                </div>
-                <misa-select-option></misa-select-option>
-              </div>
-            </div>
-            <div class="content-track-detail-row">
-              <div class="content-track-detail-halfrow">
-                <div class="employee-check">
-                  <input type="checkbox" />
-                  <span>Hợp đồng mua</span>
-                </div>
-                <misa-select-option></misa-select-option>
-              </div>
-              <div class="content-track-detail-halfrow">
-                <div class="employee-check">
-                  <input type="checkbox" />
-                  <span>Khoản mục CP</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.construction
+                  }}</span>
                 </div>
                 <misa-select-option></misa-select-option>
               </div>
@@ -261,14 +283,64 @@
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Đơn vị</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.order
+                  }}</span>
                 </div>
                 <misa-select-option></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="employee-check">
                   <input type="checkbox" />
-                  <span>Mã thông kê</span>
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.contractSale
+                  }}</span>
+                </div>
+                <misa-select-option></misa-select-option>
+              </div>
+            </div>
+            <div class="content-track-detail-row">
+              <div class="content-track-detail-halfrow">
+                <div class="employee-check">
+                  <input type="checkbox" />
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.contractPurchase
+                  }}</span>
+                </div>
+                <misa-select-option></misa-select-option>
+              </div>
+              <div class="content-track-detail-halfrow">
+                <div class="employee-check">
+                  <input type="checkbox" />
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.itemCP
+                  }}</span>
+                </div>
+                <misa-select-option></misa-select-option>
+              </div>
+            </div>
+            <div class="content-track-detail-row">
+              <div class="content-track-detail-halfrow">
+                <div class="employee-check">
+                  <input type="checkbox" />
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.unit
+                  }}</span>
+                </div>
+                <misa-select-option></misa-select-option>
+              </div>
+              <div class="content-track-detail-halfrow">
+                <div class="employee-check">
+                  <input type="checkbox" />
+                  <span>{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                      .textProperty.rawCode
+                  }}</span>
                 </div>
                 <misa-select-option></misa-select-option>
               </div>
@@ -430,12 +502,16 @@ export default {
         let res = JSON.stringify(this.accountSelected);
         // Chuyển đổi chuỗi json thành đối tượng employee
         this.account = JSON.parse(res);
+        // Tính chất mặc định là dư nợ
+        this.account.Nature = this.listNatureSearch[0].Nature;
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Gán title cho form mode thêm mới
-          this.titleFormMode = "Thêm Tài Khoản";
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleAdd;
         } else {
           // Gán title cho form mode thêm sửa
-          this.titleFormMode = "Sửa tài khoản";
+          this.titleFormMode =
+            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleEdit;
         }
       } catch {
         return;
@@ -686,7 +762,7 @@ export default {
       this.isBorderRed.AccountNumber = true;
       this.errors["AccountNumber"] = `${
         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-          .accountByNumber
+          .accountNumber
       }
        ${accountExisted.AccountNumber} ${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END

@@ -144,14 +144,14 @@
         <div style="border-top: 1px solid white"></div>
         <li class="menu-item">
           <router-link to="/category" class="menu-item-a">
-            <i class="icon-tb setting-icon" style="scale: 0.85 0.85"></i>
+            <i class="icon-tb icon-category"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .CATEGORY
             }}</span>
           </router-link>
         </li>
-        <li class="menu-item">
+        <!-- <li class="menu-item">
           <router-link to="/" class="menu-item-a">
             <i class="icon-tb setting-icon" style="scale: 0.85 0.85"></i>
             <span>{{
@@ -159,10 +159,10 @@
                 .INITIAL_BLANCE
             }}</span>
           </router-link>
-        </li>
+        </li> -->
         <li class="menu-item">
           <router-link to="/" class="menu-item-a">
-            <i class="icon-tb setting-icon" style="scale: 0.85 0.85"></i>
+            <i class="icon-tb icon-knowledge"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .ANTS

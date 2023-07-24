@@ -22,7 +22,24 @@ const SYSTEM_ACCOUNT = {
     contentDeleteFailed : "Không thể xóa danh mục cha nếu chưa xóa danh mục con.",
     form: {
         textProperty:{
-            accountNumber: "Số tài khoản"
+            accountNumber: "Số tài khoản",
+            accountName: "Tên tài khoản",
+            accountNameEnglish: "Tên tiếng anh",
+            accountGeneral: "Tài khoản tổng hợp",
+            nature: "Tính chất",
+            explain: "Diễn giải",
+            foreignCurrencyAccounting: "Có hạch toán ngoại tệ",
+            trackDetail: "Theo dõi chi tiết theo",
+            obj: "Đối tượng",
+            bankAccount: "Tài khoản ngân hàng",
+            objTHCP: "Đối tượng THCP",
+            construction: "Công trình",
+            order: "Đơn đặt hàng",
+            contractSale: "Hợp đồng bán",
+            contractPurchase: "Hợp đồng mua",
+            itemCP: "Khoản mục CP",
+            unit: "Đơn vị",
+            rawCode: "Mã thống kê",
         },
         validateNotNull: {
             "AccountNumber": "Số tài khoản không được để trống.",
@@ -39,7 +56,9 @@ const SYSTEM_ACCOUNT = {
         },
         minLength:{
             "AccountNumber": {MinLength: 3, Warning: "Số tài khoản tối thiểu 3 kí tự."}
-        }
+        },
+        titleAdd: "Thêm tài khoản",
+        titleEdit: "Sửa tài khoản",
     }
 }
 
