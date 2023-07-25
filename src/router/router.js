@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import EmployeeList from '@/views/employee/EmployeeList';
 import CategoryPage from '@/views/category/Category';
 import SystemAccount from '@/views/account/system_account/SystemAccount';
+import ProviderList from '@/views/provider/provider_list/ProviderList';
 
 /**
  * Mô tả: Định nghĩa các router
@@ -12,6 +13,7 @@ const routers = [
     {path: "/employee", component: EmployeeList, name: "EmployeeListRouter"},
     {path: "/category", component: CategoryPage, name: "CategoryRouter"},
     {path: "/system-account", component: SystemAccount, name: "SystemAccountRouter"},
+    {path: "/provider", component: ProviderList, name: "ProviderListRouter"},
 ]
 
 /**

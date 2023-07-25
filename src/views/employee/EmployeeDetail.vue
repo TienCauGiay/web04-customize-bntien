@@ -1358,13 +1358,6 @@ export default {
 .border-red {
   border: 1px solid red;
 }
-
-input[type="checkbox"]:focus,
-input[type="radio"]:focus {
-  outline: 1px solid black;
-  border-radius: 50%;
-}
-
 /* .dp__main, .dp__input_wrap, .dp__input{
   border-radius: 4px;
   height: 32px;

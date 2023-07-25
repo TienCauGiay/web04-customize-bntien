@@ -141,7 +141,11 @@
               >
                 <div class="function-icon"></div>
               </div>
-              <div class="form-cbb-menu" v-if="isShowMenuGeneralAccount">
+              <div
+                class="form-cbb-menu"
+                v-if="isShowMenuGeneralAccount"
+                @scroll="handleScroll"
+              >
                 <div class="form-cbb-menu-title">
                   <div>
                     {{
@@ -156,7 +160,7 @@
                     }}
                   </div>
                 </div>
-                <template v-for="item in accounts.Data" :key="item.AccountId">
+                <template v-for="item in accounts" :key="item.AccountId">
                   <div
                     class="form-cbb-menu-item"
                     @click="selectedGeneralAccount(item)"
@@ -216,7 +220,7 @@
         </div>
         <div class="full-content">
           <div class="employee-check">
-            <input type="checkbox" />
+            <input type="checkbox" style="height: 16px" />
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
                 .foreignCurrencyAccounting
@@ -486,6 +490,10 @@ export default {
       accounts: [],
       // Khai báo biến tìm kiếm tài khoản tổng hợp
       searchGeneralAccount: "",
+      // Trang hiện tại
+      pageNumber: 1,
+      // Số lượng tài khoản được tải mỗi lần
+      pageSize: 10,
     };
   },
 
@@ -525,11 +533,21 @@ export default {
      */
     async getAllAccount() {
       try {
-        const res = await accountService.getFilter(20, 1, "", true, 1, "");
-        this.accounts = res.data;
+        const res = await accountService.getFilter(
+          this.pageSize,
+          this.pageNumber,
+          "",
+          true,
+          1,
+          ""
+        );
+        if (res.data.Data.length > 0) {
+          this.accounts = [...this.accounts, ...res.data.Data];
+          this.pageNumber++;
+        }
         let parents = [];
         // Lấy danh sách các dòng hện đang là cha trong dataTable
-        parents = this.accounts.Data.filter(
+        parents = this.accounts.filter(
           (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE
         );
         // Duyệt đến khi không có dòng nào là cha nữa
@@ -539,8 +557,8 @@ export default {
             parents[0].AccountNumber
           );
           // Thêm vào dataTable
-          this.accounts.Data.splice(
-            this.accounts.Data.indexOf(parents[0]) + 1,
+          this.accounts.splice(
+            this.accounts.indexOf(parents[0]) + 1,
             0,
             ...childrens.data
           );
@@ -558,6 +576,20 @@ export default {
         }
       } catch {
         this.accounts = [];
+      }
+    },
+
+    /**
+     * Mô tả: Hàm xử lí lazy loadding
+     * created by : BNTIEN
+     * created date: 24-07-2023 20:45:38
+     */
+    handleScroll(event) {
+      // Kiểm tra khi nào cuộn đến cuối danh sách
+      const el = event.target;
+      if (el.scrollHeight - el.scrollTop === el.clientHeight) {
+        // Gọi hàm để tải thêm dữ liệu khi cuộn đến cuối danh sách
+        this.getAllAccount();
       }
     },
 
@@ -1089,6 +1121,6 @@ export default {
 }
 
 input:not(.form-cbb .e-textfield-cbb input) {
-  height: 26px !important;
+  height: 26px;
 }
 </style>

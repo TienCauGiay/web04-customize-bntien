@@ -1,0 +1,96 @@
+.cbb-multiple{
+    height: 26px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    border: 1px solid var(--color-border-default);
+    box-sizing: border-box;
+}
+
+.cbb-multiple:has(.textfield-cbb-multiple:focus){
+    border-color: var(--color-btn-default);
+}
+
+#cbb-multiple .input-cbb-mutiple{
+    height: calc(26px - 0.667px * 2);
+    width: 95%;
+    box-sizing: border-box;
+    border: unset;
+    outline: unset;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.textfield-cbb-multiple {
+    height: calc(26px - 0.667px * 2);
+    width: calc(100% - calc(26px - 0.667px * 2));
+    box-sizing: border-box;
+    border: unset;
+    padding: 0 12px;
+    border-radius: 4px 0 0 4px;
+}
+  
+.textfield-cbb-multiple:focus {
+    border: unset;
+}
+
+.icon-cbb-multiple{
+    height: calc(26px - 0.667px * 2);
+    width: calc(26px - 0.667px * 2);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon-cbb-multiple:hover{
+    background-color: var(--color-border-default);
+}
+
+#cbb-multiple .e-icon-cbb{
+    box-sizing: border-box;
+    background-color: #e9e9e9;
+    height: calc(26px - 0.667px * 2);
+    width: calc(26px - 0.667px * 2);
+    cursor: pointer;
+    border-radius: 0px 4px 4px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid var(--color-border-default);
+}
+
+.select-item-cbb-multiple .form-cbb-menu{
+    position: absolute;
+    width: 100%;
+    top: calc(100% + 5px);
+    max-height: 134px;
+}
+
+.select-item-cbb-multiple .form-cbb-menu-item div:last-child{
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.select-item-cbb-multiple .form-cbb-menu-item div{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.col-1-cbb-menu-item {
+    flex: 0 0 150px; 
+    min-width: 150px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+  }
+  
+  .col-2-cbb-menu-item {
+    flex: 0 0 200px; 
+    min-width: 200px; 
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+  }

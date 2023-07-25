@@ -413,14 +413,44 @@
     scale: 0.8 0.8;
 }
 
-/* .icon-category{
-    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1711px -33px;
+.category-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -1711px -33px;
     width: 17px;
     height: 14px;
 }
 
-.icon-knowledge{
-    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -638px -1663px;
+.knowledge-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -638px -1663px;
     width: 18px;
     height: 18px;
-} */
+}
+
+.filter-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1817px -208px;
+	width: 12px;
+	height: 12px;
+}
+
+.direction-arrow{
+    background: url('../../assets/icon/Sprites.64af8f61.svg')no-repeat -259px -147px;
+	width: 18px;
+	height: 18px;
+}
+
+.plus-green-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -34px -314px;
+	width: 12px;
+	height: 12px;
+}
+
+.checked-green-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1225px -363px;
+	width: 14px;
+	height: 11px;
+}
+
+.delete-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -464px -313px;
+	width: 15px;
+	height: 15px;
+}

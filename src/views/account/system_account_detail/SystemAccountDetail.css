@@ -43,6 +43,7 @@
 
 #detail-add-system-account .select-entity{
   top: 54px;
+  max-height: 105px;
 }
 
 #detail-add-system-account .select-entity ul {

@@ -11,12 +11,12 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OBJECTS
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.CUSTOMER
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <router-link to="/provider">
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.PROVIDER
             }}
@@ -26,12 +26,12 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.EMPLOYEE
             }}
           </router-link>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .GROUP_CUSTOMER_PROVIDER
             }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
@@ -40,26 +40,26 @@
                 .SUPPLY_GOODS
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .SUPPLY_GOODS
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.WAREHOUSE
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .GROUP_MATERIAL_GOOD_SERVICE
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.UNIT }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
@@ -73,18 +73,18 @@
                 .ACCOUNT_SYSTEM
             }}
           </router-link>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TRANFER_ACCOUNT
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .ACCOUNT_DEFAULT
             }}
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="category-row">
@@ -94,30 +94,30 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.EXPENSE
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .COSS_AGGREGATION_OBJECT
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .EXPENSE_ITEM
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .CONSTRUCTION
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TYPE_CONSTRUCTION
             }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
@@ -125,15 +125,15 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.BANKS
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.BANK }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .BANK_ACCOUNT
             }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
@@ -142,12 +142,12 @@
                 .BRANCH_DEPARTMENT
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .ORGANIZATIONAL_STRUCTURE
             }}
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="category-row">
@@ -157,34 +157,34 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ASSETS
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_TOOL
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TYPE_ASSETS
             }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.TAX }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .SPECIAL_CONSUMPTION_TARIFF
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .RESOURCE_TAX_SCHEDULE
             }}
-          </router-link>
+          </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
@@ -192,36 +192,36 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OTHER
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TERM_PAYMENT
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .REVENUE_DISBURSEMENT
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .STATISTICAL_CODE
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TYPE_MONEY
             }}
-          </router-link>
-          <router-link to="/">
+          </a>
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TYPE_DOCUMENT
             }}
-          </router-link>
+          </a>
         </div>
       </div>
       <div class="category-row">
@@ -231,12 +231,12 @@
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.SALARY
             }}
           </a>
-          <router-link to="/">
+          <a>
             {{
               this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
                 .TIME_ATTENDANCE_SYMBOL
             }}
-          </router-link>
+          </a>
         </div>
       </div>
     </div>

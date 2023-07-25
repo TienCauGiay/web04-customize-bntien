@@ -126,6 +126,7 @@
               >
                 <td :class="`as-account-number-${item.Grade}`">
                   <span
+                    @dblclick.stop
                     :class="[
                       {
                         'plus-square-icon':

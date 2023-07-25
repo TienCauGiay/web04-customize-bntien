@@ -65,6 +65,17 @@ input[type="search"]::-webkit-search-cancel-button {
     appearance: none;
     display: none;
 }
+
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 2px solid var(--color-border-default);
+  border-radius: 50%;
+}
+
+
+a:hover{
+    cursor: pointer;
+}
 /* End css position display */
 
 /* .dp__main{

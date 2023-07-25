@@ -1,6 +1,6 @@
 <template>
   <div class="content-title">
-    <h1>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EMPLOYEE }}</h1>
+    <h1>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.title }}</h1>
     <div class="all-category">
       <div class="prev-icon icon-tb"></div>
       <router-link to="/category">
@@ -10,35 +10,110 @@
       </router-link>
     </div>
   </div>
-  <div class="content-main-body">
-    <div class="content-action">
-      <button
-        :disabled="isDisableExcuteBatch"
-        class="delete-multiple"
-        @click="onShowExcuteBatch"
-        :class="{ 'no-disable': !isDisableExcuteBatch }"
-        ref="DeleteMulti"
-      >
-        <div class="select-function-delete">
+  <div class="content-info-money">
+    <div class="info-money-item">
+      <div
+        class="info-money-item-left"
+        style="background-color: rgb(237, 118, 81)"
+      ></div>
+      <div class="info-money-item-right">
+        <div class="money">
+          <div class="format-money">1.336.000.000</div>
+          <div class="icon-l filter-icon"></div>
+        </div>
+        <div class="content-money">
           <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.overdue
           }}</span>
-          <div class="delete-multiple-icon">
-            <div class="function-icon-disable"></div>
-          </div>
         </div>
-        <div class="menu-delete" v-show="isShowMenuExcuteBatch">
-          <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
-            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
-          </div>
+      </div>
+    </div>
+    <div class="info-money-item">
+      <div class="info-money-item-left" style="background-color: #858383"></div>
+      <div class="info-money-item-right">
+        <div class="money">
+          <div class="format-money">13.135.323.869</div>
+          <div class="icon-l filter-icon"></div>
         </div>
-      </button>
+        <div class="content-money">
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.totalLiabiliti
+          }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-money-item">
+      <div
+        class="info-money-item-left"
+        style="background-color: var(--color-btn-default)"
+      ></div>
+      <div class="info-money-item-right">
+        <div class="money">
+          <div class="format-money">0</div>
+        </div>
+        <div class="content-money">
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.recentPayment
+          }}</span>
+          <span class="content-money-last-child">{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.figureUpto
+          }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="refresh-money">
+    <div class="icon-l refresh-icon" style="scale: 0.8 0.8"></div>
+  </button>
+  <div id="content-main-body-provider" class="content-main-body">
+    <div class="content-action">
+      <div class="content-action-left">
+        <div class="container-direction-arrow">
+          <div class="icon-l direction-arrow"></div>
+        </div>
+        <button
+          :disabled="true"
+          class="delete-multiple"
+          @click="onShowExcuteBatch"
+          :class="{ 'no-disable': false }"
+        >
+          <div class="select-function-delete">
+            <span>{{
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
+            }}</span>
+            <div class="delete-multiple-icon">
+              <div class="function-icon-disable"></div>
+            </div>
+          </div>
+          <div class="menu-delete" v-show="isShowMenuExcuteBatch">
+            <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+            </div>
+          </div>
+        </button>
+        <button
+          class="delete-multiple filter-provider"
+          @click="onShowExcuteBatch"
+          :class="'no-disable'"
+        >
+          <div class="select-function-delete">
+            <span>Lọc</span>
+            <div class="delete-multiple-icon">
+              <div class="function-icon-disable"></div>
+            </div>
+          </div>
+          <div class="menu-delete" v-show="isShowMenuExcuteBatch">
+            <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+            </div>
+          </div>
+        </button>
+      </div>
       <div class="search-employee">
         <input
           type="search"
           :placeholder="
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .PLACEHOLDER_SEARCH
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch
           "
           name="search-employee"
           id="search-employee"
@@ -84,9 +159,9 @@
         <misa-button-icon></misa-button-icon>
       </div>
     </div>
-    <div id="list-employee" class="list-entity">
+    <div id="list-provider" class="list-entity">
       <form action="">
-        <table id="tbEmployeeList">
+        <table id="tbProviderList">
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
@@ -97,73 +172,46 @@
                   :checked="isCheckAll"
                 />
               </th>
-              <th class="e-id">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.CODE
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .providerCode
                 }}
               </th>
-              <th class="e-fullname">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .FULLNAME
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .providerName
                 }}
               </th>
-              <th class="e-gender-table">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .address
                 }}
               </th>
-              <th type="date" class="text-center e-birthday">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DOB
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .amountOwed
                 }}
               </th>
-              <th class="e-identity-number">
-                <span
-                  :title="
-                    this.$_MISAResource[this.$_LANG_CODE].TOOLTIP
-                      .IDENTITY_NUMBER
-                  "
-                >
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                      .IDENTITY_NUMBER
-                  }}
-                </span>
-              </th>
-              <th class="e-position">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .POSITION
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .rawCode
                 }}
               </th>
-              <th class="e-department">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .DEPARTMENT
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .phoneNumber
                 }}
               </th>
-              <th class="e-bank-account">
+              <th>
                 {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_ACCOUNT
-                }}
-              </th>
-              <th class="e-bank-name">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_NAME
-                }}
-              </th>
-              <th
-                :title="
-                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.BANK_BRANCH
-                "
-                class="e-bank-branch"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_BRANCH
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
+                    .branch
                 }}
               </th>
               <th
@@ -178,89 +226,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-show="dataTable.TotalRecord"
-              v-for="item in dataTable.Data"
-              :key="item.EmployeeId"
-              @dblclick="onUpdateFormDetail(item)"
-              :class="{ checkedRow: checkRow().includes(item.EmployeeId) }"
-            >
-              <td class="employee-border-left" @dblclick.stop>
-                <input
-                  class="checkbox-select-row"
-                  type="checkbox"
-                  @click="checkRow(item.EmployeeId)"
-                  :checked="checkRow().includes(item.EmployeeId)"
-                />
-              </td>
-              <td class="e-id" :title="item.EmployeeCode">
-                {{ item.EmployeeCode }}
-              </td>
-              <td class="e-fullname" :title="item.FullName">
-                {{ item.FullName }}
-              </td>
-              <td class="e-gender-table">
-                {{
-                  item.Gender === 0
-                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Male
-                    : item.Gender === 1
-                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Female
-                    : this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Other
-                }}
-              </td>
-              <td class="text-center e-birthday">
-                {{ formatDate(item.DateOfBirth) }}
-              </td>
-              <td class="e-identity-number" :title="item.IdentityNumber">
-                {{ item.IdentityNumber }}
-              </td>
-              <td class="e-position" :title="item.PositionName">
-                {{ item.PositionName }}
-              </td>
-              <td class="e-department" :title="item.DepartmentName">
-                {{ item.DepartmentName }}
-              </td>
-              <td class="e-bank-account" :title="item.BankAccount">
-                {{ item.BankAccount }}
-              </td>
-              <td class="e-bank-name" :title="item.BankName">
-                {{ item.BankName }}
-              </td>
-              <td class="e-bank-branch" :title="item.BankBranch">
-                {{ item.BankBranch }}
-              </td>
-              <td
-                class="text-center entity-border-right e-birthday function-table"
-                @dblclick.stop
-              >
-                <span @click="onUpdateFormDetail(item)">
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                  }}
-                </span>
-                <div
-                  class="function-table-content"
-                  @click="onOpenFeatureMenu($event, item)"
-                >
-                  <div class="function-icon-table function-icon-select"></div>
-                </div>
-              </td>
-            </tr>
+            <tr></tr>
           </tbody>
         </table>
       </form>
       <teleport to="#app">
-        <div
-          class="menu-function-select"
-          v-show="isShowColFeature"
-          :style="{
-            left: `${this.positionFeatureMenu.left}px`,
-            top: `${this.positionFeatureMenu.top}px`,
-          }"
-        >
+        <div class="menu-function-select" v-show="isShowColFeature">
           <div @click="onDupliCateEmployee">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
@@ -276,23 +247,21 @@
         </div>
       </teleport>
       <img
-        v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
+        v-show="false"
         class="loading"
         :class="{ 'loadding-form-detail': isShowFormDetail }"
-        src="../../assets/img/loading.svg"
+        src="../../../assets/img/loading.svg"
         alt="loading"
       />
-      <div
-        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
-        class="no-data"
-      >
+      <div v-if="false" class="no-data">
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
-    <div id="pagination" class="pagination">
+    <div class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
+        <!-- <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b> -->
+        <b>0</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
@@ -375,19 +344,19 @@
         </div>
       </div>
     </div>
+    <!-- provider detail -->
+    <ProviderDetail
+      v-if="isShowFormDetail"
+      @closeFormDetail="onCloseFormDetail"
+      :employeeSelected="employeeUpdate"
+      :statusFormMode="isStatusFormMode"
+    ></ProviderDetail>
     <div
       v-if="isOverlay"
       id="container-overlay"
       class="container-overlay"
       @closeFormDetail="onCloseFormDetail"
     ></div>
-    <!-- employee detail -->
-    <EmployeeDetail
-      v-if="isShowFormDetail"
-      @closeFormDetail="onCloseFormDetail"
-      :employeeSelected="employeeUpdate"
-      :statusFormMode="isStatusFormMode"
-    ></EmployeeDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
@@ -404,20 +373,19 @@
       v-if="isShowToastMessage"
       :contentToast="contentToastSuccess"
     ></misa-toast-success>
-    <a href="" ref="ExportListEmployee" v-show="false"></a>
   </div>
 </template>
 
 <script>
-import EmployeeDetail from "./EmployeeDetail.vue";
+import ProviderDetail from "@/views/provider/provider_detail/ProviderDetail.vue";
 import helperCommon from "@/scripts/helper.js";
 import employeeService from "@/services/employee.js";
 
 export default {
-  name: "EmployeeList",
+  name: "ProviderList",
 
   components: {
-    EmployeeDetail,
+    ProviderDetail,
   },
 
   created() {
@@ -902,20 +870,20 @@ export default {
      * created by : BNTIEN
      * created date: 30-06-2023 21:53:38
      */
-    handleClickOutsideDeleteMulti(event) {
-      if (!this.$refs.DeleteMulti.contains(event.target)) {
-        this.isShowMenuExcuteBatch = false;
-      }
-    },
+    // handleClickOutsideDeleteMulti(event) {
+    //   if (!this.$refs.DeleteMulti.contains(event.target)) {
+    //     this.isShowMenuExcuteBatch = false;
+    //   }
+    // },
 
     /**
      * Mô tả: xử lí sự kiện click ngoài menu feature
      * created by : BNTIEN
      * created date: 03-07-2023 00:03:06
      */
-    handleClickOutsideFeature() {
-      this.isShowColFeature = false;
-    },
+    // handleClickOutsideFeature() {
+    //   this.isShowColFeature = false;
+    // },
 
     /**
      * Mô tả: Hàm ẩn hiện menu thực hiện hàng loạt
@@ -1038,33 +1006,8 @@ export default {
 };
 </script>
 
-<style scoped>
-@import url(@/css/maincontent.css);
-@import url(@/css/pagingemployee.css);
-
-.rotate-function-icon {
-  transform: rotate(180deg);
-}
-
-.active-page {
-  border: 1px solid var(--color-border-default);
-}
-
-.active-record {
-  border: 1px solid var(--color-btn-default);
-}
-
-input[type="checkbox"] {
-  accent-color: #2ca01c;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-
-.active-record-item {
-  background-color: var(--color-btn-default);
-  color: white;
-}
+<style>
+@import url(./ProviderList.css);
 
 .no-disable {
   border: 1px solid black;
@@ -1075,22 +1018,10 @@ input[type="checkbox"] {
   cursor: pointer;
 }
 
-.checkedRow {
-  background-color: #e7f5ec;
-}
-
-.checkedRow td:first-child,
-.checkedRow td:last-child {
-  background-color: #e7f5ec;
-}
-
-.loadding-form-detail {
-  left: 50%;
-}
-
-.no-data {
-  position: fixed;
-  top: 50%;
-  left: 50%;
+input[type="checkbox"] {
+  accent-color: #2ca01c;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 </style>

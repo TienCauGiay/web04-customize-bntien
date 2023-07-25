@@ -1,5 +1,6 @@
 import COMPONENT_CATEGORY from '@/scripts/resource_component/rc_category.js'
 import SYSTEM_ACCOUNT from '@/scripts/resource_component/rc_account.js'
+import PROVIDER from '@/scripts/resource_component/rc_provider.js'
 
 const MISAResource = {
     'vn-VI':{
@@ -178,7 +179,8 @@ const MISAResource = {
             UNDO:"",
         },
         CATEGORY: COMPONENT_CATEGORY,
-        ACCOUNT: SYSTEM_ACCOUNT
+        ACCOUNT: SYSTEM_ACCOUNT,
+        PROVIDER: PROVIDER,
     },
     'en-EN':{
         TEXT_CONTENT:{

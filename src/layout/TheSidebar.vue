@@ -10,130 +10,130 @@
     <div class="menu">
       <ul class="nav">
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb overview-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .OVERVIEW
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb cash-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .CASH
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb deposits-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .DEPOSITS
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb bag-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .BAG
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb cart-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .CART
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb bill-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .BILL
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb warehouse-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .WAREHOUSE
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb tool-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .TOOL
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb asset-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .ASSET
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb tax-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .TAX
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb price-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .PRICE
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb synthetic-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .SYNTHETIC
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb budget-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .BUDGET
             }}</span>
-          </router-link>
+          </a>
         </li>
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb report-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .REPORT
             }}</span>
-          </router-link>
+          </a>
         </li>
         <!-- <li class="menu-item">
           <router-link to="/" class="menu-item-a">
@@ -144,7 +144,7 @@
         <div style="border-top: 1px solid white"></div>
         <li class="menu-item">
           <router-link to="/category" class="menu-item-a">
-            <i class="icon-tb icon-category"></i>
+            <i class="icon-tb category-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .CATEGORY
@@ -152,22 +152,22 @@
           </router-link>
         </li>
         <!-- <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
+          <a class="menu-item-a">
             <i class="icon-tb setting-icon" style="scale: 0.85 0.85"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .INITIAL_BLANCE
             }}</span>
-          </router-link>
+          </a>
         </li> -->
         <li class="menu-item">
-          <router-link to="/" class="menu-item-a">
-            <i class="icon-tb icon-knowledge"></i>
+          <a class="menu-item-a">
+            <i class="icon-tb knowledge-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .ANTS
             }}</span>
-          </router-link>
+          </a>
         </li>
       </ul>
     </div>
