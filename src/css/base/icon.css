@@ -17,7 +17,7 @@
 }
 
 .icon-l:focus, .icon-tb:focus, .icon-n:focus{
-    outline: 1px solid black;
+    outline: 2px solid var(--color-border-default);
 }
 
 .toggle-icon {

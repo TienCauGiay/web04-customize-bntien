@@ -23,20 +23,35 @@
           <b>Thông tin nhà cung cấp</b>
         </p>
         <div class="employee-check">
-          <input type="radio" name="typeObject" />
+          <input
+            type="radio"
+            name="typeObject"
+            :checked="!isPersonal"
+            @click="this.isPersonal = !this.isPersonal"
+          />
           <span>Tổ chức</span>
         </div>
         <div class="employee-check">
-          <input type="radio" name="typeObject" />
+          <input
+            type="radio"
+            name="typeObject"
+            :checked="isPersonal"
+            @click="this.isPersonal = !this.isPersonal"
+          />
           <span>Cá nhân</span>
         </div>
         <div class="employee-check" id="provider-title-input-checkbox">
-          <input type="checkbox" />
+          <input
+            type="checkbox"
+            :checked="isCustomer"
+            @click="this.isCustomer = !this.isCustomer"
+          />
           <span>Là khách hàng</span>
         </div>
       </div>
       <div class="form-detail-content">
-        <div class="half-content">
+        <!-- Là tổ chức -->
+        <div class="half-content" v-if="!isPersonal">
           <div class="col-md-n">
             <label> Mã số thuế </label>
             <div class="container-input">
@@ -55,7 +70,7 @@
             </div>
           </div>
         </div>
-        <div class="half-content">
+        <div class="half-content" v-if="!isPersonal">
           <div class="col-md-n">
             <label>Điện thoại</label>
             <div class="container-input">
@@ -71,7 +86,7 @@
             </div>
           </div>
         </div>
-        <div class="half-content">
+        <div class="half-content" v-if="!isPersonal">
           <div class="col-md-l">
             <label>
               Tên nhà cung cấp
@@ -83,7 +98,7 @@
             </div>
           </div>
         </div>
-        <div class="half-content">
+        <div class="half-content" v-if="!isPersonal">
           <div class="col-md-l">
             <label> Nhóm nhà cung cấp </label>
             <misa-combobox-multiple
@@ -91,7 +106,7 @@
             ></misa-combobox-multiple>
           </div>
         </div>
-        <div class="half-content-2">
+        <div class="half-content-2" v-if="!isPersonal">
           <div class="col-md-l">
             <label>Địa chỉ</label>
             <misa-input-textarea
@@ -99,12 +114,73 @@
             ></misa-input-textarea>
           </div>
         </div>
-        <div class="half-content">
+        <div class="half-content" v-if="!isPersonal">
           <div class="col-md-l">
             <label>Nhân viên mua hàng</label>
             <misa-combobox-multiple
               :isShowIconPlus="true"
             ></misa-combobox-multiple>
+          </div>
+        </div>
+        <!-- Là cá nhân -->
+        <div class="half-content" v-if="isPersonal">
+          <div class="col-md-tb">
+            <label>
+              Mã nhà cung cấp
+              <span class="s-require">*</span>
+            </label>
+            <div class="container-input">
+              <misa-input></misa-input>
+              <div class="misa-tooltip" v-if="false">abc</div>
+            </div>
+          </div>
+          <div class="col-md-n">
+            <label> Mã số thuế </label>
+            <div class="container-input">
+              <misa-input></misa-input>
+              <div class="misa-tooltip" v-if="false">abc</div>
+            </div>
+          </div>
+        </div>
+        <div class="half-content" v-if="isPersonal">
+          <div class="col-md-l">
+            <label>Nhóm nhà cung cấp</label>
+            <misa-combobox-multiple></misa-combobox-multiple>
+          </div>
+        </div>
+        <div class="half-content" v-if="isPersonal">
+          <div class="col-md-n" style="position: relative">
+            <label>Tên nhà cung cấp <span class="s-require">*</span> </label>
+            <misa-combobox
+              :isBorderRedCBB="isBorderRed"
+              :entityCBB="account"
+              :errorsCBB="errors"
+              :listEntitySearchCBB="listNatureSearch"
+              :propName="'Nature'"
+              :propId="'NatureId'"
+              :placeholderInputCBB="'Xưng hô'"
+            ></misa-combobox>
+          </div>
+          <div class="col-md-tb">
+            <label class="label-hide-text">a</label>
+            <div class="container-input">
+              <misa-input :placeholder="'Họ và tên'"></misa-input>
+              <div class="misa-tooltip" v-if="false">abc</div>
+            </div>
+          </div>
+        </div>
+        <div class="half-content" v-if="isPersonal">
+          <div class="col-md-l">
+            <label>Nhân viên mua hàng</label>
+            <misa-combobox-multiple></misa-combobox-multiple>
+          </div>
+        </div>
+        <div class="half-content-2" v-if="isPersonal">
+          <div class="col-md-l">
+            <label>Địa chỉ</label>
+            <misa-input-textarea
+              :placeholder="'VD: Số 82 Duy Tân, Dịch Vọng'"
+            ></misa-input-textarea>
           </div>
         </div>
         <div class="full-content-2">
@@ -145,7 +221,11 @@
               Ghi chú
             </button>
           </div>
-          <div class="content-select-layout" v-if="selectLayout.infoContact">
+          <!-- Là Tổ chức nhưng không là khách hàng -->
+          <div
+            class="content-select-layout"
+            v-if="!isPersonal && selectLayout.infoContact && !isCustomer"
+          >
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-n" style="position: relative">
@@ -187,16 +267,138 @@
               </div>
             </div>
           </div>
+          <!-- Là Tổ chức và là khách hàng -->
+          <div
+            class="content-select-layout"
+            v-if="!isPersonal && selectLayout.infoContact && isCustomer"
+          >
+            <div class="content-select-layout-row">
+              <div class="half-content">
+                <div class="col-md-n" style="position: relative">
+                  <label>Người liên hệ</label>
+                  <misa-combobox
+                    :isBorderRedCBB="isBorderRed"
+                    :entityCBB="account"
+                    :errorsCBB="errors"
+                    :listEntitySearchCBB="listNatureSearch"
+                    :propName="'Nature'"
+                    :propId="'NatureId'"
+                    :placeholderInputCBB="'Xưng hô'"
+                  ></misa-combobox>
+                </div>
+                <div class="col-md-tb">
+                  <label class="label-hide-text">hide</label>
+                  <misa-input :placeholder="'Họ và tên'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-l">
+                  <label>Người nhận hóa đơn điện tử</label>
+                  <misa-input :placeholder="'Họ và tên'"></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row-2">
+              <div class="half-content">
+                <div class="col-md-l">
+                  <misa-input :placeholder="'Email'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-l">
+                  <misa-input
+                    :placeholder="'Email (Ngăn cách nhiều Email bởi dấu chấm phẩy)'"
+                  ></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row-2">
+              <div class="half-content">
+                <div class="col-md-tb">
+                  <misa-input :placeholder="'Số điện thoại'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-tb">
+                  <misa-input :placeholder="'Số điện thoại'"></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row-2">
+              <div class="half-content">
+                <div class="col-md-l">
+                  <label>Đại diện theo PL</label>
+                  <misa-input :placeholder="'Đại diện theo PL'"></misa-input>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Là cá nhân nhưng không là khách hàng -->
+          <div
+            class="content-select-layout"
+            v-if="isPersonal && selectLayout.infoContact"
+          >
+            <div class="content-select-layout-row">
+              <div class="half-content">
+                <div class="col-md-l">
+                  <label>Thông tin liên hệ</label>
+                  <misa-input :placeholder="'Email'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-half">
+                  <label>Thông tin CMND/Thẻ căn cước</label>
+                  <misa-input
+                    :placeholder="'Số CMND/Thẻ căn cước'"
+                  ></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row-2">
+              <div class="half-content">
+                <div class="col-md-half">
+                  <misa-input :placeholder="'Điện thoại di động'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-half">
+                  <misa-input type="date"></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row-2">
+              <div class="half-content">
+                <div class="col-md-half">
+                  <misa-input :placeholder="'Điện thoại cố định'"></misa-input>
+                </div>
+              </div>
+              <div class="half-content">
+                <div class="col-md-l">
+                  <misa-input :placeholder="'Nơi cấp'"></misa-input>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row">
+              <div class="half-content">
+                <div class="col-md-l">
+                  <label> Đại diện theo PL </label>
+                  <misa-input :placeholder="'Đại diện theo PL'"></misa-input>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Không là khách hàng -->
           <div
             class="content-select-layout"
             id="content-select-layout"
-            v-if="selectLayout.termPayment"
+            v-if="selectLayout.termPayment && !isCustomer"
           >
             <div class="content-select-layout-row">
               <div class="full-content">
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
-                    <label>Người liên hệ</label>
+                    <label>Điều khoản thanh toán</label>
                     <misa-combobox-multiple
                       :isShowIconPlus="true"
                     ></misa-combobox-multiple>
@@ -221,9 +423,56 @@
                     id="multiple-cbb-no-icon"
                   >
                     <label>Tài khoản công nợ phải trả</label>
+                    <misa-form-combobox></misa-form-combobox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Là khách hàng -->
+          <div
+            class="content-select-layout"
+            id="content-select-layout"
+            v-if="selectLayout.termPayment && isCustomer"
+          >
+            <div class="content-select-layout-row">
+              <div class="full-content">
+                <div class="full-content-quarter">
+                  <div class="col-md-quater" style="position: relative">
+                    <label>Điều khoản thanh toán</label>
                     <misa-combobox-multiple
-                      :isShowIconPlus="false"
+                      :isShowIconPlus="true"
                     ></misa-combobox-multiple>
+                  </div>
+                  <div class="col-md-quater" style="position: relative">
+                    <label>Số ngày được nợ</label>
+                    <misa-input></misa-input>
+                  </div>
+                  <div class="col-md-quater" style="position: relative">
+                    <label>Số nợ tối đa</label>
+                    <misa-input></misa-input>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content-select-layout-row">
+              <div class="full-content">
+                <div class="full-content-quarter">
+                  <div
+                    class="col-md-quater"
+                    style="position: relative"
+                    id="multiple-cbb-no-icon"
+                  >
+                    <label>Tài khoản công nợ phải thu</label>
+                    <misa-form-combobox></misa-form-combobox>
+                  </div>
+                  <div
+                    class="col-md-quater"
+                    style="position: relative"
+                    id="multiple-cbb-no-icon"
+                  >
+                    <label>Tài khoản công nợ phải trả</label>
+                    <misa-form-combobox></misa-form-combobox>
                   </div>
                 </div>
               </div>
@@ -272,7 +521,7 @@
           >
             <div class="content-select-layout-half">
               <div class="half-content">
-                <div class="col-md-l" style="position: relative">
+                <div class="col-md-l cbb-has-label" style="position: relative">
                   <label>Vị trí địa lý</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
@@ -286,7 +535,7 @@
                 </div>
               </div>
               <div class="half-content">
-                <div class="col-md-l" style="position: relative">
+                <div class="col-md-l cbb-has-label" style="position: relative">
                   <label class="label-hide-text">hide</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
@@ -300,26 +549,30 @@
                 </div>
               </div>
               <div class="half-content">
-                <misa-combobox
-                  :isBorderRedCBB="isBorderRed"
-                  :entityCBB="account"
-                  :errorsCBB="errors"
-                  :listEntitySearchCBB="listNatureSearch"
-                  :propName="'Nature'"
-                  :propId="'NatureId'"
-                  :placeholderInputCBB="'Quận/Huyện'"
-                ></misa-combobox>
+                <div class="col-md-l cbb-no-label" style="position: relative">
+                  <misa-combobox
+                    :isBorderRedCBB="isBorderRed"
+                    :entityCBB="account"
+                    :errorsCBB="errors"
+                    :listEntitySearchCBB="listNatureSearch"
+                    :propName="'Nature'"
+                    :propId="'NatureId'"
+                    :placeholderInputCBB="'Quận/Huyện'"
+                  ></misa-combobox>
+                </div>
               </div>
               <div class="half-content">
-                <misa-combobox
-                  :isBorderRedCBB="isBorderRed"
-                  :entityCBB="account"
-                  :errorsCBB="errors"
-                  :listEntitySearchCBB="listNatureSearch"
-                  :propName="'Nature'"
-                  :propId="'NatureId'"
-                  :placeholderInputCBB="'Xã/Phường'"
-                ></misa-combobox>
+                <div class="col-md-l cbb-no-label" style="position: relative">
+                  <misa-combobox
+                    :isBorderRedCBB="isBorderRed"
+                    :entityCBB="account"
+                    :errorsCBB="errors"
+                    :listEntitySearchCBB="listNatureSearch"
+                    :propName="'Nature'"
+                    :propId="'NatureId'"
+                    :placeholderInputCBB="'Xã/Phường'"
+                  ></misa-combobox>
+                </div>
               </div>
             </div>
             <div class="content-select-layout-half">
@@ -337,7 +590,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  <tr class="table-input-has-data">
                     <td class="table-input-col-4" colspan="4">
                       <misa-input></misa-input>
                     </td>
@@ -458,12 +711,16 @@ export default {
       //  --------------------------------------------
       // Biến quy định layout nào đang được chọn
       selectLayout: {
-        infoContact: false,
+        infoContact: true,
         termPayment: false,
         bankAccount: false,
-        addressOther: true,
+        addressOther: false,
         note: false,
       },
+      // Biến quy định có là khách hàng hay không
+      isCustomer: false,
+      // Biến quy định là tổ chức hay cá nhân
+      isPersonal: false,
     };
   },
 
@@ -492,11 +749,23 @@ export default {
 @import url(./ProviderDetail.css);
 
 input {
-  height: 26px !important;
+  height: 26px;
 }
 
 .active-layout {
   background-color: rgb(159, 207, 225);
   height: 30px;
+}
+
+#detail-info-provider input[type="checkbox"] {
+  height: 16px;
+}
+
+#detail-info-provider input[type="radio"] {
+  height: 20px;
+}
+
+#detail-info-provider .table-input-has-data td:first-child {
+  border-bottom: 1px solid var(--color-border-default);
 }
 </style>

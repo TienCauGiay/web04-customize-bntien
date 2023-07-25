@@ -19,11 +19,13 @@ label{
     font-size: 14px;
     color: #9E9E9E;
     font-weight: 400;
+    font-style: italic;
 }
 
-.textfield:hover{
+/* .textfield:hover{
 	background-color: var(--color-border-default);
-}
+} */
+
 .textfield:focus{
 	border: 1px solid var(--color-btn-default);
   	outline: none;

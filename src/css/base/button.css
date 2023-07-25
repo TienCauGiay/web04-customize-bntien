@@ -15,8 +15,13 @@
     background-color: var(--color-btn-default-hover);
 }
 
+.btn-default:active{
+    outline: 3px solid var(--color-border-default);
+}
+
 .btn-default:focus{
-    background-color: var(--color-btn-pressed);
+    /* background-color: var(--color-btn-pressed); */
+    outline: 3px solid var(--color-border-default);
 }
 
 .text{
@@ -42,8 +47,13 @@
     background-color: #F5F5F5;
 }
 
+.btn-extra:active{
+    outline: 3px solid var(--color-border-default);
+}
+
 .btn-extra:focus{
-    background-color: #EEEEEE;
+    /* background-color: #EEEEEE; */
+    outline: 3px solid var(--color-border-default);
 }
 /* css cho text button phụ */
 .text-extra{

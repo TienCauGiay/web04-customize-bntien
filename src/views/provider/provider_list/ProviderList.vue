@@ -1024,4 +1024,8 @@ input[type="checkbox"] {
   height: 16px;
   cursor: pointer;
 }
+
+input[type="checkbox"]:focus {
+  outline: 2px solid var(--color-border-default);
+}
 </style>

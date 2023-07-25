@@ -220,7 +220,7 @@
         </div>
         <div class="full-content">
           <div class="employee-check">
-            <input type="checkbox" style="height: 16px" />
+            <input type="checkbox" />
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
                 .foreignCurrencyAccounting
@@ -1122,5 +1122,9 @@ export default {
 
 input:not(.form-cbb .e-textfield-cbb input) {
   height: 26px;
+}
+
+#detail-add-system-account input[type="checkbox"] {
+  height: 16px;
 }
 </style>
