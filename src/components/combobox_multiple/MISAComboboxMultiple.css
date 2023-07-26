@@ -85,12 +85,13 @@
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
-  }
+}
   
-  .col-2-cbb-menu-item {
+.col-2-cbb-menu-item {
     flex: 0 0 200px; 
     min-width: 200px; 
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
-  }
+}
+

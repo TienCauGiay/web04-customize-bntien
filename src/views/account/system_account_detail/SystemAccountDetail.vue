@@ -219,7 +219,7 @@
           </div>
         </div>
         <div class="full-content">
-          <div class="employee-check">
+          <div class="entity-check">
             <input type="checkbox" />
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
@@ -242,17 +242,26 @@
           <div class="content-track-detail">
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
-                  <input type="checkbox" />
+                <div class="entity-check">
+                  <input
+                    type="checkbox"
+                    :checked="account.UserObject > 0 && account.UserObject"
+                    @click="handleToggleCheckbox('UserObject')"
+                  />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.obj
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option
+                  :listData="listUserObject"
+                  :propCode="'UserObjectCode'"
+                  :propName="'UserObjectName'"
+                  :isDisabledMenu="!account.UserObject"
+                ></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
@@ -263,90 +272,90 @@
             </div>
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.objTHCP
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.construction
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.order
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.contractSale
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.contractPurchase
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.itemCP
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.unit
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
-                <div class="employee-check">
+                <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{
                     this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                       .textProperty.rawCode
                   }}</span>
                 </div>
-                <misa-select-option></misa-select-option>
+                <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
             </div>
           </div>
@@ -434,6 +443,10 @@ export default {
     this.$_MISAEmitter.on("onSelectedEntityCBB", (data) => {
       this.onSelectedDepartment(data);
     });
+
+    this.$_MISAEmitter.on("onSelectedSelectOption", (data, prop) => {
+      this.account[prop] = data;
+    });
   },
 
   mounted() {
@@ -465,6 +478,12 @@ export default {
         { Id: 2, Nature: "Dư có" },
         { Id: 3, Nature: "Lưỡng tính" },
         { Id: 4, Nature: "Không có số dư" },
+      ],
+      // Khai báo danh sách đối tượng người dùng
+      listUserObject: [
+        { UserObjectCode: 1, UserObjectName: "Khách hàng" },
+        { UserObjectCode: 2, UserObjectName: "Nhà cung cấp" },
+        { UserObjectCode: 3, UserObjectName: "Nhân viên" },
       ],
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
       isShowDialogDataNotNull: false,
@@ -1096,6 +1115,25 @@ export default {
         this.btnSaveAndAdd();
       }
     },
+
+    /**
+     * Mô tả: Xử lí hàm toggle checkbox
+     * created by : BNTIEN
+     * created date: 26-07-2023 13:45:49
+     */
+    handleToggleCheckbox(prop) {
+      try {
+        if (!this.account[prop]) {
+          this.account[prop] = 1;
+          this.$_MISAEmitter.emit("selectedDefaultItem");
+        } else {
+          this.account[prop] = null;
+          this.$_MISAEmitter.emit("unSelectedDefaultItem");
+        }
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1105,6 +1143,7 @@ export default {
     this.$_MISAEmitter.off("closeDialogCodeExist");
     this.$_MISAEmitter.off("closeDialogDataError");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
+    this.$_MISAEmitter.off("onSelectedSelectOption");
   },
 };
 </script>

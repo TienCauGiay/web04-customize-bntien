@@ -24,7 +24,7 @@
         <p>
           <b>{{ this.titleFormMode }}</b>
         </p>
-        <div class="employee-check">
+        <div class="entity-check">
           <input
             type="checkbox"
             :checked="employee.IsCustomer === this.$_MISAEnum.CUSTOMER"
@@ -35,7 +35,7 @@
             this.$_MISAResource[this.$_LANG_CODE].FORM.IS_CUSTOMER
           }}</span>
         </div>
-        <div class="employee-check">
+        <div class="entity-check">
           <input
             type="checkbox"
             :checked="employee.IsProvider === this.$_MISAEnum.PROVIDER"

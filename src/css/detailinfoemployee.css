@@ -68,7 +68,7 @@
     font-weight: 500;
 }
 
-.employee-check{
+.entity-check{
     display: flex;
     align-items: center;
     column-gap: 8px;
@@ -84,7 +84,7 @@ input[type="date"]:hover {
   cursor: pointer;
 }
 
-.employee-check input{
+.entity-check input{
     width: 16px;
     height: 16px;
 }

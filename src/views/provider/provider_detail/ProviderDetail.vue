@@ -12,7 +12,6 @@
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
-        id="employee-exit"
         @keydown.tab.prevent="resetTab($event.target.value)"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXIST"
       ></div>
@@ -22,7 +21,7 @@
         <p>
           <b>Thông tin nhà cung cấp</b>
         </p>
-        <div class="employee-check">
+        <div class="entity-check">
           <input
             type="radio"
             name="typeObject"
@@ -31,7 +30,7 @@
           />
           <span>Tổ chức</span>
         </div>
-        <div class="employee-check">
+        <div class="entity-check">
           <input
             type="radio"
             name="typeObject"
@@ -40,7 +39,7 @@
           />
           <span>Cá nhân</span>
         </div>
-        <div class="employee-check" id="provider-title-input-checkbox">
+        <div class="entity-check" id="provider-title-input-checkbox">
           <input
             type="checkbox"
             :checked="isCustomer"
@@ -101,9 +100,7 @@
         <div class="half-content" v-if="!isPersonal">
           <div class="col-md-l">
             <label> Nhóm nhà cung cấp </label>
-            <misa-combobox-multiple
-              :isShowIconPlus="true"
-            ></misa-combobox-multiple>
+            <misa-combobox-multiple></misa-combobox-multiple>
           </div>
         </div>
         <div class="half-content-2" v-if="!isPersonal">
@@ -117,9 +114,7 @@
         <div class="half-content" v-if="!isPersonal">
           <div class="col-md-l">
             <label>Nhân viên mua hàng</label>
-            <misa-combobox-multiple
-              :isShowIconPlus="true"
-            ></misa-combobox-multiple>
+            <misa-combobox-multiple></misa-combobox-multiple>
           </div>
         </div>
         <!-- Là cá nhân -->
@@ -399,9 +394,7 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-multiple
-                      :isShowIconPlus="true"
-                    ></misa-combobox-multiple>
+                    <misa-combobox-multiple></misa-combobox-multiple>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
@@ -440,9 +433,7 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-multiple
-                      :isShowIconPlus="true"
-                    ></misa-combobox-multiple>
+                    <misa-combobox-multiple></misa-combobox-multiple>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
