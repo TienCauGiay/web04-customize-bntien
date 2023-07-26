@@ -7,6 +7,7 @@ import MISADialogConfirmDelete from './components/dialog/MISADialogConfirmDelete
 import MISADialogDataChange from './components/dialog/MISADialogDataChange.vue';
 import MISADialogDataExist from './components/dialog/MISADialogDataExist.vue';
 import MISADialogDataNotNull from './components/dialog/MISADialogDataNotNull.vue';
+import MISADialogHandleTask from './components/dialog/MISADialogHandleTask.vue';
 import MISAButtonDefault from './components/button/MISAButtonDefault.vue';
 import MISAButtonExtra from './components/button/MISAButtonExtra.vue';
 import MISAButtonIcon from './components/button/MISAButtonIcon.vue';
@@ -27,6 +28,7 @@ app.component("misa-dialog-confirm-delete", MISADialogConfirmDelete);
 app.component("misa-dialog-data-change", MISADialogDataChange);
 app.component("misa-dialog-data-exist", MISADialogDataExist);
 app.component("misa-dialog-data-not-null", MISADialogDataNotNull);
+app.component("misa-dialog-handle-task", MISADialogHandleTask);
 app.component("misa-button-default", MISAButtonDefault);
 app.component("misa-button-extra", MISAButtonExtra);
 app.component("misa-button-icon", MISAButtonIcon);

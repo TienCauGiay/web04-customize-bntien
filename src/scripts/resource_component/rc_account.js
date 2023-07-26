@@ -15,6 +15,7 @@ const SYSTEM_ACCOUNT = {
         feature: "Chức năng"
     },
     valueState:{
+        useAccount: "Sử dụng",
         usingAccount: "Đang sử dụng",
         stopUsingAccount: "Ngưng sử dụng"
     } ,

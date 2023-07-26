@@ -201,9 +201,7 @@
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT
             }}
           </div>
-          <div @click="onStopUsing">
-            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING }}
-          </div>
+          <div @click="onToggleUsing">{{ this.textStateAccount }}</div>
         </div>
       </teleport>
       <img
@@ -336,6 +334,7 @@
       v-if="isShowToastMessage"
       :contentToast="contentToastSuccess"
     ></misa-toast-success>
+    <misa-dialog-handle-task v-if="isShowToggleState"></misa-dialog-handle-task>
   </div>
 </template>
 
@@ -381,6 +380,15 @@ export default {
     });
     this.$_MISAEmitter.on("closeToastMessage", () => {
       this.isShowToastMessage = false;
+    });
+
+    ////
+    this.$_MISAEmitter.on("confirmYesTaskEntity", async () => {
+      await this.confirmUpdateStateChildren();
+    });
+
+    this.$_MISAEmitter.on("confirmNoTaskEntity", async () => {
+      await this.confirmNoUpdateStateChildren();
     });
   },
 
@@ -444,6 +452,10 @@ export default {
       isShowDialogDataError: false,
       // Danh sách dữ liệu lỗi của dialog dataError
       dataError: [],
+      // Khai báo biến lưu text là đang sử dụng hay ngưng sử dụng
+      textStateAccount: "",
+      // Biến quy định trạng thái hiển thị dialog xác nhận thay đổi
+      isShowToggleState: false,
     };
   },
 
@@ -576,6 +588,12 @@ export default {
       try {
         // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
+        this.textStateAccount =
+          account.State == this.$_MISAEnum.BOOL.TRUE
+            ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
+                .stopUsingAccount
+            : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
+                .useAccount;
         this.selectedAccount = account;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
@@ -902,12 +920,78 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm ngưng sử dụng 1 tài khoản
+     * Mô tả: Cập nhật trạng thái các tài khoản
+     * created by : BNTIEN
+     * created date: 26-07-2023 20:03:22
+     */
+    async updateStateAccount(account, state, isUpdateChildren) {
+      try {
+        this.isShowLoadding = true;
+        const res = await accountService.updateState(
+          account,
+          state,
+          isUpdateChildren
+        );
+        this.isShowLoadding = false;
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          this.$_MISAEmitter.emit(
+            "onShowToastMessageUpdate",
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
+          );
+          await this.getListAccount();
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm thay đổi trạng thái 1 tài khoản
      * created by : BNTIEN
      * created date: 22-07-2023 14:15:53
      */
-    onStopUsing() {
-      // do something
+    async onToggleUsing() {
+      try {
+        // Nếu tài khoản đang ở trạng thái sử dụng
+        if (this.selectedAccount.State == this.$_MISAEnum.BOOL.TRUE) {
+          this.updateStateAccount(this.selectedAccount, 0, 1);
+        } else {
+          this.isShowToggleState = true;
+          this.isOverlay = true;
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí hàm cập nhật cả trạng thái các con
+     * created by : BNTIEN
+     * created date: 26-07-2023 17:09:01
+     */
+    async confirmUpdateStateChildren() {
+      try {
+        this.updateStateAccount(this.selectedAccount, 1, 1);
+        this.isShowToggleState = false;
+        this.isOverlay = false;
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí hàm không cập nhật trạng thái các con
+     * created by : BNTIEN
+     * created date: 26-07-2023 17:09:01
+     */
+    async confirmNoUpdateStateChildren() {
+      try {
+        this.updateStateAccount(this.selectedAccount, 1, 0);
+        this.isShowToggleState = false;
+        this.isOverlay = false;
+      } catch {
+        return;
+      }
     },
     /**
      * Mô tả: Hàm tìm kiếm tài khoản theo mã hoặc tên

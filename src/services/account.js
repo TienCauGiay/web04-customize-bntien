@@ -31,6 +31,21 @@ class AccountService extends BaseServices {
         const response = await this.entity.get(`${this.getBaseUrl()}/children`, {params:{accountNumber: accountNumber}});
         return response;
     }
+
+    /**
+     * Mô tả: Hàm cập nhật trạng thái tài khoản
+     * created by : BNTIEN
+     * created date: 26-07-2023 16:17:00
+     */
+    async updateState(account, state, isUpdateChildren){
+        const response = await this.entity.put(`${this.getBaseUrl()}/state`, account, {
+            params:{
+                state: state, 
+                isUpdateChildren: isUpdateChildren
+            }
+        });
+        return response;
+    }
 }
 
 export default new AccountService();
