@@ -246,4 +246,9 @@ export default {
 .border-red {
   border: 1px solid red;
 }
+
+#detail-add-system-account .cbb-selected {
+  background-color: var(--color-btn-default);
+  color: #ffffff;
+}
 </style>

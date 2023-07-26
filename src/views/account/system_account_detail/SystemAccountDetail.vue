@@ -123,69 +123,23 @@
                   .accountGeneral
               }}
             </label>
-            <div class="form-cbb">
-              <div class="e-textfield-cbb">
-                <div class="container-input">
-                  <misa-input
-                    ref="ParentId"
-                    :value="searchGeneralAccount"
-                  ></misa-input>
-                  <div class="misa-tooltip" v-if="false">Test</div>
-                </div>
-              </div>
-              <div
-                class="e-icon-cbb"
-                @click="
-                  this.isShowMenuGeneralAccount = !this.isShowMenuGeneralAccount
-                "
-              >
-                <div class="function-icon"></div>
-              </div>
-              <div
-                class="form-cbb-menu"
-                v-if="isShowMenuGeneralAccount"
-                @scroll="handleScroll"
-              >
-                <div class="form-cbb-menu-title">
-                  <div>
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                        .textProperty.accountNumber
-                    }}
-                  </div>
-                  <div>
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                        .textProperty.accountName
-                    }}
-                  </div>
-                </div>
-                <template v-for="item in accounts" :key="item.AccountId">
-                  <div
-                    class="form-cbb-menu-item"
-                    @click="selectedGeneralAccount(item)"
-                    :class="{
-                      'text-bold': item.IsParent == this.$_MISAEnum.BOOL.TRUE,
-                    }"
-                  >
-                    <div :class="`form-cbb-menu-item-${item.Grade}`">
-                      {{ item.AccountNumber }}
-                    </div>
-                    <div>{{ item.AccountName }}</div>
-                  </div>
-                </template>
-                <!-- <div
-                  class="form-cbb-menu-item"
-                  style="justify-content: center; position: relative"
-                >
-                  <img
-                    class="form-cbb-loading"
-                    src="../../../assets/img/loading.svg"
-                    alt="loading"
-                  />
-                </div> -->
-              </div>
-            </div>
+            <misa-form-combobox
+              :isBorderRedFormCBB="isBorderRed"
+              :entityFormCBB="account"
+              :errorsFormCBB="errors"
+              :listEntitySearchFormCBB="accounts"
+              :propName="'AccountName'"
+              :valueInput="valueInputFormCBB"
+              :propCode="'AccountNumber'"
+              :textColFirst="
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountNumber
+              "
+              :textColSecond="
+                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
+                  .accountName
+              "
+            ></misa-form-combobox>
           </div>
           <div class="col-md-half" style="position: relative">
             <label>
@@ -257,6 +211,7 @@
                   :listData="listUserObject"
                   :propCode="'UserObjectCode'"
                   :propName="'UserObjectName'"
+                  :valueSelected="setValueInputSelectOption"
                   :isDisabledMenu="!account.UserObject"
                 ></misa-select-option>
               </div>
@@ -447,11 +402,16 @@ export default {
     this.$_MISAEmitter.on("onSelectedSelectOption", (data, prop) => {
       this.account[prop] = data;
     });
+
+    this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data) => {
+      this.selectedGeneralAccount(data);
+    });
   },
 
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
+    this.setValueInputFormCBB();
     // Đăng kí các sự kiện
     this.$refs.FormDetailSystemAccount.addEventListener(
       "keydown",
@@ -513,7 +473,25 @@ export default {
       pageNumber: 1,
       // Số lượng tài khoản được tải mỗi lần
       pageSize: 10,
+      // Giá trị của input trong form cbb
+      valueInputFormCBB: "",
     };
+  },
+
+  computed: {
+    setValueInputSelectOption() {
+      let res = "";
+
+      if (this.account.UserObject == 1) {
+        res = "Khách hàng";
+      } else if (this.account.UserObject == 2) {
+        res = "Nhà cung cấp";
+      } else if (this.account.UserObject == 3) {
+        res = "Nhân viên";
+      }
+
+      return res;
+    },
   },
 
   methods: {
@@ -530,7 +508,9 @@ export default {
         // Chuyển đổi chuỗi json thành đối tượng employee
         this.account = JSON.parse(res);
         // Tính chất mặc định là dư nợ
-        this.account.Nature = this.listNatureSearch[0].Nature;
+        if (!this.account.Nature) {
+          this.account.Nature = this.listNatureSearch[0].Nature;
+        }
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Gán title cho form mode thêm mới
           this.titleFormMode =
@@ -652,8 +632,7 @@ export default {
      */
     selectedGeneralAccount(item) {
       this.account.ParentId = item.AccountId;
-      this.searchGeneralAccount = item.AccountNumber;
-      this.isShowMenuGeneralAccount = false;
+      this.valueInputFormCBB = item.AccountNumber;
     },
 
     /**
@@ -1020,6 +999,10 @@ export default {
             this.$nextTick(() => {
               this.$_MISAEmitter.emit("focusInputCBB");
             });
+          } else if (prop === "ParentId") {
+            this.$nextTick(() => {
+              this.$_MISAEmitter.emit("focusInputFormCBB");
+            });
           } else {
             // đợi DOM cập nhật trước khi thực thi focus
             this.$nextTick(() => {
@@ -1134,6 +1117,22 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Hàm lấy accountNumber cha
+     * created by : BNTIEN
+     * created date: 26-07-2023 21:24:47
+     */
+    async setValueInputFormCBB() {
+      if (this.account.ParentId) {
+        try {
+          const parent = await accountService.getById(this.account.ParentId);
+          this.valueInputFormCBB = parent.data.AccountNumber;
+        } catch {
+          return;
+        }
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1144,6 +1143,7 @@ export default {
     this.$_MISAEmitter.off("closeDialogDataError");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSelectedSelectOption");
+    this.$_MISAEmitter.off("onSelectedEntityFormCBB");
   },
 };
 </script>

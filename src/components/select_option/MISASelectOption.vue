@@ -1,9 +1,13 @@
 <template>
   <div style="position: relative">
     <div class="a-cbb" id="a-cbb">
-      <div class="a-textfield-cbb" :class="{ noDisabled: !isDisabledMenu }">
-        {{ itemSelected[propName] }}
-      </div>
+      <input
+        type="text"
+        class="a-textfield-cbb"
+        :class="{ noDisabled: !isDisabledMenu }"
+        :value="itemSelected[propName]"
+        readonly
+      />
       <button
         :disabled="isDisabledMenu"
         class="a-icon-cbb"
@@ -32,7 +36,13 @@
 export default {
   name: "MISASelectOption",
 
-  props: ["listData", "propName", "propCode", "isDisabledMenu"],
+  props: [
+    "listData",
+    "propName",
+    "propCode",
+    "isDisabledMenu",
+    "valueSelected",
+  ],
 
   created() {
     this.$_MISAEmitter.on("selectedDefaultItem", () => {
@@ -41,6 +51,10 @@ export default {
     this.$_MISAEmitter.on("unSelectedDefaultItem", () => {
       this.itemSelected = {};
     });
+  },
+
+  mounted() {
+    this.itemSelected[this.propName] = this.valueSelected;
   },
 
   data() {

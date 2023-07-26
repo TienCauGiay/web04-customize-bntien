@@ -34,6 +34,16 @@ class BaseServices {
     }
 
     /**
+     * Mô tả: trả về bản trong database có id là tham số truyền vào
+     * created by : BNTIEN
+     * created date: 02-06-2023 22:09:41
+     */
+    async getById(id){
+        const response = await this.entity.get(`${this.getBaseUrl()}/${id}`);
+        return response;
+    }
+
+    /**
      * Mô tả: thêm mới 1 bản ghi vào database
      * created by : BNTIEN
      * created date: 02-06-2023 22:10:13
