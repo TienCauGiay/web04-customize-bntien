@@ -956,8 +956,26 @@ export default {
         if (this.selectedAccount.State == this.$_MISAEnum.BOOL.TRUE) {
           this.updateStateAccount(this.selectedAccount, 0, 1);
         } else {
-          this.isShowToggleState = true;
-          this.isOverlay = true;
+          if (this.selectedAccount.ParentId) {
+            const parent = await accountService.getById(
+              this.selectedAccount.ParentId
+            );
+            if (parent.data.State != this.$_MISAEnum.BOOL.TRUE) {
+              this.dataError.push(
+                "Tài khoản cha đang ở trạng thái ngừng sử dụng. Bạn không thể thiết lập trạng thái sử dụng cho tài khoản con."
+              );
+              this.isShowDialogDataError = true;
+              this.isOverlay = true;
+              return;
+            }
+          }
+          // Nếu tài khoản đó đang là cha thì mới hỏi
+          if (this.selectedAccount.IsParent == this.$_MISAEnum.BOOL.TRUE) {
+            this.isShowToggleState = true;
+            this.isOverlay = true;
+          } else {
+            this.updateStateAccount(this.selectedAccount, 1, 1);
+          }
         }
       } catch {
         return;
