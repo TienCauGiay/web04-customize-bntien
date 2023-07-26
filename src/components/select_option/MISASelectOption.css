@@ -10,6 +10,10 @@
     background-color: var(--color-border-default);
 }
 
+.a-cbb:has(.a-textfield-cbb:focus){
+    border: 1px solid var(--color-btn-default);
+}
+
 .a-textfield-cbb{
     height: calc(26px - 0.667px * 2);
     width: 95%;
@@ -34,6 +38,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.a-icon-cbb:hover{
+    background-color: #cacecc;
 }
 
 .a-select-entity{

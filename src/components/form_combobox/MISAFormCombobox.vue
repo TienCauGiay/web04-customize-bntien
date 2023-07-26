@@ -1,5 +1,10 @@
 <template>
-  <div class="form-cbb">
+  <div
+    class="form-cbb"
+    :class="{
+      'border-red': isBorderRedFormCBB[propBorderRed],
+    }"
+  >
     <div class="e-textfield-cbb">
       <div class="container-input">
         <misa-input
@@ -9,21 +14,21 @@
           @input="onSearchChange"
           :tabindex="tabindexFormCBB"
           @keydown="onKeyDownEntity"
+          @mouseenter="isHoveringFormCBB = true"
+          @mouseleave="isHoveringFormCBB = false"
         ></misa-input>
         <div
           class="misa-tooltip"
           v-if="
             isHoveringFormCBB &&
-            (isBorderRedFormCBB[propName] ||
-              isBorderRedFormCBB[propId] ||
-              !entityFormFormCBB[propName]) &&
-            (errorsFormCBB[propName] || errorsFormCBB[propId])
+            isBorderRedFormCBB[propBorderRed] &&
+            errorsFormCBB[propBorderRed]
           "
         >
           {{
-            errorsFormCBB[propName]
-              ? errorsFormCBB[propName]
-              : errorsFormCBB[propId]
+            errorsFormCBB[propBorderRed]
+              ? errorsFormCBB[propBorderRed]
+              : errorsFormCBB[propBorderRed]
           }}
         </div>
       </div>
@@ -35,7 +40,6 @@
       class="form-cbb-menu"
       v-show="isShowSelectEntity"
       @click="onShowSelectEntity"
-      @scroll="handleScroll"
     >
       <div class="form-cbb-menu-title">
         <div>{{ this.textColFirst }}</div>
@@ -43,19 +47,21 @@
           {{ this.textColSecond }}
         </div>
       </div>
-      <template v-for="(item, index) in listEntitySearchFormCBB" :key="index">
-        <div
-          class="form-cbb-menu-item"
-          @click="onSelectedEntity(item, index)"
-          :class="[{ 'cbb-selected': index == indexEntitySelected }]"
-          ref="EntitySelectedItem"
-        >
-          <div :class="`form-cbb-menu-item-${item.Grade}`">
-            {{ item[propCode] }}
+      <div class="content-form">
+        <template v-for="(item, index) in listEntitySearchFormCBB" :key="index">
+          <div
+            class="form-cbb-menu-item"
+            @click="onSelectedEntity(item, index)"
+            :class="[{ 'cbb-selected': index == indexEntitySelected }]"
+            ref="EntitySelectedItem"
+          >
+            <div :class="`form-cbb-menu-item-${item.Grade}`">
+              {{ item[propCode] }}
+            </div>
+            <div>{{ item[propName] }}</div>
           </div>
-          <div>{{ item[propName] }}</div>
-        </div>
-      </template>
+        </template>
+      </div>
       <!-- <div
         class="form-cbb-menu-item"
         style="justify-content: center; position: relative"
@@ -86,6 +92,7 @@ export default {
     "placeholderInputFormCBB",
     "textColFirst",
     "textColSecond",
+    "propBorderRed",
   ],
 
   data() {

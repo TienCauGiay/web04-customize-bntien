@@ -131,6 +131,7 @@
               :propName="'AccountName'"
               :valueInput="valueInputFormCBB"
               :propCode="'AccountNumber'"
+              :propBorderRed="'ParentId'"
               :textColFirst="
                 this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
                   .accountNumber
@@ -579,20 +580,6 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí lazy loadding
-     * created by : BNTIEN
-     * created date: 24-07-2023 20:45:38
-     */
-    handleScroll(event) {
-      // Kiểm tra khi nào cuộn đến cuối danh sách
-      const el = event.target;
-      if (el.scrollHeight - el.scrollTop === el.clientHeight) {
-        // Gọi hàm để tải thêm dữ liệu khi cuộn đến cuối danh sách
-        this.getAllAccount();
-      }
-    },
-
-    /**
      * Mô tả: Hàm focus vào ô input số tài khoản
      * created by : BNTIEN
      * created date: 23-07-2023 12:23:21
@@ -633,6 +620,7 @@ export default {
     selectedGeneralAccount(item) {
       this.account.ParentId = item.AccountId;
       this.valueInputFormCBB = item.AccountNumber;
+      this.isBorderRed.ParentId = false;
     },
 
     /**

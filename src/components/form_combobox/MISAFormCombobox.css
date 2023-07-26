@@ -50,8 +50,7 @@
     border-radius: 4px;
     border: 1px solid var(--color-border-default);
     background-color: #fff;
-    max-height: 140px;
-    overflow-y: auto;
+    height: 140px;
     z-index: 999;
 }
 
@@ -63,6 +62,11 @@
     box-sizing: border-box;
     margin-bottom: 2px;
     font-weight: 700;
+}
+
+.content-form{
+    max-height: 112px;
+    overflow-y: auto;
 }
 
 .form-cbb-menu-item{
