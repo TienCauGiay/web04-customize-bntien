@@ -199,8 +199,12 @@
   width: 100%;
 }
 
+.table-input tbody tr:hover{
+  background-color: #fff8cb;
+}
+
 .table-input tbody tr:has(input:focus){
-  background-color: rgb(199, 199, 139);
+  background-color: #f9ecca;
 }
 
 .table-input td:last-child{

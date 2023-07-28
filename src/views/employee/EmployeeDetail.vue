@@ -569,7 +569,7 @@ export default {
     });
 
     this.$_MISAEmitter.on("closeDialogCodeExist", () => {
-      this.btnCloseDialogIdExist();
+      this.btnCloseDialogCodeExist();
     });
 
     this.$_MISAEmitter.on("closeDialogDataError", () => {
@@ -1271,7 +1271,7 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 08:28:19
      */
-    btnCloseDialogIdExist() {
+    btnCloseDialogCodeExist() {
       this.isShowDialogCodeExist = false;
       this.focusCode();
     },

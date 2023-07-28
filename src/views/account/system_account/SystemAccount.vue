@@ -190,10 +190,7 @@
           <div @click="onDupliCateAccount">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
-          <div
-            class="menu-function-select-delete-employee"
-            @click="onDeleteAccount"
-          >
+          <div @click="onDeleteAccount">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
           <div>

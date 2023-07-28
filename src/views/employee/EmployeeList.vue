@@ -33,15 +33,13 @@
           </div>
         </div>
       </button>
-      <div class="search-employee">
+      <div class="search-entity">
         <input
           type="search"
           :placeholder="
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
               .PLACEHOLDER_SEARCH
           "
-          name="search-employee"
-          id="search-employee"
           v-model="textSearch"
           @keydown.enter="onSearchEmployee"
           @input="autoSearch"
@@ -89,7 +87,7 @@
         <table id="tbEmployeeList">
           <thead>
             <tr>
-              <th type="checkbox" class="employee-border-left">
+              <th type="checkbox" class="entity-border-left">
                 <div class="th-checkbox">
                   <input
                     class="checkbox-select-row"
@@ -187,7 +185,7 @@
               @dblclick="onUpdateFormDetail(item)"
               :class="{ checkedRow: checkRow().includes(item.EmployeeId) }"
             >
-              <td class="employee-border-left" @dblclick.stop>
+              <td class="entity-border-left" @dblclick.stop>
                 <div class="th-checkbox">
                   <input
                     class="checkbox-select-row"
@@ -268,10 +266,7 @@
           <div @click="onDupliCateEmployee">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
-          <div
-            class="menu-function-select-delete-employee"
-            @click="onDeleteEmployee"
-          >
+          <div @click="onDeleteEmployee">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
           <div>
@@ -395,12 +390,15 @@
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :entityCodeDelete="employeeCodeDeleteSelected"
-      :entityName="
-        this.$_MISAResource[
-          this.$_LANG_CODE
-        ].TEXT_CONTENT.EMPLOYEE.toLowerCase()
+      :contentDeleteMultiple="
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
+          .CONFIRM_DELETE_MULTIPLE
       "
+      :contentDelete="`${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.CONFIRM_DELETE_PRE
+      }${employeeCodeDeleteSelected}${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
+      }`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- toast message -->

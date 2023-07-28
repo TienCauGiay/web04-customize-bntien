@@ -156,13 +156,13 @@ const MISAResource = {
                 DATA_INVALID: "Dữ liệu không hợp lệ!",
             },
             CONTENT:{
-                CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa",
+                CONFIRM_DELETE_PRE: "Bạn có thực sự muốn xóa nhân viên <",
                 CONFIRM_DELETE_MULTIPLE: "Bạn có thực sự muốn xóa những nhân viên đã chọn không?",
                 DATA_CHANGE: "Dữ liệu đã bị thay đổi. Bạn có muốn cất không?",
                 EXIST_PRE: "Mã nhân viên",
                 EXIST_END: "đã tồn tại trong hệ thống, vui lòng kiểm tra lại.",
                 EXIST_DETAIL_END: "đã tồn tại trong hệ thống.",
-                END: "không?"
+                END: "> không?"
             },
         },
         BUTTON:{

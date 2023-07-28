@@ -10,19 +10,10 @@
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
         <p v-if="!this.isDeleteMultiple">
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-              .CONFIRM_DELETE_PRE
-          }}
-          {{ this.entityName }}
-          &lt;{{ this.entityCodeDelete }}&gt;
-          {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END }}
+          {{ this.contentDelete }}
         </p>
         <p v-else>
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-              .CONFIRM_DELETE_MULTIPLE
-          }}
+          {{ this.contentDeleteMultiple }}
         </p>
       </div>
     </div>
@@ -46,7 +37,7 @@
 <script>
 export default {
   name: "MISADialogConfirmDelete",
-  props: ["entityName", "entityCodeDelete", "isDeleteMultiple"],
+  props: ["isDeleteMultiple", "contentDelete", "contentDeleteMultiple"],
   mounted() {
     this.resetTab();
   },

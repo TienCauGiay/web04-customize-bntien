@@ -106,14 +106,12 @@
           </div>
         </button>
       </div>
-      <div class="search-employee">
+      <div class="search-entity">
         <input
           type="search"
           :placeholder="
             this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch
           "
-          name="search-employee"
-          id="search-employee"
           v-model="textSearch"
           @keydown.enter="onSearchProvider"
           @input="autoSearch"
@@ -161,7 +159,7 @@
         <table id="tbProviderList">
           <thead>
             <tr>
-              <th type="checkbox" class="employee-border-left">
+              <th type="checkbox" class="entity-border-left">
                 <div class="th-checkbox">
                   <input
                     class="checkbox-select-row"
@@ -232,7 +230,7 @@
               @dblclick="onUpdateFormDetail(item)"
               :class="{ checkedRow: checkRow().includes(item.ProviderId) }"
             >
-              <td class="employee-border-left" @dblclick.stop>
+              <td class="entity-border-left" @dblclick.stop>
                 <div class="th-checkbox">
                   <input
                     class="checkbox-select-row"
@@ -281,10 +279,7 @@
           <div @click="onDupliCateProvider">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
-          <div
-            class="menu-function-select-delete-employee"
-            @click="onDeleteProvider"
-          >
+          <div @click="onDeleteProvider">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
           <div>
@@ -293,13 +288,16 @@
         </div>
       </teleport>
       <img
-        v-show="false"
+        v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
         class="loading"
         :class="{ 'loadding-form-detail': isShowFormDetail }"
         src="../../../assets/img/loading.svg"
         alt="loading"
       />
-      <div v-if="false" class="no-data">
+      <div
+        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
+        class="no-data"
+      >
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
@@ -393,7 +391,7 @@
     <ProviderDetail
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
-      :employeeSelected="providerUpdate"
+      :providerSelected="providerUpdate"
       :statusFormMode="isStatusFormMode"
     ></ProviderDetail>
     <div
@@ -402,23 +400,19 @@
       class="container-overlay"
       @closeFormDetail="onCloseFormDetail"
     ></div>
-    <!-- dialog employee confirm delete -->
+    <!-- dialog confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :entityCodeDelete="providerCodeDeleteSelected"
-      :entityName="
-        this.$_MISAResource[
-          this.$_LANG_CODE
-        ].TEXT_CONTENT.EMPLOYEE.toLowerCase()
+      :contentDeleteMultiple="
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.multiple
       "
+      :contentDelete="`${
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.prev
+      }${providerCodeDeleteSelected}${
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.end
+      }`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
-
-    <misa-dialog-data-not-null
-      v-if="isShowDialogDataError"
-      :valueNotNull="dataError"
-      :title="'Xóa không thành công'"
-    ></misa-dialog-data-not-null>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
@@ -440,7 +434,7 @@ export default {
   },
 
   created() {
-    // Gọi hàm lấy dữ liệu danh sách nhân viên
+    // Gọi hàm lấy dữ liệu danh sách nhà cung cấp
     this.getListProvider();
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
@@ -494,15 +488,15 @@ export default {
       isShowToastMessage: false,
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
-      // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
+      // Khai báo 1 nhà cung cấp được chọn để xử lí hàm sửa
       providerUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
       recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
-      // Khai báo EmployeeId của nhân viên cần xóa
+      // Khai báo ProviderId của nhà cung cấp cần xóa
       providerIdDeleteSelected: "",
-      // Khai báo EmployeeCode của nhân viên cần xóa
+      // Khai báo ProviderCode của nhà cung cấp cần xóa
       providerCodeDeleteSelected: "",
       // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
       isShowDialogConfirmDelete: false,
@@ -528,14 +522,10 @@ export default {
       isDeleteMultipleDialog: null,
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
-      // Khai báo biến lưu employee khi bấm vào col feature
+      // Khai báo biến lưu provider khi bấm vào col feature
       selectedProvider: {},
       // Khai báo biến quy định trạng thái hiển thị tiện ích
       isShowUtilities: false,
-      // Khai báo list dữ liệu lỗi
-      dataError: [],
-      // Khai báo trạng thái hiển thị dialog data error
-      isShowDialogDataError: false,
     };
   },
 
@@ -621,7 +611,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Hàm lấy dữ liệu nhân viên từ api
+     * Mô tả: Hàm lấy dữ liệu nhà cung cấp từ api
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:20
      */
@@ -652,7 +642,7 @@ export default {
       await this.getListProvider();
     },
     /**
-     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
+     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhà cung cấp
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:01
      */
@@ -705,7 +695,7 @@ export default {
       this.isShowPaging = !this.isShowPaging;
     },
     /**
-     * Mô tả: Hàm xử lí cập nhật thông tin nhân viên
+     * Mô tả: Hàm xử lí cập nhật thông tin nhà cung cấp
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
@@ -735,7 +725,7 @@ export default {
       this.updateDataTable();
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa nhân viên thì hiển thị dialog xác nhận xóa
+     * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa nhà cung cấp thì hiển thị dialog xác nhận xóa
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
@@ -747,7 +737,7 @@ export default {
       this.providerCodeDeleteSelected = this.selectedProvider.ProviderCode;
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhân viên
+     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhà cung cấp
      * created by : BNTIEN
      * created date: 28-05-2023 21:09:01
      */
@@ -804,7 +794,7 @@ export default {
       this.isShowToastMessage = false;
     },
     /**
-     * Mô tả: Hàm nhân bản 1 nhân viên
+     * Mô tả: Hàm nhân bản 1 nhà cung cấp
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
@@ -819,7 +809,7 @@ export default {
       }
     },
     /**
-     * Mô tả: Hàm tìm kiếm nhân viên theo mã hoặc tên
+     * Mô tả: Hàm tìm kiếm nhà cung cấp theo mã hoặc tên
      * created by : BNTIEN
      * created date: 04-06-2023 00:20:21
      */
@@ -1006,7 +996,7 @@ export default {
       this.isDeleteMultipleDialog = true;
     },
     /**
-     * Mô tả: Hàm thực hiện xóa nhiều nhân viên theo list id đã chọn
+     * Mô tả: Hàm thực hiện xóa nhiều nhà cung cấp theo list id đã chọn
      * created by : BNTIEN
      * created date: 28-06-2023 09:36:08
      */
@@ -1087,5 +1077,57 @@ input[type="checkbox"] {
 
 input[type="checkbox"]:focus {
   outline: 2px solid var(--color-border-default);
+}
+
+.rotate-function-icon {
+  transform: rotate(180deg);
+}
+
+.active-page {
+  border: 1px solid var(--color-border-default);
+}
+
+.active-record {
+  border: 1px solid var(--color-btn-default);
+}
+
+input[type="checkbox"] {
+  accent-color: #2ca01c;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.active-record-item {
+  background-color: var(--color-btn-default);
+  color: white;
+}
+
+.no-disable {
+  border: 1px solid black;
+}
+
+.no-disable:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.checkedRow {
+  background-color: #f9ecca;
+}
+
+.checkedRow td:first-child,
+.checkedRow td:last-child {
+  background-color: #f9ecca;
+}
+
+.loadding-form-detail {
+  left: 50%;
+}
+
+.no-data {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 }
 </style>

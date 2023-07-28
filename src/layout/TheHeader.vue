@@ -26,14 +26,13 @@
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.DOWNLOAD"
         class="download-icon icon-l header-center"
       ></div>
-      <div class="search-employee header-center">
+      <div class="search-entity header-center">
         <input
           type="search"
           :placeholder="
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
               .PLACEHOLDER_SEARCH_HEADER
           "
-          name="search-employee"
         />
         <div class="search-icon icon-tb"></div>
       </div>
