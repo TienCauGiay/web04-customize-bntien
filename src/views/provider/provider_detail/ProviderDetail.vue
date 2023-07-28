@@ -50,73 +50,75 @@
       </div>
       <div class="form-detail-content">
         <!-- Là tổ chức -->
-        <div class="half-content" v-if="!isPersonal">
-          <div class="col-md-n">
-            <label> Mã số thuế </label>
-            <div class="container-input">
-              <misa-input></misa-input>
-              <div class="misa-tooltip" v-if="false">abc</div>
+        <template v-if="!isPersonal">
+          <div class="half-content">
+            <div class="col-md-n">
+              <label> Mã số thuế </label>
+              <div class="container-input">
+                <misa-input></misa-input>
+                <div class="misa-tooltip" v-if="false">abc</div>
+              </div>
+            </div>
+            <div class="col-md-tb">
+              <label>
+                Mã nhà cung cấp
+                <span class="s-require">*</span>
+              </label>
+              <div class="container-input">
+                <misa-input></misa-input>
+                <div class="misa-tooltip" v-if="false">abc</div>
+              </div>
             </div>
           </div>
-          <div class="col-md-tb">
-            <label>
-              Mã nhà cung cấp
-              <span class="s-require">*</span>
-            </label>
-            <div class="container-input">
-              <misa-input></misa-input>
-              <div class="misa-tooltip" v-if="false">abc</div>
+          <div class="half-content">
+            <div class="col-md-n">
+              <label>Điện thoại</label>
+              <div class="container-input">
+                <misa-input></misa-input>
+                <div class="misa-tooltip" v-if="false">abc</div>
+              </div>
+            </div>
+            <div class="col-md-tb">
+              <label> Website </label>
+              <div class="container-input">
+                <misa-input></misa-input>
+                <div class="misa-tooltip" v-if="false">abc</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="half-content" v-if="!isPersonal">
-          <div class="col-md-n">
-            <label>Điện thoại</label>
-            <div class="container-input">
-              <misa-input></misa-input>
-              <div class="misa-tooltip" v-if="false">abc</div>
+          <div class="half-content">
+            <div class="col-md-l">
+              <label>
+                Tên nhà cung cấp
+                <span class="s-require">*</span>
+              </label>
+              <div class="container-input">
+                <misa-input></misa-input>
+                <div class="misa-tooltip" v-if="false">abc</div>
+              </div>
             </div>
           </div>
-          <div class="col-md-tb">
-            <label> Website </label>
-            <div class="container-input">
-              <misa-input></misa-input>
-              <div class="misa-tooltip" v-if="false">abc</div>
+          <div class="half-content">
+            <div class="col-md-l">
+              <label> Nhóm nhà cung cấp </label>
+              <misa-combobox-multiple></misa-combobox-multiple>
             </div>
           </div>
-        </div>
-        <div class="half-content" v-if="!isPersonal">
-          <div class="col-md-l">
-            <label>
-              Tên nhà cung cấp
-              <span class="s-require">*</span>
-            </label>
-            <div class="container-input">
-              <misa-input></misa-input>
-              <div class="misa-tooltip" v-if="false">abc</div>
+          <div class="half-content-2">
+            <div class="col-md-l">
+              <label>Địa chỉ</label>
+              <misa-input-textarea
+                :placeholder="'VD: Số 82 Duy Tân, Dịch Vọng'"
+              ></misa-input-textarea>
             </div>
           </div>
-        </div>
-        <div class="half-content" v-if="!isPersonal">
-          <div class="col-md-l">
-            <label> Nhóm nhà cung cấp </label>
-            <misa-combobox-multiple></misa-combobox-multiple>
+          <div class="half-content">
+            <div class="col-md-l">
+              <label>Nhân viên mua hàng</label>
+              <misa-combobox-multiple></misa-combobox-multiple>
+            </div>
           </div>
-        </div>
-        <div class="half-content-2" v-if="!isPersonal">
-          <div class="col-md-l">
-            <label>Địa chỉ</label>
-            <misa-input-textarea
-              :placeholder="'VD: Số 82 Duy Tân, Dịch Vọng'"
-            ></misa-input-textarea>
-          </div>
-        </div>
-        <div class="half-content" v-if="!isPersonal">
-          <div class="col-md-l">
-            <label>Nhân viên mua hàng</label>
-            <misa-combobox-multiple></misa-combobox-multiple>
-          </div>
-        </div>
+        </template>
         <!-- Là cá nhân -->
         <div class="half-content" v-if="isPersonal">
           <div class="col-md-tb">
@@ -416,7 +418,24 @@
                     id="multiple-cbb-no-icon"
                   >
                     <label>Tài khoản công nợ phải trả</label>
-                    <misa-form-combobox></misa-form-combobox>
+                    <misa-form-combobox
+                      :isBorderRedFormCBB="isBorderRed"
+                      :entityFormCBB="account"
+                      :errorsFormCBB="errors"
+                      :listEntitySearchFormCBB="accounts"
+                      :propName="'AccountName'"
+                      :valueInput="valueInputFormCBB"
+                      :propCode="'AccountNumber'"
+                      :propBorderRed="'ParentId'"
+                      :textColFirst="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountNumber
+                      "
+                      :textColSecond="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountName
+                      "
+                    ></misa-form-combobox>
                   </div>
                 </div>
               </div>
@@ -455,7 +474,24 @@
                     id="multiple-cbb-no-icon"
                   >
                     <label>Tài khoản công nợ phải thu</label>
-                    <misa-form-combobox></misa-form-combobox>
+                    <misa-form-combobox
+                      :isBorderRedFormCBB="isBorderRed"
+                      :entityFormCBB="account"
+                      :errorsFormCBB="errors"
+                      :listEntitySearchFormCBB="accounts"
+                      :propName="'AccountName'"
+                      :valueInput="valueInputFormCBB"
+                      :propCode="'AccountNumber'"
+                      :propBorderRed="'ParentId'"
+                      :textColFirst="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountNumber
+                      "
+                      :textColSecond="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountName
+                      "
+                    ></misa-form-combobox>
                   </div>
                   <div
                     class="col-md-quater"
@@ -463,7 +499,24 @@
                     id="multiple-cbb-no-icon"
                   >
                     <label>Tài khoản công nợ phải trả</label>
-                    <misa-form-combobox></misa-form-combobox>
+                    <misa-form-combobox
+                      :isBorderRedFormCBB="isBorderRed"
+                      :entityFormCBB="account"
+                      :errorsFormCBB="errors"
+                      :listEntitySearchFormCBB="accounts"
+                      :propName="'AccountName'"
+                      :valueInput="valueInputFormCBB"
+                      :propCode="'AccountNumber'"
+                      :propBorderRed="'ParentId'"
+                      :textColFirst="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountNumber
+                      "
+                      :textColSecond="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountName
+                      "
+                    ></misa-form-combobox>
                   </div>
                 </div>
               </div>

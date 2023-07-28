@@ -111,7 +111,6 @@
 .search-employee, .search-account{
     display: flex;
     align-items: center;
-    border: 1px solid black;
     border-radius: 4px;
     padding-right: 5px;
     border: 1px solid var(--color-border-default);
@@ -290,8 +289,14 @@ th:not(:first-child), td:not(:first-child){
     padding: 0 16px;
 }
 
+.th-checkbox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* th:first-child, td:first-child{
-    width: 48px;
+    width: 36px;
     box-sizing: border-box;
     border: 1px solid var(--color-border-default);
     border-left: none;
@@ -301,23 +306,23 @@ th:not(:first-child), td:not(:first-child){
 } */
 
 tr{
-    height: 48px;
+    height: 36px;
     box-sizing: border-box;
     border-top: none;
     border-left: none;
 }
 
 tr:hover {
-    background-color: #e7f5ec;
+    background-color: #fff8cb;
     cursor: pointer;
 }
 
 tr:hover td:first-child,tr:hover td:last-child{
-    background-color: #e7f5ec;
+    background-color: #fff8cb;
 }
 
 th{
-    background-color: #e0e0e0;
+    background-color: #bcd4b9;
     position: sticky;
     top: 0;
     z-index: 999;
@@ -331,7 +336,7 @@ td:not(td:last-child){
 }
 
 tr th:first-child{
-    background-color: #e0e0e0;
+    background-color: #bcd4b9;
     left: 0px;
     z-index: 1000;
 }
@@ -399,7 +404,7 @@ tr td:last-child{
     position: sticky;
     left: 0px;
     background-color: white;
-    width: 48px;
+    width: 36px;
     box-sizing: border-box;
     border: 1px solid var(--color-border-default);
     border-left: none;
@@ -407,17 +412,6 @@ tr td:last-child{
     vertical-align: middle;
     text-align: center;
 } 
-
-.employee-border-left::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border-right: 1px solid var(--color-border-default);
-    pointer-events: none; /* Vô hiệu hóa tương tác */
-}
 
 input.checkbox-select-row{
     margin: 0px;

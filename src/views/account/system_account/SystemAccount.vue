@@ -354,7 +354,9 @@ export default {
     this.getListAccount();
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("closeDialogDataError", () => {
-      this.isOverlay = false;
+      if (!this.isShowFormDetail) {
+        this.isOverlay = false;
+      }
       this.isShowDialogDataError = false;
       this.dataError = [];
     });
@@ -599,7 +601,7 @@ export default {
         const positionIcon = e.target.getBoundingClientRect();
         const left = positionIcon.right - 190;
         let top = 0;
-        if (positionIcon.bottom > 500) {
+        if (positionIcon.bottom > 450) {
           top = positionIcon.bottom - 100;
         } else {
           top = positionIcon.bottom + 10;
@@ -860,9 +862,12 @@ export default {
         this.isShowLoadding = true;
         const res = await accountService.delete(this.accountIdDeleteSelected);
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.isShowDialogConfirmDelete = false;
-          this.isOverlay = false;
+        this.isShowDialogConfirmDelete = false;
+        this.isOverlay = false;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
@@ -933,7 +938,10 @@ export default {
           isUpdateChildren
         );
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.$_MISAEmitter.emit(
             "onShowToastMessageUpdate",
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE

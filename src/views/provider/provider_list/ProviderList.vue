@@ -72,10 +72,11 @@
           <div class="icon-l direction-arrow"></div>
         </div>
         <button
-          :disabled="true"
+          :disabled="isDisableExcuteBatch"
           class="delete-multiple"
           @click="onShowExcuteBatch"
-          :class="{ 'no-disable': false }"
+          :class="{ 'no-disable': !isDisableExcuteBatch }"
+          ref="DeleteMulti"
         >
           <div class="select-function-delete">
             <span>{{
@@ -91,19 +92,15 @@
             </div>
           </div>
         </button>
-        <button
-          class="delete-multiple filter-provider"
-          @click="onShowExcuteBatch"
-          :class="'no-disable'"
-        >
+        <button class="delete-multiple filter-provider" :class="'no-disable'">
           <div class="select-function-delete">
             <span>Lọc</span>
             <div class="delete-multiple-icon">
               <div class="function-icon-disable"></div>
             </div>
           </div>
-          <div class="menu-delete" v-show="isShowMenuExcuteBatch">
-            <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
+          <div class="menu-delete" v-show="false">
+            <div class="menu-item-delete">
               {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
             </div>
           </div>
@@ -118,10 +115,10 @@
           name="search-employee"
           id="search-employee"
           v-model="textSearch"
-          @keydown.enter="onSearchEmployee"
+          @keydown.enter="onSearchProvider"
           @input="autoSearch"
         />
-        <div class="search-icon icon-tb" @click="onSearchEmployee"></div>
+        <div class="search-icon icon-tb" @click="onSearchProvider"></div>
       </div>
       <div
         @click="refreshData"
@@ -165,12 +162,14 @@
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
-                <input
-                  class="checkbox-select-row"
-                  type="checkbox"
-                  @click="checkAllSelect"
-                  :checked="isCheckAll"
-                />
+                <div class="th-checkbox">
+                  <input
+                    class="checkbox-select-row"
+                    type="checkbox"
+                    @click="checkAllSelect"
+                    :checked="isCheckAll"
+                  />
+                </div>
               </th>
               <th>
                 {{
@@ -226,18 +225,65 @@
             </tr>
           </thead>
           <tbody>
-            <tr></tr>
+            <tr
+              v-show="dataTable.TotalRecord"
+              v-for="item in dataTable.Data"
+              :key="item.ProviderId"
+              @dblclick="onUpdateFormDetail(item)"
+              :class="{ checkedRow: checkRow().includes(item.ProviderId) }"
+            >
+              <td class="employee-border-left" @dblclick.stop>
+                <div class="th-checkbox">
+                  <input
+                    class="checkbox-select-row"
+                    type="checkbox"
+                    @click="checkRow(item.ProviderId)"
+                    :checked="checkRow().includes(item.ProviderId)"
+                  />
+                </div>
+              </td>
+              <td>{{ item.ProviderCode }}</td>
+              <td>{{ item.ProviderName }}</td>
+              <td>{{ item.Address }}</td>
+              <td></td>
+              <td>{{ item.TaxCode }}</td>
+              <td>{{ item.PhoneNumber }}</td>
+              <td></td>
+              <td
+                class="text-center entity-border-right e-birthday function-table"
+                @dblclick.stop
+              >
+                <span @click="onUpdateFormDetail(item)">
+                  {{
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
+                  }}
+                </span>
+                <div
+                  class="function-table-content"
+                  @click="onOpenFeatureMenu($event, item)"
+                >
+                  <div class="function-icon-table function-icon-select"></div>
+                </div>
+              </td>
+            </tr>
           </tbody>
         </table>
       </form>
       <teleport to="#app">
-        <div class="menu-function-select" v-show="isShowColFeature">
-          <div @click="onDupliCateEmployee">
+        <div
+          class="menu-function-select"
+          v-show="isShowColFeature"
+          :style="{
+            left: `${this.positionFeatureMenu.left}px`,
+            top: `${this.positionFeatureMenu.top}px`,
+          }"
+        >
+          <div @click="onDupliCateProvider">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
           </div>
           <div
             class="menu-function-select-delete-employee"
-            @click="onDeleteEmployee"
+            @click="onDeleteProvider"
           >
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
@@ -260,8 +306,7 @@
     <div class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <!-- <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b> -->
-        <b>0</b>
+        <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
@@ -348,7 +393,7 @@
     <ProviderDetail
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
-      :employeeSelected="employeeUpdate"
+      :employeeSelected="providerUpdate"
       :statusFormMode="isStatusFormMode"
     ></ProviderDetail>
     <div
@@ -360,7 +405,7 @@
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :entityCodeDelete="employeeCodeDeleteSelected"
+      :entityCodeDelete="providerCodeDeleteSelected"
       :entityName="
         this.$_MISAResource[
           this.$_LANG_CODE
@@ -368,18 +413,24 @@
       "
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
+
+    <misa-dialog-data-not-null
+      v-if="isShowDialogDataError"
+      :valueNotNull="dataError"
+      :title="'Xóa không thành công'"
+    ></misa-dialog-data-not-null>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
       :contentToast="contentToastSuccess"
     ></misa-toast-success>
+    <a href="" ref="ExportListProvider" v-show="false"></a>
   </div>
 </template>
 
 <script>
 import ProviderDetail from "@/views/provider/provider_detail/ProviderDetail.vue";
-import helperCommon from "@/scripts/helper.js";
-import employeeService from "@/services/employee.js";
+import providerService from "@/services/provider.js";
 
 export default {
   name: "ProviderList",
@@ -390,7 +441,7 @@ export default {
 
   created() {
     // Gọi hàm lấy dữ liệu danh sách nhân viên
-    this.getListEmployee();
+    this.getListProvider();
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
@@ -404,16 +455,16 @@ export default {
       this.setFormModeAdd();
     });
     this.$_MISAEmitter.on("refreshDataTable", async () => {
-      await this.getListEmployee();
+      await this.getListProvider();
     });
     this.$_MISAEmitter.on("confirmYesDeleteEntity", async () => {
-      await this.btnConfirmYesDeleteEmployee();
+      await this.btnConfirmYesDeleteProvider();
     });
     this.$_MISAEmitter.on("confirmNoDeleteEntity", () => {
-      this.btnConfirmNoDeleteEmployee();
+      this.btnConfirmNoDeleteProvider();
     });
     this.$_MISAEmitter.on("confirmYesDeleteMultiple", async () => {
-      await this.btnConfirmYesDeleteMultipleEmployee();
+      await this.btnConfirmYesDeleteMultipleProvider();
     });
     this.$_MISAEmitter.on("closeToastMessage", () => {
       this.btnCloseToastMessage();
@@ -444,21 +495,19 @@ export default {
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
-      employeeUpdate: {},
+      providerUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
       recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
       // Khai báo EmployeeId của nhân viên cần xóa
-      employeeIdDeleteSelected: "",
+      providerIdDeleteSelected: "",
       // Khai báo EmployeeCode của nhân viên cần xóa
-      employeeCodeDeleteSelected: "",
+      providerCodeDeleteSelected: "",
       // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
       isShowDialogConfirmDelete: false,
       // Khai báo biến lưu nội dung của toast message
       contentToastSuccess: "",
-      // Tái sử dụng hàm formatDate trong helperCommon
-      formatDate: helperCommon.formatDate,
       // Khai báo biến lưu nội dung tìm kiếm
       textSearch: "",
       // Khai báo trang hiện tại trong phân trang
@@ -470,7 +519,7 @@ export default {
       // Khai báo biến lưu chỉ số index được chọn trong paging
       indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
-      searchEmployeeTimeout: null,
+      searchProviderTimeout: null,
       // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
       isShowMenuExcuteBatch: false,
       // Khai báo biến lưu danh sách id cần xóa
@@ -480,9 +529,13 @@ export default {
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
       // Khai báo biến lưu employee khi bấm vào col feature
-      selectedEmployee: {},
+      selectedProvider: {},
       // Khai báo biến quy định trạng thái hiển thị tiện ích
       isShowUtilities: false,
+      // Khai báo list dữ liệu lỗi
+      dataError: [],
+      // Khai báo trạng thái hiển thị dialog data error
+      isShowDialogDataError: false,
     };
   },
 
@@ -558,7 +611,7 @@ export default {
       if (!this.dataTable.Data) return false;
       if (this.dataTable.Data.length == 0) return false;
       for (let i = 0; i < this.dataTable.Data.length; i++) {
-        if (!this.ids.includes(this.dataTable.Data[i].EmployeeId)) {
+        if (!this.ids.includes(this.dataTable.Data[i].ProviderId)) {
           return false;
         }
       }
@@ -572,10 +625,10 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:20
      */
-    async getListEmployee() {
+    async getListProvider() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
+        const resfilter = await providerService.getFilter(
           this.selectedRecord,
           this.currentPage,
           ""
@@ -596,7 +649,7 @@ export default {
       (this.indexSelectedRecord =
         this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
         (this.textSearch = "");
-      await this.getListEmployee();
+      await this.getListProvider();
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
@@ -606,7 +659,7 @@ export default {
     btnOpenFormDetail() {
       this.isShowFormDetail = true;
       this.isOverlay = true;
-      this.employeeUpdate.EmployeeCode = "";
+      this.providerUpdate.ProviderCode = "";
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi click vào nút close trong form chi tiết
@@ -617,18 +670,18 @@ export default {
       this.isShowFormDetail = false;
       this.isOverlay = false;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
-      this.employeeUpdate = {};
+      this.providerUpdate = {};
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở các menu feature ở cột cuối của table khi click vào icon drop
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:54
      */
-    onOpenFeatureMenu(e, employee) {
+    onOpenFeatureMenu(e, provider) {
       try {
         // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
-        this.selectedEmployee = employee;
+        this.selectedProvider = provider;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
         const left = positionIcon.right - 110;
@@ -656,8 +709,8 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
-    onUpdateFormDetail(employee) {
-      this.employeeUpdate = employee;
+    onUpdateFormDetail(provider) {
+      this.providerUpdate = provider;
       this.isShowFormDetail = true;
       this.isOverlay = true;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
@@ -686,31 +739,34 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
-    onDeleteEmployee() {
+    onDeleteProvider() {
       this.isShowDialogConfirmDelete = true;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
-      this.employeeIdDeleteSelected = this.selectedEmployee.EmployeeId;
-      this.employeeCodeDeleteSelected = this.selectedEmployee.EmployeeCode;
+      this.providerIdDeleteSelected = this.selectedProvider.ProviderId;
+      this.providerCodeDeleteSelected = this.selectedProvider.ProviderCode;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhân viên
      * created by : BNTIEN
      * created date: 28-05-2023 21:09:01
      */
-    async btnConfirmYesDeleteEmployee() {
+    async btnConfirmYesDeleteProvider() {
       try {
         this.isShowLoadding = true;
-        const res = await employeeService.delete(this.employeeIdDeleteSelected);
+        const res = await providerService.delete(this.providerIdDeleteSelected);
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.isShowDialogConfirmDelete = false;
+        this.isShowDialogConfirmDelete = false;
+        this.isOverlay = false;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.isDeleteMultipleDialog = false;
-          this.isOverlay = false;
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          await this.getListEmployee();
+          await this.getListProvider();
         }
       } catch {
         return;
@@ -721,7 +777,7 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:51:41
      */
-    btnConfirmNoDeleteEmployee() {
+    btnConfirmNoDeleteProvider() {
       this.isShowDialogConfirmDelete = false;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = false;
@@ -752,9 +808,9 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
-    onDupliCateEmployee() {
+    onDupliCateProvider() {
       try {
-        this.employeeUpdate = this.selectedEmployee;
+        this.providerUpdate = this.selectedProvider;
         this.isShowFormDetail = true;
         this.isOverlay = true;
         this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -767,20 +823,20 @@ export default {
      * created by : BNTIEN
      * created date: 04-06-2023 00:20:21
      */
-    async onSearchEmployee() {
+    async onSearchProvider() {
       try {
         this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
         this.isShowLoadding = true;
-        const filteredEmployees = await employeeService.getFilter(
+        const filteredProviders = await providerService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim()
         );
         this.isShowLoadding = false;
-        this.dataTable = filteredEmployees.data;
+        this.dataTable = filteredProviders.data;
       } catch {
         return;
       }
@@ -792,9 +848,9 @@ export default {
      */
     async autoSearch() {
       try {
-        clearTimeout(this.searchEmployeeTimeout);
-        this.searchEmployeeTimeout = setTimeout(async () => {
-          await this.onSearchEmployee();
+        clearTimeout(this.searchProviderTimeout);
+        this.searchProviderTimeout = setTimeout(async () => {
+          await this.onSearchProvider();
         }, 500);
       } catch {
         return;
@@ -811,7 +867,7 @@ export default {
           this.textSearch = "";
         }
         this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
+        const resfilter = await providerService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim()
@@ -870,20 +926,20 @@ export default {
      * created by : BNTIEN
      * created date: 30-06-2023 21:53:38
      */
-    // handleClickOutsideDeleteMulti(event) {
-    //   if (!this.$refs.DeleteMulti.contains(event.target)) {
-    //     this.isShowMenuExcuteBatch = false;
-    //   }
-    // },
+    handleClickOutsideDeleteMulti(event) {
+      if (!this.$refs.DeleteMulti.contains(event.target)) {
+        this.isShowMenuExcuteBatch = false;
+      }
+    },
 
     /**
      * Mô tả: xử lí sự kiện click ngoài menu feature
      * created by : BNTIEN
      * created date: 03-07-2023 00:03:06
      */
-    // handleClickOutsideFeature() {
-    //   this.isShowColFeature = false;
-    // },
+    handleClickOutsideFeature() {
+      this.isShowColFeature = false;
+    },
 
     /**
      * Mô tả: Hàm ẩn hiện menu thực hiện hàng loạt
@@ -922,15 +978,15 @@ export default {
       try {
         if (this.isCheckAll) {
           this.dataTable.Data.map((item) => {
-            if (this.ids.includes(item.EmployeeId)) {
-              this.ids.splice(this.ids.indexOf(item.EmployeeId), 1);
+            if (this.ids.includes(item.ProviderId)) {
+              this.ids.splice(this.ids.indexOf(item.ProviderId), 1);
             }
           });
         } else {
           if (this.dataTable.Data) {
             this.dataTable.Data.map((item) => {
-              if (!this.ids.includes(item.EmployeeId)) {
-                this.ids.push(item.EmployeeId);
+              if (!this.ids.includes(item.ProviderId)) {
+                this.ids.push(item.ProviderId);
               }
             });
           }
@@ -946,6 +1002,7 @@ export default {
      */
     onShowDialogDeleteMulti() {
       this.isShowDialogConfirmDelete = !this.isShowDialogConfirmDelete;
+      this.isOverlay = true;
       this.isDeleteMultipleDialog = true;
     },
     /**
@@ -953,20 +1010,23 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 09:36:08
      */
-    async btnConfirmYesDeleteMultipleEmployee() {
+    async btnConfirmYesDeleteMultipleProvider() {
       try {
         this.isShowLoadding = true;
-        const res = await employeeService.deleteMutiple(this.ids);
+        const res = await providerService.deleteMutiple(this.ids);
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+        this.isShowDialogConfirmDelete = false;
+        this.isOverlay = false;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.ids = [];
-          this.isShowDialogConfirmDelete = false;
           this.isDeleteMultipleDialog = false;
-          this.isOverlay = false;
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          await this.getListEmployee();
+          await this.getListProvider();
         }
       } catch {
         return;
@@ -979,9 +1039,9 @@ export default {
      */
     async exportData() {
       try {
-        const link = this.$refs.ExportListEmployee;
+        const link = this.$refs.ExportListProvider;
         this.isShowLoadding = true;
-        await employeeService.exportData(link);
+        await providerService.exportData(link);
         this.isShowLoadding = false;
       } catch {
         return;

@@ -1039,7 +1039,10 @@ export default {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await employeeService.create(this.employee);
               if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
+                  res.status
+                ) &&
+                res.data > 0
               ) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -1079,7 +1082,8 @@ export default {
                   this.employee
                 );
                 if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)
+                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+                  res.data > 0
                 ) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
@@ -1122,7 +1126,10 @@ export default {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await employeeService.create(this.employee);
               if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status)
+                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
+                  res.status
+                ) &&
+                res.data > 0
               ) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -1172,7 +1179,8 @@ export default {
                 this.focusCode();
                 this.$_MISAEmitter.emit("refreshDataTable");
                 if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)
+                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+                  res.data > 0
                 ) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",

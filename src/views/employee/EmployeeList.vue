@@ -90,12 +90,14 @@
           <thead>
             <tr>
               <th type="checkbox" class="employee-border-left">
-                <input
-                  class="checkbox-select-row"
-                  type="checkbox"
-                  @click="checkAllSelect"
-                  :checked="isCheckAll"
-                />
+                <div class="th-checkbox">
+                  <input
+                    class="checkbox-select-row"
+                    type="checkbox"
+                    @click="checkAllSelect"
+                    :checked="isCheckAll"
+                  />
+                </div>
               </th>
               <th class="e-id">
                 {{
@@ -186,12 +188,14 @@
               :class="{ checkedRow: checkRow().includes(item.EmployeeId) }"
             >
               <td class="employee-border-left" @dblclick.stop>
-                <input
-                  class="checkbox-select-row"
-                  type="checkbox"
-                  @click="checkRow(item.EmployeeId)"
-                  :checked="checkRow().includes(item.EmployeeId)"
-                />
+                <div class="th-checkbox">
+                  <input
+                    class="checkbox-select-row"
+                    type="checkbox"
+                    @click="checkRow(item.EmployeeId)"
+                    :checked="checkRow().includes(item.EmployeeId)"
+                  />
+                </div>
               </td>
               <td class="e-id" :title="item.EmployeeCode">
                 {{ item.EmployeeCode }}
@@ -735,10 +739,13 @@ export default {
         this.isShowLoadding = true;
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
-          this.isShowDialogConfirmDelete = false;
+        this.isShowDialogConfirmDelete = false;
+        this.isOverlay = false;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.isDeleteMultipleDialog = false;
-          this.isOverlay = false;
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
@@ -978,6 +985,7 @@ export default {
      */
     onShowDialogDeleteMulti() {
       this.isShowDialogConfirmDelete = !this.isShowDialogConfirmDelete;
+      this.isOverlay = true;
       this.isDeleteMultipleDialog = true;
     },
     /**
@@ -990,11 +998,14 @@ export default {
         this.isShowLoadding = true;
         const res = await employeeService.deleteMutiple(this.ids);
         this.isShowLoadding = false;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+        this.isShowDialogConfirmDelete = false;
+        this.isOverlay = false;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
           this.ids = [];
-          this.isShowDialogConfirmDelete = false;
           this.isDeleteMultipleDialog = false;
-          this.isOverlay = false;
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
@@ -1076,12 +1087,12 @@ input[type="checkbox"] {
 }
 
 .checkedRow {
-  background-color: #e7f5ec;
+  background-color: #f9ecca;
 }
 
 .checkedRow td:first-child,
 .checkedRow td:last-child {
-  background-color: #e7f5ec;
+  background-color: #f9ecca;
 }
 
 .loadding-form-detail {
