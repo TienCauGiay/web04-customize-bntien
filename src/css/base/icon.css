@@ -317,6 +317,12 @@
     height: 20px;
 }
 
+.close-small-icon{
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -83px -316px;
+	width: 9px;
+	height: 8px;
+}
+
 .function-icon {
 	background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -564px -365px;
 	width: 8px;

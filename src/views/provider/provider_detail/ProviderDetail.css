@@ -303,3 +303,8 @@
 #detail-info-provider .cbb-no-label .select-entity{
   top: calc(100% - 15px);
 }
+
+#detail-info-provider .half-content{
+  height: unset;
+  min-height: 44px;
+}

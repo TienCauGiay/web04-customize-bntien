@@ -61,37 +61,33 @@
     border-left: 1px solid var(--color-border-default);
 }
 
-.select-item-cbb-multiple .form-cbb-menu{
+.select-item-cbb-multiple #form-cbb-menu-select-single{
     position: absolute;
     width: 100%;
     top: calc(100% + 5px);
     max-height: 134px;
 }
 
-.select-item-cbb-multiple .form-cbb-menu-item div:last-child{
-    margin-right: 10px;
-    margin-left: auto;
-}
-
-.select-item-cbb-multiple .form-cbb-menu-item div{
+.select-item-cbb-multiple #form-cbb-menu-select-single div{
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.col-1-cbb-menu-item {
-    flex: 0 0 150px; 
-    min-width: 150px; 
+#form-cbb-menu-select-single .col-1-cbb-menu-item {
     white-space: nowrap;
     overflow: hidden; 
     text-overflow: ellipsis;
 }
   
-.col-2-cbb-menu-item {
-    flex: 0 0 200px; 
-    min-width: 200px; 
+#form-cbb-menu-select-single .col-2-cbb-menu-item {
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis; 
+}
+
+.select-item-cbb-multiple #form-cbb-menu-select-single .form-cbb-menu-item div:last-child{
+    margin-right: unset;
+    margin-left: unset;
 }
 

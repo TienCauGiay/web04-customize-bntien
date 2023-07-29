@@ -169,7 +169,9 @@
           <div class="half-content">
             <div class="col-md-l">
               <label> Nhóm nhà cung cấp </label>
-              <misa-combobox-multiple></misa-combobox-multiple>
+              <misa-combobox-select-multiple
+                :listDataSelected="['1', 'bui', 'ngoc', 'tien', 'pass']"
+              ></misa-combobox-select-multiple>
             </div>
           </div>
           <div class="half-content-2">
@@ -197,7 +199,7 @@
           <div class="half-content">
             <div class="col-md-l">
               <label>Nhân viên mua hàng</label>
-              <misa-combobox-multiple></misa-combobox-multiple>
+              <misa-combobox-select-single></misa-combobox-select-single>
             </div>
           </div>
         </template>
@@ -252,7 +254,9 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
             <label>Nhóm nhà cung cấp</label>
-            <misa-combobox-multiple></misa-combobox-multiple>
+            <misa-combobox-select-multiple
+              :listDataSelected="['1', 'bui', 'ngoc', 'tien', 'pass']"
+            ></misa-combobox-select-multiple>
           </div>
         </div>
         <div class="half-content" v-if="this.provider.IsPersonal">
@@ -296,7 +300,7 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
             <label>Nhân viên mua hàng</label>
-            <misa-combobox-multiple></misa-combobox-multiple>
+            <misa-combobox-select-single></misa-combobox-select-single>
           </div>
         </div>
         <div class="half-content-2" v-if="this.provider.IsPersonal">
@@ -545,7 +549,7 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-multiple></misa-combobox-multiple>
+                    <misa-combobox-select-single></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
@@ -601,7 +605,7 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-multiple></misa-combobox-multiple>
+                    <misa-combobox-select-single></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
