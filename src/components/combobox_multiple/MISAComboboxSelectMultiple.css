@@ -80,6 +80,15 @@
     max-height: 134px;
 }
 
+#form-cbb-menu-select-multiple .form-cbb-menu-title{
+    margin-bottom: 0;
+}
+
+.select-item-cbb-multiple .form-cbb-main{
+    max-height: 108px;
+    overflow-y: auto;
+}
+
 .select-item-cbb-multiple .form-cbb-menu-item div:last-child{
     margin-right: 10px;
     margin-left: auto;

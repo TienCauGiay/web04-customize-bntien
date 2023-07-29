@@ -304,7 +304,7 @@
   top: calc(100% - 15px);
 }
 
-#detail-info-provider .half-content{
-  height: unset;
+#detail-info-provider #group-provider{
   min-height: 44px;
+  height: unset;
 }

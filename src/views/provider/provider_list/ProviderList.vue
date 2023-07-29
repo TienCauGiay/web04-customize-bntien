@@ -425,6 +425,7 @@
 <script>
 import ProviderDetail from "@/views/provider/provider_detail/ProviderDetail.vue";
 import providerService from "@/services/provider.js";
+import groupProviderService from "@/services/group_provider.js";
 
 export default {
   name: "ProviderList",
@@ -699,11 +700,19 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
-    onUpdateFormDetail(provider) {
-      this.providerUpdate = provider;
-      this.isShowFormDetail = true;
-      this.isOverlay = true;
-      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
+    async onUpdateFormDetail(provider) {
+      try {
+        const groupProvider = await groupProviderService.getByProviderId(
+          provider.ProviderId
+        );
+        this.providerUpdate = provider;
+        this.providerUpdate.GroupProvider = groupProvider.data;
+        this.isShowFormDetail = true;
+        this.isOverlay = true;
+        this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
+      } catch {
+        return;
+      }
     },
     /**
      * Mô tả: Hàm set isStatusFormMode = ADD
@@ -798,9 +807,13 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
-    onDupliCateProvider() {
+    async onDupliCateProvider() {
       try {
+        const groupProvider = await groupProviderService.getByProviderId(
+          this.selectedProvider.ProviderId
+        );
         this.providerUpdate = this.selectedProvider;
+        this.providerUpdate.GroupProvider = groupProvider.data;
         this.isShowFormDetail = true;
         this.isOverlay = true;
         this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -1022,6 +1035,7 @@ export default {
         return;
       }
     },
+
     /**
      * Mô tả: Xử lí xuất dữ liệu ra excel
      * created by : BNTIEN

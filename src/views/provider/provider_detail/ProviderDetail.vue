@@ -166,11 +166,15 @@
               </div>
             </div>
           </div>
-          <div class="half-content">
+          <div class="half-content" id="group-provider">
             <div class="col-md-l">
               <label> Nhóm nhà cung cấp </label>
               <misa-combobox-select-multiple
-                :listDataSelected="['1', 'bui', 'ngoc', 'tien', 'pass']"
+                :listDataSelected="provider.GroupProvider"
+                :propCode="'GroupCode'"
+                :propId="'GroupId'"
+                :propName="'GroupName'"
+                :listEntitySearchCBB="listGroupSearch"
               ></misa-combobox-select-multiple>
             </div>
           </div>
@@ -251,11 +255,19 @@
             </div>
           </div>
         </div>
-        <div class="half-content" v-if="this.provider.IsPersonal">
+        <div
+          class="half-content"
+          id="group-provider"
+          v-if="this.provider.IsPersonal"
+        >
           <div class="col-md-l">
             <label>Nhóm nhà cung cấp</label>
             <misa-combobox-select-multiple
-              :listDataSelected="['1', 'bui', 'ngoc', 'tien', 'pass']"
+              :listDataSelected="provider.GroupProvider"
+              :propCode="'GroupCode'"
+              :propId="'GroupId'"
+              :propName="'GroupName'"
+              :listEntitySearchCBB="listGroupSearch"
             ></misa-combobox-select-multiple>
           </div>
         </div>
@@ -876,6 +888,7 @@
 
 <script>
 import providerService from "@/services/provider.js";
+import groupService from "@/services/group.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -903,6 +916,28 @@ export default {
     this.$_MISAEmitter.on("closeDialogDataError", () => {
       this.onCloseDialogSaveAndAdd();
     });
+
+    this.$_MISAEmitter.on("toggleCBBSelectMultiple", (group, isUnSelect) => {
+      this.toggleSelectGroup(group, isUnSelect);
+    });
+
+    this.$_MISAEmitter.on("deleteItemCBBSelectMultiple", (data) => {
+      this.deleteGroupProvider(data);
+    });
+
+    this.$_MISAEmitter.on(
+      "handleScrollCBBSelectMultiple",
+      async (textSearch) => {
+        await this.handleScrollCBBGroup(textSearch);
+      }
+    );
+
+    this.$_MISAEmitter.on(
+      "onSearchChangeCBBSelectMultiple",
+      async (textSearch) => {
+        await this.onSearchChangeGroup(textSearch);
+      }
+    );
   },
 
   mounted() {
@@ -963,6 +998,10 @@ export default {
         addressOther: false,
         note: false,
       },
+      // Khai báo danh sách group
+      listGroupSearch: [],
+      // Khai báo trang hiện tại của group trong phân trang
+      currentPageGroup: this.$_MISAEnum.RECORD.CURRENT_PAGE,
     };
   },
 
@@ -1011,6 +1050,7 @@ export default {
     async loadData() {
       try {
         await this.getNewCode();
+        await this.getListGroup();
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.providerSelected);
@@ -1020,7 +1060,6 @@ export default {
           // Sinh mã tự động
           this.provider.ProviderCode = this.newProviderCode;
         }
-        this.provider.IsPersonal = false;
       } catch {
         return;
       }
@@ -1044,6 +1083,21 @@ export default {
         JSON.stringify(this.providerSelected) !== JSON.stringify(this.provider)
       );
     },
+
+    /**
+     * Mô tả: Tìm kiếm, phân trang danh sách group
+     * created by : BNTIEN
+     * created date: 29-07-2023 20:57:23
+     */
+    async getListGroup() {
+      try {
+        const res = await groupService.getFilter(20, this.currentPageGroup, "");
+        this.listGroupSearch = res.data;
+      } catch {
+        return;
+      }
+    },
+
     /**
      * Mô tả: Hàm sử lí sự kiện khi click vào icon close
      * created by : BNTIEN
@@ -1121,6 +1175,8 @@ export default {
               ) {
                 this.setErrorMaxLength(refInput);
               }
+              break;
+            case "GroupProvider":
               break;
             default:
               if (this.provider[refInput]) {
@@ -1201,6 +1257,9 @@ export default {
             let providerByCode = await this.checkProviderExists();
             if (!providerByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              this.provider.GroupIds = this.provider.GroupProvider.map(
+                (x) => x.GroupId
+              );
               const res = await providerService.create(this.provider);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
@@ -1241,6 +1300,9 @@ export default {
                 providerByCode.ProviderCode ===
                   this.providerSelected.ProviderCode
               ) {
+                this.provider.GroupIds = this.provider.GroupProvider.map(
+                  (x) => x.GroupId
+                );
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -1288,6 +1350,9 @@ export default {
             let providerByCode = await this.checkProviderExists();
             if (!providerByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              this.provider.GroupIds = this.provider.GroupProvider.map(
+                (x) => x.GroupId
+              );
               const res = await providerService.create(this.provider);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
@@ -1332,6 +1397,9 @@ export default {
                 providerByCode.ProviderCode ===
                   this.providerSelected.ProviderCode
               ) {
+                this.provider.GroupIds = this.provider.GroupProvider.map(
+                  (x) => x.GroupId
+                );
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -1486,6 +1554,87 @@ export default {
     toggleCheckboxCustomer() {
       this.provider.IsCustomer = !this.provider.IsCustomer;
     },
+
+    /**
+     * Mô tả: Xử lí toggle select group
+     * created by : BNTIEN
+     * created date: 29-07-2023 21:47:44
+     */
+    toggleSelectGroup(group, isUnSelect) {
+      try {
+        if (isUnSelect) {
+          this.provider.GroupProvider = this.provider.GroupProvider.filter(
+            (x) => x.GroupId != group.GroupId
+          );
+        } else {
+          if (!this.provider.GroupProvider) {
+            this.provider.GroupProvider = [];
+          }
+          this.provider.GroupProvider.push({
+            GroupCode: group.GroupCode,
+            GroupId: group.GroupId,
+            ProviderId: this.provider.ProviderId,
+          });
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Xóa 1 item trong cbb nhóm nhà cung cấp
+     * created by : BNTIEN
+     * created date: 29-07-2023 22:41:39
+     */
+    deleteGroupProvider(data) {
+      try {
+        this.provider.GroupProvider = this.provider.GroupProvider.filter(
+          (x) => x.GroupId != data.GroupId
+        );
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: lấy thêm dữ liệu khi scroll đến cuối trong cbb nhóm nhà cung cấp
+     * created by : BNTIEN
+     * created date: 29-07-2023 22:53:56
+     */
+    async handleScrollCBBGroup(textSearchGroup) {
+      try {
+        this.currentPageGroup += 1;
+        const filteredGroups = await groupService.getFilter(
+          20,
+          this.currentPageGroup,
+          textSearchGroup
+        );
+        this.listGroupSearch.Data = [
+          ...this.listGroupSearch.Data,
+          ...filteredGroups.data.Data,
+        ];
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Tìm kiếm trong cbb nhóm nhà cung cấp
+     * created by : BNTIEN
+     * created date: 29-07-2023 23:23:56
+     */
+    async onSearchChangeGroup(textSearchGroup) {
+      try {
+        const filteredGroups = await groupService.getFilter(
+          20,
+          1,
+          textSearchGroup
+        );
+        this.listGroupSearch = filteredGroups.data;
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1494,6 +1643,10 @@ export default {
     this.$_MISAEmitter.off("yesDialogDataChange");
     this.$_MISAEmitter.off("closeDialogCodeExist");
     this.$_MISAEmitter.off("closeDialogDataError");
+    this.$_MISAEmitter.off("toggleCBBSelectMultiple");
+    this.$_MISAEmitter.off("deleteItemCBBSelectMultiple");
+    this.$_MISAEmitter.off("handleScrollCBBSelectMultiple");
+    this.$_MISAEmitter.off("onSearchChangeCBBSelectMultiple");
     this.$refs.FormDetailProvider.removeEventListener(
       "keydown",
       this.handleKeyDown
