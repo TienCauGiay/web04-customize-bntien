@@ -7,7 +7,7 @@
     box-sizing: border-box;
 }
 
-.cbb-multiple:has(.textfield-cbb-multiple:focus){
+.cbb-multiple:has(input:focus){
     border-color: var(--color-btn-default);
 }
 
@@ -17,22 +17,6 @@
     box-sizing: border-box;
     border: unset;
     outline: unset;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.textfield-cbb-multiple {
-    height: calc(26px - 0.667px * 2);
-    width: calc(100% - calc(26px - 0.667px * 2));
-    box-sizing: border-box;
-    border: unset;
-    padding: 0 12px;
-    border-radius: 4px 0 0 4px;
-}
-  
-.textfield-cbb-multiple:focus {
-    border: unset;
 }
 
 .icon-cbb-multiple{
@@ -68,10 +52,9 @@
     max-height: 134px;
 }
 
-.select-item-cbb-multiple #form-cbb-menu-select-single div{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+#form-cbb-menu-select-single #form-cbb-main{
+    max-height: 108px;
+    overflow-y: auto;
 }
 
 #form-cbb-menu-select-single .col-1-cbb-menu-item {

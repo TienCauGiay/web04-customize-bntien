@@ -203,7 +203,17 @@
           <div class="half-content">
             <div class="col-md-l">
               <label>Nhân viên mua hàng</label>
-              <misa-combobox-select-single></misa-combobox-select-single>
+              <misa-combobox-select-single
+                :propCode="'EmployeeCode'"
+                :propId="'EmployeeId'"
+                :propName="'FullName'"
+                :nameColFirst="'Mã nhân viên'"
+                :nameColSecond="'Tên nhân viên'"
+                :isBorderRedCBB="isBorderRed"
+                :errorsCBB="errors"
+                :entityCBB="provider"
+                :listEntitySearchCBB="listEmployeeSearch"
+              ></misa-combobox-select-single>
             </div>
           </div>
         </template>
@@ -278,9 +288,9 @@
               :isBorderRedCBB="isBorderRed"
               :entityCBB="provider"
               :errorsCBB="errors"
-              :listEntitySearchCBB="listNatureSearch"
-              :propName="'Nature'"
-              :propId="'NatureId'"
+              :listEntitySearchCBB="listXH"
+              :propName="'xhName'"
+              :propId="'xhId'"
               :placeholderInputCBB="'Xưng hô'"
             ></misa-combobox>
           </div>
@@ -312,7 +322,17 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
             <label>Nhân viên mua hàng</label>
-            <misa-combobox-select-single></misa-combobox-select-single>
+            <misa-combobox-select-single
+              :propCode="'EmployeeCode'"
+              :propId="'EmployeeId'"
+              :propName="'FullName'"
+              :nameColFirst="'Mã nhân viên'"
+              :nameColSecond="'Tên nhân viên'"
+              :isBorderRedCBB="isBorderRed"
+              :errorsCBB="errors"
+              :entityCBB="provider"
+              :listEntitySearchCBB="listEmployeeSearch"
+            ></misa-combobox-select-single>
           </div>
         </div>
         <div class="half-content-2" v-if="this.provider.IsPersonal">
@@ -561,7 +581,17 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-select-single></misa-combobox-select-single>
+                    <misa-combobox-select-single
+                      :propCode="'EmployeeCode'"
+                      :propId="'EmployeeId'"
+                      :propName="'FullName'"
+                      :nameColFirst="'Mã nhân viên'"
+                      :nameColSecond="'Tên nhân viên'"
+                      :isBorderRedCBB="isBorderRed"
+                      :errorsCBB="errors"
+                      :entityCBB="provider"
+                      :listEntitySearchCBB="listEmployeeSearch"
+                    ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
@@ -617,7 +647,17 @@
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
-                    <misa-combobox-select-single></misa-combobox-select-single>
+                    <misa-combobox-select-single
+                      :propCode="'EmployeeCode'"
+                      :propId="'EmployeeId'"
+                      :propName="'FullName'"
+                      :nameColFirst="'Mã nhân viên'"
+                      :nameColSecond="'Tên nhân viên'"
+                      :isBorderRedCBB="isBorderRed"
+                      :errorsCBB="errors"
+                      :entityCBB="provider"
+                      :listEntitySearchCBB="listEmployeeSearch"
+                    ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
@@ -889,6 +929,7 @@
 <script>
 import providerService from "@/services/provider.js";
 import groupService from "@/services/group.js";
+import employeeService from "@/services/employee.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -938,6 +979,18 @@ export default {
         await this.onSearchChangeGroup(textSearch);
       }
     );
+
+    this.$_MISAEmitter.on("onSelectedEntityCBBSingle", (data) => {
+      this.onSelectedEmployee(data);
+    });
+    this.$_MISAEmitter.on("onSearchChangeCBBSingle", (newValue) => {
+      this.onSearchChangeEmployee(newValue);
+    });
+    this.$_MISAEmitter.on("onKeyDownEntityCBBSingle", (index) => {
+      this.provider.FullName = this.listEmployeeSearch.Data[index].FullName;
+      this.provider.EmployeeId = this.listEmployeeSearch.Data[index].EmployeeId;
+      this.isBorderRed.FullName = false;
+    });
   },
 
   mounted() {
@@ -960,6 +1013,8 @@ export default {
         "Address",
         "PhoneNumber",
         "Website",
+        "EmployeeId",
+        "FullName",
         "Note",
       ],
       // Khai báo đối tượng provider
@@ -990,6 +1045,17 @@ export default {
         { Id: 4, Nature: "Không có số dư" },
       ],
 
+      // Khai báo danh sách xưng hô
+      listXH: [
+        { xhId: 1, xhName: "Mr" },
+        { xhId: 2, xhName: "Mrs" },
+        { xhId: 3, xhName: "Ms" },
+        { xhId: 4, xhName: "Ông" },
+        { xhId: 5, xhName: "Bà" },
+        { xhId: 6, xhName: "Ngài" },
+        { xhId: 7, xhName: "Anh" },
+      ],
+
       // Biến quy định layout nào đang được chọn
       selectLayout: {
         infoContact: true,
@@ -1002,6 +1068,12 @@ export default {
       listGroupSearch: [],
       // Khai báo trang hiện tại của group trong phân trang
       currentPageGroup: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo danh sách group
+      listEmployeeSearch: [],
+      // Khai báo trang hiện tại của group trong phân trang
+      currentPageEmployee: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox nhân viên mua hàng
+      searchEmployeeTimeout: null,
     };
   },
 
@@ -1051,6 +1123,7 @@ export default {
       try {
         await this.getNewCode();
         await this.getListGroup();
+        await this.getListEmployee();
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.providerSelected);
@@ -1093,6 +1166,24 @@ export default {
       try {
         const res = await groupService.getFilter(20, this.currentPageGroup, "");
         this.listGroupSearch = res.data;
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Tìm kiếm phân trang nhân viên mua hàng, tạm thời lấy luôn bảng nhân viên
+     * created by : BNTIEN
+     * created date: 30-07-2023 00:10:44
+     */
+    async getListEmployee() {
+      try {
+        const res = await employeeService.getFilter(
+          20,
+          this.currentPageEmployee,
+          ""
+        );
+        this.listEmployeeSearch = res.data;
       } catch {
         return;
       }
@@ -1177,6 +1268,18 @@ export default {
               }
               break;
             case "GroupProvider":
+            case "EmployeeId":
+              break;
+            case "FullName":
+              if (this.provider.FullName && !this.provider.EmployeeId) {
+                this.errors.FullName = `Nhân viên mua hàng <${this.provider.FullName}> không tồn tại`;
+                this.isBorderRed.FullName = true;
+                this.dataNotNull.push(
+                  `Nhân viên mua hàng <${this.provider.FullName}> không tồn tại`
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
               break;
             default:
               if (this.provider[refInput]) {
@@ -1241,6 +1344,26 @@ export default {
       }`;
       this.contentProviderCodeExist = providerExisted.ProviderCode;
     },
+
+    /**
+     * Mô tả: set giá trị cho list group id
+     * created by : BNTIEN
+     * created date: 30-07-2023 09:48:50
+     */
+    setGroupIds() {
+      try {
+        if (this.provider.GroupProvider) {
+          this.provider.GroupIds = this.provider.GroupProvider.map(
+            (x) => x.GroupId
+          );
+        } else {
+          this.provider.GroupIds = [];
+        }
+      } catch {
+        return;
+      }
+    },
+
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
@@ -1255,11 +1378,9 @@ export default {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let providerByCode = await this.checkProviderExists();
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống
             if (!providerByCode) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              this.provider.GroupIds = this.provider.GroupProvider.map(
-                (x) => x.GroupId
-              );
+              this.setGroupIds();
               const res = await providerService.create(this.provider);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
@@ -1300,9 +1421,7 @@ export default {
                 providerByCode.ProviderCode ===
                   this.providerSelected.ProviderCode
               ) {
-                this.provider.GroupIds = this.provider.GroupProvider.map(
-                  (x) => x.GroupId
-                );
+                this.setGroupIds();
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -1350,9 +1469,7 @@ export default {
             let providerByCode = await this.checkProviderExists();
             if (!providerByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              this.provider.GroupIds = this.provider.GroupProvider.map(
-                (x) => x.GroupId
-              );
+              this.setGroupIds();
               const res = await providerService.create(this.provider);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
@@ -1397,9 +1514,7 @@ export default {
                 providerByCode.ProviderCode ===
                   this.providerSelected.ProviderCode
               ) {
-                this.provider.GroupIds = this.provider.GroupProvider.map(
-                  (x) => x.GroupId
-                );
+                this.setGroupIds();
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -1450,12 +1565,26 @@ export default {
         }
       }
 
+      // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
+      if (
+        listPropError.includes("EmployeeId") &&
+        !listPropError.includes("FullName")
+      ) {
+        listPropError.push("FullName");
+      }
+
       for (const prop of this.providerProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
-          this.$nextTick(() => {
-            this.$refs[prop].focus();
-          });
+          if (prop === "EmployeeId" || prop === "FullName") {
+            this.$nextTick(() => {
+              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
+            });
+          } else {
+            this.$nextTick(() => {
+              this.$refs[prop].focus();
+            });
+          }
           return;
         }
       }
@@ -1635,6 +1764,46 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:54:52`
+     */
+    onSelectedEmployee(employee) {
+      this.provider.FullName = employee.FullName;
+      this.provider.EmployeeId = employee.EmployeeId;
+      this.isBorderRed.FullName = false;
+    },
+
+    /**
+     * Mô tả: Lắng nghe sự thay đổi text trong input search department và tìm kiếm trong combobox
+     * created by : BNTIEN
+     * created date: 06-06-2023 22:31:16
+     */
+    async onSearchChangeEmployee(newValue) {
+      this.isBorderRed.FullName = false;
+      this.isBorderRed.EmployeeId = false;
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchEmployeeTimeout);
+        this.provider.FullName = newValue;
+        delete this.provider.EmployeeId;
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchEmployeeTimeout = setTimeout(async () => {
+          const newListEmployee = await employeeService.getFilter(
+            20,
+            1,
+            newValue
+          );
+          this.listEmployeeSearch = newListEmployee.data;
+        }, 500);
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1647,6 +1816,9 @@ export default {
     this.$_MISAEmitter.off("deleteItemCBBSelectMultiple");
     this.$_MISAEmitter.off("handleScrollCBBSelectMultiple");
     this.$_MISAEmitter.off("onSearchChangeCBBSelectMultiple");
+    this.$_MISAEmitter.off("onSelectedEntityCBBSingle");
+    this.$_MISAEmitter.off("onSearchChangeCBBSingle");
+    this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
     this.$refs.FormDetailProvider.removeEventListener(
       "keydown",
       this.handleKeyDown
@@ -1668,7 +1840,8 @@ input {
 }
 
 #detail-info-provider input[type="checkbox"] {
-  height: 16px;
+  height: 20px;
+  width: 20px;
 }
 
 #detail-info-provider input[type="radio"] {
