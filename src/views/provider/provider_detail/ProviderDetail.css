@@ -176,6 +176,11 @@
 }
 
 /* table css tổ chức */
+#detail-info-provider #table-input-account{
+  max-height: 200px;
+  overflow-y: auto;
+}
+
 .table-input{
   width: 100%;
   min-width: unset;
@@ -194,6 +199,10 @@
   padding: 2px 8px;
 }
 
+.table-input th{
+  position: unset;
+}
+
 .table-input input{
   width: 100%;
 }
@@ -209,6 +218,7 @@
 .table-input td:last-child{
   position: unset;
   border-right: unset;
+  background-color: unset;
 }
 
 .table-input-col-1{

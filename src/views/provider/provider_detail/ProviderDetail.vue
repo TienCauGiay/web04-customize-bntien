@@ -288,9 +288,9 @@
               :isBorderRedCBB="isBorderRed"
               :entityCBB="provider"
               :errorsCBB="errors"
-              :listEntitySearchCBB="listXH"
-              :propName="'xhName'"
-              :propId="'xhId'"
+              :listEntitySearchCBB="listVocative"
+              :propName="'Vocative'"
+              :propId="'Id'"
               :placeholderInputCBB="'Xưng hô'"
             ></misa-combobox>
           </div>
@@ -412,9 +412,9 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listVocative"
+                    :propName="'Vocative'"
+                    :propId="'Id'"
                     :placeholderInputCBB="'Xưng hô'"
                   ></misa-combobox>
                 </div>
@@ -462,9 +462,9 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listVocative"
+                    :propName="'Vocative'"
+                    :propId="'Id'"
                     :placeholderInputCBB="'Xưng hô'"
                   ></misa-combobox>
                 </div>
@@ -728,7 +728,7 @@
             </div>
           </div>
           <div class="content-select-layout" v-if="selectLayout.bankAccount">
-            <table class="table-input">
+            <table class="table-input" id="table-input-account">
               <thead class="table-input-title">
                 <tr>
                   <th class="table-input-col-1">Số tài khoản</th>
@@ -739,27 +739,46 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="table-input-col-1">
-                    <misa-input ref="AccountNumber"></misa-input>
-                  </td>
-                  <td class="table-input-col-2"><misa-input></misa-input></td>
-                  <td class="table-input-col-3"><misa-input></misa-input></td>
-                  <td class="table-input-col-4"><misa-input></misa-input></td>
-                  <td class="table-input-col-5">
-                    <div class="delete-row-table-input">
-                      <div class="delete-icon"></div>
-                    </div>
-                  </td>
-                </tr>
+                <template
+                  v-for="(item, index) in rowNumberAccount"
+                  :key="index"
+                >
+                  <tr>
+                    <td class="table-input-col-1">
+                      <misa-input
+                        ref="AccountNumber"
+                        v-model="item.AccountNumber"
+                      ></misa-input>
+                    </td>
+                    <td class="table-input-col-2">
+                      <misa-input ref="BankName"></misa-input>
+                    </td>
+                    <td class="table-input-col-3">
+                      <misa-input ref="BankBranch"></misa-input>
+                    </td>
+                    <td class="table-input-col-4">
+                      <misa-input ref="BankAddress"></misa-input>
+                    </td>
+                    <td
+                      class="table-input-col-5"
+                      @click="deleteRowAccount(index)"
+                    >
+                      <div class="delete-row-table-input">
+                        <div class="delete-icon"></div>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
               </tbody>
               <tfoot>
                 <td colspan="5">
                   <misa-button-extra
                     :textButtonExtra="'Thêm dòng'"
+                    @click="btnAddRowAccount"
                   ></misa-button-extra>
                   <misa-button-extra
                     :textButtonExtra="'Xóa hết dòng'"
+                    @click="btnDeleteAllRowAccount"
                   ></misa-button-extra>
                 </td>
               </tfoot>
@@ -778,10 +797,16 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listCountry.Search"
+                    :propName="'LocationCountry'"
+                    :propId="'LocationId'"
                     :placeholderInputCBB="'Quốc gia'"
+                    :indexSelectedCBB="
+                      listCountry.All.findIndex(
+                        (obj) =>
+                          obj.LocationCode == locationDefault.LocationCode
+                      )
+                    "
                   ></misa-combobox>
                 </div>
               </div>
@@ -792,9 +817,9 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listCity.Search"
+                    :propName="'LocationCity'"
+                    :propId="'LocationId'"
                     :placeholderInputCBB="'Tỉnh/Thành phố'"
                   ></misa-combobox>
                 </div>
@@ -805,9 +830,9 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listDistrict.Search"
+                    :propName="'LocationDistrict'"
+                    :propId="'LocationId'"
                     :placeholderInputCBB="'Quận/Huyện'"
                   ></misa-combobox>
                 </div>
@@ -818,9 +843,9 @@
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
                     :errorsCBB="errors"
-                    :listEntitySearchCBB="listNatureSearch"
-                    :propName="'Nature'"
-                    :propId="'NatureId'"
+                    :listEntitySearchCBB="listVillage.Search"
+                    :propName="'LocationVillage'"
+                    :propId="'LocationId'"
                     :placeholderInputCBB="'Xã/Phường'"
                   ></misa-combobox>
                 </div>
@@ -930,6 +955,7 @@
 import providerService from "@/services/provider.js";
 import groupService from "@/services/group.js";
 import employeeService from "@/services/employee.js";
+import locationService from "@/services/location.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -979,6 +1005,47 @@ export default {
         await this.onSearchChangeGroup(textSearch);
       }
     );
+
+    this.$_MISAEmitter.on("onSelectedEntityCBB", async (data, propName) => {
+      if (propName == "Vocative") {
+        this.onSelectedVocative(data);
+      }
+      await this.onSelectedLocation(data, propName);
+    });
+    this.$_MISAEmitter.on("onSearchChangeCBB", (newValue, propName) => {
+      if (propName == "Vocative") {
+        this.onSearchChangeVocative(newValue);
+      }
+      if (propName == "LocationCountry") {
+        this.onSearchChangeCountry(newValue);
+      }
+      if (propName == "LocationCity") {
+        this.onSearchChangeCity(newValue);
+      }
+      if (propName == "LocationDistrict") {
+        this.onSearchChangeDistrict(newValue);
+      }
+      if (propName == "LocationVillage") {
+        this.onSearchChangeVillage(newValue);
+      }
+    });
+    this.$_MISAEmitter.on("onKeyDownEntityCBB", (index, propName) => {
+      if (propName == "Vocative") {
+        this.onKeyDownVocativeCBB(index);
+      }
+      if (propName == "LocationCountry") {
+        this.onKeyDownCountryCBB(index);
+      }
+      if (propName == "LocationCity") {
+        this.onKeyDownCityCBB(index);
+      }
+      if (propName == "LocationDistrict") {
+        this.onKeyDownDistrictCBB(index);
+      }
+      if (propName == "LocationVillage") {
+        this.onKeyDownVillageCBB(index);
+      }
+    });
 
     this.$_MISAEmitter.on("onSelectedEntityCBBSingle", (data) => {
       this.onSelectedEmployee(data);
@@ -1037,23 +1104,15 @@ export default {
       errors: {},
       // Khai báo biến chứa danh sách các ô input khi hover
       isHovering: {},
-      // Khai báo danh sách đơn vị tìm kiếm
-      listNatureSearch: [
-        { Id: 1, Nature: "Dư nợ" },
-        { Id: 2, Nature: "Dư có" },
-        { Id: 3, Nature: "Lưỡng tính" },
-        { Id: 4, Nature: "Không có số dư" },
-      ],
-
       // Khai báo danh sách xưng hô
-      listXH: [
-        { xhId: 1, xhName: "Mr" },
-        { xhId: 2, xhName: "Mrs" },
-        { xhId: 3, xhName: "Ms" },
-        { xhId: 4, xhName: "Ông" },
-        { xhId: 5, xhName: "Bà" },
-        { xhId: 6, xhName: "Ngài" },
-        { xhId: 7, xhName: "Anh" },
+      listVocative: [
+        { Id: 1, Vocative: "Mr" },
+        { Id: 2, Vocative: "Mrs" },
+        { Id: 3, Vocative: "Ms" },
+        { Id: 4, Vocative: "Ông" },
+        { Id: 5, Vocative: "Bà" },
+        { Id: 6, Vocative: "Ngài" },
+        { Id: 7, Vocative: "Anh" },
       ],
 
       // Biến quy định layout nào đang được chọn
@@ -1074,6 +1133,22 @@ export default {
       currentPageEmployee: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox nhân viên mua hàng
       searchEmployeeTimeout: null,
+      // Khởi tạo quốc gia mặc định
+      locationDefault: { LocationCode: "VN", LocationName: "Việt Nam" },
+      // Khai báo biến lưu danh sách quốc gia
+      listCountry: { All: [], Search: [] },
+      // Khai báo biến lưu danh sách tỉnh
+      listCity: { All: [], Search: [] },
+      // Khai báo biến lưu danh sách huyện
+      listDistrict: { All: [], Search: [] },
+      // Khai báo biến lưu danh sách xã
+      listVillage: { All: [], Search: [] },
+      // Khai báo biến lưu số dòng tài khoản ngân hàng
+      rowNumberAccount: [
+        { AccountNumber: "", BankName: "", BankBranch: "", BankAddress: "" },
+      ],
+      // Khai báo biến lưu số dòng địa chỉ giao hàng
+      rowNumberAddress: [1],
     };
   },
 
@@ -1090,7 +1165,7 @@ export default {
             this.selectLayout[key] = true;
             if (key == "bankAccount") {
               this.$nextTick(() => {
-                this.$refs.AccountNumber.focus();
+                this.$refs.AccountNumber[0].focus();
               });
             }
           } else {
@@ -1124,19 +1199,32 @@ export default {
         await this.getNewCode();
         await this.getListGroup();
         await this.getListEmployee();
+        this.listCountry.All = await this.getListLocation(1, "");
+        this.listCountry.Search = await this.getListLocation(1, "");
+        this.listCity.All = await this.getListLocation(
+          2,
+          this.locationDefault.LocationCode
+        );
+        this.listCity.Search = await this.getListLocation(
+          2,
+          this.locationDefault.LocationCode
+        );
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.providerSelected);
         // Chuyển đổi chuỗi json thành đối tượng provider
+
         this.provider = JSON.parse(res);
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Sinh mã tự động
           this.provider.ProviderCode = this.newProviderCode;
+          this.provider.LocationCountry = this.locationDefault.LocationName;
         }
       } catch {
         return;
       }
     },
+
     /**
      * Mô tả: Hàm focus vào ô input mã nhân viên
      * created by : BNTIEN
@@ -1165,7 +1253,7 @@ export default {
     async getListGroup() {
       try {
         const res = await groupService.getFilter(20, this.currentPageGroup, "");
-        this.listGroupSearch = res.data;
+        this.listGroupSearch = res.data.Data;
       } catch {
         return;
       }
@@ -1186,6 +1274,20 @@ export default {
         this.listEmployeeSearch = res.data;
       } catch {
         return;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm trả về danh sách vị trí địa lý theo cha
+     * created by : BNTIEN
+     * created date: 30-07-2023 13:13:57
+     */
+    async getListLocation(grade, parentCode) {
+      try {
+        const res = await locationService.getFilter(grade, parentCode);
+        return res.data;
+      } catch {
+        return [];
       }
     },
 
@@ -1804,6 +1906,123 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Hàm thêm 1 dòng tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 30-07-2023 21:24:11
+     */
+    btnAddRowAccount() {
+      this.rowNumberAccount.push({
+        AccountNumber: "",
+        BankName: "",
+        BankBranch: "",
+        BankAddress: "",
+      });
+      this.$nextTick(() => {
+        this.$refs.AccountNumber[this.rowNumberAccount.length - 1].focus();
+      });
+    },
+
+    /**
+     * Mô tả: Xóa 1 dòng tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 30-07-2023 21:59:03
+     */
+    deleteRowAccount(index) {
+      if (this.rowNumberAccount.length > 1) {
+        this.rowNumberAccount.splice(index, 1);
+      }
+    },
+
+    /**
+     * Mô tả: Hàm xóa hết dòng tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 30-07-2023 21:26:39
+     */
+    btnDeleteAllRowAccount() {
+      (this.rowNumberAccount = [
+        {
+          AccountNumber: "",
+          BankName: "",
+          BankBranch: "",
+          BankAddress: "",
+        },
+      ]),
+        this.$nextTick(() => {
+          this.$refs.AccountNumber[0].focus();
+        });
+    },
+
+    /**
+     * Mô tả: Chọn giá trị trong cbb xưng hô
+     * created by : BNTIEN
+     * created date: 01-08-2023 05:09:12
+     */
+    onSelectedVocative(data) {
+      this.provider.Vocative = data.Vocative;
+    },
+
+    /**
+     * Mô tả: Chọn vị trí địa lí
+     * created by : BNTIEN
+     * created date: 01-08-2023 05:25:54
+     */
+    async onSelectedLocation(data, propName) {
+      if (propName == "LocationCountry") {
+        if (data.LocationCountry != this.provider.LocationCountry) {
+          this.provider.LocationCountry = data.LocationCountry;
+          this.isBorderRed.LocationCountry = false;
+          this.listCity.All = await this.getListLocation(2, data.LocationCode);
+          this.listCity.Search = await this.getListLocation(
+            2,
+            data.LocationCode
+          );
+
+          this.provider.LocationCity = "";
+          this.provider.LocationDistrict = "";
+          this.provider.LocationVillage = "";
+          this.listDistrict = { All: [], Search: [] };
+          this.listVillage = { All: [], Search: [] };
+        }
+      }
+      if (propName == "LocationCity") {
+        if (data.LocationCity != this.provider.LocationCity) {
+          this.provider.LocationCity = data.LocationCity;
+          this.isBorderRed.LocationCity = false;
+          this.listDistrict.All = await this.getListLocation(
+            3,
+            data.LocationCode
+          );
+          this.listDistrict.Search = await this.getListLocation(
+            3,
+            data.LocationCode
+          );
+          this.provider.LocationDistrict = "";
+          this.provider.LocationVillage = "";
+          this.listVillage = { All: [], Search: [] };
+        }
+      }
+      if (propName == "LocationDistrict") {
+        if (data.LocationDistrict != this.provider.LocationDistrict) {
+          this.provider.LocationDistrict = data.LocationDistrict;
+          this.isBorderRed.LocationDistrict = false;
+          this.listVillage.All = await this.getListLocation(
+            4,
+            data.LocationCode
+          );
+          this.listVillage.Search = await this.getListLocation(
+            4,
+            data.LocationCode
+          );
+          this.provider.LocationVillage = "";
+        }
+      }
+      if (propName == "LocationVillage") {
+        this.provider.LocationVillage = data.LocationVillage;
+        this.isBorderRed.LocationVillage = false;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1819,6 +2038,9 @@ export default {
     this.$_MISAEmitter.off("onSelectedEntityCBBSingle");
     this.$_MISAEmitter.off("onSearchChangeCBBSingle");
     this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
+    this.$_MISAEmitter.off("onSelectedEntityCBB");
+    this.$_MISAEmitter.off("onSearchChangeCBB");
+    this.$_MISAEmitter.off("onKeyDownEntityCBB");
     this.$refs.FormDetailProvider.removeEventListener(
       "keydown",
       this.handleKeyDown

@@ -68,3 +68,28 @@
 .filter-provider{
     width: 80px;
 }
+
+.col-width-120{
+    width: 120px;
+    max-width: 120px;
+}
+
+.col-width-150{
+    width: 150px;
+    max-width: 150px;
+}
+
+.col-width-250{
+    width: 250px;
+    max-width: 250px;
+}
+
+.col-width-300{
+    width: 300px;
+    max-width: 300px;
+}
+
+.col-width-350{
+    width: 350px;
+    max-width: 350px;
+}

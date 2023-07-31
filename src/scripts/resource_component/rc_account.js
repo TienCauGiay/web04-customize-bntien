@@ -21,6 +21,7 @@ const SYSTEM_ACCOUNT = {
     } ,
     deleteFailed : "Xóa không thành công",
     contentDeleteFailed : "Không thể xóa danh mục cha nếu chưa xóa danh mục con.",
+    contentDelete: "Bạn có thực sự muốn xóa tài khoản <",
     form: {
         textProperty:{
             accountNumber: "Số tài khoản",

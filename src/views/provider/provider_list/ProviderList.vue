@@ -169,43 +169,43 @@
                   />
                 </div>
               </th>
-              <th>
+              <th class="col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .providerCode
                 }}
               </th>
-              <th>
+              <th class="col-width-250">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .providerName
                 }}
               </th>
-              <th>
+              <th class="col-width-350">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .address
                 }}
               </th>
-              <th>
+              <th class="col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .amountOwed
                 }}
               </th>
-              <th>
+              <th class="col-width-120">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .rawCode
                 }}
               </th>
-              <th>
+              <th class="col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .phoneNumber
                 }}
               </th>
-              <th>
+              <th class="col-width-300">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .branch
@@ -240,13 +240,23 @@
                   />
                 </div>
               </td>
-              <td>{{ item.ProviderCode }}</td>
-              <td>{{ item.ProviderName }}</td>
-              <td>{{ item.Address }}</td>
-              <td></td>
-              <td>{{ item.TaxCode }}</td>
-              <td>{{ item.PhoneNumber }}</td>
-              <td></td>
+              <td class="col-width-150" :title="item.ProviderCode">
+                {{ item.ProviderCode }}
+              </td>
+              <td class="col-width-250" :title="item.ProviderName">
+                {{ item.ProviderName }}
+              </td>
+              <td class="col-width-350" :title="item.Address">
+                {{ item.Address }}
+              </td>
+              <td class="col-width-150"></td>
+              <td class="col-width-120" :title="item.TaxCode">
+                {{ item.TaxCode }}
+              </td>
+              <td class="col-width-150" :title="item.PhoneNumber">
+                {{ item.PhoneNumber }}
+              </td>
+              <td class="col-width-300"></td>
               <td
                 class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop

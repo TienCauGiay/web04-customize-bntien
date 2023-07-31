@@ -72,6 +72,7 @@ export default {
     "tabindexCBB",
     "listEntitySearchCBB",
     "placeholderInputCBB",
+    "indexSelectedCBB",
   ],
   data() {
     return {
@@ -91,6 +92,9 @@ export default {
     this.$_MISAEmitter.on("closeMenuItemCBB", () => {
       this.isShowSelectEntity = false;
     });
+    if (this.indexSelectedCBB) {
+      this.indexEntitySelected = this.indexSelectedCBB;
+    }
   },
 
   methods: {
@@ -109,7 +113,7 @@ export default {
      * created date: 29-05-2023 07:54:52`
      */
     onSelectedEntity(item, index) {
-      this.$_MISAEmitter.emit("onSelectedEntityCBB", item);
+      this.$_MISAEmitter.emit("onSelectedEntityCBB", item, this.propName);
       this.indexEntitySelected = index;
     },
 
@@ -120,7 +124,11 @@ export default {
      */
     async onSearchChange() {
       try {
-        await this.$_MISAEmitter.emit("onSearchChangeCBB", event.target.value);
+        await this.$_MISAEmitter.emit(
+          "onSearchChangeCBB",
+          event.target.value,
+          this.propName
+        );
         this.isShowSelectEntity = true;
       } catch {
         return;
@@ -199,7 +207,8 @@ export default {
             if (this.isShowSelectEntity) {
               this.$_MISAEmitter.emit(
                 "onKeyDownEntityCBB",
-                this.indexEntitySelected
+                this.indexEntitySelected,
+                this.propName
               );
               this.isShowSelectEntity = false;
             } else {

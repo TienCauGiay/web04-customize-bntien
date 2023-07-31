@@ -316,8 +316,11 @@
     ></SystemAccountDetail>
     <!-- dialog account confirm delete -->
     <misa-dialog-confirm-delete
-      :entityCodeDelete="accountNumberDeleteSelected"
-      :entityName="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.textAccount"
+      :contentDelete="`${
+        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDelete
+      }${accountNumberDeleteSelected}${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
+      }`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- dialog account error -->
