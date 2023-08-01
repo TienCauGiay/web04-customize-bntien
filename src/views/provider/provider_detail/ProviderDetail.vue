@@ -1203,24 +1203,21 @@
               </thead>
               <tbody>
                 <template
-                  v-for="(item, index) in rowNumberAccount"
+                  v-for="(item, index) in provider.AccountProviders"
                   :key="index"
                 >
                   <tr>
                     <td class="table-input-col-1">
-                      <misa-input
-                        ref="AccountNumber"
-                        v-model="item.AccountNumber"
-                      ></misa-input>
+                      <misa-input v-model="item.AccountNumber"></misa-input>
                     </td>
                     <td class="table-input-col-2">
-                      <misa-input ref="BankName"></misa-input>
+                      <misa-input v-model="item.BankName"></misa-input>
                     </td>
                     <td class="table-input-col-3">
-                      <misa-input ref="BankBranch"></misa-input>
+                      <misa-input v-model="item.BankBranch"></misa-input>
                     </td>
                     <td class="table-input-col-4">
-                      <misa-input ref="BankAddress"></misa-input>
+                      <misa-input v-model="item.CityOfBank"></misa-input>
                     </td>
                     <td
                       class="table-input-col-5"
@@ -1241,7 +1238,7 @@
                   ></misa-button-extra>
                   <misa-button-extra
                     :textButtonExtra="'Xóa hết dòng'"
-                    @click="btnDeleteAllRowAccount"
+                    @click="deleteAllRowAccount"
                   ></misa-button-extra>
                 </td>
               </tfoot>
@@ -1329,24 +1326,36 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-input-has-data">
-                    <td class="table-input-col-4" colspan="4">
-                      <misa-input></misa-input>
-                    </td>
-                    <td class="table-input-col-5">
-                      <div class="delete-row-table-input">
-                        <div class="delete-icon"></div>
-                      </div>
-                    </td>
-                  </tr>
+                  <template
+                    v-for="(item, index) in provider.DeliveryAddresses"
+                    :key="index"
+                  >
+                    <tr class="table-input-has-data">
+                      <td class="table-input-col-4" colspan="4">
+                        <misa-input
+                          v-model="item.DeliveryAddressName"
+                        ></misa-input>
+                      </td>
+                      <td class="table-input-col-5">
+                        <div
+                          class="delete-row-table-input"
+                          @click="deleteRowAddress(index)"
+                        >
+                          <div class="delete-icon"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </template>
                 </tbody>
                 <tfoot>
                   <td colspan="4">
                     <misa-button-extra
                       :textButtonExtra="'Thêm dòng'"
+                      @click="btnAddRowAddress"
                     ></misa-button-extra>
                     <misa-button-extra
                       :textButtonExtra="'Xóa hết dòng'"
+                      @click="btnDeleteAllRowAddress"
                     ></misa-button-extra>
                   </td>
                 </tfoot>
@@ -1421,6 +1430,8 @@ import employeeService from "@/services/employee.js";
 import locationService from "@/services/location.js";
 import termPamentService from "@/services/term_payment.js";
 import accountService from "@/services/account.js";
+import accountProviderService from "@/services/account_provider.js";
+import deliveryAddressService from "@/services/delivery_address.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -1635,10 +1646,6 @@ export default {
       listReceivable: [],
       // Khai báo biến lưu danh sách tài khoản công nợ phải trả
       listPayable: [],
-      // Khai báo biến lưu số dòng tài khoản ngân hàng
-      rowNumberAccount: [
-        { AccountNumber: "", BankName: "", BankBranch: "", BankAddress: "" },
-      ],
       // Khai báo biến lưu số dòng địa chỉ giao hàng
       rowNumberAddress: [1],
     };
@@ -1678,11 +1685,6 @@ export default {
         if (Object.hasOwnProperty.call(this.selectLayout, key)) {
           if (key == layout) {
             this.selectLayout[key] = true;
-            if (key == "bankAccount") {
-              this.$nextTick(() => {
-                this.$refs.AccountNumber[0].focus();
-              });
-            }
           } else {
             this.selectLayout[key] = false;
           }
@@ -1738,6 +1740,9 @@ export default {
           this.provider.ProviderCode = this.newProviderCode;
           this.provider.LocationCountry = this.locationDefault.LocationName;
         }
+        await this.getAccountProvider();
+        await this.getDeliveryAddress();
+        console.log(this.provider);
       } catch {
         return;
       }
@@ -1860,6 +1865,46 @@ export default {
         return res.data;
       } catch {
         return [];
+      }
+    },
+
+    /**
+     * Mô tả: Lấy danh sách tài khoản ngân hàng theo ProviderId
+     * created by : BNTIEN
+     * created date: 01-08-2023 14:18:52
+     */
+    async getAccountProvider() {
+      try {
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+          const res = await accountProviderService.getByProviderId(
+            this.provider.ProviderId
+          );
+          this.provider.AccountProviders = res.data;
+        } else {
+          this.provider.AccountProviders = [];
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Lấy danh sách địa chỉ giao hàng theo ProviderId
+     * created by : BNTIEN
+     * created date: 01-08-2023 14:18:52
+     */
+    async getDeliveryAddress() {
+      try {
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+          const res = await deliveryAddressService.getByProviderId(
+            this.provider.ProviderId
+          );
+          this.provider.DeliveryAddresses = res.data;
+        } else {
+          this.provider.DeliveryAddresses = [];
+        }
+      } catch {
+        return;
       }
     },
 
@@ -2578,14 +2623,11 @@ export default {
      * created date: 30-07-2023 21:24:11
      */
     btnAddRowAccount() {
-      this.rowNumberAccount.push({
+      this.provider.AccountProviders.push({
         AccountNumber: "",
         BankName: "",
         BankBranch: "",
         BankAddress: "",
-      });
-      this.$nextTick(() => {
-        this.$refs.AccountNumber[this.rowNumberAccount.length - 1].focus();
       });
     },
 
@@ -2595,28 +2637,53 @@ export default {
      * created date: 30-07-2023 21:59:03
      */
     deleteRowAccount(index) {
-      if (this.rowNumberAccount.length > 1) {
-        this.rowNumberAccount.splice(index, 1);
+      this.provider.AccountProviders.splice(index, 1);
+    },
+
+    /**
+     * Mô tả: Xóa tất cả dòng tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 01-08-2023 15:49:29
+     */
+    deleteAllRowAccount() {
+      if (this.provider.AccountProviders.length > 0) {
+        this.provider.AccountProviders.splice(
+          0,
+          this.provider.AccountProviders.length
+        );
       }
     },
 
     /**
-     * Mô tả: Hàm xóa hết dòng tài khoản ngân hàng
+     * Mô tả: Thêm 1 dòng địa chỉ
      * created by : BNTIEN
-     * created date: 30-07-2023 21:26:39
+     * created date: 01-08-2023 16:04:10
      */
-    btnDeleteAllRowAccount() {
-      (this.rowNumberAccount = [
-        {
-          AccountNumber: "",
-          BankName: "",
-          BankBranch: "",
-          BankAddress: "",
-        },
-      ]),
-        this.$nextTick(() => {
-          this.$refs.AccountNumber[0].focus();
-        });
+    btnAddRowAddress() {
+      this.provider.DeliveryAddresses.push({ DeliveryAddressName: "" });
+    },
+
+    /**
+     * Mô tả: Xóa 1 dòng địa chỉ giao hàng
+     * created by : BNTIEN
+     * created date: 30-07-2023 21:59:03
+     */
+    deleteRowAddress(index) {
+      this.provider.DeliveryAddresses.splice(index, 1);
+    },
+
+    /**
+     * Mô tả: Xóa tất cả dòng tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 01-08-2023 15:49:29
+     */
+    btnDeleteAllRowAddress() {
+      if (this.provider.DeliveryAddresses.length > 0) {
+        this.provider.DeliveryAddresses.splice(
+          0,
+          this.provider.DeliveryAddresses.length
+        );
+      }
     },
 
     /**

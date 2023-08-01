@@ -62,37 +62,37 @@
         <table>
           <thead>
             <tr>
-              <th class="as-account-number-1">
+              <th class="as-account-number-1 col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .accountNumber
                 }}
               </th>
-              <th class="as-account-name">
+              <th class="as-account-name col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .accountName
                 }}
               </th>
-              <th class="as-nature">
+              <th class="as-nature col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .nature
                 }}
               </th>
-              <th class="as-name-english">
+              <th class="as-name-english col-width-250">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .accountNameEnglish
                 }}
               </th>
-              <th class="as-explain">
+              <th class="as-explain col-width-350">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .explain
                 }}
               </th>
-              <th class="as-status">
+              <th class="as-status col-width-150">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
                     .state
@@ -124,7 +124,10 @@
                 "
                 @dblclick="onUpdateFormDetail(item)"
               >
-                <td :class="`as-account-number-${item.Grade}`">
+                <td
+                  :class="`as-account-number-${item.Grade}`"
+                  class="col-width-150"
+                >
                   <span
                     @dblclick.stop
                     :class="[
@@ -143,11 +146,15 @@
                   ></span>
                   <span>{{ item.AccountNumber }}</span>
                 </td>
-                <td class="as-account-name">{{ item.AccountName }}</td>
-                <td class="as-nature">{{ item.Nature }}</td>
-                <td class="as-name-english">{{ item.AccountNameEnglish }}</td>
-                <td class="as-explain">{{ item.Explain }}</td>
-                <td class="as-status">
+                <td class="as-account-name col-width-150">
+                  {{ item.AccountName }}
+                </td>
+                <td class="as-nature col-width-150">{{ item.Nature }}</td>
+                <td class="as-name-english col-width-250">
+                  {{ item.AccountNameEnglish }}
+                </td>
+                <td class="as-explain col-width-350">{{ item.Explain }}</td>
+                <td class="as-status col-width-150">
                   {{
                     item.State == this.$_MISAEnum.BOOL.TRUE
                       ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState

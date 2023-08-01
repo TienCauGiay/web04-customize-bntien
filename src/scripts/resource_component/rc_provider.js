@@ -12,7 +12,7 @@ const PROVIDER = {
         amountOwed: "Số tiền nợ",
         rawCode: "Mã số thuế",
         phoneNumber: "Điện thoại",
-        branch: "Chi nhánh",
+        purchasStaff: "Nhân viên mua hàng",
     },
     confirmDelete: {
         prev: "Bạn có thực sự muốn xóa nhà cung cấp <",

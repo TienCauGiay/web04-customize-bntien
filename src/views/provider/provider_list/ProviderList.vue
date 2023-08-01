@@ -187,12 +187,12 @@
                     .address
                 }}
               </th>
-              <th class="col-width-150">
+              <!-- <th class="col-width-150 text-right">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
                     .amountOwed
                 }}
-              </th>
+              </th> -->
               <th class="col-width-120">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
@@ -208,7 +208,7 @@
               <th class="col-width-300">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .branch
+                    .purchasStaff
                 }}
               </th>
               <th
@@ -249,14 +249,14 @@
               <td class="col-width-350" :title="item.Address">
                 {{ item.Address }}
               </td>
-              <td class="col-width-150"></td>
+              <!-- <td class="col-width-150 text-right">{{ item.AmountDebt }}</td> -->
               <td class="col-width-120" :title="item.TaxCode">
                 {{ item.TaxCode }}
               </td>
               <td class="col-width-150" :title="item.PhoneNumber">
                 {{ item.PhoneNumber }}
               </td>
-              <td class="col-width-300"></td>
+              <td class="col-width-300">{{ item.FullName }}</td>
               <td
                 class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop
