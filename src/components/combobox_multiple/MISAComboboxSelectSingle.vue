@@ -118,7 +118,7 @@ export default {
      * created date: 30-07-2023 08:48:34
      */
     onSelectedEntity(item, index) {
-      this.$_MISAEmitter.emit("onSelectedEntityCBBSingle", item);
+      this.$_MISAEmitter.emit("onSelectedEntityCBBSingle", item, this.propId);
       this.indexEntitySelected = index;
     },
 
@@ -131,7 +131,8 @@ export default {
       try {
         await this.$_MISAEmitter.emit(
           "onSearchChangeCBBSingle",
-          event.target.value
+          event.target.value,
+          this.propId
         );
         this.isShowSelectEntity = true;
       } catch {
@@ -211,7 +212,8 @@ export default {
             if (this.isShowSelectEntity) {
               this.$_MISAEmitter.emit(
                 "onKeyDownEntityCBBSingle",
-                this.indexEntitySelected
+                this.indexEntitySelected,
+                this.propId
               );
               this.isShowSelectEntity = false;
             } else {

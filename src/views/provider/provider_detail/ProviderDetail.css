@@ -167,6 +167,10 @@
   width: 450px;
 }
 
+#content-select-layout .select-item-cbb-multiple .form-cbb-menu .col-1-cbb-menu-item{
+  min-width: 200px;
+}
+
 #multiple-cbb-no-icon input{
   width: 100%;
 }

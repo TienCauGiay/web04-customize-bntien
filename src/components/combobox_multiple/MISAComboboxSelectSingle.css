@@ -50,6 +50,7 @@
     width: 100%;
     top: calc(100% + 5px);
     max-height: 134px;
+    overflow: hidden;
 }
 
 #form-cbb-menu-select-single #form-cbb-main{

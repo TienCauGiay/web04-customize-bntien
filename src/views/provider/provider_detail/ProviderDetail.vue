@@ -582,15 +582,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
                     <misa-combobox-select-single
-                      :propCode="'EmployeeCode'"
-                      :propId="'EmployeeId'"
-                      :propName="'FullName'"
-                      :nameColFirst="'Mã nhân viên'"
-                      :nameColSecond="'Tên nhân viên'"
+                      :propCode="'TermPaymentCode'"
+                      :propId="'TermPaymentId'"
+                      :propName="'TermPaymentName'"
+                      :nameColFirst="'Mã điều khoản thanh toán'"
+                      :nameColSecond="'Tên điều khoản thanh toán'"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="provider"
-                      :listEntitySearchCBB="listEmployeeSearch"
+                      :listEntitySearchCBB="listTermPayment"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
@@ -648,15 +648,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>Điều khoản thanh toán</label>
                     <misa-combobox-select-single
-                      :propCode="'EmployeeCode'"
-                      :propId="'EmployeeId'"
-                      :propName="'FullName'"
-                      :nameColFirst="'Mã nhân viên'"
-                      :nameColSecond="'Tên nhân viên'"
+                      :propCode="'TermPaymentCode'"
+                      :propId="'TermPaymentId'"
+                      :propName="'TermPaymentName'"
+                      :nameColFirst="'Mã điều khoản thanh toán'"
+                      :nameColSecond="'Tên điều khoản thanh toán'"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="provider"
-                      :listEntitySearchCBB="listEmployeeSearch"
+                      :listEntitySearchCBB="listTermPayment"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
@@ -956,6 +956,7 @@ import providerService from "@/services/provider.js";
 import groupService from "@/services/group.js";
 import employeeService from "@/services/employee.js";
 import locationService from "@/services/location.js";
+import termPamentService from "@/services/term_payment.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -1016,47 +1017,38 @@ export default {
       if (propName == "Vocative") {
         this.onSearchChangeVocative(newValue);
       }
-      if (propName == "LocationCountry") {
-        this.onSearchChangeCountry(newValue);
-      }
-      if (propName == "LocationCity") {
-        this.onSearchChangeCity(newValue);
-      }
-      if (propName == "LocationDistrict") {
-        this.onSearchChangeDistrict(newValue);
-      }
-      if (propName == "LocationVillage") {
-        this.onSearchChangeVillage(newValue);
-      }
+      this.onSearchChangeLocation(newValue, propName);
     });
     this.$_MISAEmitter.on("onKeyDownEntityCBB", (index, propName) => {
       if (propName == "Vocative") {
         this.onKeyDownVocativeCBB(index);
       }
-      if (propName == "LocationCountry") {
-        this.onKeyDownCountryCBB(index);
-      }
-      if (propName == "LocationCity") {
-        this.onKeyDownCityCBB(index);
-      }
-      if (propName == "LocationDistrict") {
-        this.onKeyDownDistrictCBB(index);
-      }
-      if (propName == "LocationVillage") {
-        this.onKeyDownVillageCBB(index);
-      }
+      this.onKeyDownLocationCBB(index, propName);
     });
 
-    this.$_MISAEmitter.on("onSelectedEntityCBBSingle", (data) => {
-      this.onSelectedEmployee(data);
+    this.$_MISAEmitter.on("onSelectedEntityCBBSingle", (data, propId) => {
+      if (propId == "EmployeeId") {
+        this.onSelectedEmployee(data);
+      }
+      if (propId == "TermPaymentId") {
+        this.onSelectedTermPayment(data);
+      }
     });
-    this.$_MISAEmitter.on("onSearchChangeCBBSingle", (newValue) => {
-      this.onSearchChangeEmployee(newValue);
+    this.$_MISAEmitter.on("onSearchChangeCBBSingle", (newValue, propId) => {
+      if (propId == "EmployeeId") {
+        this.onSearchChangeEmployee(newValue);
+      }
+      if (propId == "TermPaymentId") {
+        this.onSearchChangeTermPayment(newValue);
+      }
     });
-    this.$_MISAEmitter.on("onKeyDownEntityCBBSingle", (index) => {
-      this.provider.FullName = this.listEmployeeSearch.Data[index].FullName;
-      this.provider.EmployeeId = this.listEmployeeSearch.Data[index].EmployeeId;
-      this.isBorderRed.FullName = false;
+    this.$_MISAEmitter.on("onKeyDownEntityCBBSingle", (index, propId) => {
+      if (propId == "EmployeeId") {
+        this.onKeyDownEmployeeCBBSingle(index);
+      }
+      if (propId == "TermPaymentId") {
+        this.onKeyDownTermPaymentCBBSingle(index);
+      }
     });
   },
 
@@ -1083,6 +1075,12 @@ export default {
         "EmployeeId",
         "FullName",
         "Note",
+        "TermPaymentId",
+        "TermPaymentName",
+        "AccountReceivableId",
+        "AccountReceivableName",
+        "AccountPayableId",
+        "AccountPayableName",
       ],
       // Khai báo đối tượng provider
       provider: {},
@@ -1133,6 +1131,8 @@ export default {
       currentPageEmployee: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox nhân viên mua hàng
       searchEmployeeTimeout: null,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox điều khoản thanh toán
+      searchTermPaymentTimeout: null,
       // Khởi tạo quốc gia mặc định
       locationDefault: { LocationCode: "VN", LocationName: "Việt Nam" },
       // Khai báo biến lưu danh sách quốc gia
@@ -1143,6 +1143,8 @@ export default {
       listDistrict: { All: [], Search: [] },
       // Khai báo biến lưu danh sách xã
       listVillage: { All: [], Search: [] },
+      // Khai báo biến lưu danh sách điều khoản thanh toán
+      listTermPayment: [],
       // Khai báo biến lưu số dòng tài khoản ngân hàng
       rowNumberAccount: [
         { AccountNumber: "", BankName: "", BankBranch: "", BankAddress: "" },
@@ -1199,6 +1201,7 @@ export default {
         await this.getNewCode();
         await this.getListGroup();
         await this.getListEmployee();
+        this.listTermPayment = await this.getListTermPayment(20, 1, "");
         this.listCountry.All = await this.getListLocation(1, "");
         this.listCountry.Search = await this.getListLocation(1, "");
         this.listCity.All = await this.getListLocation(
@@ -1253,7 +1256,7 @@ export default {
     async getListGroup() {
       try {
         const res = await groupService.getFilter(20, this.currentPageGroup, "");
-        this.listGroupSearch = res.data.Data;
+        this.listGroupSearch = res.data;
       } catch {
         return;
       }
@@ -1278,13 +1281,31 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm trả về danh sách vị trí địa lý theo cha
+     * Mô tả: Lấy danh sách vị trí địa lý theo cha
      * created by : BNTIEN
      * created date: 30-07-2023 13:13:57
      */
     async getListLocation(grade, parentCode) {
       try {
         const res = await locationService.getFilter(grade, parentCode);
+        return res.data;
+      } catch {
+        return [];
+      }
+    },
+
+    /**
+     * Mô tả: Lấy danh sách điều khoản thanh toán
+     * created by : BNTIEN
+     * created date: 01-08-2023 06:13:28
+     */
+    async getListTermPayment(pageSize, pageNumber, textSearch) {
+      try {
+        const res = await termPamentService.getFilter(
+          pageSize,
+          pageNumber,
+          textSearch
+        );
         return res.data;
       } catch {
         return [];
@@ -1371,6 +1392,7 @@ export default {
               break;
             case "GroupProvider":
             case "EmployeeId":
+            case "TermPaymentId":
               break;
             case "FullName":
               if (this.provider.FullName && !this.provider.EmployeeId) {
@@ -1378,6 +1400,20 @@ export default {
                 this.isBorderRed.FullName = true;
                 this.dataNotNull.push(
                   `Nhân viên mua hàng <${this.provider.FullName}> không tồn tại`
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
+              break;
+            case "TermPaymentName":
+              if (
+                this.provider.TermPaymentName &&
+                !this.provider.TermPaymentId
+              ) {
+                this.errors.TermPaymentName = `Điều khoản thanh toán <${this.provider.TermPaymentName}> không tồn tại`;
+                this.isBorderRed.TermPaymentName = true;
+                this.dataNotNull.push(
+                  `Điều khoản thanh toán <${this.provider.TermPaymentName}> không tồn tại`
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
@@ -1675,10 +1711,21 @@ export default {
         listPropError.push("FullName");
       }
 
+      if (
+        listPropError.includes("TermPaymentId") &&
+        !listPropError.includes("TermPaymentName")
+      ) {
+        listPropError.push("TermPaymentName");
+      }
+
       for (const prop of this.providerProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
           if (prop === "EmployeeId" || prop === "FullName") {
+            this.$nextTick(() => {
+              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
+            });
+          } else if (prop === "TermPaymentId" || prop === "TermPaymentName") {
             this.$nextTick(() => {
               this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
             });
@@ -1879,7 +1926,7 @@ export default {
     },
 
     /**
-     * Mô tả: Lắng nghe sự thay đổi text trong input search department và tìm kiếm trong combobox
+     * Mô tả: Lắng nghe sự thay đổi text trong input search employee và tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
@@ -1905,6 +1952,70 @@ export default {
       } catch {
         return;
       }
+    },
+
+    /**
+     * Mô tả: Xử lí sự kiện keydown cbb nhân viên mua hàng
+     * created by : BNTIEN
+     * created date: 01-08-2023 08:33:33
+     */
+    onKeyDownEmployeeCBBSingle(index) {
+      this.provider.FullName = this.listEmployeeSearch.Data[index].FullName;
+      this.provider.EmployeeId = this.listEmployeeSearch.Data[index].EmployeeId;
+      this.isBorderRed.FullName = false;
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
+     * created by : BNTIEN
+     * created date: 29-05-2023 07:54:52`
+     */
+    onSelectedTermPayment(termPayment) {
+      this.provider.TermPaymentName = termPayment.TermPaymentName;
+      this.provider.TermPaymentId = termPayment.TermPaymentId;
+      this.isBorderRed.TermPaymentName = false;
+    },
+
+    /**
+     * Mô tả: Lắng nghe sự thay đổi text trong input search employee và tìm kiếm trong combobox
+     * created by : BNTIEN
+     * created date: 06-06-2023 22:31:16
+     */
+    async onSearchChangeTermPayment(newValue) {
+      this.isBorderRed.TermPaymentName = false;
+      this.isBorderRed.TermPaymentId = false;
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchTermPaymentTimeout);
+        this.provider.TermPaymentName = newValue;
+        delete this.provider.TermPaymentId;
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchTermPaymentTimeout = setTimeout(async () => {
+          const newListTermPayment = await termPamentService.getFilter(
+            20,
+            1,
+            newValue
+          );
+          this.listTermPayment = newListTermPayment.data;
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí sự kiện keydown cbb nhân viên mua hàng
+     * created by : BNTIEN
+     * created date: 01-08-2023 08:33:33
+     */
+    onKeyDownTermPaymentCBBSingle(index) {
+      this.provider.TermPaymentName =
+        this.listTermPayment.Data[index].TermPaymentName;
+      this.provider.TermPaymentId =
+        this.listTermPayment.Data[index].TermPaymentId;
+      this.isBorderRed.TermPaymentName = false;
     },
 
     /**
