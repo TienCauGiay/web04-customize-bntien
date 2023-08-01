@@ -40,7 +40,10 @@ const PROVIDER = {
             "PhoneNumber": {Limit: 50, Warning : "Số điện thoại tối đa 50 kí tự."},
             "Website": {Limit: 255, Warning : "Website tối đa 255 kí tự"},
             "Note": {Limit: 10000, Warning : "Chú ý tối đa 10000 kí tự"},
-            "FullName": {Limit: 255, Warning : "Tên nhân viên tối đa 255 kí tự"},
+            "FullName": {Limit: 100, Warning : "Tên nhân viên tối đa 100 kí tự"},
+            "NameContacter": {Limit: 100, Warning : "Tên người liên hệ tối đa 100 kí tự"},
+            "NameReceiver": {Limit: 100, Warning : "Tên người nhận tối đa 100 kí tự"},
+            "Lawyer": {Limit: 255, Warning : "Đại diện theo pháp luật tối đa 255 kí tự"},
         },
     }
 }

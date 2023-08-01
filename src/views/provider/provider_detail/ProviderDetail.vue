@@ -420,27 +420,112 @@
                 </div>
                 <div class="col-md-tb">
                   <label class="label-hide-text">hide</label>
-                  <misa-input :placeholder="'Họ và tên'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="NameContacter"
+                      v-model="provider.NameContacter"
+                      :class="{ 'border-red': isBorderRed.NameContacter }"
+                      @input="setIsBorderRed('NameContacter')"
+                      @mouseenter="isHovering.NameContacter = true"
+                      @mouseleave="isHovering.NameContacter = false"
+                      :placeholder="'Họ và tên'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.NameContacter &&
+                        (isBorderRed.NameContacter ||
+                          !provider.NameContacter) &&
+                        errors['NameContacter']
+                      "
+                    >
+                      {{ errors["NameContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-l">
                   <label>Đại diện theo PL</label>
-                  <misa-input :placeholder="'Đại diện theo PL'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="Lawyer"
+                      v-model="provider.Lawyer"
+                      :class="{ 'border-red': isBorderRed.Lawyer }"
+                      @input="setIsBorderRed('Lawyer')"
+                      @mouseenter="isHovering.Lawyer = true"
+                      @mouseleave="isHovering.Lawyer = false"
+                      :placeholder="'Đại diện theo PL'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.Lawyer &&
+                        (isBorderRed.Lawyer || !provider.Lawyer) &&
+                        errors['Lawyer']
+                      "
+                    >
+                      {{ errors["Lawyer"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-l">
-                  <misa-input :placeholder="'Email'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="EmailContacter"
+                      v-model="provider.EmailContacter"
+                      :class="{ 'border-red': isBorderRed.EmailContacter }"
+                      @input="setIsBorderRed('EmailContacter')"
+                      @mouseenter="isHovering.EmailContacter = true"
+                      @mouseleave="isHovering.EmailContacter = false"
+                      :placeholder="'Email'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.EmailContacter &&
+                        (isBorderRed.EmailContacter ||
+                          !provider.EmailContacter) &&
+                        errors['EmailContacter']
+                      "
+                    >
+                      {{ errors["EmailContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-tb">
-                  <misa-input :placeholder="'Số điện thoại'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="PhoneNumberContacter"
+                      v-model="provider.PhoneNumberContacter"
+                      :class="{
+                        'border-red': isBorderRed.PhoneNumberContacter,
+                      }"
+                      @input="setIsBorderRed('PhoneNumberContacter')"
+                      @mouseenter="isHovering.PhoneNumberContacter = true"
+                      @mouseleave="isHovering.PhoneNumberContacter = false"
+                      :placeholder="'Số điện thoại'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.PhoneNumberContacter &&
+                        (isBorderRed.PhoneNumberContacter ||
+                          !provider.PhoneNumberContacter) &&
+                        errors['PhoneNumberContacter']
+                      "
+                    >
+                      {{ errors["PhoneNumberContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -470,39 +555,166 @@
                 </div>
                 <div class="col-md-tb">
                   <label class="label-hide-text">hide</label>
-                  <misa-input :placeholder="'Họ và tên'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="NameContacter"
+                      v-model="provider.NameContacter"
+                      :class="{ 'border-red': isBorderRed.NameContacter }"
+                      @input="setIsBorderRed('NameContacter')"
+                      @mouseenter="isHovering.NameContacter = true"
+                      @mouseleave="isHovering.NameContacter = false"
+                      :placeholder="'Họ và tên'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.NameContacter &&
+                        (isBorderRed.NameContacter ||
+                          !provider.NameContacter) &&
+                        errors['NameContacter']
+                      "
+                    >
+                      {{ errors["NameContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-l">
                   <label>Người nhận hóa đơn điện tử</label>
-                  <misa-input :placeholder="'Họ và tên'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="NameReceiver"
+                      v-model="provider.NameReceiver"
+                      :class="{ 'border-red': isBorderRed.NameReceiver }"
+                      @input="setIsBorderRed('NameReceiver')"
+                      @mouseenter="isHovering.NameReceiver = true"
+                      @mouseleave="isHovering.NameReceiver = false"
+                      :placeholder="'Họ và tên'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.NameReceiver &&
+                        (isBorderRed.NameReceiver || !provider.NameReceiver) &&
+                        errors['NameReceiver']
+                      "
+                    >
+                      {{ errors["NameReceiver"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-l">
-                  <misa-input :placeholder="'Email'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="EmailContacter"
+                      v-model="provider.EmailContacter"
+                      :class="{ 'border-red': isBorderRed.EmailContacter }"
+                      @input="setIsBorderRed('EmailContacter')"
+                      @mouseenter="isHovering.EmailContacter = true"
+                      @mouseleave="isHovering.EmailContacter = false"
+                      :placeholder="'EmailContacter'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.EmailContacter &&
+                        (isBorderRed.EmailContacter ||
+                          !provider.EmailContacter) &&
+                        errors['EmailContacter']
+                      "
+                    >
+                      {{ errors["EmailContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <misa-input
-                    :placeholder="'Email (Ngăn cách nhiều Email bởi dấu chấm phẩy)'"
-                  ></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="EmailReceiver"
+                      v-model="provider.EmailReceiver"
+                      :class="{ 'border-red': isBorderRed.EmailReceiver }"
+                      @input="setIsBorderRed('EmailReceiver')"
+                      @mouseenter="isHovering.EmailReceiver = true"
+                      @mouseleave="isHovering.EmailReceiver = false"
+                      :placeholder="'Email (Ngăn cách nhiều Email bởi dấu chấm phẩy)'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.EmailReceiver &&
+                        (isBorderRed.EmailReceiver ||
+                          !provider.EmailReceiver) &&
+                        errors['EmailReceiver']
+                      "
+                    >
+                      {{ errors["EmailReceiver"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-tb">
-                  <misa-input :placeholder="'Số điện thoại'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="PhoneNumberContacter"
+                      v-model="provider.PhoneNumberContacter"
+                      :class="{
+                        'border-red': isBorderRed.PhoneNumberContacter,
+                      }"
+                      @input="setIsBorderRed('PhoneNumberContacter')"
+                      @mouseenter="isHovering.PhoneNumberContacter = true"
+                      @mouseleave="isHovering.PhoneNumberContacter = false"
+                      :placeholder="'Số điện thoại'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.PhoneNumberContacter &&
+                        (isBorderRed.PhoneNumberContacter ||
+                          !provider.PhoneNumberContacter) &&
+                        errors['PhoneNumberContacter']
+                      "
+                    >
+                      {{ errors["PhoneNumberContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-tb">
-                  <misa-input :placeholder="'Số điện thoại'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="PhoneNumberReceiver"
+                      v-model="provider.PhoneNumberReceiver"
+                      :class="{
+                        'border-red': isBorderRed.PhoneNumberReceiver,
+                      }"
+                      @input="setIsBorderRed('PhoneNumberReceiver')"
+                      @mouseenter="isHovering.PhoneNumberReceiver = true"
+                      @mouseleave="isHovering.PhoneNumberReceiver = false"
+                      :placeholder="'Số điện thoại'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.PhoneNumberReceiver &&
+                        (isBorderRed.PhoneNumberReceiver ||
+                          !provider.PhoneNumberReceiver) &&
+                        errors['PhoneNumberReceiver']
+                      "
+                    >
+                      {{ errors["PhoneNumberReceiver"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -510,7 +722,27 @@
               <div class="half-content">
                 <div class="col-md-l">
                   <label>Đại diện theo PL</label>
-                  <misa-input :placeholder="'Đại diện theo PL'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="Lawyer"
+                      v-model="provider.Lawyer"
+                      :class="{ 'border-red': isBorderRed.Lawyer }"
+                      @input="setIsBorderRed('Lawyer')"
+                      @mouseenter="isHovering.Lawyer = true"
+                      @mouseleave="isHovering.Lawyer = false"
+                      :placeholder="'Đại diện theo PL'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.Lawyer &&
+                        (isBorderRed.Lawyer || !provider.Lawyer) &&
+                        errors['Lawyer']
+                      "
+                    >
+                      {{ errors["Lawyer"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -524,39 +756,172 @@
               <div class="half-content">
                 <div class="col-md-l">
                   <label>Thông tin liên hệ</label>
-                  <misa-input :placeholder="'Email'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="EmailContacter"
+                      v-model="provider.EmailContacter"
+                      :class="{ 'border-red': isBorderRed.EmailContacter }"
+                      @input="setIsBorderRed('EmailContacter')"
+                      @mouseenter="isHovering.EmailContacter = true"
+                      @mouseleave="isHovering.EmailContacter = false"
+                      :placeholder="'Email'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.EmailContacter &&
+                        (isBorderRed.EmailContacter ||
+                          !provider.EmailContacter) &&
+                        errors['EmailContacter']
+                      "
+                    >
+                      {{ errors["EmailContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-half">
                   <label>Thông tin CMND/Thẻ căn cước</label>
-                  <misa-input
-                    :placeholder="'Số CMND/Thẻ căn cước'"
-                  ></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="IdentityNumberContacter"
+                      v-model="provider.IdentityNumberContacter"
+                      :class="{
+                        'border-red': isBorderRed.IdentityNumberContacter,
+                      }"
+                      @input="setIsBorderRed('IdentityNumberContacter')"
+                      @mouseenter="isHovering.IdentityNumberContacter = true"
+                      @mouseleave="isHovering.IdentityNumberContacter = false"
+                      :placeholder="'Số CMND/Thẻ căn cước'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.IdentityNumberContacter &&
+                        (isBorderRed.IdentityNumberContacter ||
+                          !provider.IdentityNumberContacter) &&
+                        errors['IdentityNumberContacter']
+                      "
+                    >
+                      {{ errors["IdentityNumberContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-half">
-                  <misa-input :placeholder="'Điện thoại di động'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="PhoneNumberContacter"
+                      v-model="provider.PhoneNumberContacter"
+                      :class="{
+                        'border-red': isBorderRed.PhoneNumberContacter,
+                      }"
+                      @input="setIsBorderRed('PhoneNumberContacter')"
+                      @mouseenter="isHovering.PhoneNumberContacter = true"
+                      @mouseleave="isHovering.PhoneNumberContacter = false"
+                      :placeholder="'Điện thoại di động'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.PhoneNumberContacter &&
+                        (isBorderRed.PhoneNumberContacter ||
+                          !provider.PhoneNumberContacter) &&
+                        errors['PhoneNumberContacter']
+                      "
+                    >
+                      {{ errors["PhoneNumberContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-half">
-                  <misa-input type="date"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="IdentityDateContacter"
+                      type="date"
+                      v-model="provider.IdentityDateContacter"
+                      :value="formattedDateIdentity"
+                      :class="{
+                        'border-red': isBorderRed.IdentityDateContacter,
+                      }"
+                      @input="setIsBorderRed('IdentityDateContacter')"
+                      @mouseenter="isHovering.IdentityDateContacter = true"
+                      @mouseleave="isHovering.IdentityDateContacter = false"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.IdentityDateContacter &&
+                        isBorderRed.IdentityDateContacter
+                      "
+                    >
+                      {{ errors["IdentityDateContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-half">
-                  <misa-input :placeholder="'Điện thoại cố định'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="PhoneLandlineContacter"
+                      v-model="provider.PhoneLandlineContacter"
+                      :class="{
+                        'border-red': isBorderRed.PhoneLandlineContacter,
+                      }"
+                      @input="setIsBorderRed('PhoneLandlineContacter')"
+                      @mouseenter="isHovering.PhoneLandlineContacter = true"
+                      @mouseleave="isHovering.PhoneLandlineContacter = false"
+                      :placeholder="'Điện thoại cố định'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.PhoneLandlineContacter &&
+                        (isBorderRed.PhoneLandlineContacter ||
+                          !provider.PhoneLandlineContacter) &&
+                        errors['PhoneLandlineContacter']
+                      "
+                    >
+                      {{ errors["PhoneLandlineContacter"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <misa-input :placeholder="'Nơi cấp'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="IdentityPlace"
+                      v-model="provider.IdentityPlace"
+                      :class="{
+                        'border-red': isBorderRed.IdentityPlace,
+                      }"
+                      @input="setIsBorderRed('IdentityPlace')"
+                      @mouseenter="isHovering.IdentityPlace = true"
+                      @mouseleave="isHovering.IdentityPlace = false"
+                      :placeholder="'Nơi cấp'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.IdentityPlace &&
+                        (isBorderRed.IdentityPlace ||
+                          !provider.IdentityPlace) &&
+                        errors['IdentityPlace']
+                      "
+                    >
+                      {{ errors["IdentityPlace"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -564,7 +929,27 @@
               <div class="half-content">
                 <div class="col-md-l">
                   <label> Đại diện theo PL </label>
-                  <misa-input :placeholder="'Đại diện theo PL'"></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="Lawyer"
+                      v-model="provider.Lawyer"
+                      :class="{ 'border-red': isBorderRed.Lawyer }"
+                      @input="setIsBorderRed('Lawyer')"
+                      @mouseenter="isHovering.Lawyer = true"
+                      @mouseleave="isHovering.Lawyer = false"
+                      :placeholder="'Đại diện theo PL'"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="
+                        isHovering.Lawyer &&
+                        (isBorderRed.Lawyer || !provider.Lawyer) &&
+                        errors['Lawyer']
+                      "
+                    >
+                      {{ errors["Lawyer"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -595,11 +980,50 @@
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
-                    <misa-input></misa-input>
+                    <div class="container-input">
+                      <misa-input
+                        ref="NumberDayOwed"
+                        v-model="provider.NumberDayOwed"
+                        :class="{ 'border-red': isBorderRed.NumberDayOwed }"
+                        @input="setIsBorderRed('NumberDayOwed')"
+                        @mouseenter="isHovering.NumberDayOwed = true"
+                        @mouseleave="isHovering.NumberDayOwed = false"
+                      ></misa-input>
+                      <div
+                        class="misa-tooltip"
+                        v-if="
+                          isHovering.NumberDayOwed &&
+                          (isBorderRed.NumberDayOwed ||
+                            !provider.NumberDayOwed) &&
+                          errors['NumberDayOwed']
+                        "
+                      >
+                        {{ errors["NumberDayOwed"] }}
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số nợ tối đa</label>
-                    <misa-input></misa-input>
+                    <div class="container-input">
+                      <misa-input
+                        ref="AmountDebt"
+                        v-model="provider.AmountDebt"
+                        :class="{ 'border-red': isBorderRed.AmountDebt }"
+                        @input="setIsBorderRed('AmountDebt')"
+                        @mouseenter="isHovering.AmountDebt = true"
+                        @mouseleave="isHovering.AmountDebt = false"
+                      ></misa-input>
+                      <div
+                        class="misa-tooltip"
+                        v-if="
+                          isHovering.AmountDebt &&
+                          (isBorderRed.AmountDebt || !provider.AmountDebt) &&
+                          errors['AmountDebt']
+                        "
+                      >
+                        {{ errors["AmountDebt"] }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -617,11 +1041,11 @@
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
                       :errorsFormCBB="errors"
-                      :listEntitySearchFormCBB="accounts"
+                      :listEntitySearchFormCBB="listPayable"
                       :propName="'AccountName'"
-                      :valueInput="valueInputFormCBB"
-                      :propCode="'AccountNumber'"
-                      :propBorderRed="'ParentId'"
+                      :valueInput="provider.AccountPayableNumber"
+                      :propCode="'AccountPayableNumber'"
+                      :propBorderRed="'AccountPayableId'"
                       :textColFirst="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountNumber
@@ -661,11 +1085,50 @@
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số ngày được nợ</label>
-                    <misa-input></misa-input>
+                    <div class="container-input">
+                      <misa-input
+                        ref="NumberDayOwed"
+                        v-model="provider.NumberDayOwed"
+                        :class="{ 'border-red': isBorderRed.NumberDayOwed }"
+                        @input="setIsBorderRed('NumberDayOwed')"
+                        @mouseenter="isHovering.NumberDayOwed = true"
+                        @mouseleave="isHovering.NumberDayOwed = false"
+                      ></misa-input>
+                      <div
+                        class="misa-tooltip"
+                        v-if="
+                          isHovering.NumberDayOwed &&
+                          (isBorderRed.NumberDayOwed ||
+                            !provider.NumberDayOwed) &&
+                          errors['NumberDayOwed']
+                        "
+                      >
+                        {{ errors["NumberDayOwed"] }}
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
                     <label>Số nợ tối đa</label>
-                    <misa-input></misa-input>
+                    <div class="container-input">
+                      <misa-input
+                        ref="AmountDebt"
+                        v-model="provider.AmountDebt"
+                        :class="{ 'border-red': isBorderRed.AmountDebt }"
+                        @input="setIsBorderRed('AmountDebt')"
+                        @mouseenter="isHovering.AmountDebt = true"
+                        @mouseleave="isHovering.AmountDebt = false"
+                      ></misa-input>
+                      <div
+                        class="misa-tooltip"
+                        v-if="
+                          isHovering.AmountDebt &&
+                          (isBorderRed.AmountDebt || !provider.AmountDebt) &&
+                          errors['AmountDebt']
+                        "
+                      >
+                        {{ errors["AmountDebt"] }}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -683,11 +1146,11 @@
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
                       :errorsFormCBB="errors"
-                      :listEntitySearchFormCBB="accounts"
+                      :listEntitySearchFormCBB="listReceivable"
                       :propName="'AccountName'"
-                      :valueInput="valueInputFormCBB"
-                      :propCode="'AccountNumber'"
-                      :propBorderRed="'ParentId'"
+                      :valueInput="provider.AccountReceivableNumber"
+                      :propCode="'AccountReceivableNumber'"
+                      :propBorderRed="'AccountReceivableId'"
                       :textColFirst="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountNumber
@@ -708,11 +1171,11 @@
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
                       :errorsFormCBB="errors"
-                      :listEntitySearchFormCBB="accounts"
+                      :listEntitySearchFormCBB="listPayable"
                       :propName="'AccountName'"
-                      :valueInput="valueInputFormCBB"
-                      :propCode="'AccountNumber'"
-                      :propBorderRed="'ParentId'"
+                      :valueInput="provider.AccountPayableNumber"
+                      :propCode="'AccountPayableNumber'"
+                      :propBorderRed="'AccountPayableId'"
                       :textColFirst="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountNumber
@@ -957,6 +1420,7 @@ import groupService from "@/services/group.js";
 import employeeService from "@/services/employee.js";
 import locationService from "@/services/location.js";
 import termPamentService from "@/services/term_payment.js";
+import accountService from "@/services/account.js";
 import helperCommon from "@/scripts/helper.js";
 
 export default {
@@ -1050,6 +1514,15 @@ export default {
         this.onKeyDownTermPaymentCBBSingle(index);
       }
     });
+
+    this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data, propCode) => {
+      if (propCode == "AccountReceivableNumber") {
+        this.selectedReceivable(data);
+      }
+      if (propCode == "AccountPayableNumber") {
+        this.selectedPayable(data);
+      }
+    });
   },
 
   mounted() {
@@ -1075,12 +1548,25 @@ export default {
         "EmployeeId",
         "FullName",
         "Note",
+        "NameContacter",
+        "EmailContacter",
+        "PhoneNumberContacter",
+        "PhoneLandlineContacter",
+        "IdentityNumberContacter",
+        "IdentityDateContacter",
+        "IdentityPlace",
+        "Lawyer",
+        "NameReceiver",
+        "EmailReceiver",
+        "PhoneNumberReceiver",
         "TermPaymentId",
         "TermPaymentName",
+        "NumberDayOwed",
+        "AmountDebt",
         "AccountReceivableId",
-        "AccountReceivableName",
+        "AccountReceivableNumber",
         "AccountPayableId",
-        "AccountPayableName",
+        "AccountPayableNumber",
       ],
       // Khai báo đối tượng provider
       provider: {},
@@ -1145,6 +1631,10 @@ export default {
       listVillage: { All: [], Search: [] },
       // Khai báo biến lưu danh sách điều khoản thanh toán
       listTermPayment: [],
+      // Khai báo biến lưu danh sách tài khoản công nợ phải thu
+      listReceivable: [],
+      // Khai báo biến lưu danh sách tài khoản công nợ phải trả
+      listPayable: [],
       // Khai báo biến lưu số dòng tài khoản ngân hàng
       rowNumberAccount: [
         { AccountNumber: "", BankName: "", BankBranch: "", BankAddress: "" },
@@ -1152,6 +1642,29 @@ export default {
       // Khai báo biến lưu số dòng địa chỉ giao hàng
       rowNumberAddress: [1],
     };
+  },
+
+  computed: {
+    /**
+     * Mô tả: Hàm tính toán ngày cấp chứng minh nhân dân
+     * created by : BNTIEN
+     * created date: 01-06-2023 02:41:35
+     */
+    formattedDateIdentity: {
+      get() {
+        if (this.provider.IdentityDateContacter) {
+          const isoDateIdentity = this.provider.IdentityDateContacter;
+          const formattedDateIdentity = isoDateIdentity.split(
+            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
+          )[0];
+          return formattedDateIdentity;
+        }
+        return "";
+      },
+      set(newDate) {
+        this.provider.IdentityDateContacter = newDate;
+      },
+    },
   },
 
   methods: {
@@ -1202,6 +1715,8 @@ export default {
         await this.getListGroup();
         await this.getListEmployee();
         this.listTermPayment = await this.getListTermPayment(20, 1, "");
+        this.listReceivable = await this.getListReceivalbe(20, 1, "");
+        this.listPayable = await this.getListPayable(20, 1, "");
         this.listCountry.All = await this.getListLocation(1, "");
         this.listCountry.Search = await this.getListLocation(1, "");
         this.listCity.All = await this.getListLocation(
@@ -1302,6 +1817,42 @@ export default {
     async getListTermPayment(pageSize, pageNumber, textSearch) {
       try {
         const res = await termPamentService.getFilter(
+          pageSize,
+          pageNumber,
+          textSearch
+        );
+        return res.data;
+      } catch {
+        return [];
+      }
+    },
+
+    /**
+     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:20:56
+     */
+    async getListReceivalbe(pageSize, pageNumber, textSearch) {
+      try {
+        const res = await accountService.getReceivable(
+          pageSize,
+          pageNumber,
+          textSearch
+        );
+        return res.data;
+      } catch {
+        return [];
+      }
+    },
+
+    /**
+     * Mô tả: Lấy danh sách tài khoản công nợ phải trả
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:20:56
+     */
+    async getListPayable(pageSize, pageNumber, textSearch) {
+      try {
+        const res = await accountService.getPayable(
           pageSize,
           pageNumber,
           textSearch
@@ -1973,6 +2524,7 @@ export default {
     onSelectedTermPayment(termPayment) {
       this.provider.TermPaymentName = termPayment.TermPaymentName;
       this.provider.TermPaymentId = termPayment.TermPaymentId;
+      this.provider.NumberDayOwed = termPayment.NumberDayOwed;
       this.isBorderRed.TermPaymentName = false;
     },
 
@@ -2015,6 +2567,8 @@ export default {
         this.listTermPayment.Data[index].TermPaymentName;
       this.provider.TermPaymentId =
         this.listTermPayment.Data[index].TermPaymentId;
+      this.provider.NumberDayOwed =
+        this.listTermPayment.Data[index].NumberDayOwed;
       this.isBorderRed.TermPaymentName = false;
     },
 
@@ -2134,6 +2688,28 @@ export default {
         this.isBorderRed.LocationVillage = false;
       }
     },
+
+    /**
+     * Mô tả: Chọn tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:48:54
+     */
+    selectedReceivable(account) {
+      this.provider.AccountReceivableId = account.AccountReceivableId;
+      this.provider.AccountReceivableNumber = account.AccountReceivableNumber;
+      this.isBorderRed.AccountReceivableNumber = false;
+    },
+
+    /**
+     * Mô tả: Chọn tài khoản công nợ phải trả
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:48:54
+     */
+    selectedPayable(account) {
+      this.provider.AccountPayableId = account.AccountPayableId;
+      this.provider.AccountPayableNumber = account.AccountPayableNumber;
+      this.isBorderRed.AccountPayableNumber = false;
+    },
   },
 
   beforeUnmount() {
@@ -2156,6 +2732,7 @@ export default {
       "keydown",
       this.handleKeyDown
     );
+    this.$_MISAEmitter.off("onSelectedEntityFormCBB");
   },
 };
 </script>

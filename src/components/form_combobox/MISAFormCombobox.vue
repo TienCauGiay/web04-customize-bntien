@@ -131,7 +131,7 @@ export default {
      * created date: 29-05-2023 07:54:52`
      */
     onSelectedEntity(item, index) {
-      this.$_MISAEmitter.emit("onSelectedEntityFormCBB", item);
+      this.$_MISAEmitter.emit("onSelectedEntityFormCBB", item, this.propCode);
       this.indexEntitySelected = index;
     },
 
@@ -144,7 +144,8 @@ export default {
       try {
         await this.$_MISAEmitter.emit(
           "onSearchChangeFormCBB",
-          event.target.value
+          event.target.value,
+          this.propCode
         );
         this.isShowSelectEntity = true;
       } catch {
