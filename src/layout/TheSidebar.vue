@@ -19,13 +19,13 @@
           </a>
         </li>
         <li class="menu-item">
-          <a class="menu-item-a">
+          <router-link to="/cash/cash-process" class="menu-item-a">
             <i class="icon-tb cash-icon"></i>
             <span>{{
               this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ITEM_SIDEBAR
                 .CASH
             }}</span>
-          </a>
+          </router-link>
         </li>
         <li class="menu-item">
           <a class="menu-item-a">

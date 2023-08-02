@@ -212,6 +212,8 @@
     height: 32px;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
+    min-width: unset;
 }
 
 .insert-data button:last-child:hover{

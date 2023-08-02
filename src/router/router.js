@@ -3,6 +3,9 @@ import EmployeeList from '@/views/employee/EmployeeList';
 import CategoryPage from '@/views/category/Category';
 import SystemAccount from '@/views/account/system_account/SystemAccount';
 import ProviderList from '@/views/provider/provider_list/ProviderList';
+import CashHomePage from '@/views/cash/cash_home_page/CashHomePage';
+import CashProcess from '@/views/cash/cash_process/CashProcess';
+import ReceiptPayment from '@/views/cash/receipt_payment/ReceiptPayment';
 
 /**
  * Mô tả: Định nghĩa các router
@@ -14,6 +17,23 @@ const routers = [
     {path: "/category", component: CategoryPage, name: "CategoryRouter"},
     {path: "/system-account", component: SystemAccount, name: "SystemAccountRouter"},
     {path: "/provider", component: ProviderList, name: "ProviderListRouter"},
+    {
+        path: "/cash", 
+        component: CashHomePage, 
+        name: "CashHomePageRouter",
+        children: [
+            {
+                path: 'cash-process',
+                component: CashProcess,
+                name: "CashProcess"
+            },
+            {
+                path: "receipt-payment", 
+                component: ReceiptPayment, 
+                name: "ReceiptPaymentRouter"
+            },
+        ]
+    },
 ]
 
 /**

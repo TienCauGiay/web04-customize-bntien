@@ -1,0 +1,13 @@
+.container-cash{
+    height: 100%;
+    margin: 0 10px 10px 10px;
+}
+
+.menu-cash{
+    height: 42px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--color-btn-default);
+}
+
