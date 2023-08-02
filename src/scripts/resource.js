@@ -1,6 +1,7 @@
 import COMPONENT_CATEGORY from '@/scripts/resource_component/rc_category.js'
 import SYSTEM_ACCOUNT from '@/scripts/resource_component/rc_account.js'
 import PROVIDER from '@/scripts/resource_component/rc_provider.js'
+import RECEIPT_PAYMENT from '@/scripts/resource_component/rc_receipt_payment.js'
 
 const MISAResource = {
     'vn-VI':{
@@ -181,6 +182,7 @@ const MISAResource = {
         CATEGORY: COMPONENT_CATEGORY,
         ACCOUNT: SYSTEM_ACCOUNT,
         PROVIDER: PROVIDER,
+        RECEIPT_PAYMENT: RECEIPT_PAYMENT,
     },
     'en-EN':{
         TEXT_CONTENT:{

@@ -355,7 +355,7 @@
         </div>
       </div>
     </div>
-    <PaymentDetail v-if="isShowFormDetail"></PaymentDetail>
+    <PaymentDetail v-if="true"></PaymentDetail>
   </div>
 </template>
 

@@ -437,6 +437,30 @@
     height: 18px;
 }
 
+.refresh-time-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -648px -145px;
+	width: 24px;
+	height: 23px;
+}
+
+.guide-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -983px -145px;
+	width: 24px;
+	height: 22px;
+}
+
+.setting-big-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -32px -144px;
+	width: 24px;
+	height: 24px;
+}
+
+.dola-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -202px -146px;
+	width: 20px;
+	height: 20px;
+}
+
 .filter-icon{
     background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1817px -208px;
 	width: 12px;
@@ -444,7 +468,7 @@
 }
 
 .direction-arrow{
-    background: url('../../assets/icon/Sprites.64af8f61.svg')no-repeat -259px -147px;
+    background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -259px -147px;
 	width: 18px;
 	height: 18px;
 }
