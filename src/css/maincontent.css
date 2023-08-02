@@ -445,6 +445,7 @@ input.checkbox-select-row{
     background-color: white;
     margin: 0px;
     z-index: 2000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 -4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .menu-function-select div{

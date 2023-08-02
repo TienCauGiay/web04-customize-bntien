@@ -47,7 +47,7 @@
           {{ this.textColSecond }}
         </div>
       </div>
-      <div class="content-form">
+      <div class="content-form" ref="formCBB" @scroll="handleScroll">
         <template v-for="(item, index) in listEntitySearchFormCBB" :key="index">
           <div
             class="form-cbb-menu-item"
@@ -148,6 +148,27 @@ export default {
           this.propCode
         );
         this.isShowSelectEntity = true;
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm để xử lý khi scroll combobox
+     * created by : BNTIEN
+     * created date: 29-07-2023 22:45:32
+     */
+    async handleScroll() {
+      try {
+        const cbb = this.$refs.formCBB;
+        const remainingSpace =
+          cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
+
+        // Kiểm tra xem đã scroll đến cuối combobox chưa
+        if (remainingSpace <= 10) {
+          // Gọi API để lấy thêm dữ liệu
+          await this.$_MISAEmitter.emit("handleScrollCBBformCBB");
+        }
       } catch {
         return;
       }

@@ -355,7 +355,7 @@
         </div>
       </div>
     </div>
-    <PaymentDetail v-if="true"></PaymentDetail>
+    <PaymentDetail v-if="isShowFormDetail"></PaymentDetail>
   </div>
 </template>
 
@@ -1002,6 +1002,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(./ReceiptPayment.css);
 </style>

@@ -1080,7 +1080,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(./ProviderList.css);
 
 .no-disable {

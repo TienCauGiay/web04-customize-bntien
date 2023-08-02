@@ -984,7 +984,10 @@
                       <misa-input
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
-                        :class="{ 'border-red': isBorderRed.NumberDayOwed }"
+                        :class="[
+                          { 'border-red': isBorderRed.NumberDayOwed },
+                          'right-to-left',
+                        ]"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
@@ -1008,7 +1011,10 @@
                       <misa-input
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
-                        :class="{ 'border-red': isBorderRed.AmountDebt }"
+                        :class="[
+                          { 'border-red': isBorderRed.AmountDebt },
+                          'right-to-left',
+                        ]"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
@@ -1089,7 +1095,10 @@
                       <misa-input
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
-                        :class="{ 'border-red': isBorderRed.NumberDayOwed }"
+                        :class="[
+                          { 'border-red': isBorderRed.NumberDayOwed },
+                          'right-to-left',
+                        ]"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
@@ -1113,7 +1122,10 @@
                       <misa-input
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
-                        :class="{ 'border-red': isBorderRed.AmountDebt }"
+                        :class="[
+                          { 'border-red': isBorderRed.AmountDebt },
+                          'right-to-left',
+                        ]"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
@@ -2013,6 +2025,46 @@ export default {
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
+              }
+              break;
+            case "IdentityNumberContacter":
+              if (this.provider[refInput]) {
+                if (
+                  helperCommon.isMaxLengthInput(
+                    this.provider[refInput],
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .maxLength[refInput].Limit
+                  )
+                ) {
+                  this.setErrorMaxLength(refInput);
+                } else if (helperCommon.isNumber(this.provider[refInput])) {
+                  this.setError(refInput);
+                }
+              }
+              break;
+            case "EmailContacter":
+            case "EmailReceiver":
+              if (this.provider[refInput]) {
+                if (
+                  helperCommon.isMaxLengthInput(
+                    this.provider[refInput],
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .maxLength[refInput].Limit
+                  )
+                ) {
+                  this.setErrorMaxLength(refInput);
+                } else if (
+                  helperCommon.isFormatEmail(this.provider[refInput])
+                ) {
+                  this.setError(refInput);
+                }
+              }
+              break;
+            case "IdentityDateContacter":
+              if (this.provider[refInput]) {
+                if (helperCommon.isInvalidDate(this.provider[refInput])) {
+                  this.setError(refInput);
+                }
               }
               break;
             default:

@@ -157,6 +157,11 @@
               :listEntitySearchCBB="listNatureSearch"
               :propName="'Nature'"
               :propId="'NatureId'"
+              :indexSelectedCBB="
+                listNatureSearch.findIndex(
+                  (obj) => obj.Nature == account.Nature
+                )
+              "
             ></misa-combobox>
           </div>
         </div>
@@ -183,7 +188,10 @@
           </div>
         </div>
         <div class="system-account-track-detail">
-          <div class="title-track-detail">
+          <div
+            class="title-track-detail"
+            @click="isShowTrackDetail = !isShowTrackDetail"
+          >
             <div class="title-track-detail-icon">
               <div class="function-icon" style="scale: 1.5 1.5"></div>
             </div>
@@ -194,7 +202,10 @@
               }}
             </div>
           </div>
-          <div class="content-track-detail">
+          <div
+            class="content-track-detail"
+            :class="{ hidden: !isShowTrackDetail }"
+          >
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
@@ -407,6 +418,10 @@ export default {
     this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data) => {
       this.selectedGeneralAccount(data);
     });
+
+    this.$_MISAEmitter.on("handleScrollCBBformCBB", async () => {
+      await this.handleScrollformCBB();
+    });
   },
 
   mounted() {
@@ -473,9 +488,11 @@ export default {
       // Trang hiện tại
       pageNumber: 1,
       // Số lượng tài khoản được tải mỗi lần
-      pageSize: 10,
+      pageSize: 20,
       // Giá trị của input trong form cbb
       valueInputFormCBB: "",
+      // Biến quy định trạng thái ẩn hiện theo dõi chi tiết
+      isShowTrackDetail: true,
     };
   },
 
@@ -533,47 +550,13 @@ export default {
      */
     async getAllAccount() {
       try {
-        const res = await accountService.getFilter(
+        const res = await accountService.getCodeOrName(
           this.pageSize,
           this.pageNumber,
-          "",
-          true,
-          1,
           ""
         );
-        if (res.data.Data.length > 0) {
-          this.accounts = [...this.accounts, ...res.data.Data];
-          this.pageNumber++;
-        }
-        let parents = [];
-        // Lấy danh sách các dòng hện đang là cha trong dataTable
-        parents = this.accounts.filter(
-          (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE
-        );
-        // Duyệt đến khi không có dòng nào là cha nữa
-        while (parents.length > 0) {
-          // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
-          const childrens = await accountService.getAllChildren(
-            parents[0].AccountNumber
-          );
-          // Thêm vào dataTable
-          this.accounts.splice(
-            this.accounts.indexOf(parents[0]) + 1,
-            0,
-            ...childrens.data
-          );
-          // Cập nhật trạng thái cho các dòng vừa mới thêm vào dataTable
-          for (const row of childrens.data) {
-            // Kiểm tra xem trong số những dòng con vừa tìm được có dòng nào là cha của các dòng khác không
-            if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-              // Thêm dòng cha mới vào danh sách các dòng hiện đang là cha
-              parents.push(row);
-            }
-          }
-
-          // Xóa phần tử đầu tiên trong danh sách những dòng hiện đang là cha sau khi đã duyệt xong
-          parents.splice(0, 1);
-        }
+        console.log(res);
+        this.accounts = [...this.accounts, ...res.data.Data];
       } catch {
         this.accounts = [];
       }
@@ -1129,6 +1112,20 @@ export default {
         }
       }
     },
+
+    /**
+     * Mô tả: lấy thêm dữ liệu khi cuộn đến cuối trong form cbb
+     * created by : BNTIEN
+     * created date: 03-08-2023 00:03:21
+     */
+    async handleScrollformCBB() {
+      try {
+        this.pageNumber += 1;
+        await this.getAllAccount();
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1140,6 +1137,7 @@ export default {
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSelectedSelectOption");
     this.$_MISAEmitter.off("onSelectedEntityFormCBB");
+    this.$_MISAEmitter.off("handleScrollCBBformCBB");
   },
 };
 </script>

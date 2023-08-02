@@ -49,7 +49,7 @@ const SYSTEM_ACCOUNT = {
             "Nature": "Tính chất không được để trống.",
         },
         maxLength: {
-            "AccountNumber": {Limit: 50, Warning : "Số tài khoản tối đa 20 kí tự."},
+            "AccountNumber": {Limit: 20, Warning : "Số tài khoản tối đa 20 kí tự."},
             "AccountName": {Limit: 255, Warning : "Tên tài khoản tối đa 255 kí tự."},
             "AccountNameEnglish": {Limit: 255, Warning : "Tên tiếng anh tối đa 255 kí tự."},
             "ParentId": {Limit: 36, Warning : "Tài khoản tổng hợp tối đa 36 kí tự."},

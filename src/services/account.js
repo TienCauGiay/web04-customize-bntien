@@ -32,6 +32,22 @@ class AccountService extends BaseServices {
         return response;
     }
 
+            /**
+     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:11:46
+     */
+    async getCodeOrName(pageSize, pageNumber, textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/codeorname`, {
+            params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                textSearch: textSearch,
+            }
+        });
+        return response;
+    }
+
     /**
      * Mô tả: Hàm cập nhật trạng thái tài khoản
      * created by : BNTIEN

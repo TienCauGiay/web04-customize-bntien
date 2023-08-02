@@ -249,6 +249,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url(./Category.css);
 </style>

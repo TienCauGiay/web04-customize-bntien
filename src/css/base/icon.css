@@ -461,6 +461,12 @@
 	height: 20px;
 }
 
+.attach-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -539px -202px;
+	width: 19px;
+	height: 19px;
+}
+
 .filter-icon{
     background: url('../../assets/icon/Sprites.64af8f61.svg') no-repeat -1817px -208px;
 	width: 12px;

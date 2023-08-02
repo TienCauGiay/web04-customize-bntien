@@ -101,6 +101,7 @@
     border-radius: 1px;
     border: none;
     background-color: white;
+    border: 1px solid transparent;
 }
 
 .page-number button:disabled{

@@ -25,6 +25,14 @@
     margin-right: 10px;
 }
 
+.system-account-track-detail:hover{
+  cursor: pointer;
+}
+
+.system-account-track-detail:hover .title-track-detail-text{
+  color: #35bf22;
+}
+
 .title-track-detail-icon{
     cursor: pointer;
 }
@@ -77,13 +85,21 @@
 }
 
 #detail-add-system-account .content-track-detail {
+  overflow: hidden;
+  max-height: 170px;
+  transition: max-height 0.3s ease-out;
   margin-left: 10px;
+}
+
+#detail-add-system-account .content-track-detail.hidden {
+  max-height: 0;
 }
 
 #detail-add-system-account .content-track-detail-row {
   display: flex;
   column-gap: 40px;
   margin-bottom: 10px;
+  margin-left: 2px;
 }
   
 #detail-add-system-account .content-track-detail-halfrow {
