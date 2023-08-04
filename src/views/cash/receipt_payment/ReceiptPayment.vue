@@ -87,9 +87,14 @@
                 <div class="function-icon-disable"></div>
               </div>
               <div class="filter-receipt-menu" v-show="isShowFilterReceipt">
-                <div class="filter-receipt-menu-item">Tất cả</div>
-                <div class="filter-receipt-menu-item">Phiếu thu</div>
-                <div class="filter-receipt-menu-item">Phiếu chi</div>
+                <div
+                  class="filter-receipt-menu-item"
+                  v-for="(item, index) in optionFilterReceipt"
+                  :key="index"
+                  @click="selectFilter(index)"
+                >
+                  {{ item }}
+                </div>
               </div>
             </div>
           </button>
@@ -103,10 +108,10 @@
                 this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch
               "
               v-model="textSearch"
-              @keydown.enter="onSearchProvider"
+              @keydown.enter="onSearchReceipt"
               @input="autoSearch"
             />
-            <div class="search-icon icon-tb" @click="onSearchProvider"></div>
+            <div class="search-icon icon-tb" @click="onSearchReceipt"></div>
           </div>
           <div
             @click="refreshData"
@@ -134,15 +139,15 @@
           </div>
           <div class="insert-data">
             <misa-button-default
-              :textButtonDefault="
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE
-              "
+              :textButtonDefault="'Chi tiền'"
               @click="btnOpenFormDetail"
             ></misa-button-default>
             <button @click="isShowMenuInsert = !isShowMenuInsert">
               <div class="dropdown-white-icon"></div>
               <div class="menu-select-insert-data" v-show="isShowMenuInsert">
-                <div class="item-select-insert-data">Phiếu chi</div>
+                <div class="item-select-insert-data" @click="btnOpenFormDetail">
+                  Phiếu chi
+                </div>
                 <div class="item-select-insert-data">Trả tiền theo hóa đơn</div>
                 <div class="item-select-insert-data">Nộp thuế</div>
                 <div class="item-select-insert-data">Nộp bảo hiểm</div>
@@ -186,20 +191,47 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr
+              v-show="dataTable.TotalRecord"
+              v-for="item in dataTable.Data"
+              :key="item.ReceiptId"
+              @dblclick="onUpdateFormDetail(item)"
+              :class="{ checkedRow: checkRow().includes(item.ReceiptId) }"
+            >
               <td class="entity-border-left" @dblclick.stop>
                 <div class="th-checkbox">
-                  <input class="checkbox-select-row" type="checkbox" />
+                  <input
+                    class="checkbox-select-row"
+                    type="checkbox"
+                    @click="checkRow(item.ReceiptId)"
+                    :checked="checkRow().includes(item.ReceiptId)"
+                  />
                 </div>
               </td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td class="text-center col-width-150">
+                {{ formatDate(item.AccountingDate) }}
+              </td>
+              <td class="text-center col-width-150">
+                {{ formatDate(item.ReceiptDate) }}
+              </td>
+              <td class="col-width-120" :title="item.ReceiptNumber">
+                {{ item.ReceiptNumber }}
+              </td>
+              <td class="text-right col-width-150" :title="item.TotalMoney">
+                {{ item.TotalMoney }}
+              </td>
+              <td class="col-width-250" :title="item.Explain">
+                {{ item.Explain }}
+              </td>
+              <td class="col-width-150" :title="item.ProviderName">
+                {{ item.ProviderName }}
+              </td>
+              <td class="col-width-120" :title="item.ProviderId">
+                {{ item.ProviderId }}
+              </td>
+              <td class="col-width-350" :title="item.Address">
+                {{ item.Address }}
+              </td>
               <td
                 class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop
@@ -217,11 +249,11 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr class="tr-last-child">
               <td></td>
               <td class="text-center">Tổng</td>
               <td colspan="2"></td>
-              <td class="text-right">0</td>
+              <td class="text-right">{{ totalAmount }}</td>
               <td colspan="4"></td>
               <td></td>
             </tr>
@@ -236,17 +268,21 @@
               top: `${this.positionFeatureMenu.top}px`,
             }"
           >
-            <div @click="onDupliCateEmployee">
-              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
-            </div>
-            <div @click="onDeleteEmployee">
-              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
-            </div>
-            <div>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.STOP_USING
-              }}
-            </div>
+            <template v-if="!this.selectedReceipt.IsNoted">
+              <div>Ghi sổ</div>
+              <div @click="onDeleteReceipt">
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
+              </div>
+              <div @click="onDupliCateReceipt">
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE
+                }}
+              </div>
+            </template>
+            <template v-if="this.selectedReceipt.IsNoted">
+              <div>Bỏ ghi</div>
+              <div>Nhân bản</div>
+            </template>
           </div>
         </teleport>
         <img
@@ -355,14 +391,39 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="isOverlay"
+      id="container-overlay"
+      class="container-overlay"
+      @closeFormDetail="onCloseFormDetail"
+    ></div>
     <PaymentDetail v-if="isShowFormDetail"></PaymentDetail>
+    <!-- dialog employee confirm delete -->
+    <misa-dialog-confirm-delete
+      :isDeleteMultiple="isDeleteMultipleDialog"
+      :contentDeleteMultiple="
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
+          .contentDeleteMultiple
+      "
+      :contentDelete="`${
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.contentDelete
+      }${receiptNumberDeleteSelected}${
+        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
+      }`"
+      v-if="isShowDialogConfirmDelete"
+    ></misa-dialog-confirm-delete>
+    <!-- toast message -->
+    <misa-toast-success
+      v-if="isShowToastMessage"
+      :contentToast="contentToastSuccess"
+    ></misa-toast-success>
   </div>
 </template>
 
 <script>
 import PaymentDetail from "../payment_detail/PaymentDetail.vue";
 import helperCommon from "@/scripts/helper.js";
-import employeeService from "@/services/employee.js";
+import receiptService from "@/services/receipt.js";
 
 export default {
   name: "ReceiptPayment",
@@ -371,9 +432,9 @@ export default {
     PaymentDetail,
   },
 
-  created() {
+  async created() {
     // Gọi hàm lấy dữ liệu danh sách nhân viên
-    this.getListEmployee();
+    this.dataTable = await this.getListReceipt(20, 1, "", null);
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
@@ -387,16 +448,16 @@ export default {
       this.setFormModeAdd();
     });
     this.$_MISAEmitter.on("refreshDataTable", async () => {
-      await this.getListEmployee();
+      this.dataTable = await this.getListReceipt(20, 1, "", null);
     });
     this.$_MISAEmitter.on("confirmYesDeleteEntity", async () => {
-      await this.btnConfirmYesDeleteEmployee();
+      await this.btnConfirmYesDeleteReceipt();
     });
     this.$_MISAEmitter.on("confirmNoDeleteEntity", () => {
-      this.btnConfirmNoDeleteEmployee();
+      this.btnConfirmNoDeleteReceipt();
     });
     this.$_MISAEmitter.on("confirmYesDeleteMultiple", async () => {
-      await this.btnConfirmYesDeleteMultipleEmployee();
+      await this.btnConfirmYesDeleteMultipleReceipt();
     });
     this.$_MISAEmitter.on("closeToastMessage", () => {
       this.btnCloseToastMessage();
@@ -416,6 +477,8 @@ export default {
       isShowFilterReceipt: false,
       // Biến quy định text trong button tất cả
       textFilterReceipt: "Tất cả",
+      // select option filter
+      optionFilterReceipt: ["Tất cả", "Phiếu thu", "Phiếu chi"],
       // Biến quy định trạng thái hiển thị menu insert
       isShowMenuInsert: false,
       // Khai báo biến quy định trạng thái hiển thị của form chi tiết
@@ -433,15 +496,15 @@ export default {
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
       // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
-      employeeUpdate: {},
+      receiptUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
       recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
       // Khai báo EmployeeId của nhân viên cần xóa
-      employeeIdDeleteSelected: "",
+      receiptIdDeleteSelected: "",
       // Khai báo EmployeeCode của nhân viên cần xóa
-      employeeCodeDeleteSelected: "",
+      receiptNumberDeleteSelected: "",
       // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
       isShowDialogConfirmDelete: false,
       // Khai báo biến lưu nội dung của toast message
@@ -459,7 +522,7 @@ export default {
       // Khai báo biến lưu chỉ số index được chọn trong paging
       indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
-      searchEmployeeTimeout: null,
+      searchReceiptTimeout: null,
       // Khai báo biến quy định trạng thái hiển thị của menu thực hiện hàng loạt
       isShowMenuExcuteBatch: false,
       // Khai báo biến lưu danh sách id cần xóa
@@ -469,9 +532,7 @@ export default {
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
       // Khai báo biến lưu employee khi bấm vào col feature
-      selectedEmployee: {},
-      // Khai báo biến quy định trạng thái hiển thị tiện ích
-      isShowUtilities: false,
+      selectedReceipt: {},
     };
   },
 
@@ -547,11 +608,25 @@ export default {
       if (!this.dataTable.Data) return false;
       if (this.dataTable.Data.length == 0) return false;
       for (let i = 0; i < this.dataTable.Data.length; i++) {
-        if (!this.ids.includes(this.dataTable.Data[i].EmployeeId)) {
+        if (!this.ids.includes(this.dataTable.Data[i].ReceiptId)) {
           return false;
         }
       }
       return true;
+    },
+    /**
+     * Mô tả: Tính toán tổng tiền trong table
+     * created by : BNTIEN
+     * created date: 04-08-2023 05:59:39
+     */
+    totalAmount() {
+      if (this.dataTable.Data) {
+        return this.dataTable.Data.map((x) => x.TotalMoney).reduce(
+          (total, current) => total + current,
+          0
+        );
+      }
+      return 0;
     },
   },
 
@@ -561,16 +636,17 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:20
      */
-    async getListEmployee() {
+    async getListReceipt(selectedRecord, currentPage, textSearch, keyFilter) {
       try {
         this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          ""
+        const resfilter = await receiptService.getFilter(
+          selectedRecord,
+          currentPage,
+          textSearch,
+          keyFilter
         );
         this.isShowLoadding = false;
-        this.dataTable = resfilter.data;
+        return resfilter.data;
       } catch {
         return;
       }
@@ -582,10 +658,9 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord =
-        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
-        (this.textSearch = "");
-      await this.getListEmployee();
+      this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
+      this.textSearch = "";
+      this.dataTable = await this.getListReceipt(20, 1, "", null);
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
@@ -595,7 +670,7 @@ export default {
     btnOpenFormDetail() {
       this.isShowFormDetail = true;
       this.isOverlay = true;
-      this.employeeUpdate.EmployeeCode = "";
+      this.receiptUpdate.ReceiptNumber = "";
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi click vào nút close trong form chi tiết
@@ -606,18 +681,18 @@ export default {
       this.isShowFormDetail = false;
       this.isOverlay = false;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
-      this.employeeUpdate = {};
+      this.receiptUpdate = {};
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở các menu feature ở cột cuối của table khi click vào icon drop
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:54
      */
-    onOpenFeatureMenu(e, employee) {
+    onOpenFeatureMenu(e, receipt) {
       try {
         // chặn sự liện lan ra các phần tử cha
         e.stopPropagation();
-        this.selectedEmployee = employee;
+        this.selectedReceipt = receipt;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
         const left = positionIcon.right - 110;
@@ -645,8 +720,8 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
-    onUpdateFormDetail(employee) {
-      this.employeeUpdate = employee;
+    onUpdateFormDetail(receipt) {
+      this.receiptUpdate = receipt;
       this.isShowFormDetail = true;
       this.isOverlay = true;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
@@ -675,22 +750,22 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
-    onDeleteEmployee() {
+    onDeleteReceipt() {
       this.isShowDialogConfirmDelete = true;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = true;
-      this.employeeIdDeleteSelected = this.selectedEmployee.EmployeeId;
-      this.employeeCodeDeleteSelected = this.selectedEmployee.EmployeeCode;
+      this.receiptIdDeleteSelected = this.selectedReceipt.ReceiptId;
+      this.receiptNumberDeleteSelected = this.selectedReceipt.ReceiptNumber;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhân viên
      * created by : BNTIEN
      * created date: 28-05-2023 21:09:01
      */
-    async btnConfirmYesDeleteEmployee() {
+    async btnConfirmYesDeleteReceipt() {
       try {
         this.isShowLoadding = true;
-        const res = await employeeService.delete(this.employeeIdDeleteSelected);
+        const res = await receiptService.delete(this.receiptIdDeleteSelected);
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
@@ -702,7 +777,7 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          await this.getListEmployee();
+          this.dataTable = await this.getListReceipt(20, 1, "", null);
         }
       } catch {
         return;
@@ -713,7 +788,7 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:51:41
      */
-    btnConfirmNoDeleteEmployee() {
+    btnConfirmNoDeleteReceipt() {
       this.isShowDialogConfirmDelete = false;
       this.isDeleteMultipleDialog = false;
       this.isOverlay = false;
@@ -744,9 +819,9 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
-    onDupliCateEmployee() {
+    onDupliCateReceipt() {
       try {
-        this.employeeUpdate = this.selectedEmployee;
+        this.receiptUpdate = this.selectedReceipt;
         this.isShowFormDetail = true;
         this.isOverlay = true;
         this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
@@ -759,20 +834,21 @@ export default {
      * created by : BNTIEN
      * created date: 04-06-2023 00:20:21
      */
-    async onSearchEmployee() {
+    async onSearchReceipt() {
       try {
         this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
         this.isShowLoadding = true;
-        const filteredEmployees = await employeeService.getFilter(
+        const filtered = await receiptService.getFilter(
           this.selectedRecord,
           this.currentPage,
-          this.textSearch.trim()
+          this.textSearch.trim(),
+          null
         );
         this.isShowLoadding = false;
-        this.dataTable = filteredEmployees.data;
+        this.dataTable = filtered.data;
       } catch {
         return;
       }
@@ -784,9 +860,9 @@ export default {
      */
     async autoSearch() {
       try {
-        clearTimeout(this.searchEmployeeTimeout);
-        this.searchEmployeeTimeout = setTimeout(async () => {
-          await this.onSearchEmployee();
+        clearTimeout(this.searchReceiptTimeout);
+        this.searchReceiptTimeout = setTimeout(async () => {
+          await this.onSearchReceipt();
         }, 500);
       } catch {
         return;
@@ -803,10 +879,11 @@ export default {
           this.textSearch = "";
         }
         this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
+        const resfilter = await receiptService.getFilter(
           this.selectedRecord,
           this.currentPage,
-          this.textSearch.trim()
+          this.textSearch.trim(),
+          null
         );
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
@@ -914,15 +991,15 @@ export default {
       try {
         if (this.isCheckAll) {
           this.dataTable.Data.map((item) => {
-            if (this.ids.includes(item.EmployeeId)) {
-              this.ids.splice(this.ids.indexOf(item.EmployeeId), 1);
+            if (this.ids.includes(item.ReceiptId)) {
+              this.ids.splice(this.ids.indexOf(item.ReceiptId), 1);
             }
           });
         } else {
           if (this.dataTable.Data) {
             this.dataTable.Data.map((item) => {
-              if (!this.ids.includes(item.EmployeeId)) {
-                this.ids.push(item.EmployeeId);
+              if (!this.ids.includes(item.ReceiptId)) {
+                this.ids.push(item.ReceiptId);
               }
             });
           }
@@ -946,10 +1023,10 @@ export default {
      * created by : BNTIEN
      * created date: 28-06-2023 09:36:08
      */
-    async btnConfirmYesDeleteMultipleEmployee() {
+    async btnConfirmYesDeleteMultipleReceipt() {
       try {
         this.isShowLoadding = true;
-        const res = await employeeService.deleteMutiple(this.ids);
+        const res = await receiptService.deleteMutiple(this.ids);
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
@@ -962,23 +1039,39 @@ export default {
           this.contentToastSuccess =
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
-          await this.getListEmployee();
+          this.dataTable = await this.getListReceipt(20, 1, "", null);
         }
       } catch {
         return;
       }
     },
-    /**
-     * Mô tả: Xử lí xuất dữ liệu ra excel
-     * created by : BNTIEN
-     * created date: 01-07-2023 22:35:32
-     */
-    async exportData() {
+
+    async selectFilter(index) {
       try {
-        const link = this.$refs.ExportListEmployee;
-        this.isShowLoadding = true;
-        await employeeService.exportData(link);
-        this.isShowLoadding = false;
+        this.isShowFilterReceipt = false;
+        this.textFilterReceipt = this.optionFilterReceipt[index];
+        if (index == 0) {
+          this.dataTable = await this.getListReceipt(
+            this.selectedRecord,
+            this.currentPage,
+            this.textSearch,
+            null
+          );
+        } else if (index == 1) {
+          this.dataTable = await this.getListReceipt(
+            this.selectedRecord,
+            this.currentPage,
+            this.textSearch,
+            false
+          );
+        } else if (index == 2) {
+          this.dataTable = await this.getListReceipt(
+            this.selectedRecord,
+            this.currentPage,
+            this.textSearch,
+            true
+          );
+        }
       } catch {
         return;
       }
@@ -1004,4 +1097,60 @@ export default {
 
 <style scoped>
 @import url(./ReceiptPayment.css);
+
+.rotate-function-icon {
+  transform: rotate(180deg);
+}
+
+.active-page {
+  border: 1px solid var(--color-border-default);
+}
+
+.active-record {
+  border: 1px solid var(--color-btn-default);
+}
+
+input[type="checkbox"] {
+  accent-color: #2ca01c;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.active-record-item {
+  background-color: var(--color-btn-default);
+  color: white;
+}
+
+.no-disable {
+  border: 1px solid black;
+}
+
+.no-disable:hover {
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.checkedRow {
+  background-color: #f9ecca;
+}
+
+.checkedRow td:first-child,
+.checkedRow td:last-child {
+  background-color: #f9ecca;
+}
+
+.loadding-form-detail {
+  left: 50%;
+}
+
+.no-data {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+}
+
+#receipt-payment .menu-function-select {
+  width: 60px;
+}
 </style>

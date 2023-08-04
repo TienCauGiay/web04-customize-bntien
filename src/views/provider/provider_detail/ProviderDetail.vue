@@ -204,11 +204,11 @@
             <div class="col-md-l">
               <label>Nhân viên mua hàng</label>
               <misa-combobox-select-single
-                :propCode="'EmployeeCode'"
                 :propId="'EmployeeId'"
+                :propCode="'EmployeeCode'"
                 :propName="'FullName'"
-                :nameColFirst="'Mã nhân viên'"
-                :nameColSecond="'Tên nhân viên'"
+                :haederCBB="['Mã nhân viên', 'Tên nhân viên']"
+                :bodyCBB="['EmployeeCode', 'FullName']"
                 :isBorderRedCBB="isBorderRed"
                 :errorsCBB="errors"
                 :entityCBB="provider"
@@ -323,11 +323,11 @@
           <div class="col-md-l">
             <label>Nhân viên mua hàng</label>
             <misa-combobox-select-single
-              :propCode="'EmployeeCode'"
               :propId="'EmployeeId'"
+              :propCode="'EmployeeCode'"
               :propName="'FullName'"
-              :nameColFirst="'Mã nhân viên'"
-              :nameColSecond="'Tên nhân viên'"
+              :haederCBB="['Mã nhân viên', 'Tên nhân viên']"
+              :bodyCBB="['EmployeeCode', 'FullName']"
               :isBorderRedCBB="isBorderRed"
               :errorsCBB="errors"
               :entityCBB="provider"
@@ -970,8 +970,11 @@
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :nameColFirst="'Mã điều khoản thanh toán'"
-                      :nameColSecond="'Tên điều khoản thanh toán'"
+                      :haederCBB="[
+                        'Mã điều khoản thanh toán',
+                        'Tên điều khoản thanh toán',
+                      ]"
+                      :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="provider"
@@ -1081,8 +1084,11 @@
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :nameColFirst="'Mã điều khoản thanh toán'"
-                      :nameColSecond="'Tên điều khoản thanh toán'"
+                      :haederCBB="[
+                        'Mã điều khoản thanh toán',
+                        'Tên điều khoản thanh toán',
+                      ]"
+                      :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="provider"
@@ -1202,7 +1208,14 @@
               </div>
             </div>
           </div>
-          <div class="content-select-layout" v-if="selectLayout.bankAccount">
+          <div
+            class="content-select-layout"
+            v-if="selectLayout.bankAccount"
+            :class="{
+              'overflow-auto':
+                selectLayout.bankAccount || selectLayout.addressOther,
+            }"
+          >
             <table class="table-input" id="table-input-account">
               <thead class="table-input-title">
                 <tr>
@@ -1260,6 +1273,10 @@
             class="content-select-layout"
             id="address-Other"
             v-if="selectLayout.addressOther"
+            :class="{
+              'overflow-auto':
+                selectLayout.bankAccount || selectLayout.addressOther,
+            }"
           >
             <div class="content-select-layout-half">
               <div class="half-content">
@@ -2883,5 +2900,9 @@ input {
 
 .border-red {
   border: 1px solid red;
+}
+
+#detail-info-provider .overflow-auto {
+  overflow: auto;
 }
 </style>

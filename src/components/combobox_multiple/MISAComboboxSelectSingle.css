@@ -50,24 +50,11 @@
     width: 100%;
     top: calc(100% + 5px);
     max-height: 134px;
-    overflow: hidden;
 }
 
 #form-cbb-menu-select-single #form-cbb-main{
     max-height: 108px;
     overflow-y: auto;
-}
-
-#form-cbb-menu-select-single .col-1-cbb-menu-item {
-    white-space: nowrap;
-    overflow: hidden; 
-    text-overflow: ellipsis;
-}
-  
-#form-cbb-menu-select-single .col-2-cbb-menu-item {
-    white-space: nowrap; 
-    overflow: hidden;
-    text-overflow: ellipsis; 
 }
 
 .select-item-cbb-multiple #form-cbb-menu-select-single .form-cbb-menu-item div:last-child{

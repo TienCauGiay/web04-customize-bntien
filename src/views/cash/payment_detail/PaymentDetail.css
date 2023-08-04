@@ -185,10 +185,13 @@
     display: flex;
     align-items: center;
     column-gap: 6px;
+    width: 100%;
+    min-width: 100%;
 }
 
 .text-input{
     width: calc(100% - 28px);
+    min-width: calc(100% - 28px);
 }
 
 .text-input-2{
@@ -197,6 +200,7 @@
 
 .dola-money{
     width: 28px;
+    min-width: 28px;
 }
 
 .quantity{
@@ -317,6 +321,11 @@
 #table-input-payment-detail th:not(:first-child), 
 #table-input-payment-detail td:not(:first-child){
     padding: 0 8px;
+}
+
+.table-col-1{
+    width: 30px;
+    max-width: 30px;
 }
 
 .table-col-3, .table-col-4{
@@ -478,4 +487,93 @@
     width: 200px;
     text-align: right; 
     direction: rtl;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple{
+    width: 1000px;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple .col-1-cbb-menu-item{
+    flex: 0 0 120px; 
+    min-width: 100px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple .col-2-cbb-menu-item{
+    flex: 0 0 350px; 
+    min-width: 350px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple .col-3-cbb-menu-item{
+    flex: 0 0 140px; 
+    min-width: 140px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple .col-4-cbb-menu-item{
+    flex: 0 0 250px; 
+    min-width: 250px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-provider .select-item-cbb-multiple .col-5-cbb-menu-item{
+    flex: 0 0 130px; 
+    min-width: 130px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-employee .select-item-cbb-multiple{
+    width: 560px;
+}
+
+#info-payment-detail #cbb-employee .select-item-cbb-multiple .col-1-cbb-menu-item{
+    flex: 0 0 120px; 
+    min-width: 120px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-employee .select-item-cbb-multiple .col-2-cbb-menu-item{
+    flex: 0 0 150px; 
+    min-width: 150px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-employee .select-item-cbb-multiple .col-3-cbb-menu-item{
+    flex: 0 0 160px; 
+    min-width: 160px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
+}
+
+#info-payment-detail #cbb-employee .select-item-cbb-multiple .col-4-cbb-menu-item{
+    flex: 0 0 120px; 
+    min-width: 120px; 
+    white-space: nowrap;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    padding-left: 0 12px;
 }

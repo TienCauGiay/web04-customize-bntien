@@ -137,7 +137,6 @@
   border: 1px solid var(--color-border-default);
   border-radius: 0 2px 2px 2px;
   max-height: 200px;
-  overflow-y: auto;
 }
 
 .label-hide-text{

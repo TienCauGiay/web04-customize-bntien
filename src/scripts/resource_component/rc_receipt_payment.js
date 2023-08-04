@@ -1,4 +1,7 @@
 const RECEIPT_PAYMENT = {
+    contentDelete: "Bạn có muốn xóa chứng từ <",
+    contentDeleteMultiple: "Bạn có muốn xóa những chứng từ này không?",
+
     FORM_PAYMENT:{
         optionHeader: [
             "1. Trả tiền nhà cung cấp (không theo hóa đơn)",

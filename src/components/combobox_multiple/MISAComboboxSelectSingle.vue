@@ -10,7 +10,7 @@
       <div class="container-input">
         <misa-input
           ref="InputCBB"
-          :value="entityCBB[propName]"
+          :value="isShowCode ? entityCBB[propCode] : entityCBB[propName]"
           @input="onSearchChange"
           @keydown="onKeyDownEntity"
           @mouseenter="isHoveringCBB = true"
@@ -48,8 +48,13 @@
   >
     <div class="form-cbb-menu" id="form-cbb-menu-select-single">
       <div class="form-cbb-menu-title">
-        <div class="col-1-cbb-menu-item">{{ nameColFirst }}</div>
-        <div class="col-2-cbb-menu-item">{{ nameColSecond }}</div>
+        <div
+          v-for="(item, index) in haederCBB"
+          :key="index"
+          :class="`col-${index + 1}-cbb-menu-item`"
+        >
+          {{ item }}
+        </div>
       </div>
       <div class="form-cbb-main" ref="cbbSelectSingle" @scroll="handleScroll">
         <template
@@ -62,12 +67,11 @@
             :class="{ 'cbb-selected': index == indexEntitySelected }"
             ref="EntitySelectedItem"
           >
-            <div class="col-1-cbb-menu-item">
-              {{ item[propCode] }}
-            </div>
-            <div class="col-2-cbb-menu-item">
-              {{ item[propName] }}
-            </div>
+            <template v-for="(col, index1) in bodyCBB" :key="index1">
+              <div :class="`col-${index1 + 1}-cbb-menu-item`">
+                {{ item[col] }}
+              </div>
+            </template>
           </div>
         </template>
       </div>
@@ -81,14 +85,15 @@ export default {
 
   props: [
     "propId",
-    "propCode",
     "propName",
-    "nameColFirst",
-    "nameColSecond",
+    "propCode",
+    "haederCBB",
+    "bodyCBB",
     "isBorderRedCBB",
     "entityCBB",
     "errorsCBB",
     "listEntitySearchCBB",
+    "isShowCode",
   ],
 
   data() {
@@ -254,7 +259,8 @@ input:focus {
   border: 1px solid red;
 }
 
-#detail-info-provider .cbb-selected {
+#detail-info-provider .cbb-selected,
+#info-payment-detail .cbb-selected {
   background-color: var(--color-btn-default);
   color: #ffffff;
 }
