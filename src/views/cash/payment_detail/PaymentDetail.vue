@@ -6,10 +6,10 @@
           <div class="top-header-left-icon">
             <div class="refresh-time-icon"></div>
           </div>
-          <div class="name-payment-slip">Phiếu chi PC00019</div>
+          <div class="name-payment-slip">{{ receipt.ReceiptNumber }}</div>
           <div class="top-header-select-option">
             <div class="content-header-select-option">
-              1. Trả tiền nhà cung cấp (không theo hóa đơn)
+              {{ textSelectLayout }}
             </div>
             <button
               class="header-icon-arrow"
@@ -26,6 +26,7 @@
                 <div
                   class="item-select-option-header"
                   @click="selectedPage(item, index)"
+                  :class="{ 'selected-layout': index == indexSelectedLayout }"
                 >
                   {{ item }}
                 </div>
@@ -94,7 +95,22 @@
               <div class="layout-input-cotent-left-4">
                 <div class="label-input">Tên nhà cung cấp</div>
                 <div class="container-input-payment-detail">
-                  <misa-input></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="ProviderName"
+                      v-model="receipt.ProviderName"
+                      :class="{ 'border-red': isBorderRed.ProviderName }"
+                      @input="setIsBorderRed('ProviderName')"
+                      @mouseenter="isHovering.ProviderName = true"
+                      @mouseleave="isHovering.ProviderName = false"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="isHovering.ProviderName && isBorderRed.ProviderName"
+                    >
+                      {{ errors["ProviderName"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -102,13 +118,43 @@
               <div class="layout-input-cotent-left-3">
                 <div class="label-input">Người nhận</div>
                 <div class="container-input-payment-detail">
-                  <misa-input></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="ReceiveName"
+                      v-model="receipt.ReceiveName"
+                      :class="{ 'border-red': isBorderRed.ReceiveName }"
+                      @input="setIsBorderRed('ReceiveName')"
+                      @mouseenter="isHovering.ReceiveName = true"
+                      @mouseleave="isHovering.ReceiveName = false"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="isHovering.ReceiveName && isBorderRed.ReceiveName"
+                    >
+                      {{ errors["ReceiveName"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="layout-input-cotent-left-4">
                 <div class="label-input">Địa chỉ</div>
                 <div class="container-input-payment-detail">
-                  <misa-input></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="Address"
+                      v-model="receipt.Address"
+                      :class="{ 'border-red': isBorderRed.Address }"
+                      @input="setIsBorderRed('Address')"
+                      @mouseenter="isHovering.Address = true"
+                      @mouseleave="isHovering.Address = false"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="isHovering.Address && isBorderRed.Address"
+                    >
+                      {{ errors["Address"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -116,7 +162,22 @@
               <div class="layout-input-cotent-left-7">
                 <div class="label-input">Lí do chi</div>
                 <div class="container-input-payment-detail">
-                  <misa-input></misa-input>
+                  <div class="container-input">
+                    <misa-input
+                      ref="Reason"
+                      v-model="receipt.Reason"
+                      :class="{ 'border-red': isBorderRed.Reason }"
+                      @input="setIsBorderRed('Reason')"
+                      @mouseenter="isHovering.Reason = true"
+                      @mouseleave="isHovering.Reason = false"
+                    ></misa-input>
+                    <div
+                      class="misa-tooltip"
+                      v-if="isHovering.Reason && isBorderRed.Reason"
+                    >
+                      {{ errors["Reason"] }}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -154,7 +215,15 @@
                 <div class="quantity">
                   <misa-input
                     :placeholder="'Số lượng'"
-                    :class="'right-to-left'"
+                    ref="QuantityAttach"
+                    v-model="receipt.QuantityAttach"
+                    :class="[
+                      { 'border-red': isBorderRed.QuantityAttach },
+                      'right-to-left',
+                    ]"
+                    @input="setIsBorderRed('QuantityAttach')"
+                    @mouseenter="isHovering.QuantityAttach = true"
+                    @mouseleave="isHovering.QuantityAttach = false"
                   ></misa-input>
                   <div>chứng từ gốc</div>
                 </div>
@@ -168,21 +237,78 @@
           <div class="layout-input-cotent-right">
             <div class="row-input-cotent-right">
               <div class="label-input">Ngày hạch toán</div>
-              <misa-input type="date"></misa-input>
+              <div class="container-input">
+                <misa-input
+                  ref="AccountingDate"
+                  type="date"
+                  v-model="receipt.AccountingDate"
+                  :value="formattedDateAccounting"
+                  :class="{
+                    'border-red': isBorderRed.AccountingDate,
+                  }"
+                  @input="setIsBorderRed('AccountingDate')"
+                  @mouseenter="isHovering.AccountingDate = true"
+                  @mouseleave="isHovering.AccountingDate = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.AccountingDate && isBorderRed.AccountingDate"
+                >
+                  {{ errors["AccountingDate"] }}
+                </div>
+              </div>
             </div>
             <div class="row-input-cotent-right">
               <div class="label-input">Ngày phiếu chi</div>
-              <misa-input type="date"></misa-input>
+              <div class="container-input">
+                <misa-input
+                  ref="ReceiptDate"
+                  type="date"
+                  v-model="receipt.ReceiptDate"
+                  :value="formattedReceiptDate"
+                  :class="{
+                    'border-red': isBorderRed.ReceiptDate,
+                  }"
+                  @input="setIsBorderRed('ReceiptDate')"
+                  @mouseenter="isHovering.ReceiptDate = true"
+                  @mouseleave="isHovering.ReceiptDate = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="isHovering.ReceiptDate && isBorderRed.ReceiptDate"
+                >
+                  {{ errors["ReceiptDate"] }}
+                </div>
+              </div>
             </div>
             <div class="row-input-cotent-right">
               <div class="label-input">Số phiếu chi</div>
-              <misa-input></misa-input>
+              <div class="container-input">
+                <misa-input
+                  ref="ReceiptNumber"
+                  v-model="receipt.ReceiptNumber"
+                  :class="{ 'border-red': isBorderRed.ReceiptNumber }"
+                  @input="setIsBorderRed('ReceiptNumber')"
+                  @mouseenter="isHovering.ReceiptNumber = true"
+                  @mouseleave="isHovering.ReceiptNumber = false"
+                ></misa-input>
+                <div
+                  class="misa-tooltip"
+                  v-if="
+                    isHovering.ReceiptNumber &&
+                    (isBorderRed.ReceiptNumber || !receipt.ReceiptNumber) &&
+                    errors['ReceiptNumber']
+                  "
+                >
+                  {{ errors["ReceiptNumber"] }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="layout-input-total">
           <div class="text-total-money">Tổng tiền</div>
-          <div class="total-money">0,00</div>
+          <div class="total-money">{{ receipt.TotalMoney }}</div>
         </div>
       </div>
       <div class="body-layout-table">
@@ -255,9 +381,9 @@
         <button @click="btnCancel" class="btn-black">Hủy</button>
       </div>
       <div class="footer-layout-right">
-        <button class="btn-black">Cất</button>
+        <button class="btn-black" @click="btnSave">Cất</button>
         <div class="select-button">
-          <button class="btn-green">Cất và Thêm</button>
+          <button class="btn-green" @click="btnSaveAndAdd">Cất và Thêm</button>
           <div class="boundary-btn"></div>
           <button class="btn-green-icon">
             <div class="dropdown-white-icon"></div>
@@ -265,10 +391,27 @@
         </div>
       </div>
     </div>
+    <!-- dialog employee input data not blank -->
+    <misa-dialog-data-not-null
+      v-if="isShowDialogDataNotNull"
+      :valueNotNull="dataNotNull"
+      :title="this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID"
+    ></misa-dialog-data-not-null>
+    <!-- dialog employee id Exist -->
+    <misa-dialog-data-exist
+      v-if="isShowDialogCodeExist"
+      :textProp="this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE"
+      :textEntityCodeExist="contentReceiptNumberExist"
+    ></misa-dialog-data-exist>
+    <!-- dialog employee save and close -->
+    <misa-dialog-data-change
+      v-if="isShowDialogDataChange"
+    ></misa-dialog-data-change>
   </div>
 </template>
 
 <script>
+import receiptService from "@/services/receipt.js";
 import employeeService from "@/services/employee.js";
 import providerService from "@/services/provider.js";
 import helperCommon from "@/scripts/helper.js";
@@ -336,24 +479,26 @@ export default {
       // Biến quy định trạng thái hiển thị menu chọn phiếu chi
       isShowOptionHeader: false,
       // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
-      employeeProperty: [
-        "EmployeeCode",
-        "FullName",
-        "DepartmentId",
-        "DepartmentName",
-        "PositionName",
-        "DateOfBirth",
-        "IdentityNumber",
-        "IdentityDate",
-        "IdentityPlace",
+      receiptProperty: [
+        "ProviderId",
+        "ProviderCode",
+        "ProviderName",
+        "ReceiveName",
         "Address",
-        "PhoneNumber",
-        "PhoneLandline",
-        "Email",
-        "BankAccount",
-        "BankName",
-        "BankBranch",
+        "Reason",
+        "EmployeeId",
+        "FullName",
+        "QuantityAttach",
+        "AccountingDate",
+        "ReceiptDate",
+        "ReceiptNumber",
       ],
+      // Khai báo biến lưu text cbb chọn layout
+      textSelectLayout:
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+          .optionHeader[0],
+      // Chỉ số ban đầu trong cbb chọn layout
+      indexSelectedLayout: 0,
       // Khai báo đối tượng employee
       receipt: {},
       // Khai báo danh sách nhà cung cấp tìm kiếm
@@ -367,15 +512,13 @@ export default {
       // Khai báo trạng thái hiển thị của dialog cảnh báo mã nhân viên đã tồn tại
       isShowDialogCodeExist: false,
       // Khai báo biến xác định thông tin của mã nhân viên đã tồn tại
-      contentEmployeeCodeExist: "",
+      contentReceiptNumberExist: "",
       // Khai báo biến quy định trang thái hiển thị dialog dữ liệu đã bị thay đổi
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
-      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox
-      searchDepartmentTimeout: null,
       // Khai báo biên lưu mã nhân viên tự động sinh ra
-      newEmployeeCode: null,
+      newReceiptNumber: null,
       // Khai báo biến lưu title form mode
       titleFormMode: this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE,
       // Khai báo biến chứa danh sách đối tượng lỗi
@@ -449,8 +592,8 @@ export default {
      */
     async getNewCode() {
       try {
-        let maxEmployeeCode = await employeeService.getCodeMax();
-        this.newEmployeeCode = maxEmployeeCode.data;
+        let maxReceiptNumber = await receiptService.getCodeMax();
+        this.newReceiptNumber = maxReceiptNumber.data;
       } catch {
         return;
       }
@@ -502,12 +645,12 @@ export default {
         await this.getListEmployee();
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
-        let res = JSON.stringify(this.employeeSelected);
+        let res = JSON.stringify(this.receiptSelected);
         // Chuyển đổi chuỗi json thành đối tượng employee
-        this.employee = JSON.parse(res);
+        this.receipt = JSON.parse(res);
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Sinh mã tự động
-          this.employee.EmployeeCode = this.newEmployeeCode;
+          this.receipt.ReceiptNumber = this.newReceiptNumber;
           // Gán title cho form mode thêm mới
           this.titleFormMode =
             this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
@@ -627,7 +770,7 @@ export default {
      */
     validateEmployee() {
       try {
-        for (const refInput of this.employeeProperty) {
+        for (const refInput of this.receiptProperty) {
           switch (refInput) {
             case "EmployeeCode":
             case "FullName":
@@ -714,10 +857,10 @@ export default {
      * created by : BNTIEN
      * created date: 29-06-2023 07:07:16
      */
-    handleErrorInputEmployee(errors, employeeProperty) {
+    handleErrorInputEmployee(errors, receiptProperty) {
       const responseHandle = helperCommon.handleErrorInput(
         errors,
-        employeeProperty
+        receiptProperty
       );
       this.errors = responseHandle.error;
       this.isBorderRed = responseHandle.isBorderRed;
@@ -753,7 +896,7 @@ export default {
        ${employeeExisted.EmployeeCode} ${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
       }`;
-      this.contentEmployeeCodeExist = employeeExisted.EmployeeCode;
+      this.contentReceiptNumberExist = employeeExisted.EmployeeCode;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
@@ -771,7 +914,7 @@ export default {
             let employeeByCode = await this.checkEmployeeExists();
             if (!employeeByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              const res = await employeeService.create(this.employee);
+              const res = await receiptService.create(this.employee);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
                   res.status
@@ -791,7 +934,7 @@ export default {
               this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
-            this.handleErrorInputEmployee(error, this.employeeProperty);
+            this.handleErrorInputEmployee(error, this.receiptProperty);
           }
         }
       } else {
@@ -832,7 +975,7 @@ export default {
                 this.handleEmployeeExisted(employeeByCode);
               }
             } catch (error) {
-              this.handleErrorInputEmployee(error, this.employeeProperty);
+              this.handleErrorInputEmployee(error, this.receiptProperty);
             }
           }
         } else {
@@ -874,7 +1017,7 @@ export default {
                 this.isBorderRed = {};
                 this.$_MISAEmitter.emit("refreshDataTable");
                 await this.getNewCode();
-                this.employee.EmployeeCode = this.newEmployeeCode;
+                this.receipt.ReceiptNumber = this.newReceiptNumber;
                 this.focusCode();
               }
             } else {
@@ -882,7 +1025,7 @@ export default {
               this.handleEmployeeExisted(employeeByCode);
             }
           } catch (error) {
-            this.handleErrorInputEmployee(error, this.employeeProperty);
+            this.handleErrorInputEmployee(error, this.receiptProperty);
           }
         }
         // Nếu form ở trạng thái sửa
@@ -909,7 +1052,7 @@ export default {
                 this.employee = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 await this.getNewCode();
-                this.employee.EmployeeCode = this.newEmployeeCode;
+                this.receipt.ReceiptNumber = this.newReceiptNumber;
                 this.focusCode();
                 this.$_MISAEmitter.emit("refreshDataTable");
                 if (
@@ -927,7 +1070,7 @@ export default {
                 this.handleEmployeeExisted(employeeByCode);
               }
             } catch (error) {
-              this.handleErrorInputEmployee(error, this.employeeProperty);
+              this.handleErrorInputEmployee(error, this.receiptProperty);
             }
           }
         } else {
@@ -958,7 +1101,7 @@ export default {
       ) {
         listPropError.push("DepartmentName");
       }
-      for (const prop of this.employeeProperty) {
+      for (const prop of this.receiptProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
           if (prop === "DepartmentId" || prop === "DepartmentName") {
@@ -1123,9 +1266,11 @@ export default {
      * created date: 29-05-2023 07:54:52`
      */
     onSelectedProvider(provider) {
+      this.receipt.ProviderId = provider.ProviderId;
       this.receipt.ProviderName = provider.ProviderName;
       this.receipt.ProviderCode = provider.ProviderCode;
-      this.receipt.ProviderId = provider.ProviderId;
+      this.receipt.Address = provider.Address;
+      this.receipt.Reason = `Chi tiền cho ${provider.ProviderName}`;
       this.isBorderRed.ProviderName = false;
     },
 
@@ -1167,7 +1312,22 @@ export default {
       this.receipt.ProviderName =
         this.listProviderSearch.Data[index].ProviderName;
       this.receipt.ProviderId = this.listProviderSearch.Data[index].ProviderId;
+      this.receipt.ProviderCode =
+        this.listProviderSearch.Data[index].ProviderCode;
+      this.receipt.Address = this.listProviderSearch.Data[index].Address;
+      this.receipt.Reason = `Chi tiền cho ${this.listProviderSearch.Data[index].ProviderName}`;
       this.isBorderRed.ProviderName = false;
+    },
+
+    /**
+     * Mô tả: Hàm chọn layout
+     * created by : BNTIEN
+     * created date: 04-08-2023 23:55:34
+     */
+    selectedPage(item, index) {
+      this.textSelectLayout = item;
+      this.indexSelectedLayout = index;
+      this.isShowOptionHeader = false;
     },
   },
 
@@ -1193,5 +1353,10 @@ input {
   height: 28px;
   border-radius: 2px;
   border: 1px solid #babec5;
+}
+
+.selected-layout {
+  background-color: var(--color-btn-default);
+  color: #fff;
 }
 </style>

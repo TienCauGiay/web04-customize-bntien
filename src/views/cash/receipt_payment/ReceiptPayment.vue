@@ -281,7 +281,7 @@
             </template>
             <template v-if="this.selectedReceipt.IsNoted">
               <div>Bỏ ghi</div>
-              <div>Nhân bản</div>
+              <div @click="onDupliCateReceipt">Nhân bản</div>
             </template>
           </div>
         </teleport>
@@ -397,7 +397,12 @@
       class="container-overlay"
       @closeFormDetail="onCloseFormDetail"
     ></div>
-    <PaymentDetail v-if="isShowFormDetail"></PaymentDetail>
+    <PaymentDetail
+      v-if="isShowFormDetail"
+      @closeFormDetail="onCloseFormDetail"
+      :receiptSelected="receiptUpdate"
+      :statusFormMode="isStatusFormMode"
+    ></PaymentDetail>
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
