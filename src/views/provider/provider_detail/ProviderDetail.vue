@@ -1442,7 +1442,10 @@
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
       v-if="isShowDialogCodeExist"
-      :textProp="this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE"
+      :textProp="
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+          .providerCode
+      "
       :textEntityCodeExist="contentProviderCodeExist"
     ></misa-dialog-data-exist>
     <!-- dialog employee save and close -->

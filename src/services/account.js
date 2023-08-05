@@ -94,6 +94,39 @@ class AccountService extends BaseServices {
         });
         return response;
     }
+
+    /**
+     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:11:46
+     */
+    async getDebt(pageSize, pageNumber, textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/debt`, {
+            params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                textSearch: textSearch,
+            }
+        });
+        return response;
+    }
+
+        /**
+     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 01-08-2023 10:11:46
+     */
+    async getBalance(pageSize, pageNumber, textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/balance`, {
+            params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                textSearch: textSearch,
+            }
+        });
+        return response;
+    }
+
 }
 
 export default new AccountService();

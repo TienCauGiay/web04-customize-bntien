@@ -328,23 +328,73 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="table-col-1 text-center">1</td>
-                <td class="table-col-2"><misa-input></misa-input></td>
-                <td class="table-col-3"><misa-input></misa-input></td>
-                <td class="table-col-4"><misa-input></misa-input></td>
-                <td class="table-col-5 text-right">
-                  <misa-input :class="'right-to-left'"></misa-input>
-                </td>
-                <td class="table-col-6">
-                  <div class="delete-row-table-input">
-                    <div class="delete-icon"></div>
-                  </div>
-                </td>
-              </tr>
+              <template
+                v-for="(item, index) in receipt.AccountantList"
+                :key="index"
+              >
+                <tr>
+                  <td class="table-col-1 text-center">{{ index + 1 }}</td>
+                  <td class="table-col-2">
+                    <misa-input v-model="item.Description"></misa-input>
+                  </td>
+                  <td class="table-col-3" id="td-3-form-cbb">
+                    <misa-form-combobox
+                      :isBorderRedFormCBB="isBorderRed"
+                      :entityFormCBB="item"
+                      :errorsFormCBB="errors"
+                      :listEntitySearchFormCBB="listAccountDebt"
+                      :propName="'AccountName'"
+                      :valueInput="item.AccountDebtNumber"
+                      :propCode="'AccountDebtNumber'"
+                      :propBorderRed="'AccountDebtId'"
+                      :textColFirst="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountNumber
+                      "
+                      :textColSecond="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountName
+                      "
+                    ></misa-form-combobox>
+                  </td>
+                  <td class="table-col-4" id="td-4-form-cbb">
+                    <misa-form-combobox
+                      :isBorderRedFormCBB="isBorderRed"
+                      :entityFormCBB="item"
+                      :errorsFormCBB="errors"
+                      :listEntitySearchFormCBB="listAccountBalance"
+                      :propName="'AccountName'"
+                      :valueInput="item.AccountBalanceNumber"
+                      :propCode="'AccountBalanceNumber'"
+                      :propBorderRed="'AccountBalanceId'"
+                      :textColFirst="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountNumber
+                      "
+                      :textColSecond="
+                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                          .textProperty.accountName
+                      "
+                    ></misa-form-combobox>
+                  </td>
+                  <td class="table-col-5 text-right">
+                    <misa-input
+                      :class="'right-to-left'"
+                      v-model="item.Money"
+                    ></misa-input>
+                  </td>
+                  <td class="table-col-6" @click="deleteRowAccountant(index)">
+                    <div class="delete-row-table-input">
+                      <div class="delete-icon"></div>
+                    </div>
+                  </td>
+                </tr>
+              </template>
               <tr>
                 <td colspan="4"></td>
-                <td>0,00</td>
+                <td class="table-col-5 text-right" style="padding-right: 24px">
+                  0,00
+                </td>
                 <td></td>
               </tr>
             </tbody>
@@ -400,7 +450,10 @@
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
       v-if="isShowDialogCodeExist"
-      :textProp="this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE"
+      :textProp="
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+          .exist_pre
+      "
       :textEntityCodeExist="contentReceiptNumberExist"
     ></misa-dialog-data-exist>
     <!-- dialog employee save and close -->
@@ -414,6 +467,8 @@
 import receiptService from "@/services/receipt.js";
 import employeeService from "@/services/employee.js";
 import providerService from "@/services/provider.js";
+import accountService from "@/services/account.js";
+import accountantService from "@/services/accountant.js";
 import helperCommon from "@/scripts/helper.js";
 export default {
   name: "PaymentDetail",
@@ -476,6 +531,15 @@ export default {
         }
       }
     );
+
+    this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data, propCode) => {
+      if (propCode == "AccountDebtNumber") {
+        this.selectedDebt(data);
+      }
+      if (propCode == "AccountBalanceNumber") {
+        this.selectedBalance(data);
+      }
+    });
   },
 
   mounted() {
@@ -548,6 +612,14 @@ export default {
       searchEmployeeTimeout: null,
       // Biến lưu timeout search provider
       searchProviderTimeout: null,
+      // Biến chứa danh sách tài khoản nợ
+      listAccountDebt: [],
+      // Trang hiện tại
+      currentPageDebt: 1,
+      // Biến chứa danh sách tài khoản nợ
+      listAccountBalance: [],
+      // Trang hiện tại
+      currentPageBalance: 1,
     };
   },
 
@@ -645,6 +717,55 @@ export default {
       }
     },
     /**
+     * Mô tả: Lấy danh sách tài khoản nợ
+     * created by : BNTIEN
+     * created date: 05-08-2023 15:25:56
+     */
+    async getListDebt() {
+      try {
+        const res = await accountService.getDebt(20, this.currentPageDebt, "");
+        this.listAccountDebt = [...this.listAccountDebt, ...res.data];
+      } catch {
+        this.listAccountDebt = [];
+      }
+    },
+    /**
+     * Mô tả: Lấy danh sách tài khoản có
+     * created by : BNTIEN
+     * created date: 05-08-2023 15:25:56
+     */
+    async getListBalance() {
+      try {
+        const res = await accountService.getBalance(
+          20,
+          this.currentPageBalance,
+          ""
+        );
+        this.listAccountBalance = [...this.listAccountBalance, ...res.data];
+      } catch {
+        this.listAccountBalance = [];
+      }
+    },
+    /**
+     * Mô tả: Lấy danh sách hạch toán theo receipt id
+     * created by : BNTIEN
+     * created date: 05-08-2023 20:53:02
+     */
+    async getAccountant() {
+      try {
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+          const res = await accountantService.getByReceiptId(
+            this.receipt.ReceiptId
+          );
+          this.receipt.AccountantList = res.data;
+        } else {
+          this.receipt.AccountantList = [];
+        }
+      } catch {
+        return;
+      }
+    },
+    /**
      * Mô tả: gọi api lấy dữ liệu
      * created by : BNTIEN
      * created date: 30-05-2023 14:57:33
@@ -654,6 +775,8 @@ export default {
         await this.getNewCode();
         await this.getListProvider();
         await this.getListEmployee();
+        await this.getListDebt();
+        await this.getListBalance();
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.receiptSelected);
@@ -670,6 +793,7 @@ export default {
           this.titleFormMode =
             this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
         }
+        await this.getAccountant();
       } catch {
         return;
       }
@@ -682,30 +806,6 @@ export default {
     focusCode() {
       this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
     },
-    /**
-     * Mô tả: Xử lí chọn và bỏ chọn ô checkbox customer
-     * created by : BNTIEN
-     * created date: 24-06-2023 09:56:15
-     */
-    handleCustomerCheckboxChange() {
-      if (this.employee.IsCustomer === this.$_MISAEnum.CUSTOMER) {
-        this.employee.IsCustomer = null; // Bỏ chọn ô input nếu đã được chọn trước đó
-      } else {
-        this.employee.IsCustomer = this.$_MISAEnum.CUSTOMER;
-      }
-    },
-    /**
-     * Mô tả: xử lí chọn và bỏ chọn ô checkbox provider
-     * created by : BNTIEN
-     * created date: 24-06-2023 09:56:48
-     */
-    handleProviderCheckboxChange() {
-      if (this.employee.IsProvider === this.$_MISAEnum.PROVIDER) {
-        this.employee.IsProvider = null; // Bỏ chọn ô input nếu đã được chọn trước đó
-      } else {
-        this.employee.IsProvider = this.$_MISAEnum.PROVIDER;
-      }
-    },
 
     /**
      * Mô tả: Hàm kiểm tra xem employee có thay đổi sau khi mở form detail không
@@ -714,7 +814,7 @@ export default {
      */
     hasDataChanged() {
       return (
-        JSON.stringify(this.employeeSelected) !== JSON.stringify(this.employee)
+        JSON.stringify(this.receiptSelected) !== JSON.stringify(this.receipt)
       );
     },
     /**
@@ -730,17 +830,6 @@ export default {
         this.$emit("closeFormDetail");
       }
     },
-
-    /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn đơn vị
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:54:52`
-     */
-    onSelectedDepartment(department) {
-      this.employee.DepartmentName = department.DepartmentName;
-      this.employee.DepartmentId = department.DepartmentId;
-      this.isBorderRed.DepartmentName = false;
-    },
     /**
      * Mô tả: Hàm set các lỗi nhập liệu phía fontend
      * created by : BNTIEN
@@ -748,10 +837,14 @@ export default {
      */
     setError(key) {
       try {
-        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].VALIDATE[key];
+        this.errors[key] =
+          this.$_MISAResource[
+            this.$_LANG_CODE
+          ].RECEIPT_PAYMENT.FORM_PAYMENT.validateNotNull[key];
         this.isBorderRed[key] = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].VALIDATE[key]
+          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+            .validateNotNull[key]
         );
       } catch {
         return;
@@ -765,10 +858,13 @@ export default {
     setErrorMaxLength(key) {
       try {
         this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning;
+          this.$_MISAResource[
+            this.$_LANG_CODE
+          ].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[key].Warning;
         this.isBorderRed[key] = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[key].Warning
+          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+            .maxLength[key].Warning
         );
       } catch {
         return;
@@ -779,17 +875,16 @@ export default {
      * created by : BNTIEN
      * created date: 11-07-2023 10:07:22
      */
-    validateEmployee() {
+    validateReceipt() {
       try {
         for (const refInput of this.receiptProperty) {
           switch (refInput) {
-            case "EmployeeCode":
-            case "FullName":
-              if (helperCommon.isEmptyInput(this.employee[refInput])) {
+            case "ReceiptNumber":
+              if (helperCommon.isEmptyInput(this.receipt[refInput])) {
                 this.setError(refInput);
               } else if (
                 helperCommon.isMaxLengthInput(
-                  this.employee[refInput],
+                  this.receipt[refInput],
                   this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
                     .Limit
                 )
@@ -797,65 +892,65 @@ export default {
                 this.setErrorMaxLength(refInput);
               }
               break;
-            case "DepartmentId":
-              break;
-            case "DepartmentName":
-              if (helperCommon.isEmptyInput(this.employee[refInput])) {
-                this.setError(refInput);
-              }
-              break;
-            case "DateOfBirth":
-            case "IdentityDate":
-              if (this.employee[refInput]) {
-                if (helperCommon.isInvalidDate(this.employee[refInput])) {
-                  this.setError(refInput);
-                }
-              }
-              break;
-            case "IdentityNumber":
-              if (this.employee[refInput]) {
-                if (
-                  helperCommon.isMaxLengthInput(
-                    this.employee[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                      .Limit
-                  )
-                ) {
-                  this.setErrorMaxLength(refInput);
-                } else if (helperCommon.isNumber(this.employee[refInput])) {
-                  this.setError(refInput);
-                }
-              }
-              break;
-            case "Email":
-              if (this.employee[refInput]) {
-                if (
-                  helperCommon.isMaxLengthInput(
-                    this.employee[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                      .Limit
-                  )
-                ) {
-                  this.setErrorMaxLength(refInput);
-                } else if (
-                  helperCommon.isFormatEmail(this.employee[refInput])
-                ) {
-                  this.setError(refInput);
-                }
-              }
-              break;
+            // case "DepartmentId":
+            //   break;
+            // case "DepartmentName":
+            //   if (helperCommon.isEmptyInput(this.employee[refInput])) {
+            //     this.setError(refInput);
+            //   }
+            //   break;
+            // case "DateOfBirth":
+            // case "IdentityDate":
+            //   if (this.employee[refInput]) {
+            //     if (helperCommon.isInvalidDate(this.employee[refInput])) {
+            //       this.setError(refInput);
+            //     }
+            //   }
+            //   break;
+            // case "IdentityNumber":
+            //   if (this.employee[refInput]) {
+            //     if (
+            //       helperCommon.isMaxLengthInput(
+            //         this.employee[refInput],
+            //         this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
+            //           .Limit
+            //       )
+            //     ) {
+            //       this.setErrorMaxLength(refInput);
+            //     } else if (helperCommon.isNumber(this.employee[refInput])) {
+            //       this.setError(refInput);
+            //     }
+            //   }
+            //   break;
+            // case "Email":
+            //   if (this.employee[refInput]) {
+            //     if (
+            //       helperCommon.isMaxLengthInput(
+            //         this.employee[refInput],
+            //         this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
+            //           .Limit
+            //       )
+            //     ) {
+            //       this.setErrorMaxLength(refInput);
+            //     } else if (
+            //       helperCommon.isFormatEmail(this.employee[refInput])
+            //     ) {
+            //       this.setError(refInput);
+            //     }
+            //   }
+            //   break;
             default:
-              if (this.employee[refInput]) {
-                if (
-                  helperCommon.isMaxLengthInput(
-                    this.employee[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                      .Limit
-                  )
-                ) {
-                  this.setErrorMaxLength(refInput);
-                }
-              }
+              // if (this.employee[refInput]) {
+              //   if (
+              //     helperCommon.isMaxLengthInput(
+              //       this.employee[refInput],
+              //       this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
+              //         .Limit
+              //     )
+              //   ) {
+              //     this.setErrorMaxLength(refInput);
+              //   }
+              // }
               break;
           }
         }
@@ -868,7 +963,7 @@ export default {
      * created by : BNTIEN
      * created date: 29-06-2023 07:07:16
      */
-    handleErrorInputEmployee(errors, receiptProperty) {
+    handleErrorInputReceipt(errors, receiptProperty) {
       const responseHandle = helperCommon.handleErrorInput(
         errors,
         receiptProperty
@@ -885,9 +980,9 @@ export default {
      * created by : BNTIEN
      * created date: 29-06-2023 23:46:11
      */
-    async checkEmployeeExists() {
+    async checkReceiptExists() {
       try {
-        const res = await employeeService.getByCode(this.employee.EmployeeCode);
+        const res = await receiptService.getByCode(this.receipt.ReceiptNumber);
         return res.data;
       } catch {
         return null;
@@ -898,16 +993,17 @@ export default {
      * created by : BNTIEN
      * created date: 30-06-2023 00:30:22
      */
-    handleEmployeeExisted(employeeExisted) {
+    handleReceiptExisted(receiptExisted) {
       this.isShowDialogCodeExist = true;
-      this.isBorderRed.EmployeeCode = true;
-      this.errors["EmployeeCode"] = `${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_PRE
+      this.isBorderRed.ReceiptNumber = true;
+      this.errors["ReceiptNumber"] = `${
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+          .exist_pre
       }
-       ${employeeExisted.EmployeeCode} ${
+       ${receiptExisted.ReceiptNumber} ${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
       }`;
-      this.contentReceiptNumberExist = employeeExisted.EmployeeCode;
+      this.contentReceiptNumberExist = receiptExisted.ReceiptNumber;
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
@@ -916,16 +1012,16 @@ export default {
      */
     async btnSave() {
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-        this.validateEmployee();
+        this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeByCode = await this.checkEmployeeExists();
-            if (!employeeByCode) {
+            let receiptByCode = await this.checkReceiptExists();
+            if (!receiptByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              const res = await receiptService.create(this.employee);
+              const res = await receiptService.create(this.receipt);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
                   res.status
@@ -937,37 +1033,35 @@ export default {
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                     .SUCCESS_CTEATE
                 );
-                this.$emit("closeFormDetail");
-                this.$_MISAEmitter.emit("refreshDataTable");
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleEmployeeExisted(employeeByCode);
+              this.handleReceiptExisted(receiptByCode);
             }
           } catch (error) {
-            this.handleErrorInputEmployee(error, this.receiptProperty);
+            this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         }
       } else {
         // Nếu form ở trạng thái sửa
         // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
         if (this.hasDataChanged()) {
-          this.validateEmployee();
+          this.validateReceipt();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-              let employeeByCode = await this.checkEmployeeExists();
+              let receiptByCode = await this.checkReceiptExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
               if (
-                !employeeByCode ||
-                employeeByCode.EmployeeCode ===
-                  this.employeeSelected.EmployeeCode
+                !receiptByCode ||
+                receiptByCode.ReceiptNumber ===
+                  this.receiptSelected.ReceiptNumber
               ) {
-                const res = await employeeService.update(
-                  this.employeeSelected.EmployeeId,
-                  this.employee
+                const res = await receiptService.update(
+                  this.receiptSelected.ReceiptId,
+                  this.receipt
                 );
                 if (
                   this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
@@ -978,15 +1072,13 @@ export default {
                     this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                       .SUCCESS_UPDATE
                   );
-                  this.$emit("closeFormDetail");
-                  this.$_MISAEmitter.emit("refreshDataTable");
                 }
               } else {
                 // Nếu mã nhân viên đã tồn tại trong hệ thống
-                this.handleEmployeeExisted(employeeByCode);
+                this.handleReceiptExisted(receiptByCode);
               }
             } catch (error) {
-              this.handleErrorInputEmployee(error, this.receiptProperty);
+              this.handleErrorInputReceipt(error, this.receiptProperty);
             }
           }
         } else {
@@ -1003,16 +1095,16 @@ export default {
     async btnSaveAndAdd() {
       // Nếu form ở trạng thái thêm mới
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-        this.validateEmployee();
+        this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let employeeByCode = await this.checkEmployeeExists();
-            if (!employeeByCode) {
+            let receiptByCode = await this.checkReceiptExists();
+            if (!receiptByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              const res = await employeeService.create(this.employee);
+              const res = await receiptService.create(this.receipt);
               if (
                 this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
                   res.status
@@ -1033,27 +1125,27 @@ export default {
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleEmployeeExisted(employeeByCode);
+              this.handleReceiptExisted(receiptByCode);
             }
           } catch (error) {
-            this.handleErrorInputEmployee(error, this.receiptProperty);
+            this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         }
         // Nếu form ở trạng thái sửa
       } else {
         // Kiểm tra xem dữ liệu có thay đổi hay k
         if (this.hasDataChanged()) {
-          this.validateEmployee();
+          this.validateReceipt();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-              let employeeByCode = await this.checkEmployeeExists();
+              let receiptByCode = await this.checkReceiptExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
               if (
-                !employeeByCode ||
-                employeeByCode.EmployeeCode ===
+                !receiptByCode ||
+                receiptByCode.EmployeeCode ===
                   this.employeeSelected.EmployeeCode
               ) {
                 const res = await employeeService.update(
@@ -1078,10 +1170,10 @@ export default {
                 }
               } else {
                 // Nếu mã nhân viên đã tồn tại trong hệ thống
-                this.handleEmployeeExisted(employeeByCode);
+                this.handleReceiptExisted(receiptByCode);
               }
             } catch (error) {
-              this.handleErrorInputEmployee(error, this.receiptProperty);
+              this.handleErrorInputReceipt(error, this.receiptProperty);
             }
           }
         } else {
@@ -1107,17 +1199,27 @@ export default {
       }
       // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
       if (
-        listPropError.includes("DepartmentId") &&
-        !listPropError.includes("DepartmentName")
+        listPropError.includes("ProviderId") &&
+        !listPropError.includes("ProviderName")
       ) {
-        listPropError.push("DepartmentName");
+        listPropError.push("ProviderName");
+      }
+      if (
+        listPropError.includes("EmployeeId") &&
+        !listPropError.includes("FullName")
+      ) {
+        listPropError.push("FullName");
       }
       for (const prop of this.receiptProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
-          if (prop === "DepartmentId" || prop === "DepartmentName") {
+          if (prop === "ProviderId" || prop === "ProviderName") {
             this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputCBB");
+              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
+            });
+          } else if (prop === "EmployeeId" || prop === "FullName") {
+            this.$nextTick(() => {
+              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
             });
           } else {
             this.$nextTick(() => {
@@ -1126,12 +1228,6 @@ export default {
           }
           return;
         }
-
-        // else if(prop === "DateOfBirth" || prop === "IdentityDate"){
-        //     this.$nextTick(() => {
-        //       this.$refs[prop].$el.focus();
-        //     });
-        //   }
       }
     },
 
@@ -1384,6 +1480,24 @@ export default {
       this.indexSelectedLayout = index;
       this.isShowOptionHeader = false;
     },
+
+    /**
+     * Mô tả: Chọn tài khoản nợ
+     * created by : BNTIEN
+     * created date: 05-08-2023 20:05:15
+     */
+    selectedDebt(accountDebt) {
+      console.log(accountDebt);
+    },
+    /**
+     * Mô tả: Chọn tài khoản nợ
+     * created by : BNTIEN
+     * created date: 05-08-2023 20:05:15
+     */
+    selectedBalance(accountBalance) {
+      // do somthing
+      console.log(accountBalance);
+    },
   },
 
   beforeUnmount() {
@@ -1395,6 +1509,7 @@ export default {
     this.$_MISAEmitter.off("onSelectedEntityCBBSingle");
     this.$_MISAEmitter.off("onSearchChangeCBBSingle");
     this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
+    this.$_MISAEmitter.off("onSelectedEntityFormCBB");
     // Xóa các sự kiện đã đăng kí
     this.$refs.PaymentDetail.removeEventListener("keydown", this.handleKeyDown);
   },

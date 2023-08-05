@@ -23,7 +23,17 @@ const RECEIPT_PAYMENT = {
             "5. Chuyển tiền cho chi nhánh khác",
             "6. Gửi tiền vào ngân hàng",
             "7. Chi khác"
-        ]
+        ],
+
+        exist_pre: "Số phiếu chi",
+
+        validateNotNull: {
+            "ReceiptNumber": "Số phiếu chi không được để trống.",
+        },
+
+        maxLength:{
+            "ReceiptNumber": {Limit: 20, Warning : "Số phiếu chi tối đa 20 kí tự."},
+        }
     },
 }
 

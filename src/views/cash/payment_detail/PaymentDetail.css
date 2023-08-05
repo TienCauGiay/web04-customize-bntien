@@ -577,3 +577,66 @@
     text-overflow: ellipsis;
     padding-left: 0 12px;
 }
+
+#info-payment-detail .form-cbb{
+    border-radius: 2px;
+    border: 1px solid #babec5;
+}
+
+#info-payment-detail .form-cbb:focus-within{
+    border-radius: 2px;
+    border: 1px solid var(--color-btn-default);
+}
+
+#info-payment-detail .e-cbb {
+    height: 26px;
+  }
+
+#info-payment-detail .e-textfield-cbb {
+  height: calc(26px - 0.667px * 2);
+}
+
+#info-payment-detail .e-textfield-cbb input {
+  height: calc(26px - 0.667px * 2);
+}
+
+#info-payment-detail .select-entity{
+  top: 54px;
+}
+
+#info-payment-detail .select-entity ul {
+  line-height: 26px;
+}
+
+#info-payment-detail .select-entity li {
+  height: 26px;
+}
+
+#info-payment-detail .e-icon-cbb {
+  height: calc(26px - 0.667px * 2);
+  width: calc(26px - 0.667px * 2);
+  background-color: white;
+}
+
+#info-payment-detail .e-icon-cbb:hover{
+  background-color: var(--color-border-default);
+}
+
+#td-3-form-cbb, #td-4-form-cbb{
+    white-space: unset;
+    overflow: unset;
+    text-overflow: unset;
+}
+
+#info-payment-detail #td-3-form-cbb .form-cbb-menu{
+   bottom: calc(100% + 5px);
+   top: unset;
+   width: 380px;
+}
+
+#info-payment-detail #td-4-form-cbb .form-cbb-menu{
+    bottom: calc(100% + 5px);
+    left: -101px;
+    top: unset;
+    width: 380px;
+ }

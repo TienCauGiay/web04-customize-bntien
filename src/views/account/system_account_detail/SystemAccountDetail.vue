@@ -555,7 +555,6 @@ export default {
           this.pageNumber,
           ""
         );
-        console.log(res);
         this.accounts = [...this.accounts, ...res.data.Data];
       } catch {
         this.accounts = [];

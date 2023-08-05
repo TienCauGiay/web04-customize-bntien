@@ -94,6 +94,7 @@ export default {
     "errorsCBB",
     "listEntitySearchCBB",
     "isShowCode",
+    "indexSelectedCBB",
   ],
 
   data() {
@@ -114,6 +115,9 @@ export default {
     this.$_MISAEmitter.on("closeMenuItemCBBSelectSingle", () => {
       this.isShowSelectEntity = false;
     });
+    if (this.indexSelectedCBB) {
+      this.indexEntitySelected = this.indexSelectedCBB;
+    }
   },
 
   methods: {
