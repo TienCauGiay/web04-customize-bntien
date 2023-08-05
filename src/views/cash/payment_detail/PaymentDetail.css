@@ -303,6 +303,8 @@
     box-sizing: border-box;
     background-color: #fff;
     padding: 8px 0 8px 16px;
+    /* max-height: 162px;
+    overflow-y: auto; */
 }
 
 .body-layout-table-title{
@@ -329,7 +331,7 @@
 }
 
 .table-col-3, .table-col-4{
-    width: 100px;
+    width: 120px;
 }
 
 .table-col-5{

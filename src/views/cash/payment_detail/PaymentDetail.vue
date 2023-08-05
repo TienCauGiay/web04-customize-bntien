@@ -308,7 +308,7 @@
         </div>
         <div class="layout-input-total">
           <div class="text-total-money">Tổng tiền</div>
-          <div class="total-money">{{ receipt.TotalMoney }}</div>
+          <div class="total-money">{{ TotalMoney }}</div>
         </div>
       </div>
       <div class="body-layout-table">
@@ -332,7 +332,7 @@
                 v-for="(item, index) in receipt.AccountantList"
                 :key="index"
               >
-                <tr>
+                <tr @click="focusRow(index)">
                   <td class="table-col-1 text-center">{{ index + 1 }}</td>
                   <td class="table-col-2">
                     <misa-input v-model="item.Description"></misa-input>
@@ -393,7 +393,7 @@
               <tr>
                 <td colspan="4"></td>
                 <td class="table-col-5 text-right" style="padding-right: 24px">
-                  0,00
+                  {{ TotalMoney }}
                 </td>
                 <td></td>
               </tr>
@@ -402,9 +402,11 @@
               <td colspan="6">
                 <misa-button-extra
                   :textButtonExtra="'Thêm dòng'"
+                  @click="btnAddRowAccountant"
                 ></misa-button-extra>
                 <misa-button-extra
                   :textButtonExtra="'Xóa hết dòng'"
+                  @click="deleteAllRowAccountant"
                 ></misa-button-extra>
               </td>
             </tfoot>
@@ -445,7 +447,7 @@
     <misa-dialog-data-not-null
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
-      :title="this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID"
+      :title="titleDataNotnull"
     ></misa-dialog-data-not-null>
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
@@ -594,8 +596,6 @@ export default {
       isBorderRed: {},
       // Khai báo biên lưu mã nhân viên tự động sinh ra
       newReceiptNumber: null,
-      // Khai báo biến lưu title form mode
-      titleFormMode: this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE,
       // Khai báo biến chứa danh sách đối tượng lỗi
       errors: {},
       // Khai báo biến chứa danh sách các ô input khi hover
@@ -620,6 +620,9 @@ export default {
       listAccountBalance: [],
       // Trang hiện tại
       currentPageBalance: 1,
+      // Biến lưu dòng hiện tại đang được chọn trong table hạch toán
+      indexSelectRow: 0,
+      // Biến lưu title data not null
     };
   },
 
@@ -664,6 +667,20 @@ export default {
       set(newDate) {
         this.receipt.ReceiptDate = newDate;
       },
+    },
+
+    TotalMoney() {
+      if (this.receipt.AccountantList) {
+        const total = this.receipt.AccountantList.reduce(
+          (total, item) => total + parseFloat(item.Money || 0),
+          0
+        );
+        // this.receipt.TotalMoney = total;
+        return total;
+      } else {
+        // this.receipt.TotalMoney = 0;
+        return 0;
+      }
     },
   },
 
@@ -785,13 +802,6 @@ export default {
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Sinh mã tự động
           this.receipt.ReceiptNumber = this.newReceiptNumber;
-          // Gán title cho form mode thêm mới
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.ADD_EMPLOYEE;
-        } else {
-          // Gán title cho form mode thêm sửa
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].FORM.UPDATE_EMPLOYEE;
         }
         await this.getAccountant();
       } catch {
@@ -973,6 +983,8 @@ export default {
       this.dataNotNull = responseHandle.dataNotNull;
       if (this.dataNotNull.length > 0) {
         this.isShowDialogDataNotNull = true;
+        this.titleDataNotnull =
+          this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
       }
     },
     /**
@@ -1015,24 +1027,39 @@ export default {
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
+          this.titleDataNotnull =
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             if (!receiptByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              const res = await receiptService.create(this.receipt);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
-                );
+              this.receipt.TotalMoney = this.TotalMoney;
+              // Kiểm tra xem có ghi sổ được không
+              let checkIsNoted = true;
+              console.log(this.receipt.AccountantList);
+              this.receipt.AccountantList.map((x) => {
+                // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
+                if (x.UserObjectDebt == 1 || x.UserObjectDebt == 3) {
+                  checkIsNoted = false;
+                  this.dataNotNull.push(
+                    `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
+                  );
+                }
+                if (x.IsParentBalance == 1) {
+                  checkIsNoted = false;
+                  this.dataNotNull.push(
+                    `<TK có: ${x.AccountBalanceNumber}> là tài khoản tổng hợp, vui lòng kiểm tra lại`
+                  );
+                }
+                if (!checkIsNoted) return;
+              });
+              this.receipt.IsNoted = checkIsNoted;
+              await receiptService.create(this.receipt);
+              if (this.dataNotNull.length > 0) {
+                this.isShowDialogDataNotNull = true;
+                this.titleDataNotnull = "Ghi sổ không thành công";
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -1049,6 +1076,8 @@ export default {
           this.validateReceipt();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull =
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
           } else {
             try {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
@@ -1098,6 +1127,8 @@ export default {
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
+          this.titleDataNotnull =
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
@@ -1138,6 +1169,8 @@ export default {
           this.validateReceipt();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull =
+              this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
           } else {
             try {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
@@ -1482,12 +1515,29 @@ export default {
     },
 
     /**
+     * Mô tả: Chọn dòng đang được sửa trong table hạch toán
+     * created by : BNTIEN
+     * created date: 05-08-2023 22:04:27
+     */
+    focusRow(index) {
+      this.indexSelectRow = index;
+    },
+
+    /**
      * Mô tả: Chọn tài khoản nợ
      * created by : BNTIEN
      * created date: 05-08-2023 20:05:15
      */
     selectedDebt(accountDebt) {
       console.log(accountDebt);
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId =
+        accountDebt.AccountDebtId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber =
+        accountDebt.AccountDebtNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt =
+        accountDebt.IsParentDebt;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
+        accountDebt.UserObjectDebt;
     },
     /**
      * Mô tả: Chọn tài khoản nợ
@@ -1495,8 +1545,50 @@ export default {
      * created date: 05-08-2023 20:05:15
      */
     selectedBalance(accountBalance) {
-      // do somthing
-      console.log(accountBalance);
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId =
+        accountBalance.AccountBalanceId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
+        accountBalance.AccountBalanceNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance =
+        accountBalance.IsParentBalance;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
+        accountBalance.UserObjectBalance;
+    },
+
+    /**
+     * Mô tả: Hàm thêm 1 dòng hạch toán
+     * created by : BNTIEN
+     * created date: 05-08-2023 21:52:20
+     */
+    btnAddRowAccountant() {
+      this.receipt.AccountantList.push({
+        ReceiptId: this.receipt.ReceiptId,
+        Description: "",
+        Money: 0,
+      });
+    },
+
+    /**
+     * Mô tả: Xóa 1 dòng hạch toán
+     * created by : BNTIEN
+     * created date: 05-08-2023 21:50:18
+     */
+    deleteRowAccountant(index) {
+      this.receipt.AccountantList.splice(index, 1);
+    },
+
+    /**
+     * Mô tả: Xóa tất cả dòng hạch toán
+     * created by : BNTIEN
+     * created date: 05-08-2023 21:52:08
+     */
+    deleteAllRowAccountant() {
+      if (this.receipt.AccountantList.length > 0) {
+        this.receipt.AccountantList.splice(
+          0,
+          this.receipt.AccountantList.length
+        );
+      }
     },
   },
 
