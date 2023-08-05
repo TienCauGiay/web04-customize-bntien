@@ -230,6 +230,31 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Hàm để xử lý khi scroll combobox
+     * created by : BNTIEN
+     * created date: 29-07-2023 22:45:32
+     */
+    async handleScroll() {
+      try {
+        const cbb = this.$refs.cbbSelectSingle;
+        const remainingSpace =
+          cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
+
+        // Kiểm tra xem đã scroll đến cuối combobox chưa
+        if (remainingSpace <= 10) {
+          // Gọi API để lấy thêm dữ liệu
+          await this.$_MISAEmitter.emit(
+            "handleScrollCBBSingle",
+            this.textSearch,
+            this.propId
+          );
+        }
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {

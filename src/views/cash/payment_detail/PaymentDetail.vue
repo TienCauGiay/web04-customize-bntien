@@ -465,6 +465,17 @@ export default {
         this.onKeyDownProviderCBBSingle(index);
       }
     });
+    this.$_MISAEmitter.on(
+      "handleScrollCBBSingle",
+      async (textSearch, propId) => {
+        if (propId == "EmployeeId") {
+          await this.handleScrollEmployeeCBB(textSearch);
+        }
+        if (propId == "ProviderId") {
+          await this.handleScrollProviderCBB(textSearch);
+        }
+      }
+    );
   },
 
   mounted() {
@@ -1261,6 +1272,28 @@ export default {
     },
 
     /**
+     * Mô tả: scroll cbb employee
+     * created by : BNTIEN
+     * created date: 05-08-2023 11:39:17
+     */
+    async handleScrollEmployeeCBB(textSearch) {
+      try {
+        this.currentPageEmployee += 1;
+        const filtered = await employeeService.getFilter(
+          20,
+          this.currentPageEmployee,
+          textSearch
+        );
+        this.listEmployeeSearch.Data = [
+          ...this.listEmployeeSearch.Data,
+          ...filtered.data.Data,
+        ];
+      } catch {
+        return;
+      }
+    },
+
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
@@ -1317,6 +1350,28 @@ export default {
       this.receipt.Address = this.listProviderSearch.Data[index].Address;
       this.receipt.Reason = `Chi tiền cho ${this.listProviderSearch.Data[index].ProviderName}`;
       this.isBorderRed.ProviderName = false;
+    },
+
+    /**
+     * Mô tả: scroll cbb provider
+     * created by : BNTIEN
+     * created date: 05-08-2023 11:39:17
+     */
+    async handleScrollProviderCBB(textSearch) {
+      try {
+        this.currentPageProvider += 1;
+        const filtered = await providerService.getFilter(
+          20,
+          this.currentPageProvider,
+          textSearch
+        );
+        this.listProviderSearch.Data = [
+          ...this.listProviderSearch.Data,
+          ...filtered.data.Data,
+        ];
+      } catch {
+        return;
+      }
     },
 
     /**

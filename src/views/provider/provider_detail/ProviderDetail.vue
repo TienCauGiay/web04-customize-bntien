@@ -1555,6 +1555,18 @@ export default {
       }
     });
 
+    this.$_MISAEmitter.on(
+      "handleScrollCBBSingle",
+      async (textSearch, propId) => {
+        if (propId == "EmployeeId") {
+          await this.handleScrollEmployeeCBB(textSearch);
+        }
+        if (propId == "TermPaymentId") {
+          await this.handleScrollTermPaymentCBB(textSearch);
+        }
+      }
+    );
+
     this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data, propCode) => {
       if (propCode == "AccountReceivableNumber") {
         this.selectedReceivable(data);
@@ -1671,6 +1683,8 @@ export default {
       listVillage: { All: [], Search: [] },
       // Khai báo biến lưu danh sách điều khoản thanh toán
       listTermPayment: [],
+      // Trang hiện tại trong cbb term payment
+      currentPageTermPayment: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo biến lưu danh sách tài khoản công nợ phải thu
       listReceivable: [],
       // Khai báo biến lưu danh sách tài khoản công nợ phải trả
@@ -1771,7 +1785,6 @@ export default {
         }
         await this.getAccountProvider();
         await this.getDeliveryAddress();
-        console.log(this.provider);
       } catch {
         return;
       }
@@ -2631,6 +2644,28 @@ export default {
     },
 
     /**
+     * Mô tả: scroll cbb employee
+     * created by : BNTIEN
+     * created date: 05-08-2023 11:39:17
+     */
+    async handleScrollEmployeeCBB(textSearch) {
+      try {
+        this.currentPageEmployee += 1;
+        const filtered = await employeeService.getFilter(
+          20,
+          this.currentPageEmployee,
+          textSearch
+        );
+        this.listEmployeeSearch.Data = [
+          ...this.listEmployeeSearch.Data,
+          ...filtered.data.Data,
+        ];
+      } catch {
+        return;
+      }
+    },
+
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
@@ -2684,6 +2719,28 @@ export default {
       this.provider.NumberDayOwed =
         this.listTermPayment.Data[index].NumberDayOwed;
       this.isBorderRed.TermPaymentName = false;
+    },
+
+    /**
+     * Mô tả: Xử lí hàm scroll điều khoản thanh toán
+     * created by : BNTIEN
+     * created date: 05-08-2023 11:27:41
+     */
+    async handleScrollTermPaymentCBB(textSearch) {
+      try {
+        this.currentPageTermPayment += 1;
+        const filtered = await termPamentService.getFilter(
+          20,
+          this.currentPageTermPayment,
+          textSearch
+        );
+        this.listTermPayment.Data = [
+          ...this.listTermPayment.Data,
+          ...filtered.data.Data,
+        ];
+      } catch {
+        return;
+      }
     },
 
     /**
@@ -2861,6 +2918,7 @@ export default {
     this.$_MISAEmitter.off("onSelectedEntityCBBSingle");
     this.$_MISAEmitter.off("onSearchChangeCBBSingle");
     this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
+    this.$_MISAEmitter.off("handleScrollCBBSingle");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSearchChangeCBB");
     this.$_MISAEmitter.off("onKeyDownEntityCBB");
