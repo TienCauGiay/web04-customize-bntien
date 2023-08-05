@@ -3,7 +3,44 @@
     <div class="main-cash-left">
       <div class="main-cash-content">
         <div class="main-cash-content-title">NGHIỆP VỤ TIỀN MẶT</div>
-        <div class="main-cash-content-body"></div>
+        <div class="main-cash-content-body">
+          <div class="receive">
+            <div class="title-button">Thu tiền</div>
+            <div class="menu-process">
+              <div
+                class="menu-item-process"
+                v-for="(item, index) in receiveMenu"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+          <div class="payment">
+            <div class="title-button">Chi tiền</div>
+            <div class="menu-process">
+              <div
+                class="menu-item-process"
+                v-for="(item, index) in paymentMenu"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+          <div class="audit">
+            <div class="title-button">Kiểm kê quỹ</div>
+            <div class="menu-process">
+              <div
+                class="menu-item-process"
+                v-for="(item, index) in auditMenu"
+                :key="index"
+              >
+                {{ item }}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="main-cash-action">
         <a class="cash-acction-item">
@@ -59,6 +96,22 @@
 <script>
 export default {
   name: "CashProcess",
+
+  data() {
+    return {
+      // Danh sách menu thu tiền
+      receiveMenu:
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.PROCESS
+          .receiveMenu,
+      // Danh sách menu chi tiền
+      paymentMenu:
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.PROCESS
+          .paymentMenu,
+      // Danh sách menu kiểm kê quỹ
+      auditMenu:
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.PROCESS.auditMenu,
+    };
+  },
 };
 </script>
 

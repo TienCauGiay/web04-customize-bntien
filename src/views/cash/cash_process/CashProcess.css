@@ -67,6 +67,102 @@
 
 .main-cash-content-body{
     height: calc(100% - 40px);
+    background-image: url(../../../assets/img/qt_TienMat.1f64b87b.svg);
+    position: relative;
+}
+
+.receive, .payment{
+    width: 90px;
+    height: 88px;
+    padding-top: 60px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.receive:hover, .payment:hover, .audit:hover{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 -4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.title-button{
+    width: 100%;
+    height: 18px;
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.audit{
+    width: 125px;
+    height: 88px;
+    padding-top: 60px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.receive{
+    position: absolute;
+    top: 45px;
+    left: 90px;
+}
+
+.payment{
+    position: absolute;
+    top: 220px;
+    left: 90px;
+}
+
+.audit{
+    position: absolute;
+    top: 130px;
+    left: 335px;
+}
+
+.menu-process{
+    position: absolute;
+    padding: 2px 0;
+    border-radius: 2px;
+    border: 1px solid #c7c7c7;
+    background-color: #fff;
+}
+
+.menu-item-process{
+    line-height: 28px;
+    padding: 0 12px;
+}
+
+.menu-item-process:hover{
+    background-color: var(--color-border-default);
+    color: var(--color-btn-default);
+}
+
+.receive .menu-process{
+    width: 275px;
+    top: calc(100% + 5px);
+    right: 0;
+    display: none;
+}
+
+.payment .menu-process{
+    width: 160px;
+    bottom: calc(100% + 5px);
+    right: 0;
+    display: none;
+}
+
+.audit .menu-process{
+    width: 100px;
+    top: calc(100% + 5px);
+    right: 0;
+    display: none;
+}
+
+.receive:hover .menu-process,
+.payment:hover .menu-process,
+.audit:hover .menu-process {
+    display: block; 
 }
 
 .main-cash-action{
