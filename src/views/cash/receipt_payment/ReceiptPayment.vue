@@ -195,7 +195,7 @@
               v-show="dataTable.TotalRecord"
               v-for="item in dataTable.Data"
               :key="item.ReceiptId"
-              @dblclick="onUpdateFormDetail(item)"
+              @dblclick="onViewFormDetail(item)"
               :class="{ checkedRow: checkRow().includes(item.ReceiptId) }"
             >
               <td class="entity-border-left" @dblclick.stop>
@@ -236,11 +236,7 @@
                 class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop
               >
-                <span @click="onUpdateFormDetail(item)">
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                  }}
-                </span>
+                <span @click="onViewFormDetail(item)"> Xem </span>
                 <div
                   class="function-table-content"
                   @click="onOpenFeatureMenu($event, item)"
@@ -725,11 +721,12 @@ export default {
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
-    onUpdateFormDetail(receipt) {
+    onViewFormDetail(receipt) {
       this.receiptUpdate = receipt;
       this.isShowFormDetail = true;
       this.isOverlay = true;
-      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Edit;
+      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.View;
+      console.log(receipt);
     },
     /**
      * Mô tả: Hàm set isStatusFormMode = ADD

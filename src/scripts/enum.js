@@ -67,7 +67,8 @@ const MISAEnum = {
 
     FORM_MODE: {
         Add: 1,
-        Edit: 2
+        Edit: 2,
+        View: 3
     },
     KEY_CODE:{
         DOWN: 40,

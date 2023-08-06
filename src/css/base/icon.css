@@ -443,6 +443,30 @@
 	height: 23px;
 }
 
+.previous-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -36px -409px;
+	width: 8px;
+	height: 14px;
+}
+
+.next-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -84px -409px;
+	width: 8px;
+	height: 14px;
+}
+
+.print-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -35px -202px;
+	width: 20px;
+	height: 20px;
+}
+
+.utiliti-icon{
+    background: url('../../assets/icon/Sprites.svg') no-repeat -201px -201px;
+	width: 21px;
+	height: 21px;
+}
+
 .guide-icon{
     background: url('../../assets/icon/Sprites.svg') no-repeat -983px -145px;
 	width: 24px;

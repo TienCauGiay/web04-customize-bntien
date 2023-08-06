@@ -47,7 +47,7 @@
           <div class="container-icon">
             <div class="question-icon"></div>
           </div>
-          <div class="container-icon">
+          <div class="container-icon" @click="btnCancel" :title="'Đóng (ESC)'">
             <div class="close-icon"></div>
           </div>
         </div>
@@ -429,19 +429,123 @@
       </div>
     </div>
     <div class="footer-layout">
-      <div class="footer-layout-left">
-        <button @click="btnCancel" class="btn-black">Hủy</button>
-      </div>
-      <div class="footer-layout-right">
-        <button class="btn-black" @click="btnSave">Cất</button>
-        <div class="select-button">
-          <button class="btn-green" @click="btnSaveAndAdd">Cất và Thêm</button>
-          <div class="boundary-btn"></div>
-          <button class="btn-green-icon">
-            <div class="dropdown-white-icon"></div>
-          </button>
+      <template v-if="statusForm != this.$_MISAEnum.FORM_MODE.View">
+        <div class="footer-layout-left">
+          <button @click="btnCancel" class="btn-black">Hủy</button>
         </div>
-      </div>
+        <div class="footer-layout-right">
+          <button class="btn-black" @click="btnSave">Cất</button>
+          <div class="select-button">
+            <button class="btn-green" @click="btnSaveAndAdd">
+              Cất và Thêm
+            </button>
+            <div class="boundary-btn"></div>
+            <button class="btn-green-icon">
+              <div class="dropdown-white-icon"></div>
+            </button>
+          </div>
+        </div>
+      </template>
+      <template
+        v-if="
+          statusForm == this.$_MISAEnum.FORM_MODE.View &&
+          receipt.IsNoted != true
+        "
+      >
+        <div class="footer-layout-left">
+          <div class="footer-layout-left-header">
+            <button class="btn-black">
+              <div class="previous-icon"></div>
+            </button>
+            <button class="btn-black">
+              <div class="next-icon"></div>
+            </button>
+          </div>
+          <div class="footer-layout-left-body">
+            <div class="print-button">
+              <button>
+                <div class="print-button-icon-left">
+                  <div class="print-icon"></div>
+                </div>
+                <div class="print-button-text">In</div>
+              </button>
+              <button class="print-button-icon-left">
+                <div class="dropdown-white-icon"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="footer-layout-right">
+          <div class="footer-layout-center"></div>
+          <div class="footer-layout-right-header">
+            <div class="print-button">
+              <button style="border-radius: 4px">
+                <div class="utiliti-icon"></div>
+                <div>Tiện ích</div>
+              </button>
+            </div>
+          </div>
+          <div class="footer-layout-right-body">
+            <button
+              @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit"
+              class="btn-black"
+            >
+              Sửa
+            </button>
+            <button @click="btnNote">Ghi sổ</button>
+          </div>
+        </div>
+      </template>
+      <template
+        v-if="
+          statusForm == this.$_MISAEnum.FORM_MODE.View &&
+          receipt.IsNoted == true
+        "
+      >
+        <div class="footer-layout-left">
+          <div class="footer-layout-left-header">
+            <button class="btn-black">
+              <div class="previous-icon"></div>
+            </button>
+            <button class="btn-black">
+              <div class="next-icon"></div>
+            </button>
+          </div>
+          <div class="footer-layout-left-body">
+            <div class="print-button">
+              <button>
+                <div class="print-button-icon-left">
+                  <div class="print-icon"></div>
+                </div>
+                <div class="print-button-text">In</div>
+              </button>
+              <button class="print-button-icon-left">
+                <div class="dropdown-white-icon"></div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="footer-layout-right">
+          <div class="footer-layout-center"></div>
+          <div class="footer-layout-right-header">
+            <div class="print-button">
+              <button style="border-radius: 4px">
+                <div class="utiliti-icon"></div>
+                <div>Tiện ích</div>
+              </button>
+            </div>
+          </div>
+          <div class="footer-layout-right-body">
+            <button
+              @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit"
+              class="btn-black"
+            >
+              Sửa nhanh
+            </button>
+            <button @click="btnUnNote">Bỏ ghi</button>
+          </div>
+        </div>
+      </template>
     </div>
     <!-- dialog employee input data not blank -->
     <misa-dialog-data-not-null
@@ -623,6 +727,9 @@ export default {
       // Biến lưu dòng hiện tại đang được chọn trong table hạch toán
       indexSelectRow: 0,
       // Biến lưu title data not null
+      titleDataNotnull: "",
+      // Biến lưu trạng thái form
+      statusForm: null,
     };
   },
 
@@ -770,7 +877,7 @@ export default {
      */
     async getAccountant() {
       try {
-        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+        if (this.statusFormMode != this.$_MISAEnum.FORM_MODE.Add) {
           const res = await accountantService.getByReceiptId(
             this.receipt.ReceiptId
           );
@@ -799,7 +906,8 @@ export default {
         let res = JSON.stringify(this.receiptSelected);
         // Chuyển đổi chuỗi json thành đối tượng employee
         this.receipt = JSON.parse(res);
-        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
+        this.statusForm = this.statusFormMode;
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
           // Sinh mã tự động
           this.receipt.ReceiptNumber = this.newReceiptNumber;
         }
@@ -902,8 +1010,9 @@ export default {
                 this.setErrorMaxLength(refInput);
               }
               break;
-            // case "DepartmentId":
-            //   break;
+            case "ProviderId":
+            case "EmployeeId":
+              break;
             // case "DepartmentName":
             //   if (helperCommon.isEmptyInput(this.employee[refInput])) {
             //     this.setError(refInput);
@@ -1018,12 +1127,42 @@ export default {
       this.contentReceiptNumberExist = receiptExisted.ReceiptNumber;
     },
     /**
+     * Mô tả: Hàm kiểm tra xem có ghi sổ được không
+     * created by : BNTIEN
+     * created date: 06-08-2023 09:47:34
+     */
+    checkIsNoted() {
+      if (
+        this.receipt.AccountantList &&
+        this.receipt.AccountantList.length == 0
+      ) {
+        return false;
+      }
+      let checkNoted = true;
+      this.receipt.AccountantList.map((x) => {
+        // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
+        if (x.UserObjectDebt == 1 || x.UserObjectDebt == 3) {
+          checkNoted = false;
+          this.dataNotNull.push(
+            `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
+          );
+        }
+        if (x.IsParentBalance == 1) {
+          checkNoted = false;
+          this.dataNotNull.push(
+            `<TK có: ${x.AccountBalanceNumber}> là tài khoản tổng hợp, vui lòng kiểm tra lại`
+          );
+        }
+      });
+      return checkNoted;
+    },
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:05
      */
     async btnSave() {
-      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+      if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
@@ -1037,26 +1176,9 @@ export default {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
-              let checkIsNoted = true;
-              console.log(this.receipt.AccountantList);
-              this.receipt.AccountantList.map((x) => {
-                // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
-                if (x.UserObjectDebt == 1 || x.UserObjectDebt == 3) {
-                  checkIsNoted = false;
-                  this.dataNotNull.push(
-                    `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
-                  );
-                }
-                if (x.IsParentBalance == 1) {
-                  checkIsNoted = false;
-                  this.dataNotNull.push(
-                    `<TK có: ${x.AccountBalanceNumber}> là tài khoản tổng hợp, vui lòng kiểm tra lại`
-                  );
-                }
-                if (!checkIsNoted) return;
-              });
-              this.receipt.IsNoted = checkIsNoted;
+              this.receipt.IsNoted = this.checkIsNoted();
               await receiptService.create(this.receipt);
+              this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1069,7 +1191,7 @@ export default {
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         }
-      } else {
+      } else if (this.statusForm === this.$_MISAEnum.FORM_MODE.Edit) {
         // Nếu form ở trạng thái sửa
         // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
         if (this.hasDataChanged()) {
@@ -1088,19 +1210,18 @@ export default {
                 receiptByCode.ReceiptNumber ===
                   this.receiptSelected.ReceiptNumber
               ) {
-                const res = await receiptService.update(
+                // Nếu số phiếu chi chưa tồn tại trong hệ thống
+                this.receipt.TotalMoney = this.TotalMoney;
+                // Kiểm tra xem có ghi sổ được không
+                this.receipt.IsNoted = this.checkIsNoted();
+                await receiptService.update(
                   this.receiptSelected.ReceiptId,
                   this.receipt
                 );
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
-                  this.$_MISAEmitter.emit(
-                    "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
-                  );
+                this.statusForm = this.$_MISAEnum.FORM_MODE.View;
+                if (this.dataNotNull.length > 0) {
+                  this.isShowDialogDataNotNull = true;
+                  this.titleDataNotnull = "Ghi sổ không thành công";
                 }
               } else {
                 // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -1111,10 +1232,9 @@ export default {
             }
           }
         } else {
-          this.$emit("closeFormDetail");
+          this.statusForm = this.$_MISAEnum.FORM_MODE.View;
         }
       }
-      // }
     },
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nut cất và thêm trên form chi tiết
@@ -1123,7 +1243,7 @@ export default {
      */
     async btnSaveAndAdd() {
       // Nếu form ở trạng thái thêm mới
-      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+      if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
