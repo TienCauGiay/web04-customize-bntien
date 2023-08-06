@@ -683,6 +683,7 @@ export default {
       this.isOverlay = false;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.Add;
       this.receiptUpdate = {};
+      this.refreshData();
     },
     /**
      * Mô tả: Hàm xử lí sự kiện đóng mở các menu feature ở cột cuối của table khi click vào icon drop

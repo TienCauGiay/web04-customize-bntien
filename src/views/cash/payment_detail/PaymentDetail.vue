@@ -447,10 +447,7 @@
         </div>
       </template>
       <template
-        v-if="
-          statusForm == this.$_MISAEnum.FORM_MODE.View &&
-          receipt.IsNoted != true
-        "
+        v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && !receipt.IsNoted"
       >
         <div class="footer-layout-left">
           <div class="footer-layout-left-header">
@@ -497,10 +494,7 @@
         </div>
       </template>
       <template
-        v-if="
-          statusForm == this.$_MISAEnum.FORM_MODE.View &&
-          receipt.IsNoted == true
-        "
+        v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && receipt.IsNoted"
       >
         <div class="footer-layout-left">
           <div class="footer-layout-left-header">
@@ -936,19 +930,6 @@ export default {
       );
     },
     /**
-     * Mô tả: Hàm sử lí sự kiện khi click vào icon close
-     * created by : BNTIEN
-     * created date: 29-05-2023 07:54:28
-     */
-    async onCloseFormDetail() {
-      // Kiểm tra xem giữ liệu có thay đổi hay không (Trường hợp có thay đổi)
-      if (this.hasDataChanged()) {
-        this.isShowDialogDataChange = true;
-      } else {
-        this.$emit("closeFormDetail");
-      }
-    },
-    /**
      * Mô tả: Hàm set các lỗi nhập liệu phía fontend
      * created by : BNTIEN
      * created date: 11-07-2023 16:36:05
@@ -1177,11 +1158,20 @@ export default {
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
-              await receiptService.create(this.receipt);
+              let receiptInserted = await receiptService.create(this.receipt);
+              this.receipt.ReceiptId = receiptInserted.data;
+              this.receipt.AccountantList.map(
+                (x) => (x.ReceiptId = receiptInserted.data)
+              );
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
+              } else {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessage",
+                  "Ghi sổ thành công"
+                );
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -1193,46 +1183,42 @@ export default {
         }
       } else if (this.statusForm === this.$_MISAEnum.FORM_MODE.Edit) {
         // Nếu form ở trạng thái sửa
-        // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
-        if (this.hasDataChanged()) {
-          this.validateReceipt();
-          if (this.dataNotNull.length > 0) {
-            this.isShowDialogDataNotNull = true;
-            this.titleDataNotnull =
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-          } else {
-            try {
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-              let receiptByCode = await this.checkReceiptExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-              if (
-                !receiptByCode ||
-                receiptByCode.ReceiptNumber ===
-                  this.receiptSelected.ReceiptNumber
-              ) {
-                // Nếu số phiếu chi chưa tồn tại trong hệ thống
-                this.receipt.TotalMoney = this.TotalMoney;
-                // Kiểm tra xem có ghi sổ được không
-                this.receipt.IsNoted = this.checkIsNoted();
-                await receiptService.update(
-                  this.receiptSelected.ReceiptId,
-                  this.receipt
-                );
-                this.statusForm = this.$_MISAEnum.FORM_MODE.View;
-                if (this.dataNotNull.length > 0) {
-                  this.isShowDialogDataNotNull = true;
-                  this.titleDataNotnull = "Ghi sổ không thành công";
-                }
-              } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
-                this.handleReceiptExisted(receiptByCode);
-              }
-            } catch (error) {
-              this.handleErrorInputReceipt(error, this.receiptProperty);
-            }
-          }
+        this.validateReceipt();
+        if (this.dataNotNull.length > 0) {
+          this.isShowDialogDataNotNull = true;
+          this.titleDataNotnull =
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
-          this.statusForm = this.$_MISAEnum.FORM_MODE.View;
+          try {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let receiptByCode = await this.checkReceiptExists();
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+            if (
+              !receiptByCode ||
+              receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber
+            ) {
+              // Nếu số phiếu chi chưa tồn tại trong hệ thống
+              this.receipt.TotalMoney = this.TotalMoney;
+              // Kiểm tra xem có ghi sổ được không
+              this.receipt.IsNoted = this.checkIsNoted();
+              await receiptService.update(this.receipt.ReceiptId, this.receipt);
+              this.statusForm = this.$_MISAEnum.FORM_MODE.View;
+              if (this.dataNotNull.length > 0) {
+                this.isShowDialogDataNotNull = true;
+                this.titleDataNotnull = "Ghi sổ không thành công";
+              } else {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessage",
+                  "Ghi sổ thành công"
+                );
+              }
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.handleReceiptExisted(receiptByCode);
+            }
+          } catch (error) {
+            this.handleErrorInputReceipt(error, this.receiptProperty);
+          }
         }
       }
     },
@@ -1254,25 +1240,25 @@ export default {
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             if (!receiptByCode) {
+              this.receipt.TotalMoney = this.TotalMoney;
+              // Kiểm tra xem có ghi sổ được không
+              this.receipt.IsNoted = this.checkIsNoted();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              const res = await receiptService.create(this.receipt);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
+              await receiptService.create(this.receipt);
+              this.receipt = {};
+              this.isBorderRed = {};
+              await this.getNewCode();
+              this.receipt.ReceiptNumber = this.newReceiptNumber;
+              this.receipt.AccountantList = [];
+              this.focusCode();
+              if (this.dataNotNull.length > 0) {
+                this.isShowDialogDataNotNull = true;
+                this.titleDataNotnull = "Ghi sổ không thành công";
+              } else {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                  "Ghi sổ thành công"
                 );
-                this.employee = {};
-                this.isBorderRed = {};
-                this.$_MISAEmitter.emit("refreshDataTable");
-                await this.getNewCode();
-                this.receipt.ReceiptNumber = this.newReceiptNumber;
-                this.focusCode();
               }
             } else {
               // Nếu mã nhân viên đã tồn tại trong hệ thống
@@ -1285,54 +1271,45 @@ export default {
         // Nếu form ở trạng thái sửa
       } else {
         // Kiểm tra xem dữ liệu có thay đổi hay k
-        if (this.hasDataChanged()) {
-          this.validateReceipt();
-          if (this.dataNotNull.length > 0) {
-            this.isShowDialogDataNotNull = true;
-            this.titleDataNotnull =
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-          } else {
-            try {
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-              let receiptByCode = await this.checkReceiptExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
-              if (
-                !receiptByCode ||
-                receiptByCode.EmployeeCode ===
-                  this.employeeSelected.EmployeeCode
-              ) {
-                const res = await employeeService.update(
-                  this.employeeSelected.EmployeeId,
-                  this.employee
-                );
-                this.employee = {};
-                this.$_MISAEmitter.emit("setFormModeAdd");
-                await this.getNewCode();
-                this.receipt.ReceiptNumber = this.newReceiptNumber;
-                this.focusCode();
-                this.$_MISAEmitter.emit("refreshDataTable");
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
-                  this.$_MISAEmitter.emit(
-                    "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
-                  );
-                }
-              } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
-                this.handleReceiptExisted(receiptByCode);
-              }
-            } catch (error) {
-              this.handleErrorInputReceipt(error, this.receiptProperty);
-            }
-          }
+        this.validateReceipt();
+        if (this.dataNotNull.length > 0) {
+          this.isShowDialogDataNotNull = true;
+          this.titleDataNotnull =
+            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
-          this.employee = {};
-          this.$_MISAEmitter.emit("setFormModeAdd");
-          this.focusCode();
+          try {
+            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            let receiptByCode = await this.checkReceiptExists();
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
+            if (
+              !receiptByCode ||
+              receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber
+            ) {
+              this.receipt.TotalMoney = this.TotalMoney;
+              // Kiểm tra xem có ghi sổ được không
+              this.receipt.IsNoted = this.checkIsNoted();
+              await receiptService.update(this.receipt.ReceiptId, this.receipt);
+              this.receipt = {};
+              await this.getNewCode();
+              this.receipt.ReceiptNumber = this.newReceiptNumber;
+              this.receipt.AccountantList = [];
+              this.focusCode();
+              if (this.dataNotNull.length > 0) {
+                this.isShowDialogDataNotNull = true;
+                this.titleDataNotnull = "Ghi sổ không thành công";
+              } else {
+                this.$_MISAEmitter.emit(
+                  "onShowToastMessage",
+                  "Ghi sổ thành công"
+                );
+              }
+            } else {
+              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              this.handleReceiptExisted(receiptByCode);
+            }
+          } catch (error) {
+            this.handleErrorInputReceipt(error, this.receiptProperty);
+          }
         }
       }
     },
@@ -1459,13 +1436,13 @@ export default {
     async handleKeyDown(event) {
       if (event.key === "Escape") {
         // Nếu phím được nhấn là Esc, thực hiện hàm onCloseFormDetail
-        await this.onCloseFormDetail();
+        this.$emit("closeFormDetail");
       } else if (event.ctrlKey && event.key === "s") {
         event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn phím Ctrl + S
-        this.btnSave();
+        await this.btnSave();
       } else if (event.ctrlKey && event.shiftKey && event.key === "S") {
         event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn tổ hợp phím Ctrl + Shift + S
-        this.btnSaveAndAdd();
+        await this.btnSaveAndAdd();
       }
     },
 
@@ -1735,10 +1712,15 @@ input {
   height: 28px;
   border-radius: 2px;
   border: 1px solid #babec5;
+  /* background-color: #eff0f2; */
 }
 
 .selected-layout {
   background-color: var(--color-btn-default);
   color: #fff;
+}
+
+.border-red {
+  border: 1px solid red;
 }
 </style>
