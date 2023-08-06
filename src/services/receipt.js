@@ -30,6 +30,16 @@ class ReceiptService extends BaseServices {
         });
         return response;
     }
+
+    /**
+     * Mô tả: Hàm toggle trạng thái ghi sổ
+     * created by : BNTIEN
+     * created date: 06-08-2023 15:26:00
+     */
+    async updateNote(obj){
+        const response = await this.entity.put(`${this.getBaseUrl()}/note`, obj);
+        return response;
+    }
 }
 
 export default new ReceiptService();

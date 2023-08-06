@@ -196,7 +196,10 @@
               v-for="item in dataTable.Data"
               :key="item.ReceiptId"
               @dblclick="onViewFormDetail(item)"
-              :class="{ checkedRow: checkRow().includes(item.ReceiptId) }"
+              :class="[
+                { checkedRow: checkRow().includes(item.ReceiptId) },
+                { unNoted: !item.IsNoted },
+              ]"
             >
               <td class="entity-border-left" @dblclick.stop>
                 <div class="th-checkbox">
@@ -214,20 +217,22 @@
               <td class="text-center col-width-150">
                 {{ formatDate(item.ReceiptDate) }}
               </td>
-              <td class="col-width-120" :title="item.ReceiptNumber">
-                {{ item.ReceiptNumber }}
+              <td class="col-width-120 color-blue" :title="item.ReceiptNumber">
+                <span @click="onViewFormDetail(item)">{{
+                  item.ReceiptNumber
+                }}</span>
               </td>
               <td class="text-right col-width-150" :title="item.TotalMoney">
                 {{ item.TotalMoney }}
               </td>
-              <td class="col-width-250" :title="item.Explain">
-                {{ item.Explain }}
+              <td class="col-width-250" :title="item.Reason">
+                {{ item.Reason }}
               </td>
               <td class="col-width-150" :title="item.ProviderName">
                 {{ item.ProviderName }}
               </td>
               <td class="col-width-120" :title="item.ProviderId">
-                {{ item.ProviderId }}
+                {{ item.ProviderCode }}
               </td>
               <td class="col-width-350" :title="item.Address">
                 {{ item.Address }}
@@ -236,7 +241,9 @@
                 class="text-center entity-border-right e-birthday function-table"
                 @dblclick.stop
               >
-                <span @click="onViewFormDetail(item)"> Xem </span>
+                <span @click="onViewFormDetail(item)" style="font-weight: 500">
+                  Xem
+                </span>
                 <div
                   class="function-table-content"
                   @click="onOpenFeatureMenu($event, item)"
@@ -1107,6 +1114,7 @@ export default {
 
 .active-page {
   border: 1px solid var(--color-border-default);
+  font-weight: 700;
 }
 
 .active-record {
@@ -1155,5 +1163,17 @@ input[type="checkbox"] {
 
 #receipt-payment .menu-function-select {
   width: 60px;
+}
+
+.unNoted {
+  color: var(--color-btn-default);
+}
+
+.color-blue {
+  color: #007aff;
+}
+
+.color-blue span:hover {
+  text-decoration: underline;
 }
 </style>

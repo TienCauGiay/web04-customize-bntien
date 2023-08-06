@@ -123,10 +123,11 @@
 .body-layout{
     height: calc(100vh - 106px);
     box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .body-layout-input{
-    height: 246px;
+    min-height: 246px;
     box-sizing: border-box;
     padding: 6px 20px 12px 20px;
     display: flex;
@@ -299,7 +300,7 @@
 }
 
 .body-layout-table{
-    height: 162px;
+    min-height: 142px;
     box-sizing: border-box;
     background-color: #fff;
     padding: 8px 0 8px 16px;
@@ -350,7 +351,7 @@
 }
 
 .body-layout-attach{
-    height: 112px;
+    min-height: 102px;
     box-sizing: border-box;
     background-color: #fff;
     margin-top: -1px;

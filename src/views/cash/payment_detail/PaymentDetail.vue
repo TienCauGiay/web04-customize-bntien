@@ -85,6 +85,10 @@
                       :errorsCBB="errors"
                       :entityCBB="receipt"
                       :listEntitySearchCBB="listProviderSearch"
+                      :isReadonlyCBB="
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted
+                      "
                     ></misa-combobox-select-single>
                   </div>
                   <div class="dola-money">
@@ -99,10 +103,17 @@
                     <misa-input
                       ref="ProviderName"
                       v-model="receipt.ProviderName"
-                      :class="{ 'border-red': isBorderRed.ProviderName }"
+                      :class="[
+                        { 'border-red': isBorderRed.ProviderName },
+                        {
+                          'readonly-input':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        },
+                      ]"
                       @input="setIsBorderRed('ProviderName')"
                       @mouseenter="isHovering.ProviderName = true"
                       @mouseleave="isHovering.ProviderName = false"
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -122,10 +133,17 @@
                     <misa-input
                       ref="ReceiveName"
                       v-model="receipt.ReceiveName"
-                      :class="{ 'border-red': isBorderRed.ReceiveName }"
+                      :class="[
+                        { 'border-red': isBorderRed.ReceiveName },
+                        {
+                          'readonly-input':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        },
+                      ]"
                       @input="setIsBorderRed('ReceiveName')"
                       @mouseenter="isHovering.ReceiveName = true"
                       @mouseleave="isHovering.ReceiveName = false"
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -143,10 +161,17 @@
                     <misa-input
                       ref="Address"
                       v-model="receipt.Address"
-                      :class="{ 'border-red': isBorderRed.Address }"
+                      :class="[
+                        { 'border-red': isBorderRed.Address },
+                        {
+                          'readonly-input':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        },
+                      ]"
                       @input="setIsBorderRed('Address')"
                       @mouseenter="isHovering.Address = true"
                       @mouseleave="isHovering.Address = false"
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -166,10 +191,17 @@
                     <misa-input
                       ref="Reason"
                       v-model="receipt.Reason"
-                      :class="{ 'border-red': isBorderRed.Reason }"
+                      :class="[
+                        { 'border-red': isBorderRed.Reason },
+                        {
+                          'readonly-input':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        },
+                      ]"
                       @input="setIsBorderRed('Reason')"
                       @mouseenter="isHovering.Reason = true"
                       @mouseleave="isHovering.Reason = false"
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -206,6 +238,10 @@
                       :errorsCBB="errors"
                       :entityCBB="receipt"
                       :listEntitySearchCBB="listEmployeeSearch"
+                      :isReadonlyCBB="
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted
+                      "
                     ></misa-combobox-select-single>
                   </div>
                 </div>
@@ -220,10 +256,15 @@
                     :class="[
                       { 'border-red': isBorderRed.QuantityAttach },
                       'right-to-left',
+                      {
+                        'readonly-input':
+                          statusForm == this.$_MISAEnum.FORM_MODE.View,
+                      },
                     ]"
                     @input="setIsBorderRed('QuantityAttach')"
                     @mouseenter="isHovering.QuantityAttach = true"
                     @mouseleave="isHovering.QuantityAttach = false"
+                    :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                   ></misa-input>
                   <div>chứng từ gốc</div>
                 </div>
@@ -243,12 +284,23 @@
                   type="date"
                   v-model="receipt.AccountingDate"
                   :value="formattedDateAccounting"
-                  :class="{
-                    'border-red': isBorderRed.AccountingDate,
-                  }"
+                  :class="[
+                    {
+                      'border-red': isBorderRed.AccountingDate,
+                    },
+                    {
+                      'readonly-input':
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted,
+                    },
+                  ]"
                   @input="setIsBorderRed('AccountingDate')"
                   @mouseenter="isHovering.AccountingDate = true"
                   @mouseleave="isHovering.AccountingDate = false"
+                  :readonly="
+                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                    receipt.IsNoted
+                  "
                 ></misa-input>
                 <div
                   class="misa-tooltip"
@@ -266,12 +318,23 @@
                   type="date"
                   v-model="receipt.ReceiptDate"
                   :value="formattedReceiptDate"
-                  :class="{
-                    'border-red': isBorderRed.ReceiptDate,
-                  }"
+                  :class="[
+                    {
+                      'border-red': isBorderRed.ReceiptDate,
+                    },
+                    {
+                      'readonly-input':
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted,
+                    },
+                  ]"
                   @input="setIsBorderRed('ReceiptDate')"
                   @mouseenter="isHovering.ReceiptDate = true"
                   @mouseleave="isHovering.ReceiptDate = false"
+                  :readonly="
+                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                    receipt.IsNoted
+                  "
                 ></misa-input>
                 <div
                   class="misa-tooltip"
@@ -287,10 +350,21 @@
                 <misa-input
                   ref="ReceiptNumber"
                   v-model="receipt.ReceiptNumber"
-                  :class="{ 'border-red': isBorderRed.ReceiptNumber }"
+                  :class="[
+                    { 'border-red': isBorderRed.ReceiptNumber },
+                    {
+                      'readonly-input':
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted,
+                    },
+                  ]"
                   @input="setIsBorderRed('ReceiptNumber')"
                   @mouseenter="isHovering.ReceiptNumber = true"
                   @mouseleave="isHovering.ReceiptNumber = false"
+                  :readonly="
+                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                    receipt.IsNoted
+                  "
                 ></misa-input>
                 <div
                   class="misa-tooltip"
@@ -335,7 +409,16 @@
                 <tr @click="focusRow(index)">
                   <td class="table-col-1 text-center">{{ index + 1 }}</td>
                   <td class="table-col-2">
-                    <misa-input v-model="item.Description"></misa-input>
+                    <misa-input
+                      v-model="item.Description"
+                      :class="[
+                        {
+                          'readonly-input-table':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        },
+                      ]"
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
+                    ></misa-input>
                   </td>
                   <td class="table-col-3" id="td-3-form-cbb">
                     <misa-form-combobox
@@ -354,6 +437,10 @@
                       :textColSecond="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountName
+                      "
+                      :isReadonlyCBB="
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted
                       "
                     ></misa-form-combobox>
                   </td>
@@ -375,12 +462,27 @@
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountName
                       "
+                      :isReadonlyCBB="
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted
+                      "
                     ></misa-form-combobox>
                   </td>
                   <td class="table-col-5 text-right">
                     <misa-input
-                      :class="'right-to-left'"
                       v-model="item.Money"
+                      :class="[
+                        {
+                          'readonly-input-table':
+                            statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                            receipt.IsNoted,
+                        },
+                        'right-to-left',
+                      ]"
+                      :readonly="
+                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                        receipt.IsNoted
+                      "
                     ></misa-input>
                   </td>
                   <td class="table-col-6" @click="deleteRowAccountant(index)">
@@ -403,10 +505,18 @@
                 <misa-button-extra
                   :textButtonExtra="'Thêm dòng'"
                   @click="btnAddRowAccountant"
+                  :disabled="
+                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                    receipt.IsNoted
+                  "
                 ></misa-button-extra>
                 <misa-button-extra
                   :textButtonExtra="'Xóa hết dòng'"
                   @click="deleteAllRowAccountant"
+                  :disabled="
+                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
+                    receipt.IsNoted
+                  "
                 ></misa-button-extra>
               </td>
             </tfoot>
@@ -1687,6 +1797,39 @@ export default {
         );
       }
     },
+
+    /**
+     * Mô tả: Ghi sổ 1 phiếu thu/chi
+     * created by : BNTIEN
+     * created date: 06-08-2023 15:32:31
+     */
+    async btnNote() {
+      // Kiểm tra xem có ghi sổ được không
+      const checkNoted = this.checkIsNoted();
+      if (checkNoted) {
+        const res = await receiptService.updateNote(this.receipt);
+        this.receipt.IsNoted = !this.receipt.IsNoted;
+        if (
+          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+          res.data > 0
+        ) {
+          this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+        }
+      } else {
+        this.isShowDialogDataNotNull = true;
+        this.titleDataNotnull = "Ghi sổ không thành công";
+      }
+    },
+
+    /**
+     * Mô tả: Hàm bỏ ghi 1 phiếu thu/chi
+     * created by : BNTIEN
+     * created date: 06-08-2023 15:39:26
+     */
+    async btnUnNote() {
+      await receiptService.updateNote(this.receipt);
+      this.receipt.IsNoted = !this.receipt.IsNoted;
+    },
   },
 
   beforeUnmount() {
@@ -1712,7 +1855,6 @@ input {
   height: 28px;
   border-radius: 2px;
   border: 1px solid #babec5;
-  /* background-color: #eff0f2; */
 }
 
 .selected-layout {
@@ -1722,5 +1864,24 @@ input {
 
 .border-red {
   border: 1px solid red;
+}
+
+.readonly-input {
+  background-color: #eff0f2;
+}
+
+.readonly-input-table {
+  background-color: #fff;
+  border: unset;
+}
+
+.readonly-input-table:hover {
+  background-color: #fff8cb;
+  border: unset;
+}
+
+.readonly-input-table:focus {
+  background-color: #f9ecca;
+  border: unset;
 }
 </style>

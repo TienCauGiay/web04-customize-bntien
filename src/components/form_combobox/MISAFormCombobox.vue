@@ -1,9 +1,12 @@
 <template>
   <div
     class="form-cbb"
-    :class="{
-      'border-red': isBorderRedFormCBB[propBorderRed],
-    }"
+    :class="[
+      {
+        'border-red': isBorderRedFormCBB[propBorderRed],
+      },
+      { 'readonly-form-cbb': isReadonlyCBB },
+    ]"
   >
     <div class="e-textfield-cbb">
       <div class="container-input">
@@ -16,6 +19,8 @@
           @keydown="onKeyDownEntity"
           @mouseenter="isHoveringFormCBB = true"
           @mouseleave="isHoveringFormCBB = false"
+          :class="{ 'readonly-input-cbb': isReadonlyCBB }"
+          :readonly="isReadonlyCBB"
         ></misa-input>
         <div
           class="misa-tooltip"
@@ -33,7 +38,11 @@
         </div>
       </div>
     </div>
-    <div class="e-icon-cbb" @click="onShowSelectEntity">
+    <div
+      class="e-icon-cbb"
+      @click="onShowSelectEntity"
+      :class="{ 'display-none-cbb': isReadonlyCBB }"
+    >
       <div class="function-icon"></div>
     </div>
     <div
@@ -93,6 +102,7 @@ export default {
     "textColFirst",
     "textColSecond",
     "propBorderRed",
+    "isReadonlyCBB",
   ],
 
   data() {
@@ -122,7 +132,9 @@ export default {
      * created date: 29-05-2023 07:54:42
      */
     onShowSelectEntity() {
-      this.isShowSelectEntity = !this.isShowSelectEntity;
+      if (!this.isReadonlyCBB) {
+        this.isShowSelectEntity = !this.isShowSelectEntity;
+      }
     },
 
     /**
@@ -207,5 +219,25 @@ export default {
 
 .border-red {
   border: 1px solid red;
+}
+
+#info-payment-detail .readonly-form-cbb {
+  border: unset;
+}
+
+#info-payment-detail .readonly-form-cbb:has(.e-textfield-cbb input:hover),
+#info-payment-detail .readonly-input-cbb:hover {
+  background-color: #fff8cb;
+  border: unset;
+}
+
+#info-payment-detail .readonly-form-cbb:has(.e-textfield-cbb input:focus),
+#info-payment-detail .readonly-input-cbb:focus {
+  border: unset;
+  background-color: #f9ecca;
+}
+
+#info-payment-detail .display-none-cbb {
+  display: none;
 }
 </style>

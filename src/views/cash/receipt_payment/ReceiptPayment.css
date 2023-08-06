@@ -210,6 +210,7 @@
 #receipt-payment tbody tr:last-child td{
     border: unset;
     background-color: #e8eaef;
+    font-weight: 700;
 }
 
 .tr-last-child{

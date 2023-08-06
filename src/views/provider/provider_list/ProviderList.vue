@@ -1109,6 +1109,7 @@ input[type="checkbox"]:focus {
 
 .active-page {
   border: 1px solid var(--color-border-default);
+  font-weight: 700;
 }
 
 .active-record {

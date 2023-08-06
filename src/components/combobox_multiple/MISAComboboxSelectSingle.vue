@@ -15,6 +15,8 @@
           @keydown="onKeyDownEntity"
           @mouseenter="isHoveringCBB = true"
           @mouseleave="isHoveringCBB = false"
+          :class="{ 'readonly-input-cbb': isReadonlyCBB }"
+          :readonly="isReadonlyCBB"
         ></misa-input>
         <div
           class="misa-tooltip"
@@ -30,12 +32,16 @@
         </div>
       </div>
     </div>
-    <div class="icon-cbb-multiple">
+    <div
+      class="icon-cbb-multiple"
+      :class="{ 'readonly-input-cbb': isReadonlyCBB }"
+    >
       <div class="icon-l plus-green-icon"></div>
     </div>
     <div
       class="e-icon-cbb"
-      @click="this.isShowSelectEntity = !this.isShowSelectEntity"
+      @click="openMenu"
+      :class="{ 'readonly-input-cbb': isReadonlyCBB }"
     >
       <div class="function-icon"></div>
     </div>
@@ -95,6 +101,7 @@ export default {
     "listEntitySearchCBB",
     "isShowCode",
     "indexSelectedCBB",
+    "isReadonlyCBB",
   ],
 
   data() {
@@ -121,6 +128,17 @@ export default {
   },
 
   methods: {
+    /**
+     * Mô tả: Mỏ menu
+     * created by : BNTIEN
+     * created date: 06-08-2023 16:42:33
+     */
+    openMenu() {
+      if (!this.isReadonlyCBB) {
+        this.isShowSelectEntity = !this.isShowSelectEntity;
+      }
+    },
+
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
      * created by : BNTIEN
@@ -180,53 +198,55 @@ export default {
      */
     onKeyDownEntity(event) {
       try {
-        const maxLength = this.listEntitySearchCBB.Data.length;
-        if (maxLength == 0) {
-          return;
-        } else {
-          if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
-            // Bấm xuống
-            if (this.isShowSelectEntity) {
-              if (this.indexEntitySelected < maxLength - 1) {
-                this.indexEntitySelected++;
-              } else if (this.indexEntitySelected == maxLength - 1) {
-                this.indexEntitySelected = 0;
+        if (!this.isReadonlyCBB) {
+          const maxLength = this.listEntitySearchCBB.Data.length;
+          if (maxLength == 0) {
+            return;
+          } else {
+            if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
+              // Bấm xuống
+              if (this.isShowSelectEntity) {
+                if (this.indexEntitySelected < maxLength - 1) {
+                  this.indexEntitySelected++;
+                } else if (this.indexEntitySelected == maxLength - 1) {
+                  this.indexEntitySelected = 0;
+                }
+                // scroll focus theo item được chọn
+                this.scrollIndex(
+                  this.indexEntitySelected,
+                  this.$_MISAEnum.KEY_CODE.DOWN
+                );
+              } else {
+                this.isShowSelectEntity = true;
               }
-              // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexEntitySelected,
-                this.$_MISAEnum.KEY_CODE.DOWN
-              );
-            } else {
-              this.isShowSelectEntity = true;
-            }
-          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
-            // Bấm lên
-            if (this.isShowSelectEntity) {
-              if (this.indexEntitySelected > 0) {
-                this.indexEntitySelected--;
-              } else if (this.indexEntitySelected == 0) {
-                this.indexEntitySelected = maxLength - 1;
+            } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+              // Bấm lên
+              if (this.isShowSelectEntity) {
+                if (this.indexEntitySelected > 0) {
+                  this.indexEntitySelected--;
+                } else if (this.indexEntitySelected == 0) {
+                  this.indexEntitySelected = maxLength - 1;
+                }
+                // scroll focus theo item được chọn
+                this.scrollIndex(
+                  this.indexEntitySelected,
+                  this.$_MISAEnum.KEY_CODE.UP
+                );
+              } else {
+                this.isShowSelectEntity = true;
               }
-              // scroll focus theo item được chọn
-              this.scrollIndex(
-                this.indexEntitySelected,
-                this.$_MISAEnum.KEY_CODE.UP
-              );
-            } else {
-              this.isShowSelectEntity = true;
-            }
-          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
-            // Bấm enter
-            if (this.isShowSelectEntity) {
-              this.$_MISAEmitter.emit(
-                "onKeyDownEntityCBBSingle",
-                this.indexEntitySelected,
-                this.propId
-              );
-              this.isShowSelectEntity = false;
-            } else {
-              this.isShowSelectEntity = true;
+            } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+              // Bấm enter
+              if (this.isShowSelectEntity) {
+                this.$_MISAEmitter.emit(
+                  "onKeyDownEntityCBBSingle",
+                  this.indexEntitySelected,
+                  this.propId
+                );
+                this.isShowSelectEntity = false;
+              } else {
+                this.isShowSelectEntity = true;
+              }
             }
           }
         }
@@ -273,11 +293,11 @@ export default {
 
 input {
   height: calc(26px - 0.667px * 2);
-  width: calc(100% - calc(26px - 0.667px * 2));
+  width: 100%;
   box-sizing: border-box;
   border: unset;
   border-radius: 4px 0 0 4px;
-  padding: 0;
+  padding-left: 12px;
 }
 
 input:focus {
@@ -292,5 +312,14 @@ input:focus {
 #info-payment-detail .cbb-selected {
   background-color: var(--color-btn-default);
   color: #ffffff;
+}
+
+#info-payment-detail .readonly-input-cbb {
+  background-color: #eff0f2 !important;
+  border: unset;
+}
+
+#info-payment-detail input {
+  height: calc(28px - 0.667px * 2);
 }
 </style>
