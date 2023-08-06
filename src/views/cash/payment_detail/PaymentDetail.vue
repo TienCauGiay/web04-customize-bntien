@@ -951,7 +951,7 @@ export default {
      */
     async getListDebt() {
       try {
-        const res = await accountService.getDebt(20, this.currentPageDebt, "");
+        const res = await accountService.getDebt(50, this.currentPageDebt, "");
         this.listAccountDebt = [...this.listAccountDebt, ...res.data];
       } catch {
         this.listAccountDebt = [];
@@ -965,7 +965,7 @@ export default {
     async getListBalance() {
       try {
         const res = await accountService.getBalance(
-          20,
+          50,
           this.currentPageBalance,
           ""
         );
@@ -981,7 +981,7 @@ export default {
      */
     async getAccountant() {
       try {
-        if (this.statusFormMode != this.$_MISAEnum.FORM_MODE.Add) {
+        if (this.receipt.ReceiptId) {
           const res = await accountantService.getByReceiptId(
             this.receipt.ReceiptId
           );
@@ -1237,6 +1237,14 @@ export default {
           this.dataNotNull.push(
             `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
           );
+        } else {
+          // Nếu theo nhà cung cấp mà chưa nhập nhà cung cấp thì cũng không ghi sổ được
+          if (!this.receipt.ProviderId) {
+            checkNoted = false;
+            this.dataNotNull.push(
+              `Tài khoản ${x.AccountDebtNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp`
+            );
+          }
         }
         if (x.IsParentBalance == 1) {
           checkNoted = false;
@@ -1261,10 +1269,20 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
+            if (
+              !this.receipt.AccountantList ||
+              this.receipt.AccountantList.length == 0
+            ) {
+              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
+            // Nếu mã nhân viên chưa tồn tại trong hệ thống
             if (!receiptByCode) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
@@ -1300,6 +1318,16 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
+            if (
+              !this.receipt.AccountantList ||
+              this.receipt.AccountantList.length == 0
+            ) {
+              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
@@ -1347,6 +1375,16 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
+            if (
+              !this.receipt.AccountantList ||
+              this.receipt.AccountantList.length == 0
+            ) {
+              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             if (!receiptByCode) {
@@ -1380,7 +1418,6 @@ export default {
         }
         // Nếu form ở trạng thái sửa
       } else {
-        // Kiểm tra xem dữ liệu có thay đổi hay k
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
           this.isShowDialogDataNotNull = true;
@@ -1388,6 +1425,16 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
+            if (
+              !this.receipt.AccountantList ||
+              this.receipt.AccountantList.length == 0
+            ) {
+              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa

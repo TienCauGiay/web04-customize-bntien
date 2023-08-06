@@ -272,7 +272,7 @@
             }"
           >
             <template v-if="!this.selectedReceipt.IsNoted">
-              <div>Ghi sổ</div>
+              <div @click="toggleNote">Ghi sổ</div>
               <div @click="onDeleteReceipt">
                 {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
               </div>
@@ -283,7 +283,7 @@
               </div>
             </template>
             <template v-if="this.selectedReceipt.IsNoted">
-              <div>Bỏ ghi</div>
+              <div @click="toggleNote">Bỏ ghi</div>
               <div @click="onDupliCateReceipt">Nhân bản</div>
             </template>
           </div>
@@ -420,6 +420,12 @@
       }`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
+    <!-- dialog employee input data not blank -->
+    <misa-dialog-data-not-null
+      v-if="isShowDialogDataNotNull"
+      :valueNotNull="dataNotNull"
+      :title="'Ghi sổ không thành công'"
+    ></misa-dialog-data-not-null>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
@@ -469,6 +475,10 @@ export default {
     });
     this.$_MISAEmitter.on("closeToastMessage", () => {
       this.btnCloseToastMessage();
+    });
+
+    this.$_MISAEmitter.on("closeDialogDataError", () => {
+      this.onCloseDialogDataError();
     });
   },
 
@@ -541,6 +551,10 @@ export default {
       positionFeatureMenu: {},
       // Khai báo biến lưu employee khi bấm vào col feature
       selectedReceipt: {},
+      // Biến quy định trạng thái hiện thị dialog data not null
+      isShowDialogDataNotNull: false,
+      // Biến lưu nội dung lỗi dialog data not null
+      dataNotNull: [],
     };
   },
 
@@ -1056,6 +1070,11 @@ export default {
       }
     },
 
+    /**
+     * Mô tả: Lọc theo phiếu thu/chi
+     * created by : BNTIEN
+     * created date: 06-08-2023 17:15:49
+     */
     async selectFilter(index) {
       try {
         this.isShowFilterReceipt = false;
@@ -1086,6 +1105,32 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Đóng dialog data not null
+     * created by : BNTIEN
+     * created date: 06-08-2023 20:04:33
+     */
+    onCloseDialogDataError() {
+      (this.dataNotNull = []), (this.isShowDialogDataNotNull = false);
+      this.isOverlay = false;
+    },
+
+    /**
+     * Mô tả: toggle ghi sổ/ bỏ ghi
+     * created by : BNTIEN
+     * created date: 06-08-2023 17:20:39
+     */
+    async toggleNote() {
+      try {
+        await receiptService.updateNote(this.selectedReceipt);
+        await this.refreshData();
+      } catch (error) {
+        this.dataNotNull.push(error.Data);
+        this.isShowDialogDataNotNull = true;
+        this.isOverlay = true;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1098,6 +1143,7 @@ export default {
     this.$_MISAEmitter.off("confirmNoDeleteEntity");
     this.$_MISAEmitter.off("confirmYesDeleteMultiple");
     this.$_MISAEmitter.off("closeToastMessage");
+    this.$_MISAEmitter.off("closeDialogDataError");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
     window.removeEventListener("click", this.handleClickOutsideFeature);
