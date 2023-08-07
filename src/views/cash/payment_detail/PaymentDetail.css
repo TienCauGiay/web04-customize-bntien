@@ -488,9 +488,7 @@
 }
 
 .right-to-left{
-    width: 200px;
     text-align: right; 
-    direction: rtl;
 }
 
 .footer-layout-left-header{

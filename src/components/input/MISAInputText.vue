@@ -6,6 +6,7 @@
     @input="$emit('update:modelValue', $event.target.value)"
     :title="titleContent"
     ref="inputText"
+    :maxlength="maxLength"
   />
 </template>
 
@@ -15,6 +16,7 @@ export default {
   props: {
     modelValue: String,
     titleContent: String,
+    maxLength: Number,
   },
   methods: {
     focus() {

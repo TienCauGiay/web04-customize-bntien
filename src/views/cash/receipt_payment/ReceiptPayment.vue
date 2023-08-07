@@ -421,11 +421,11 @@
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- dialog employee input data not blank -->
-    <misa-dialog-data-not-null
+    <misa-dialog-error
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
       :title="'Ghi sổ không thành công'"
-    ></misa-dialog-data-not-null>
+    ></misa-dialog-error>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
@@ -477,7 +477,7 @@ export default {
       this.btnCloseToastMessage();
     });
 
-    this.$_MISAEmitter.on("closeDialogDataError", () => {
+    this.$_MISAEmitter.on("closeDialogError", () => {
       this.onCloseDialogDataError();
     });
   },
@@ -1143,7 +1143,7 @@ export default {
     this.$_MISAEmitter.off("confirmNoDeleteEntity");
     this.$_MISAEmitter.off("confirmYesDeleteMultiple");
     this.$_MISAEmitter.off("closeToastMessage");
-    this.$_MISAEmitter.off("closeDialogDataError");
+    this.$_MISAEmitter.off("closeDialogError");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideDeleteMulti);
     window.removeEventListener("click", this.handleClickOutsideFeature);

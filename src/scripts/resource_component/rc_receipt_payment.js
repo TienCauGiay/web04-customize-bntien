@@ -29,6 +29,8 @@ const RECEIPT_PAYMENT = {
 
         validateNotNull: {
             "ReceiptNumber": "Số phiếu chi không được để trống.",
+            "AccountingDate": "Ngày hạch toán không được để trống.",
+            "ReceiptDate": "Ngày phiếu chi không được để trống.",
         },
 
         maxLength:{

@@ -14,6 +14,21 @@ const helperCommon = {
           return "";
         }
     },
+    setNewDate: function() {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = this.addLeadingZero(d.getMonth() + 1);
+      const day = this.addLeadingZero(d.getDate());
+      const hours = this.addLeadingZero(d.getHours());
+      const minutes = this.addLeadingZero(d.getMinutes());
+      const seconds = this.addLeadingZero(d.getSeconds());
+
+      return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    },
+
+    addLeadingZero: (value) =>{
+      return value < 10 ? `0${value}` : value;
+    },
     /**
      * Mô tả: Hàm xóa dấu tiếng việt
      * created by : BNTIEN

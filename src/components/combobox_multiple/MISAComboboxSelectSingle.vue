@@ -102,6 +102,7 @@ export default {
     "isShowCode",
     "indexSelectedCBB",
     "isReadonlyCBB",
+    "isFocusCBB",
   ],
 
   data() {
@@ -112,7 +113,13 @@ export default {
       isHoveringCBB: false,
       // Khai báo chỉ số đang được chọn trong combobox
       indexEntitySelected: 0,
+      // Biến quy định trạng thái focus input
+      isFocus: false,
     };
+  },
+
+  created() {
+    this.isFocus = this.isFocusCBB;
   },
 
   mounted() {
@@ -124,6 +131,10 @@ export default {
     });
     if (this.indexSelectedCBB) {
       this.indexEntitySelected = this.indexSelectedCBB;
+    }
+    if (this.isFocus) {
+      this.$refs["InputCBB"].focus();
+      this.isFocus = false;
     }
   },
 

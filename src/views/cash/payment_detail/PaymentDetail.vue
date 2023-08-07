@@ -89,6 +89,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
+                      :isFocusCBB="isFocusProviderCode"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="dola-money">
@@ -265,6 +266,7 @@
                     @mouseenter="isHovering.QuantityAttach = true"
                     @mouseleave="isHovering.QuantityAttach = false"
                     :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
+                    :maxLength="11"
                   ></misa-input>
                   <div>chứng từ gốc</div>
                 </div>
@@ -750,11 +752,10 @@ export default {
         this.selectedBalance(data);
       }
     });
+    this.isFocusProviderCode = true;
   },
 
   mounted() {
-    // focus vào ô đầu tiên khi mở form chi tiết
-    this.focusCode();
     // Đăng kí các sự kiện
     this.$refs.PaymentDetail.addEventListener("keydown", this.handleKeyDown);
   },
@@ -834,6 +835,8 @@ export default {
       titleDataNotnull: "",
       // Biến lưu trạng thái form
       statusForm: null,
+      // Biến quy định trạng thái focus mã nhà cung cấp
+      isFocusProviderCode: null,
     };
   },
 
@@ -1014,19 +1017,14 @@ export default {
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
           // Sinh mã tự động
           this.receipt.ReceiptNumber = this.newReceiptNumber;
+          this.receipt.AccountingDate = helperCommon.setNewDate();
+          this.receipt.ReceiptDate = this.receipt.AccountingDate;
+          console.log(this.receipt);
         }
         await this.getAccountant();
       } catch {
         return;
       }
-    },
-    /**
-     * Mô tả: Hàm focus vào ô input mã nhân viên
-     * created by : BNTIEN
-     * created date: 27-06-2023 01:53:48
-     */
-    focusCode() {
-      this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
     },
 
     /**
@@ -1101,54 +1099,41 @@ export default {
                 this.setErrorMaxLength(refInput);
               }
               break;
+            case "ProviderCode":
+              if (this.receipt.ProviderCode && !this.receipt.ProviderId) {
+                this.errors.ProviderCode = `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`;
+                this.isBorderRed.ProviderCode = true;
+                this.dataNotNull.push(
+                  `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
+              break;
+            case "FullName":
+              if (this.receipt.FullName && !this.receipt.EmployeeId) {
+                this.errors.FullName = `Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`;
+                this.isBorderRed.FullName = true;
+                this.dataNotNull.push(
+                  `Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
+              break;
+            case "AccountingDate":
+              if (helperCommon.isEmptyInput(this.receipt[refInput])) {
+                this.setError(refInput);
+              }
+              break;
             case "ProviderId":
             case "EmployeeId":
               break;
-            // case "DepartmentName":
-            //   if (helperCommon.isEmptyInput(this.employee[refInput])) {
-            //     this.setError(refInput);
-            //   }
-            //   break;
-            // case "DateOfBirth":
-            // case "IdentityDate":
-            //   if (this.employee[refInput]) {
-            //     if (helperCommon.isInvalidDate(this.employee[refInput])) {
-            //       this.setError(refInput);
-            //     }
-            //   }
-            //   break;
-            // case "IdentityNumber":
-            //   if (this.employee[refInput]) {
-            //     if (
-            //       helperCommon.isMaxLengthInput(
-            //         this.employee[refInput],
-            //         this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-            //           .Limit
-            //       )
-            //     ) {
-            //       this.setErrorMaxLength(refInput);
-            //     } else if (helperCommon.isNumber(this.employee[refInput])) {
-            //       this.setError(refInput);
-            //     }
-            //   }
-            //   break;
-            // case "Email":
-            //   if (this.employee[refInput]) {
-            //     if (
-            //       helperCommon.isMaxLengthInput(
-            //         this.employee[refInput],
-            //         this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-            //           .Limit
-            //       )
-            //     ) {
-            //       this.setErrorMaxLength(refInput);
-            //     } else if (
-            //       helperCommon.isFormatEmail(this.employee[refInput])
-            //     ) {
-            //       this.setError(refInput);
-            //     }
-            //   }
-            //   break;
+            case "ReceiptDate":
+              if (helperCommon.isEmptyInput(this.receipt[refInput])) {
+                this.setError(refInput);
+              }
+              break;
             default:
               // if (this.employee[refInput]) {
               //   if (
@@ -1398,7 +1383,6 @@ export default {
               await this.getNewCode();
               this.receipt.ReceiptNumber = this.newReceiptNumber;
               this.receipt.AccountantList = [];
-              this.focusCode();
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1450,7 +1434,6 @@ export default {
               await this.getNewCode();
               this.receipt.ReceiptNumber = this.newReceiptNumber;
               this.receipt.AccountantList = [];
-              this.focusCode();
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1487,9 +1470,9 @@ export default {
       // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
       if (
         listPropError.includes("ProviderId") &&
-        !listPropError.includes("ProviderName")
+        !listPropError.includes("ProviderCode")
       ) {
-        listPropError.push("ProviderName");
+        listPropError.push("ProviderCode");
       }
       if (
         listPropError.includes("EmployeeId") &&
@@ -1500,7 +1483,7 @@ export default {
       for (const prop of this.receiptProperty) {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
-          if (prop === "ProviderId" || prop === "ProviderName") {
+          if (prop === "ProviderId" || prop === "ProviderCode") {
             this.$nextTick(() => {
               this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
             });
@@ -1544,7 +1527,6 @@ export default {
      */
     btnCloseDialogCodeExist() {
       this.isShowDialogCodeExist = false;
-      this.focusCode();
     },
 
     /**
@@ -1554,7 +1536,6 @@ export default {
      */
     onCancelDialogDataChange() {
       this.isShowDialogDataChange = false;
-      this.focusCode();
     },
 
     /**
@@ -1574,15 +1555,6 @@ export default {
     async onYesDialogDataChange() {
       this.isShowDialogDataChange = false;
       await this.btnSave();
-    },
-
-    /**
-     * Mô tả: Hàm reset tabindex về ô input mã nhân viên khi tab nhảy đến icon close
-     * created by : BNTIEN
-     * created date: 01-06-2023 14:24:19
-     */
-    resetTab() {
-      this.focusCode();
     },
 
     /**
@@ -1685,8 +1657,16 @@ export default {
       this.receipt.ProviderId = provider.ProviderId;
       this.receipt.ProviderName = provider.ProviderName;
       this.receipt.ProviderCode = provider.ProviderCode;
+      this.receipt.EmployeeId = provider.EmployeeId;
+      this.receipt.FullName = provider.FullName;
+      if (provider.IsPersonal) {
+        this.receipt.ReceiveName = provider.ProviderName;
+      }
       this.receipt.Address = provider.Address;
       this.receipt.Reason = `Chi tiền cho ${provider.ProviderName}`;
+      this.receipt.AccountantList.map((x) => {
+        x.Description = `Chi tiền cho ${provider.ProviderName}`;
+      });
       this.isBorderRed.ProviderName = false;
     },
 
@@ -1730,8 +1710,17 @@ export default {
       this.receipt.ProviderId = this.listProviderSearch.Data[index].ProviderId;
       this.receipt.ProviderCode =
         this.listProviderSearch.Data[index].ProviderCode;
+      this.receipt.EmployeeId = this.listProviderSearch.Data[index].EmployeeId;
+      this.receipt.FullName = this.listProviderSearch.Data[index].FullName;
+      if (this.listProviderSearch.Data[index].IsPersonal) {
+        this.receipt.ReceiveName =
+          this.listProviderSearch.Data[index].ProviderName;
+      }
       this.receipt.Address = this.listProviderSearch.Data[index].Address;
       this.receipt.Reason = `Chi tiền cho ${this.listProviderSearch.Data[index].ProviderName}`;
+      this.receipt.AccountantList.map((x) => {
+        x.Description = `Chi tiền cho ${this.listProviderSearch.Data[index].ProviderName}`;
+      });
       this.isBorderRed.ProviderName = false;
     },
 

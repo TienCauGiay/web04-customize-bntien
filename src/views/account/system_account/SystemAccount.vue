@@ -331,11 +331,11 @@
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- dialog account error -->
-    <misa-dialog-data-not-null
+    <misa-dialog-error
       v-if="isShowDialogDataError"
       :valueNotNull="dataError"
       :title="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.deleteFailed"
-    ></misa-dialog-data-not-null>
+    ></misa-dialog-error>
     <!-- toast message -->
     <misa-toast-success
       v-if="isShowToastMessage"
@@ -360,7 +360,7 @@ export default {
     //Gọi hàm lấy danh sách tài khoản hệ thống
     this.getListAccount();
     // Đăng kí các sự kiện
-    this.$_MISAEmitter.on("closeDialogDataError", () => {
+    this.$_MISAEmitter.on("closeDialogError", () => {
       if (!this.isShowFormDetail) {
         this.isOverlay = false;
       }
@@ -1126,7 +1126,7 @@ export default {
 
   beforeUnmount() {
     // Hủy các sự kiện đã đăng kí
-    this.$_MISAEmitter.off("closeDialogDataError");
+    this.$_MISAEmitter.off("closeDialogError");
     this.$_MISAEmitter.off("confirmYesDeleteEntity");
     this.$_MISAEmitter.off("confirmNoDeleteEntity");
     this.$_MISAEmitter.off("onShowToastMessage");
