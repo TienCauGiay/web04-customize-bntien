@@ -117,9 +117,6 @@ export default {
   },
 
   mounted() {
-    this.$_MISAEmitter.on("focusInputFormCBB", () => {
-      this.$refs["InputFormCBB"].focus();
-    });
     this.$_MISAEmitter.on("closeMenuItemFormCBB", () => {
       this.isShowSelectEntity = false;
     });
@@ -185,10 +182,13 @@ export default {
         return;
       }
     },
+
+    focus() {
+      this.$refs["InputFormCBB"].focus();
+    },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("focusInputFormCBB");
     this.$_MISAEmitter.off("closeMenuItemFormCBB");
   },
 };

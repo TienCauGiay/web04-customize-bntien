@@ -140,6 +140,7 @@
                 this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
                   .accountName
               "
+              ref="ParentId"
             ></misa-form-combobox>
           </div>
           <div class="col-md-half" style="position: relative">
@@ -978,9 +979,7 @@ export default {
               this.$_MISAEmitter.emit("focusInputCBB");
             });
           } else if (prop === "ParentId") {
-            this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputFormCBB");
-            });
+            this.$$refs.ParentId.focus();
           } else {
             // đợi DOM cập nhật trước khi thực thi focus
             this.$nextTick(() => {

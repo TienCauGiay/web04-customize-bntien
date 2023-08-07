@@ -35,6 +35,10 @@ const RECEIPT_PAYMENT = {
 
         maxLength:{
             "ReceiptNumber": {Limit: 20, Warning : "Số phiếu chi tối đa 20 kí tự."},
+            "ProviderName": {Limit: 255, Warning : "Tên nhà cung cấp tối đa 255 kí tự."},
+            "ReceiveName": {Limit: 100, Warning : "Người nhận tối đa 100 kí tự."},
+            "Address": {Limit: 255, Warning : "Địa chỉ tối đa 255 kí tự."},
+            "Reason": {Limit: 255, Warning : "Lí do chi tối đa 255 kí tự."},
         }
     },
 }

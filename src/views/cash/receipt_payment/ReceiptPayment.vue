@@ -748,7 +748,6 @@ export default {
       this.isShowFormDetail = true;
       this.isOverlay = true;
       this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.View;
-      console.log(receipt);
     },
     /**
      * Mô tả: Hàm set isStatusFormMode = ADD

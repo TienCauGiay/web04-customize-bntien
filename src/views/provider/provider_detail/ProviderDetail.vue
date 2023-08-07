@@ -213,6 +213,7 @@
                 :errorsCBB="errors"
                 :entityCBB="provider"
                 :listEntitySearchCBB="listEmployeeSearch"
+                ref="EmployeeId"
               ></misa-combobox-select-single>
             </div>
           </div>
@@ -332,6 +333,7 @@
               :errorsCBB="errors"
               :entityCBB="provider"
               :listEntitySearchCBB="listEmployeeSearch"
+              ref="EmployeeId"
             ></misa-combobox-select-single>
           </div>
         </div>
@@ -979,6 +981,7 @@
                       :errorsCBB="errors"
                       :entityCBB="provider"
                       :listEntitySearchCBB="listTermPayment"
+                      ref="TermPaymentId"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
@@ -1093,6 +1096,7 @@
                       :errorsCBB="errors"
                       :entityCBB="provider"
                       :listEntitySearchCBB="listTermPayment"
+                      ref="TermPaymentId"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
@@ -2404,11 +2408,11 @@ export default {
           // đợi DOM cập nhật trước khi thực thi focus
           if (prop === "EmployeeId" || prop === "FullName") {
             this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
+              this.$refs.EmployeeId.focus();
             });
           } else if (prop === "TermPaymentId" || prop === "TermPaymentName") {
             this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
+              this.$refs.TermPaymentId.focus();
             });
           } else {
             this.$nextTick(() => {

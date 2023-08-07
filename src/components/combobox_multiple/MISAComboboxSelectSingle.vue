@@ -3,7 +3,10 @@
     class="cbb-multiple"
     id="cbb-multiple"
     :class="{
-      'border-red': isBorderRedCBB[propName] || isBorderRedCBB[propId],
+      'border-red':
+        isBorderRedCBB[propName] ||
+        isBorderRedCBB[propId] ||
+        isBorderRedCBB[propCode],
     }"
   >
     <div class="input-cbb-mutiple">
@@ -123,9 +126,6 @@ export default {
   },
 
   mounted() {
-    this.$_MISAEmitter.on("focusInputCBBSelectSingle", () => {
-      this.$refs["InputCBB"].focus();
-    });
     this.$_MISAEmitter.on("closeMenuItemCBBSelectSingle", () => {
       this.isShowSelectEntity = false;
     });
@@ -290,10 +290,13 @@ export default {
         return;
       }
     },
+
+    focus() {
+      this.$refs["InputCBB"].focus();
+    },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("focusInputCBBSelectSingle");
     this.$_MISAEmitter.off("closeMenuItemCBBSelectSingle");
   },
 };
@@ -316,6 +319,10 @@ input:focus {
 }
 
 .border-red {
+  border: 1px solid red;
+}
+
+#info-payment-detail .border-red {
   border: 1px solid red;
 }
 

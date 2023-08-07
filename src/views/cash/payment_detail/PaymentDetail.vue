@@ -89,7 +89,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
-                      :isFocusCBB="isFocusProviderCode"
+                      ref="ProviderId"
                     ></misa-combobox-select-single>
                   </div>
                   <div class="dola-money">
@@ -243,6 +243,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
+                      ref="EmployeeId"
                     ></misa-combobox-select-single>
                   </div>
                 </div>
@@ -384,7 +385,12 @@
         </div>
         <div class="layout-input-total">
           <div class="text-total-money">Tổng tiền</div>
-          <div class="total-money">{{ TotalMoney }}</div>
+          <div
+            class="total-money"
+            :class="{ 'color-money-red': TotalMoney < 0 }"
+          >
+            {{ TotalMoney }}
+          </div>
         </div>
       </div>
       <div class="body-layout-table">
@@ -420,6 +426,7 @@
                         },
                       ]"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
+                      :maxLength="255"
                     ></misa-input>
                   </td>
                   <td class="table-col-3" id="td-3-form-cbb">
@@ -480,6 +487,7 @@
                             receipt.IsNoted,
                         },
                         'right-to-left',
+                        { 'color-money-red': item.Money < 0 },
                       ]"
                       :readonly="
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
@@ -496,7 +504,11 @@
               </template>
               <tr>
                 <td colspan="4"></td>
-                <td class="table-col-5 text-right" style="padding-right: 24px">
+                <td
+                  class="table-col-5 text-right"
+                  style="padding-right: 24px"
+                  :class="{ 'color-money-red': TotalMoney < 0 }"
+                >
                   {{ TotalMoney }}
                 </td>
                 <td></td>
@@ -752,10 +764,10 @@ export default {
         this.selectedBalance(data);
       }
     });
-    this.isFocusProviderCode = true;
   },
 
   mounted() {
+    this.$refs.ProviderId.focus();
     // Đăng kí các sự kiện
     this.$refs.PaymentDetail.addEventListener("keydown", this.handleKeyDown);
   },
@@ -835,8 +847,6 @@ export default {
       titleDataNotnull: "",
       // Biến lưu trạng thái form
       statusForm: null,
-      // Biến quy định trạng thái focus mã nhà cung cấp
-      isFocusProviderCode: null,
     };
   },
 
@@ -1019,7 +1029,6 @@ export default {
           this.receipt.ReceiptNumber = this.newReceiptNumber;
           this.receipt.AccountingDate = helperCommon.setNewDate();
           this.receipt.ReceiptDate = this.receipt.AccountingDate;
-          console.log(this.receipt);
         }
         await this.getAccountant();
       } catch {
@@ -1092,8 +1101,8 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.receipt[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-                    .Limit
+                  this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
+                    .FORM_PAYMENT.maxLength[refInput].Limit
                 )
               ) {
                 this.setErrorMaxLength(refInput);
@@ -1101,13 +1110,11 @@ export default {
               break;
             case "ProviderCode":
               if (this.receipt.ProviderCode && !this.receipt.ProviderId) {
-                this.errors.ProviderCode = `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`;
-                this.isBorderRed.ProviderCode = true;
+                this.errors.ProviderId = `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`;
+                this.isBorderRed.ProviderId = true;
                 this.dataNotNull.push(
                   `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`
                 );
-                this.isShowDialogDataNotNull = true;
-                return;
               }
               break;
             case "FullName":
@@ -1117,13 +1124,23 @@ export default {
                 this.dataNotNull.push(
                   `Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`
                 );
-                this.isShowDialogDataNotNull = true;
-                return;
               }
               break;
             case "AccountingDate":
               if (helperCommon.isEmptyInput(this.receipt[refInput])) {
                 this.setError(refInput);
+              }
+              if (
+                new Date(this.receipt.ReceiptDate) >
+                new Date(this.receipt.AccountingDate)
+              ) {
+                this.errors.AccountingDate = `Ngày hạch toán phải lớn hơn hoặc bằng ngày chứng từ ${this.receipt.ReceiptDate}`;
+                this.isBorderRed.AccountingDate = true;
+                this.dataNotNull.push(
+                  `Ngày hạch toán phải lớn hơn hoặc bằng ngày chứng từ ${helperCommon.formatDate(
+                    this.receipt.ReceiptDate
+                  )}`
+                );
               }
               break;
             case "ProviderId":
@@ -1135,17 +1152,17 @@ export default {
               }
               break;
             default:
-              // if (this.employee[refInput]) {
-              //   if (
-              //     helperCommon.isMaxLengthInput(
-              //       this.employee[refInput],
-              //       this.$_MISAResource[this.$_LANG_CODE].MAXLENGTH[refInput]
-              //         .Limit
-              //     )
-              //   ) {
-              //     this.setErrorMaxLength(refInput);
-              //   }
-              // }
+              if (this.receipt[refInput]) {
+                if (
+                  helperCommon.isMaxLengthInput(
+                    this.receipt[refInput],
+                    this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
+                      .FORM_PAYMENT.maxLength[refInput].Limit
+                  )
+                ) {
+                  this.setErrorMaxLength(refInput);
+                }
+              }
               break;
           }
         }
@@ -1223,23 +1240,58 @@ export default {
             `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
           );
         } else {
-          // Nếu theo nhà cung cấp mà chưa nhập nhà cung cấp thì cũng không ghi sổ được
+          // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
           if (!this.receipt.ProviderId) {
             checkNoted = false;
             this.dataNotNull.push(
-              `Tài khoản ${x.AccountDebtNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp`
+              `Tài khoản ${x.AccountDebtNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
             );
           }
         }
-        if (x.IsParentBalance == 1) {
+        if (x.UserObjectBalance == 1 || x.UserObjectBalance == 3) {
           checkNoted = false;
           this.dataNotNull.push(
-            `<TK có: ${x.AccountBalanceNumber}> là tài khoản tổng hợp, vui lòng kiểm tra lại`
+            `<TK có: ${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
           );
+        } else {
+          // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
+          if (!this.receipt.ProviderId) {
+            checkNoted = false;
+            this.dataNotNull.push(
+              `Tài khoản ${x.AccountBalanceNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
+            );
+          }
         }
       });
       return checkNoted;
     },
+
+    /**
+     * Mô tả: validate hạch toán
+     * created by : BNTIEN
+     * created date: 07-08-2023 14:58:52
+     */
+    validateAccountant() {
+      let checkReturn = false;
+      if (
+        this.receipt.AccountantList &&
+        this.receipt.AccountantList.length > 0
+      ) {
+        checkReturn = this.receipt.AccountantList.some((item) => {
+          if (!item.AccountDebtId) {
+            this.dataNotNull.push("Tài khoản nợ không được để trống");
+            return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
+          }
+          if (!item.AccountBalanceId) {
+            this.dataNotNull.push("Tài khoản có không được để trống");
+            return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
+          }
+          return false; // Không thoát khỏi vòng lặp nếu không có điều kiện nào thỏa mãn
+        });
+      }
+      return checkReturn;
+    },
+
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
@@ -1259,6 +1311,12 @@ export default {
               this.receipt.AccountantList.length == 0
             ) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
+            if (this.validateAccountant()) {
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
               this.isShowDialogDataNotNull = true;
@@ -1308,6 +1366,12 @@ export default {
               this.receipt.AccountantList.length == 0
             ) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
+            if (this.validateAccountant()) {
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
               this.isShowDialogDataNotNull = true;
@@ -1370,6 +1434,12 @@ export default {
               this.isShowDialogDataNotNull = true;
               return;
             }
+            if (this.validateAccountant()) {
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let receiptByCode = await this.checkReceiptExists();
             if (!receiptByCode) {
@@ -1414,6 +1484,12 @@ export default {
               this.receipt.AccountantList.length == 0
             ) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+              this.titleDataNotnull =
+                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
+            if (this.validateAccountant()) {
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
               this.isShowDialogDataNotNull = true;
@@ -1484,13 +1560,9 @@ export default {
         if (listPropError.includes(prop)) {
           // đợi DOM cập nhật trước khi thực thi focus
           if (prop === "ProviderId" || prop === "ProviderCode") {
-            this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
-            });
+            this.$refs.ProviderId.focus();
           } else if (prop === "EmployeeId" || prop === "FullName") {
-            this.$nextTick(() => {
-              this.$_MISAEmitter.emit("focusInputCBBSelectSingle");
-            });
+            this.$refs.EmployeeId.focus();
           } else {
             this.$nextTick(() => {
               this.$refs[prop].focus();
@@ -1499,6 +1571,11 @@ export default {
           return;
         }
       }
+
+      // else if (prop == "AccountDebtId") {
+      //       this.$refs[`AccountDebtId${this.indexSelectRow}`].focus();
+      //       this.isBorderRed.AccountDebtId = false;
+      //     }
     },
 
     /**
@@ -1772,7 +1849,6 @@ export default {
      * created date: 05-08-2023 20:05:15
      */
     selectedDebt(accountDebt) {
-      console.log(accountDebt);
       this.receipt.AccountantList[this.indexSelectRow].AccountDebtId =
         accountDebt.AccountDebtId;
       this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber =
@@ -1919,5 +1995,9 @@ input {
 .readonly-input-table:focus {
   background-color: #f9ecca;
   border: unset;
+}
+
+.color-money-red {
+  color: red;
 }
 </style>
