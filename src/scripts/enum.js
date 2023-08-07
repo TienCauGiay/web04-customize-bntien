@@ -51,36 +51,69 @@ const MISAEnum = {
         }
     },
 
+    // Khai báo dữ liệu phân trang mặc định
     RECORD:{
+        // trang hiện tại 
         CURRENT_PAGE: 1,
+        // Số trang hiển thị
         MAX_VISIBLE_PAGE: 3,
+        // Số bản ghi trên trang
         RECORD_DEFAULT : 20,
+        // Các option phân trang
         RECORD_OPTIONS : [10, 20, 30, 50, 100],
+        // Chỉ số của trang đang được chọn
         INDEX_SELECTED_DEFAULT: 1,
     },
 
+    // Giới tính
     GENDER:{
+        // Nam
         Male: 0,
+        // Nữ
         Female: 1,
+        // Khác
         Other: 2
     },
 
+    // Trạng thái của form detail của các obj
     FORM_MODE: {
+        // Thêm
         Add: 1,
+        // Sửa
         Edit: 2,
+        // Xem
         View: 3
     },
+
+    // Mã ASCII
     KEY_CODE:{
+        // Phím di chuyển lên
         DOWN: 40,
+        // Phím di chuyển xuống
         UP: 38,
+        // Phím Enter
         ENTER: 13
     },
+
+    // Check 1 trạng thái checkbox có là khách hàng trong form employee
     CUSTOMER: 1,
+    // Check 1 trạng thái checkbox có là nhà cung cấp trong form employee
     PROVIDER: 1,
 
+    // Trạng thái đúng sai
     BOOL: {
         TRUE: 1,
         FALSE: 0
+    },
+    
+    // Đối tượng tài khoản trong form system account detail
+    OBJ_ACCOUNT: {
+        // Khách hàng
+        Customer: 1,
+        // Nhà cung cấp
+        Provider: 2,
+        // Nhân viên
+        Employee: 3
     }
 } 
 

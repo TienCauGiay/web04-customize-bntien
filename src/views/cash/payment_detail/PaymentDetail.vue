@@ -240,8 +240,7 @@
                       :entityCBB="receipt"
                       :listEntitySearchCBB="listEmployeeSearch"
                       :isReadonlyCBB="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted
+                        statusForm == this.$_MISAEnum.FORM_MODE.View
                       "
                       ref="EmployeeId"
                     ></misa-combobox-select-single>
@@ -451,6 +450,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
+                      :ref="`AccountDebtId${index}`"
                     ></misa-form-combobox>
                   </td>
                   <td class="table-col-4" id="td-4-form-cbb">
@@ -475,6 +475,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
+                      :ref="`AccountBalanceId${index}`"
                     ></misa-form-combobox>
                   </td>
                   <td class="table-col-5 text-right">
@@ -764,6 +765,27 @@ export default {
         this.selectedBalance(data);
       }
     });
+
+    this.$_MISAEmitter.on("handleScrollCBBformCBB", async (propCode) => {
+      if (propCode == "AccountDebtNumber") {
+        await this.handleScrollDebt();
+      }
+      if (propCode == "AccountBalanceNumber") {
+        await this.handleScrollBalance();
+      }
+    });
+
+    this.$_MISAEmitter.on(
+      "onSearchChangeFormCBB",
+      async (newValue, propCode) => {
+        if (propCode == "AccountDebtNumber") {
+          await this.onSearchChangeDebt(newValue);
+        }
+        if (propCode == "AccountBalanceNumber") {
+          await this.onSearchChangeBalance(newValue);
+        }
+      }
+    );
   },
 
   mounted() {
@@ -790,6 +812,8 @@ export default {
         "AccountingDate",
         "ReceiptDate",
         "ReceiptNumber",
+        "AccountDebtId",
+        "AccountBalanceId",
       ],
       // Khai báo biến lưu text cbb chọn layout
       textSelectLayout:
@@ -837,10 +861,14 @@ export default {
       listAccountDebt: [],
       // Trang hiện tại
       currentPageDebt: 1,
+      // Biến lưu timeout search debt
+      searchDebtTimeout: null,
       // Biến chứa danh sách tài khoản nợ
       listAccountBalance: [],
       // Trang hiện tại
       currentPageBalance: 1,
+      // Biến lưu timeout search balance
+      searchBalanceTimeout: null,
       // Biến lưu dòng hiện tại đang được chọn trong table hạch toán
       indexSelectRow: 0,
       // Biến lưu title data not null
@@ -964,7 +992,7 @@ export default {
      */
     async getListDebt() {
       try {
-        const res = await accountService.getDebt(50, this.currentPageDebt, "");
+        const res = await accountService.getDebt(20, this.currentPageDebt, "");
         this.listAccountDebt = [...this.listAccountDebt, ...res.data];
       } catch {
         this.listAccountDebt = [];
@@ -978,7 +1006,7 @@ export default {
     async getListBalance() {
       try {
         const res = await accountService.getBalance(
-          50,
+          20,
           this.currentPageBalance,
           ""
         );
@@ -1001,9 +1029,34 @@ export default {
           this.receipt.AccountantList = res.data;
         } else {
           this.receipt.AccountantList = [];
+          const debtDefault = this.listAccountDebt.find(
+            (x) =>
+              x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
+              x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Employee
+          );
+          const balanceDefault = this.listAccountBalance.find(
+            (x) =>
+              x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
+              x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Employee
+          );
+          let accountant = { Description: this.receipt.Reason, Money: 0 };
+          if (debtDefault) {
+            accountant.AccountDebtId = debtDefault.AccountDebtId;
+            accountant.AccountDebtNumber = debtDefault.AccountDebtNumber;
+            accountant.UserObjectDebt = debtDefault.UserObjectDebt;
+            accountant.IsParentDebt = debtDefault.IsParentDebt;
+          }
+          if (balanceDefault) {
+            accountant.AccountBalanceId = balanceDefault.AccountBalanceId;
+            accountant.AccountBalanceNumber =
+              balanceDefault.AccountBalanceNumber;
+            accountant.UserObjectBalance = balanceDefault.UserObjectBalance;
+            accountant.IsParentBalance = balanceDefault.IsParentBalance;
+          }
+          this.receipt.AccountantList.push(accountant);
         }
       } catch {
-        return;
+        this.receipt.AccountantList = [];
       }
     },
     /**
@@ -1027,6 +1080,7 @@ export default {
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
           // Sinh mã tự động
           this.receipt.ReceiptNumber = this.newReceiptNumber;
+          this.receipt.Reason = "Chi tiền cho";
           this.receipt.AccountingDate = helperCommon.setNewDate();
           this.receipt.ReceiptDate = this.receipt.AccountingDate;
         }
@@ -1234,7 +1288,10 @@ export default {
       let checkNoted = true;
       this.receipt.AccountantList.map((x) => {
         // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
-        if (x.UserObjectDebt == 1 || x.UserObjectDebt == 3) {
+        if (
+          x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Customer ||
+          x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Provider
+        ) {
           checkNoted = false;
           this.dataNotNull.push(
             `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
@@ -1248,7 +1305,10 @@ export default {
             );
           }
         }
-        if (x.UserObjectBalance == 1 || x.UserObjectBalance == 3) {
+        if (
+          x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Customer ||
+          x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Provider
+        ) {
           checkNoted = false;
           this.dataNotNull.push(
             `<TK có: ${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
@@ -1277,13 +1337,17 @@ export default {
         this.receipt.AccountantList &&
         this.receipt.AccountantList.length > 0
       ) {
-        checkReturn = this.receipt.AccountantList.some((item) => {
+        checkReturn = this.receipt.AccountantList.some((item, index) => {
           if (!item.AccountDebtId) {
             this.dataNotNull.push("Tài khoản nợ không được để trống");
+            this.isBorderRed.AccountDebtId = true;
+            this.indexSelectRow = index;
             return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
           }
           if (!item.AccountBalanceId) {
             this.dataNotNull.push("Tài khoản có không được để trống");
+            this.isBorderRed.AccountBalanceId = true;
+            this.indexSelectRow = index;
             return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
           }
           return false; // Không thoát khỏi vòng lặp nếu không có điều kiện nào thỏa mãn
@@ -1563,6 +1627,13 @@ export default {
             this.$refs.ProviderId.focus();
           } else if (prop === "EmployeeId" || prop === "FullName") {
             this.$refs.EmployeeId.focus();
+          } else if (prop == "AccountDebtId") {
+            console.log(this.$refs[`AccountDebtId${this.indexSelectRow}`]);
+            this.$refs[`AccountDebtId${this.indexSelectRow}`][0].focus();
+            this.isBorderRed.AccountDebtId = false;
+          } else if (prop == "AccountBalanceId") {
+            this.$refs[`AccountBalanceId${this.indexSelectRow}`][0].focus();
+            this.isBorderRed.AccountBalanceId = false;
           } else {
             this.$nextTick(() => {
               this.$refs[prop].focus();
@@ -1571,11 +1642,6 @@ export default {
           return;
         }
       }
-
-      // else if (prop == "AccountDebtId") {
-      //       this.$refs[`AccountDebtId${this.indexSelectRow}`].focus();
-      //       this.isBorderRed.AccountDebtId = false;
-      //     }
     },
 
     /**
@@ -1753,12 +1819,12 @@ export default {
      * created date: 06-06-2023 22:31:16
      */
     async onSearchChangeProvider(newValue) {
-      this.isBorderRed.ProviderName = false;
+      this.isBorderRed.ProviderCode = false;
       this.isBorderRed.ProviderId = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchProviderTimeout);
-        this.receipt.ProviderName = newValue;
+        this.receipt.ProviderCode = newValue;
         delete this.receipt.ProviderId;
         if (!newValue.trim()) {
           newValue = "";
@@ -1859,6 +1925,68 @@ export default {
         accountDebt.UserObjectDebt;
     },
     /**
+     * Mô tả: Scroll tài khoản nợ
+     * created by : BNTIEN
+     * created date: 08-08-2023 04:49:32
+     */
+    async handleScrollDebt() {
+      try {
+        this.currentPageDebt += 1;
+        await this.getListDebt();
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Tìm kiếm tài khoản nợ
+     * created by : BNTIEN
+     * created date: 08-08-2023 05:24:57
+     */
+    async onSearchChangeDebt(newValue) {
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchDebtTimeout);
+        this.receipt.AccountantList[this.indexSelectRow].AccountDebtId = "";
+        this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber = "";
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchDebtTimeout = setTimeout(async () => {
+          const newListDebt = await accountService.getDebt(20, 1, newValue);
+          this.listAccountDebt = newListDebt.data;
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+    /**
+     * Mô tả: Tìm kiếm tài khoản nợ
+     * created by : BNTIEN
+     * created date: 08-08-2023 05:24:57
+     */
+    async onSearchChangeBalance(newValue) {
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchBalanceTimeout);
+        this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId = "";
+        this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
+          "";
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchBalanceTimeout = setTimeout(async () => {
+          const newListBalance = await accountService.getBalance(
+            20,
+            1,
+            newValue
+          );
+          this.listAccountBalance = newListBalance.data;
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+    /**
      * Mô tả: Chọn tài khoản nợ
      * created by : BNTIEN
      * created date: 05-08-2023 20:05:15
@@ -1873,18 +2001,43 @@ export default {
       this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
         accountBalance.UserObjectBalance;
     },
-
+    /**
+     * Mô tả: Scroll tài khoản nợ
+     * created by : BNTIEN
+     * created date: 08-08-2023 04:49:32
+     */
+    async handleScrollBalance() {
+      try {
+        this.currentPageBalance += 1;
+        await this.getListBalance();
+      } catch {
+        return;
+      }
+    },
     /**
      * Mô tả: Hàm thêm 1 dòng hạch toán
      * created by : BNTIEN
      * created date: 05-08-2023 21:52:20
      */
     btnAddRowAccountant() {
-      this.receipt.AccountantList.push({
-        ReceiptId: this.receipt.ReceiptId,
-        Description: "",
-        Money: 0,
-      });
+      if (
+        this.receipt.AccountantList &&
+        this.receipt.AccountantList.length > 0
+      ) {
+        this.receipt.AccountantList.push({
+          ...this.receipt.AccountantList[
+            this.receipt.AccountantList.length - 1
+          ],
+        });
+      } else if (
+        !this.receipt.AccountantList ||
+        this.receipt.AccountantList.length == 0
+      )
+        this.receipt.AccountantList.push({
+          ReceiptId: this.receipt.ReceiptId,
+          Description: "",
+          Money: 0,
+        });
     },
 
     /**
@@ -1893,7 +2046,12 @@ export default {
      * created date: 05-08-2023 21:50:18
      */
     deleteRowAccountant(index) {
-      this.receipt.AccountantList.splice(index, 1);
+      if (
+        this.statusForm !== this.$_MISAEnum.FORM_MODE.View &&
+        !this.receipt.IsNoted
+      ) {
+        this.receipt.AccountantList.splice(index, 1);
+      }
     },
 
     /**
@@ -1954,6 +2112,7 @@ export default {
     this.$_MISAEmitter.off("onSearchChangeCBBSingle");
     this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
     this.$_MISAEmitter.off("onSelectedEntityFormCBB");
+    this.$_MISAEmitter.off("handleScrollCBBformCBB");
     // Xóa các sự kiện đã đăng kí
     this.$refs.PaymentDetail.removeEventListener("keydown", this.handleKeyDown);
   },

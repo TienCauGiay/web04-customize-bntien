@@ -409,7 +409,7 @@ export default {
     });
 
     this.$_MISAEmitter.on("onSelectedEntityCBB", (data) => {
-      this.onSelectedDepartment(data);
+      this.onSelectedNature(data);
     });
 
     this.$_MISAEmitter.on("onSelectedSelectOption", (data, prop) => {
@@ -422,6 +422,10 @@ export default {
 
     this.$_MISAEmitter.on("handleScrollCBBformCBB", async () => {
       await this.handleScrollformCBB();
+    });
+
+    this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue) => {
+      await this.onSearchChangeAccount(newValue);
     });
   },
 
@@ -484,8 +488,8 @@ export default {
       isShowMenuGeneralAccount: false,
       // Biến chứa danh sách tất cả tài khoản
       accounts: [],
-      // Khai báo biến tìm kiếm tài khoản tổng hợp
-      searchGeneralAccount: "",
+      // Biến lưu thời gian timeout tài khoản tổng hợp
+      searchGeneralAccountTimeOut: null,
       // Trang hiện tại
       pageNumber: 1,
       // Số lượng tài khoản được tải mỗi lần
@@ -704,6 +708,19 @@ export default {
                 this.setErrorMaxLength(refInput);
               }
               break;
+            case "ParentId":
+              if (this.valueInputFormCBB && !this.account.ParentId) {
+                this.errors[refInput] =
+                  this.$_MISAResource[
+                    this.$_LANG_CODE
+                  ].ACCOUNT.form.validateNotNull[refInput];
+                this.isBorderRed[refInput] = true;
+                this.dataNotNull.push(
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
+                    .validateNotNull[refInput]
+                );
+              }
+              break;
             default:
               if (this.account[refInput]) {
                 if (
@@ -775,7 +792,7 @@ export default {
      * created by : BNTIEN
      * created date: 23-07-2023 12:26:43
      */
-    onSelectedDepartment(nature) {
+    onSelectedNature(nature) {
       this.account.Nature = nature.Nature;
       this.isBorderRed.Nature = false;
     },
@@ -979,7 +996,7 @@ export default {
               this.$_MISAEmitter.emit("focusInputCBB");
             });
           } else if (prop === "ParentId") {
-            this.$$refs.ParentId.focus();
+            this.$refs.ParentId.focus();
           } else {
             // đợi DOM cập nhật trước khi thực thi focus
             this.$nextTick(() => {
@@ -1124,6 +1141,33 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: Tìm kiếm tài khoản tổng hợp
+     * created by : BNTIEN
+     * created date: 08-08-2023 04:58:33
+     */
+    async onSearchChangeAccount(newValue) {
+      this.isBorderRed.ParentId = false;
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchGeneralAccountTimeOut);
+        this.account.ParentId = "";
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchGeneralAccountTimeOut = setTimeout(async () => {
+          const newListAccount = await accountService.getCodeOrName(
+            20,
+            1,
+            newValue
+          );
+          this.accounts = newListAccount.data.Data;
+        }, 500);
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -1136,6 +1180,7 @@ export default {
     this.$_MISAEmitter.off("onSelectedSelectOption");
     this.$_MISAEmitter.off("onSelectedEntityFormCBB");
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
+    this.$_MISAEmitter.off("onSearchChangeFormCBB");
   },
 };
 </script>

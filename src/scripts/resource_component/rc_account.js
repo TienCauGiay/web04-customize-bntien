@@ -47,6 +47,7 @@ const SYSTEM_ACCOUNT = {
             "AccountNumber": "Số tài khoản không được để trống.",
             "AccountName": "Tên tài khoản không được để trống.",
             "Nature": "Tính chất không được để trống.",
+            "ParentId": "Tài khoản tổng hợp không tồn tại"
         },
         maxLength: {
             "AccountNumber": {Limit: 20, Warning : "Số tài khoản tối đa 20 kí tự."},

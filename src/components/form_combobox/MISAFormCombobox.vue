@@ -176,7 +176,10 @@ export default {
         // Kiểm tra xem đã scroll đến cuối combobox chưa
         if (remainingSpace <= 10) {
           // Gọi API để lấy thêm dữ liệu
-          await this.$_MISAEmitter.emit("handleScrollCBBformCBB");
+          await this.$_MISAEmitter.emit(
+            "handleScrollCBBformCBB",
+            this.propCode
+          );
         }
       } catch {
         return;
