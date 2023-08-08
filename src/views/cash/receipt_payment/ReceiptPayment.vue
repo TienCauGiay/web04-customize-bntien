@@ -212,18 +212,22 @@
                 </div>
               </td>
               <td class="text-center col-width-150">
-                {{ formatDate(item.AccountingDate) }}
+                {{ helperCommon.formatDate(item.AccountingDate) }}
               </td>
               <td class="text-center col-width-150">
-                {{ formatDate(item.ReceiptDate) }}
+                {{ helperCommon.formatDate(item.ReceiptDate) }}
               </td>
               <td class="col-width-120 color-blue" :title="item.ReceiptNumber">
                 <span @click="onViewFormDetail(item)">{{
                   item.ReceiptNumber
                 }}</span>
               </td>
-              <td class="text-right col-width-150" :title="item.TotalMoney">
-                {{ item.TotalMoney }}
+              <td
+                class="text-right col-width-150"
+                :title="item.TotalMoney"
+                :class="{ 'color-money-red': item.TotalMoney < 0 }"
+              >
+                {{ helperCommon.formatCurrency(item.TotalMoney) }}
               </td>
               <td class="col-width-250" :title="item.Reason">
                 {{ item.Reason }}
@@ -256,7 +260,12 @@
               <td></td>
               <td class="text-center">Tổng</td>
               <td colspan="2"></td>
-              <td class="text-right">{{ totalAmount }}</td>
+              <td
+                class="text-right"
+                :class="{ 'color-money-red': totalAmount < 0 }"
+              >
+                {{ helperCommon.formatCurrency(totalAmount) }}
+              </td>
               <td colspan="4"></td>
               <td></td>
             </tr>
@@ -448,7 +457,7 @@ export default {
 
   async created() {
     // Gọi hàm lấy dữ liệu danh sách nhân viên
-    this.dataTable = await this.getListReceipt(20, 1, "", null);
+    this.dataTable = await this.getListReceipt(20, 1, "", this.statusFilter);
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
       this.contentToastSuccess = data;
@@ -462,7 +471,8 @@ export default {
       this.setFormModeAdd();
     });
     this.$_MISAEmitter.on("refreshDataTable", async () => {
-      this.dataTable = await this.getListReceipt(20, 1, "", null);
+      this.statusFilter = null;
+      this.dataTable = await this.getListReceipt(20, 1, "", this.statusFilter);
     });
     this.$_MISAEmitter.on("confirmYesDeleteEntity", async () => {
       await this.btnConfirmYesDeleteReceipt();
@@ -528,7 +538,7 @@ export default {
       // Khai báo biến lưu nội dung của toast message
       contentToastSuccess: "",
       // Tái sử dụng hàm formatDate trong helperCommon
-      formatDate: helperCommon.formatDate,
+      helperCommon: helperCommon,
       // Khai báo biến lưu nội dung tìm kiếm
       textSearch: "",
       // Khai báo trang hiện tại trong phân trang
@@ -555,6 +565,8 @@ export default {
       isShowDialogDataNotNull: false,
       // Biến lưu nội dung lỗi dialog data not null
       dataNotNull: [],
+      // Biến lưu trạng thái lọc theo điều kiện thu/chi/tất cả
+      statusFilter: null,
     };
   },
 
@@ -682,7 +694,8 @@ export default {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
       this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
       this.textSearch = "";
-      this.dataTable = await this.getListReceipt(20, 1, "", null);
+      this.statusFilter = null;
+      this.dataTable = await this.getListReceipt(20, 1, "", this.statusFilter);
     },
     /**
      * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
@@ -870,7 +883,7 @@ export default {
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim(),
-          null
+          this.statusFilter
         );
         this.isShowLoadding = false;
         this.dataTable = filtered.data;
@@ -1081,27 +1094,18 @@ export default {
         this.isShowFilterReceipt = false;
         this.textFilterReceipt = this.optionFilterReceipt[index];
         if (index == 0) {
-          this.dataTable = await this.getListReceipt(
-            this.selectedRecord,
-            this.currentPage,
-            this.textSearch,
-            null
-          );
+          this.statusFilter = null;
         } else if (index == 1) {
-          this.dataTable = await this.getListReceipt(
-            this.selectedRecord,
-            this.currentPage,
-            this.textSearch,
-            false
-          );
+          this.statusFilter = false;
         } else if (index == 2) {
-          this.dataTable = await this.getListReceipt(
-            this.selectedRecord,
-            this.currentPage,
-            this.textSearch,
-            true
-          );
+          this.statusFilter = true;
         }
+        this.dataTable = await this.getListReceipt(
+          this.selectedRecord,
+          this.currentPage,
+          this.textSearch,
+          this.statusFilter
+        );
       } catch {
         return;
       }
@@ -1130,6 +1134,21 @@ export default {
         this.dataNotNull.push(error.Data);
         this.isShowDialogDataNotNull = true;
         this.isOverlay = true;
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí xuất dữ liệu ra excel
+     * created by : BNTIEN
+     * created date: 08-08-2023 16:06:47
+     */
+    async exportData() {
+      try {
+        this.isShowLoadding = true;
+        await receiptService.exportData(this.textSearch, this.statusFilter);
+        this.isShowLoadding = false;
+      } catch {
+        return;
       }
     },
   },
@@ -1222,5 +1241,9 @@ input[type="checkbox"] {
 
 .color-blue span:hover {
   text-decoration: underline;
+}
+
+.color-money-red {
+  color: red;
 }
 </style>

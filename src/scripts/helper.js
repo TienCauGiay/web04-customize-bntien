@@ -170,7 +170,7 @@ const helperCommon = {
       });
 
       // Thêm dấu ngoặc đơn nếu số âm
-      return isNegative ? `(-${formattedValue})` : formattedValue;
+      return isNegative ? `(${formattedValue})` : formattedValue;
     }
 }
 

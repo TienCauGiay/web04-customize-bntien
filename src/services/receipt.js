@@ -1,4 +1,5 @@
 import BaseServices from "./base";
+import ReceiptResource from "@/scripts/resource_component/rc_receipt_payment.js";
 
 class ReceiptService extends BaseServices {
     controller = "Receipts";
@@ -38,6 +39,28 @@ class ReceiptService extends BaseServices {
      */
     async updateNote(obj){
         const response = await this.entity.put(`${this.getBaseUrl()}/note`, obj);
+        return response;
+    }
+
+    /**
+     * Mô tả: Xuất danh sách nhân viên ra excel
+     * created by : BNTIEN
+     * created date: 04-07-2023 00:34:50
+     */
+    async exportData(textSearch, keyFilter){
+        const response = await this.entity.get(`${this.getBaseUrl()}/export`, { 
+            params: {
+                textSearch: textSearch,
+                keyFilter: keyFilter
+            }, 
+            responseType: 'blob' 
+        });
+        const file = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const urlLink = window.URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = urlLink;
+        link.setAttribute('download', ReceiptResource.FILE_NAME);
+        link.click();
         return response;
     }
 }

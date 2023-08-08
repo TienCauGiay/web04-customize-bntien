@@ -6,7 +6,6 @@ const entity = axios.create({
     baseURL: URL,
 });
 
-// show dialog ở đây luôn
 entity.interceptors.response.use(
     res => res,
     error => { throw error.response.data.Data; }

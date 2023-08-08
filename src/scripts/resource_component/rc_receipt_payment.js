@@ -13,6 +13,7 @@ const RECEIPT_PAYMENT = {
 
     contentDelete: "Bạn có muốn xóa chứng từ <",
     contentDeleteMultiple: "Bạn có muốn xóa những chứng từ này không?",
+    FILE_NAME: "Thu_Chi_Tien_Mat",
 
     FORM_PAYMENT:{
         optionHeader: [
