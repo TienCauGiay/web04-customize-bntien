@@ -85,6 +85,14 @@ const MISAEnum = {
         View: 3
     },
 
+    // Trạng thái button
+    STATUS_BUTTON: {
+        // Cất
+        Save: 1,
+        // Cất và thêm
+        SaveAndAdd: 2,
+    },
+
     // Mã ASCII
     KEY_CODE:{
         // Phím di chuyển lên

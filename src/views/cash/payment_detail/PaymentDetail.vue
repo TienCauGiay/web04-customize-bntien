@@ -388,7 +388,7 @@
             class="total-money"
             :class="{ 'color-money-red': TotalMoney < 0 }"
           >
-            {{ TotalMoney }}
+            {{ helperCommon.formatCurrency(TotalMoney) }}
           </div>
         </div>
       </div>
@@ -494,6 +494,7 @@
                         statusForm == this.$_MISAEnum.FORM_MODE.View ||
                         receipt.IsNoted
                       "
+                      :maxLength="15"
                     ></misa-input>
                   </td>
                   <td class="table-col-6" @click="deleteRowAccountant(index)">
@@ -510,7 +511,7 @@
                   style="padding-right: 24px"
                   :class="{ 'color-money-red': TotalMoney < 0 }"
                 >
-                  {{ TotalMoney }}
+                  {{ helperCommon.formatCurrency(TotalMoney) }}
                 </td>
                 <td></td>
               </tr>
@@ -673,14 +674,10 @@
       :title="titleDataNotnull"
     ></misa-dialog-data-not-null>
     <!-- dialog employee id Exist -->
-    <misa-dialog-data-exist
-      v-if="isShowDialogCodeExist"
-      :textProp="
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-          .exist_pre
-      "
-      :textEntityCodeExist="contentReceiptNumberExist"
-    ></misa-dialog-data-exist>
+    <misa-dialog-handle-exist
+      v-if="isShowDialogHandleExist"
+      :contentExist="contentReceiptNumberExist"
+    ></misa-dialog-handle-exist>
     <!-- dialog employee save and close -->
     <misa-dialog-data-change
       v-if="isShowDialogDataChange"
@@ -713,8 +710,12 @@ export default {
       await this.onYesDialogDataChange();
     });
 
-    this.$_MISAEmitter.on("closeDialogCodeExist", () => {
+    this.$_MISAEmitter.on("closeDialogHandleExist", () => {
       this.btnCloseDialogCodeExist();
+    });
+
+    this.$_MISAEmitter.on("confirmHandleExist", async () => {
+      await this.btnConfirmCodeExist();
     });
 
     this.$_MISAEmitter.on("closeDialogDataError", () => {
@@ -832,8 +833,8 @@ export default {
       // Khai báo biến xác định nội dung trường nào k được để trống
       dataNotNull: [],
       // Khai báo trạng thái hiển thị của dialog cảnh báo mã nhân viên đã tồn tại
-      isShowDialogCodeExist: false,
-      // Khai báo biến xác định thông tin của mã nhân viên đã tồn tại
+      isShowDialogHandleExist: false,
+      // Khai báo biến xác định nội dung dữ liệu tồn tại
       contentReceiptNumberExist: "",
       // Khai báo biến quy định trang thái hiển thị dialog dữ liệu đã bị thay đổi
       isShowDialogDataChange: false,
@@ -875,6 +876,10 @@ export default {
       titleDataNotnull: "",
       // Biến lưu trạng thái form
       statusForm: null,
+      // Biến lưu trạng thái đang bấm vào button thêm hay cất và thêm
+      statusSave: null,
+      // Tái sử dụng helper
+      helperCommon: helperCommon,
     };
   },
 
@@ -927,11 +932,33 @@ export default {
           (total, item) => total + parseFloat(item.Money || 0),
           0
         );
-        // this.receipt.TotalMoney = total;
         return total;
       } else {
-        // this.receipt.TotalMoney = 0;
         return 0;
+      }
+    },
+  },
+
+  watch: {
+    "receipt.Reason": function (newVal, oldVal) {
+      if (
+        this.receipt.AccountantList &&
+        this.receipt.AccountantList.length > 0
+      ) {
+        this.receipt.AccountantList.map((row) => {
+          if (oldVal == row.Description) {
+            row.Description = newVal;
+          }
+        });
+      }
+    },
+
+    "receipt.AccountingDate": function (newVal, oldVal) {
+      if (
+        oldVal == undefined ||
+        helperCommon.setNewDate(oldVal) == this.receipt.ReceiptDate
+      ) {
+        this.receipt.ReceiptDate = helperCommon.setNewDate(newVal);
       }
     },
   },
@@ -1016,6 +1043,38 @@ export default {
       }
     },
     /**
+     * Mô tả: Tạo 1 dòng hạch toán mới
+     * created by : BNTIEN
+     * created date: 08-08-2023 08:52:43
+     */
+    setNewAccountant() {
+      this.receipt.AccountantList = [];
+      const debtDefault = this.listAccountDebt.find(
+        (x) =>
+          x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
+          x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Employee
+      );
+      const balanceDefault = this.listAccountBalance.find(
+        (x) =>
+          x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
+          x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Employee
+      );
+      let accountant = { Description: this.receipt.Reason, Money: 0 };
+      if (debtDefault) {
+        accountant.AccountDebtId = debtDefault.AccountDebtId;
+        accountant.AccountDebtNumber = debtDefault.AccountDebtNumber;
+        accountant.UserObjectDebt = debtDefault.UserObjectDebt;
+        accountant.IsParentDebt = debtDefault.IsParentDebt;
+      }
+      if (balanceDefault) {
+        accountant.AccountBalanceId = balanceDefault.AccountBalanceId;
+        accountant.AccountBalanceNumber = balanceDefault.AccountBalanceNumber;
+        accountant.UserObjectBalance = balanceDefault.UserObjectBalance;
+        accountant.IsParentBalance = balanceDefault.IsParentBalance;
+      }
+      this.receipt.AccountantList.push(accountant);
+    },
+    /**
      * Mô tả: Lấy danh sách hạch toán theo receipt id
      * created by : BNTIEN
      * created date: 05-08-2023 20:53:02
@@ -1028,32 +1087,7 @@ export default {
           );
           this.receipt.AccountantList = res.data;
         } else {
-          this.receipt.AccountantList = [];
-          const debtDefault = this.listAccountDebt.find(
-            (x) =>
-              x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
-              x.UserObjectDebt != this.$_MISAEnum.OBJ_ACCOUNT.Employee
-          );
-          const balanceDefault = this.listAccountBalance.find(
-            (x) =>
-              x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
-              x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Employee
-          );
-          let accountant = { Description: this.receipt.Reason, Money: 0 };
-          if (debtDefault) {
-            accountant.AccountDebtId = debtDefault.AccountDebtId;
-            accountant.AccountDebtNumber = debtDefault.AccountDebtNumber;
-            accountant.UserObjectDebt = debtDefault.UserObjectDebt;
-            accountant.IsParentDebt = debtDefault.IsParentDebt;
-          }
-          if (balanceDefault) {
-            accountant.AccountBalanceId = balanceDefault.AccountBalanceId;
-            accountant.AccountBalanceNumber =
-              balanceDefault.AccountBalanceNumber;
-            accountant.UserObjectBalance = balanceDefault.UserObjectBalance;
-            accountant.IsParentBalance = balanceDefault.IsParentBalance;
-          }
-          this.receipt.AccountantList.push(accountant);
+          this.setNewAccountant();
         }
       } catch {
         this.receipt.AccountantList = [];
@@ -1079,15 +1113,25 @@ export default {
         this.statusForm = this.statusFormMode;
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
           // Sinh mã tự động
-          this.receipt.ReceiptNumber = this.newReceiptNumber;
-          this.receipt.Reason = "Chi tiền cho";
-          this.receipt.AccountingDate = helperCommon.setNewDate();
-          this.receipt.ReceiptDate = this.receipt.AccountingDate;
+          this.AutoSetReceipt();
         }
         await this.getAccountant();
       } catch {
         return;
       }
+    },
+
+    /**
+     * Mô tả: Tự động sịnh các trường
+     * created by : BNTIEN
+     * created date: 08-08-2023 08:59:04
+     */
+    AutoSetReceipt() {
+      this.receipt.ReceiptType = true;
+      this.receipt.ReceiptNumber = this.newReceiptNumber;
+      this.receipt.Reason = "Chi tiền cho";
+      this.receipt.AccountingDate = helperCommon.setNewDate(new Date());
+      this.receipt.ReceiptDate = this.receipt.AccountingDate;
     },
 
     /**
@@ -1262,16 +1306,21 @@ export default {
      * created date: 30-06-2023 00:30:22
      */
     handleReceiptExisted(receiptExisted) {
-      this.isShowDialogCodeExist = true;
+      this.isShowDialogHandleExist = true;
       this.isBorderRed.ReceiptNumber = true;
       this.errors["ReceiptNumber"] = `${
         this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
           .exist_pre
-      }
-       ${receiptExisted.ReceiptNumber} ${
+      }${receiptExisted.ReceiptNumber}> ${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
       }`;
-      this.contentReceiptNumberExist = receiptExisted.ReceiptNumber;
+      this.contentReceiptNumberExist = `${
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+          .exist_pre
+      }${receiptExisted.ReceiptNumber}${
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
+          .exist_end
+      }`;
     },
     /**
      * Mô tả: Hàm kiểm tra xem có ghi sổ được không
@@ -1362,6 +1411,7 @@ export default {
      * created date: 29-05-2023 07:55:05
      */
     async btnSave() {
+      this.statusSave = this.$_MISAEnum.STATUS_BUTTON.Save;
       if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
         this.validateReceipt();
         if (this.dataNotNull.length > 0) {
@@ -1479,6 +1529,7 @@ export default {
      * created date: 29-05-2023 07:55:23
      */
     async btnSaveAndAdd() {
+      this.statusSave = this.$_MISAEnum.STATUS_BUTTON.SaveAndAdd;
       // Nếu form ở trạng thái thêm mới
       if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
         this.validateReceipt();
@@ -1515,8 +1566,8 @@ export default {
               this.receipt = {};
               this.isBorderRed = {};
               await this.getNewCode();
-              this.receipt.ReceiptNumber = this.newReceiptNumber;
-              this.receipt.AccountantList = [];
+              this.AutoSetReceipt();
+              this.setNewAccountant();
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1572,8 +1623,8 @@ export default {
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
               this.receipt = {};
               await this.getNewCode();
-              this.receipt.ReceiptNumber = this.newReceiptNumber;
-              this.receipt.AccountantList = [];
+              this.AutoSetReceipt();
+              this.setNewAccountant();
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1628,7 +1679,6 @@ export default {
           } else if (prop === "EmployeeId" || prop === "FullName") {
             this.$refs.EmployeeId.focus();
           } else if (prop == "AccountDebtId") {
-            console.log(this.$refs[`AccountDebtId${this.indexSelectRow}`]);
             this.$refs[`AccountDebtId${this.indexSelectRow}`][0].focus();
             this.isBorderRed.AccountDebtId = false;
           } else if (prop == "AccountBalanceId") {
@@ -1669,7 +1719,24 @@ export default {
      * created date: 29-05-2023 08:28:19
      */
     btnCloseDialogCodeExist() {
-      this.isShowDialogCodeExist = false;
+      this.isShowDialogHandleExist = false;
+    },
+
+    /**
+     * Mô tả: Vẫn thêm phiếu chi bằng cách tăng tự động số phiếu chi khi nó tồn tại
+     * created by : BNTIEN
+     * created date: 08-08-2023 08:11:29
+     */
+    async btnConfirmCodeExist() {
+      this.isShowDialogHandleExist = false;
+      this.isBorderRed.ReceiptNumber = false;
+      this.errors["ReceiptNumber"] = "";
+      this.receipt.ReceiptNumber = this.newReceiptNumber;
+      if (this.statusSave == this.$_MISAEnum.STATUS_BUTTON.Save) {
+        await this.btnSave();
+      } else if (this.statusSave == this.$_MISAEnum.STATUS_BUTTON.SaveAndAdd) {
+        await this.btnSaveAndAdd();
+      }
     },
 
     /**
@@ -2106,7 +2173,7 @@ export default {
     this.$_MISAEmitter.off("cancelDialogDataChange");
     this.$_MISAEmitter.off("noDialogDataChange");
     this.$_MISAEmitter.off("yesDialogDataChange");
-    this.$_MISAEmitter.off("closeDialogCodeExist");
+    this.$_MISAEmitter.off("closeDialogHandleExist");
     this.$_MISAEmitter.off("closeDialogDataError");
     this.$_MISAEmitter.off("onSelectedEntityCBBSingle");
     this.$_MISAEmitter.off("onSearchChangeCBBSingle");

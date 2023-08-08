@@ -14,8 +14,14 @@ const helperCommon = {
           return "";
         }
     },
-    setNewDate: function() {
-      const d = new Date();
+
+    /**
+     * Mô tả: Định dạng giá trị ngày giờ
+     * created by : BNTIEN
+     * created date: 08-08-2023 10:50:52
+     */
+    setNewDate: function(date) {
+      const d = new Date(date);
       const year = d.getFullYear();
       const month = this.addLeadingZero(d.getMonth() + 1);
       const day = this.addLeadingZero(d.getDate());
@@ -26,6 +32,11 @@ const helperCommon = {
       return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
     },
 
+    /**
+     * Mô tả: Thêm số 0 nếu ngày < 10
+     * created by : BNTIEN
+     * created date: 08-08-2023 10:51:06
+     */
     addLeadingZero: (value) =>{
       return value < 10 ? `0${value}` : value;
     },
@@ -141,6 +152,26 @@ const helperCommon = {
       }
       return false;
     },
+
+    /**
+     * Mô tả: Hàm format tiền tệ
+     * created by : BNTIEN
+     * created date: 08-08-2023 10:51:26
+     */
+    formatCurrency: (value) =>{
+      // Xử lý trường hợp số âm
+      const isNegative = value < 0;
+      const absoluteValue = Math.abs(value);
+
+      // Định dạng số và thêm dấu cách phân cách phần nghìn và dấu chấm phân cách phần thập phân
+      const formattedValue = absoluteValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      // Thêm dấu ngoặc đơn nếu số âm
+      return isNegative ? `(-${formattedValue})` : formattedValue;
+    }
 }
 
 export default helperCommon;

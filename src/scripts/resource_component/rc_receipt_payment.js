@@ -25,7 +25,8 @@ const RECEIPT_PAYMENT = {
             "7. Chi khác"
         ],
 
-        exist_pre: "Số phiếu chi",
+        exist_pre: "Số chứng từ <",
+        exist_end: "> đã tồn tại. Bạn có muốn chương trình tự động tăng số chứng từ không?",
 
         validateNotNull: {
             "ReceiptNumber": "Số phiếu chi không được để trống.",

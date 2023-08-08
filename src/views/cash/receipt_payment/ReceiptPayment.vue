@@ -744,10 +744,12 @@ export default {
      * created date: 29-05-2023 07:49:56
      */
     onViewFormDetail(receipt) {
-      this.receiptUpdate = receipt;
-      this.isShowFormDetail = true;
-      this.isOverlay = true;
-      this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.View;
+      if (receipt.ReceiptType == true) {
+        this.receiptUpdate = receipt;
+        this.isShowFormDetail = true;
+        this.isOverlay = true;
+        this.isStatusFormMode = this.$_MISAEnum.FORM_MODE.View;
+      }
     },
     /**
      * Mô tả: Hàm set isStatusFormMode = ADD
