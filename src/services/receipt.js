@@ -33,12 +33,24 @@ class ReceiptService extends BaseServices {
     }
 
     /**
-     * Mô tả: Hàm toggle trạng thái ghi sổ
+     * Mô tả: Hàm toggle 1 phiếu trạng thái ghi sổ/bỏ ghi
      * created by : BNTIEN
      * created date: 06-08-2023 15:26:00
      */
     async updateNote(obj){
         const response = await this.entity.put(`${this.getBaseUrl()}/note`, obj);
+        return response;
+    }
+
+    /**
+     * Mô tả: Hàm cập nhật trạng thái ghi sổ/bỏ ghi nhiều phiếu 
+     * created by : BNTIEN
+     * created date: 09-08-2023 05:39:05
+     */
+    async updateMultipleNote(ids, typeUpdate){
+        const response = await this.entity.put(`${this.getBaseUrl()}/notes`, ids, { 
+            typeUpdate: typeUpdate
+        });
         return response;
     }
 

@@ -62,6 +62,7 @@
               <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
                 {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
               </div>
+              <div class="menu-item-delete" @click="onUnNote">Bỏ ghi</div>
             </div>
           </button>
           <button class="delete-multiple filter-provider" :class="'no-disable'">
@@ -433,7 +434,7 @@
     <misa-dialog-error
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
-      :title="'Ghi sổ không thành công'"
+      :title="titleDialogError"
     ></misa-dialog-error>
     <!-- toast message -->
     <misa-toast-success
@@ -563,6 +564,8 @@ export default {
       selectedReceipt: {},
       // Biến quy định trạng thái hiện thị dialog data not null
       isShowDialogDataNotNull: false,
+      // Biến lưu tiêu đề dialog data not null
+      titleDialogError: null,
       // Biến lưu nội dung lỗi dialog data not null
       dataNotNull: [],
       // Biến lưu trạng thái lọc theo điều kiện thu/chi/tất cả
@@ -1064,21 +1067,44 @@ export default {
     async btnConfirmYesDeleteMultipleReceipt() {
       try {
         this.isShowLoadding = true;
+        // Lấy các chứng từ không xóa được (đã ghi sổ) để thông báo
+        const receiptNoDelete = this.dataTable.Data.filter(
+          (row) => row.IsNoted && this.ids.includes(row.ReceiptId)
+        );
         const res = await receiptService.deleteMutiple(this.ids);
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
-          this.ids = [];
-          this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
-          this.onShowToastMessage();
-          this.dataTable = await this.getListReceipt(20, 1, "", null);
+
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
+          if (res.data == this.ids.length) {
+            this.contentToastSuccess =
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+            this.onShowToastMessage();
+            this.ids = [];
+          } else if (res.data < this.ids.length) {
+            this.dataNotNull.push(`Số chứng từ được xử lí: ${this.ids.length}`);
+            this.dataNotNull.push(`Số chứng từ thành công: ${res.data}`);
+            this.dataNotNull.push(
+              `Số chứng từ không thành công: ${this.ids.length - res.data}`
+            );
+            if (receiptNoDelete && receiptNoDelete.length > 0) {
+              const receiptNumbers = receiptNoDelete.map(
+                (row) => row.ReceiptNumber
+              );
+              this.dataNotNull.push(
+                `Các chứng từ sau đã được ghi sổ: ${receiptNumbers.join(
+                  ", "
+                )}, vui lòng kiểm tra lại.`
+              );
+            }
+            this.titleDialogError = "Kết quả xóa chứng từ";
+            this.isShowDialogDataNotNull = true;
+            this.isOverlay = true;
+          }
         }
+
+        this.dataTable = await this.getListReceipt(20, 1, "", null);
       } catch {
         return;
       }
@@ -1117,7 +1143,8 @@ export default {
      * created date: 06-08-2023 20:04:33
      */
     onCloseDialogDataError() {
-      (this.dataNotNull = []), (this.isShowDialogDataNotNull = false);
+      this.dataNotNull = [];
+      this.isShowDialogDataNotNull = false;
       this.isOverlay = false;
     },
 
@@ -1132,6 +1159,7 @@ export default {
         await this.refreshData();
       } catch (error) {
         this.dataNotNull.push(error.Data);
+        this.titleDialogError = "Ghi sổ không thành công";
         this.isShowDialogDataNotNull = true;
         this.isOverlay = true;
       }
@@ -1149,6 +1177,29 @@ export default {
         this.isShowLoadding = false;
       } catch {
         return;
+      }
+    },
+
+    /**
+     * Mô tả: Bỏ ghi các phiếu đã ghi sổ
+     * created by : BNTIEN
+     * created date: 09-08-2023 05:38:21
+     */
+    async onUnNote() {
+      try {
+        if (this.ids && this.ids.length > 0) {
+          const res = await receiptService.updateMultipleNote(this.ids, false);
+          if (
+            this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
+            res.data > 0
+          ) {
+            this.contentToastSuccess = "Bỏ ghi sổ thành công";
+            this.onShowToastMessage();
+            this.dataTable = await this.getListReceipt(20, 1, "", null);
+          }
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
