@@ -6,7 +6,9 @@
           <div class="top-header-left-icon">
             <div class="refresh-time-icon"></div>
           </div>
-          <div class="name-payment-slip">{{ receipt.ReceiptNumber }}</div>
+          <div class="name-payment-slip">
+            Phiếu chi {{ receipt.ReceiptNumber }}
+          </div>
           <div class="top-header-select-option">
             <div class="content-header-select-option">
               {{ textSelectLayout }}
@@ -787,6 +789,15 @@ export default {
         }
       }
     );
+
+    this.$_MISAEmitter.on("onKeyDownFormCBB", (index, propCode) => {
+      if (propCode == "AccountDebtNumber") {
+        this.onKeyDownAccountDebt(index);
+      }
+      if (propCode == "AccountBalanceNumber") {
+        this.onKeyDownAccountBalance(index);
+      }
+    });
   },
 
   mounted() {
@@ -1680,10 +1691,8 @@ export default {
             this.$refs.EmployeeId.focus();
           } else if (prop == "AccountDebtId") {
             this.$refs[`AccountDebtId${this.indexSelectRow}`][0].focus();
-            this.isBorderRed.AccountDebtId = false;
           } else if (prop == "AccountBalanceId") {
             this.$refs[`AccountBalanceId${this.indexSelectRow}`][0].focus();
-            this.isBorderRed.AccountBalanceId = false;
           } else {
             this.$nextTick(() => {
               this.$refs[prop].focus();
@@ -1990,6 +1999,7 @@ export default {
         accountDebt.IsParentDebt;
       this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
         accountDebt.UserObjectDebt;
+      this.isBorderRed.AccountDebtId = false;
     },
     /**
      * Mô tả: Scroll tài khoản nợ
@@ -2010,6 +2020,7 @@ export default {
      * created date: 08-08-2023 05:24:57
      */
     async onSearchChangeDebt(newValue) {
+      this.isBorderRed.AccountDebtId = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchDebtTimeout);
@@ -2027,12 +2038,28 @@ export default {
       }
     },
     /**
+     * Mô tả: Bấm enter trong cbb tài khoản nợ
+     * created by : BNTIEN
+     * created date: 09-08-2023 09:02:29
+     */
+    onKeyDownAccountDebt(index) {
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId =
+        this.listAccountDebt[index].AccountDebtId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber =
+        this.listAccountDebt[index].AccountDebtNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt =
+        this.listAccountDebt[index].IsParentDebt;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
+        this.listAccountDebt[index].UserObjectDebt;
+    },
+    /**
      * Mô tả: Tìm kiếm tài khoản nợ
      * created by : BNTIEN
      * created date: 08-08-2023 05:24:57
      */
     async onSearchChangeBalance(newValue) {
       try {
+        this.isBorderRed.AccountBalanceId = false;
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchBalanceTimeout);
         this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId = "";
@@ -2053,6 +2080,16 @@ export default {
         return;
       }
     },
+    onKeyDownAccountBalance(index) {
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId =
+        this.listAccountBalance[index].AccountBalanceId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
+        this.listAccountBalance[index].AccountBalanceNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance =
+        this.listAccountBalance[index].IsParentBalance;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
+        this.listAccountBalance[index].UserObjectBalance;
+    },
     /**
      * Mô tả: Chọn tài khoản nợ
      * created by : BNTIEN
@@ -2067,6 +2104,7 @@ export default {
         accountBalance.IsParentBalance;
       this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
         accountBalance.UserObjectBalance;
+      this.isBorderRed.AccountBalanceId = false;
     },
     /**
      * Mô tả: Scroll tài khoản nợ
@@ -2180,6 +2218,8 @@ export default {
     this.$_MISAEmitter.off("onKeyDownEntityCBBSingle");
     this.$_MISAEmitter.off("onSelectedEntityFormCBB");
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
+    this.$_MISAEmitter.off("onSearchChangeFormCBB");
+    this.$_MISAEmitter.off("onKeyDownFormCBB");
     // Xóa các sự kiện đã đăng kí
     this.$refs.PaymentDetail.removeEventListener("keydown", this.handleKeyDown);
   },

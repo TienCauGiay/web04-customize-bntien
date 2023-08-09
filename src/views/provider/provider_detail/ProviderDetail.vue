@@ -19,7 +19,10 @@
     <div class="form-detail-main">
       <div class="provider-title">
         <p>
-          <b>Thông tin nhà cung cấp</b>
+          <b>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+              .infoProvider
+          }}</b>
         </p>
         <div class="entity-check">
           <input
@@ -28,7 +31,10 @@
             :checked="!this.provider.IsPersonal"
             @click="handleClickInstitute"
           />
-          <span>Tổ chức</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+              .organization
+          }}</span>
         </div>
         <div class="entity-check">
           <input
@@ -37,7 +43,10 @@
             :checked="this.provider.IsPersonal"
             @click="handleClickPersonal"
           />
-          <span>Cá nhân</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+              .personal
+          }}</span>
         </div>
         <div class="entity-check" id="provider-title-input-checkbox">
           <input
@@ -45,7 +54,10 @@
             :checked="provider.IsCustomer"
             @click="toggleCheckboxCustomer"
           />
-          <span>Là khách hàng</span>
+          <span>{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+              .isCustomer
+          }}</span>
         </div>
       </div>
       <div class="form-detail-content">
@@ -53,7 +65,10 @@
         <template v-if="!this.provider.IsPersonal">
           <div class="half-content">
             <div class="col-md-n">
-              <label> Mã số thuế </label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .taxCode
+              }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.TaxCode"
@@ -73,7 +88,10 @@
             </div>
             <div class="col-md-tb">
               <label>
-                Mã nhà cung cấp
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .textProperty.providerCode
+                }}
                 <span class="s-require">*</span>
               </label>
               <div class="container-input">
@@ -100,7 +118,10 @@
           </div>
           <div class="half-content">
             <div class="col-md-n">
-              <label>Điện thoại</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .phoneNumber
+              }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.PhoneNumber"
@@ -119,7 +140,10 @@
               </div>
             </div>
             <div class="col-md-tb">
-              <label> Website </label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .website
+              }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.Website"
@@ -141,7 +165,10 @@
           <div class="half-content">
             <div class="col-md-l">
               <label>
-                Tên nhà cung cấp
+                {{
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .textProperty.providerName
+                }}
                 <span class="s-require">*</span>
               </label>
               <div class="container-input">
@@ -168,7 +195,10 @@
           </div>
           <div class="half-content" id="group-provider">
             <div class="col-md-l">
-              <label> Nhóm nhà cung cấp </label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .groupProvider
+              }}</label>
               <misa-combobox-select-multiple
                 :listDataSelected="provider.GroupProvider"
                 :propCode="'GroupCode'"
@@ -180,7 +210,10 @@
           </div>
           <div class="half-content-2">
             <div class="col-md-l">
-              <label>Địa chỉ</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .address
+              }}</label>
               <div class="container-input">
                 <misa-input-textarea
                   v-model="provider.Address"
@@ -189,7 +222,10 @@
                   @input="setIsBorderRed('Address')"
                   @mouseenter="isHovering.Address = true"
                   @mouseleave="isHovering.Address = false"
-                  :placeholder="'VD: Số 82 Duy Tân, Dịch Vọng'"
+                  :placeholder="
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.placeholderAddress
+                  "
                 ></misa-input-textarea>
                 <div
                   class="misa-tooltip"
@@ -202,12 +238,18 @@
           </div>
           <div class="half-content">
             <div class="col-md-l">
-              <label>Nhân viên mua hàng</label>
+              <label>{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .purchasStaff
+              }}</label>
               <misa-combobox-select-single
                 :propId="'EmployeeId'"
                 :propCode="'EmployeeCode'"
                 :propName="'FullName'"
-                :haederCBB="['Mã nhân viên', 'Tên nhân viên']"
+                :haederCBB="
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .textProperty.headerCBBEmployee
+                "
                 :bodyCBB="['EmployeeCode', 'FullName']"
                 :isBorderRedCBB="isBorderRed"
                 :errorsCBB="errors"
@@ -222,7 +264,10 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-tb">
             <label>
-              Mã nhà cung cấp
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .providerCode
+              }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -247,7 +292,10 @@
             </div>
           </div>
           <div class="col-md-n">
-            <label> Mã số thuế </label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                .taxCode
+            }}</label>
             <div class="container-input">
               <misa-input
                 v-model="provider.TaxCode"
@@ -272,7 +320,10 @@
           v-if="this.provider.IsPersonal"
         >
           <div class="col-md-l">
-            <label>Nhóm nhà cung cấp</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                .groupProvider
+            }}</label>
             <misa-combobox-select-multiple
               :listDataSelected="provider.GroupProvider"
               :propCode="'GroupCode'"
@@ -284,7 +335,13 @@
         </div>
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-n" style="position: relative">
-            <label>Tên nhà cung cấp <span class="s-require">*</span> </label>
+            <label
+              >{{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .providerName
+              }}
+              <span class="s-require">*</span>
+            </label>
             <misa-combobox
               :isBorderRedCBB="isBorderRed"
               :entityCBB="provider"
@@ -292,7 +349,10 @@
               :listEntitySearchCBB="listVocative"
               :propName="'Vocative'"
               :propId="'Id'"
-              :placeholderInputCBB="'Xưng hô'"
+              :placeholderInputCBB="
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .placeholderVocative
+              "
             ></misa-combobox>
           </div>
           <div class="col-md-tb">
@@ -305,7 +365,10 @@
                 @input="setIsBorderRed('ProviderName')"
                 @mouseenter="isHovering.ProviderName = true"
                 @mouseleave="isHovering.ProviderName = false"
-                :placeholder="'Họ và tên'"
+                :placeholder="
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .textProperty.placeholderProviderName
+                "
               ></misa-input>
               <div
                 class="misa-tooltip"
@@ -322,12 +385,18 @@
         </div>
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
-            <label>Nhân viên mua hàng</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                .purchasStaff
+            }}</label>
             <misa-combobox-select-single
               :propId="'EmployeeId'"
               :propCode="'EmployeeCode'"
               :propName="'FullName'"
-              :haederCBB="['Mã nhân viên', 'Tên nhân viên']"
+              :haederCBB="
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .headerCBBEmployee
+              "
               :bodyCBB="['EmployeeCode', 'FullName']"
               :isBorderRedCBB="isBorderRed"
               :errorsCBB="errors"
@@ -339,7 +408,10 @@
         </div>
         <div class="half-content-2" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
-            <label>Địa chỉ</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                .address
+            }}</label>
             <div class="container-input">
               <misa-input-textarea
                 v-model="provider.Address"
@@ -348,7 +420,10 @@
                 @input="setIsBorderRed('Address')"
                 @mouseenter="isHovering.Address = true"
                 @mouseleave="isHovering.Address = false"
-                :placeholder="'VD: Số 82 Duy Tân, Dịch Vọng'"
+                :placeholder="
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .textProperty.placeholderAddress
+                "
               ></misa-input-textarea>
               <div
                 class="misa-tooltip"
@@ -366,35 +441,50 @@
               @click="handleSelectLayout('infoContact')"
               :class="{ 'active-layout': selectLayout.infoContact }"
             >
-              Thông tin liên hệ
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .infoContact
+              }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('termPayment')"
               :class="{ 'active-layout': selectLayout.termPayment }"
             >
-              Điều khoản thanh toán
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .termPayment
+              }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('bankAccount')"
               :class="{ 'active-layout': selectLayout.bankAccount }"
             >
-              Tài khoản ngân hàng
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .bankAccount
+              }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('addressOther')"
               :class="{ 'active-layout': selectLayout.addressOther }"
             >
-              Địa chỉ khác
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .addressOther
+              }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('note')"
               :class="{ 'active-layout': selectLayout.note }"
             >
-              Ghi chú
+              {{
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                  .note
+              }}
             </button>
           </div>
           <!-- Là Tổ chức nhưng không là khách hàng -->
@@ -409,7 +499,10 @@
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-n" style="position: relative">
-                  <label>Người liên hệ</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.personalContact
+                  }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -417,7 +510,10 @@
                     :listEntitySearchCBB="listVocative"
                     :propName="'Vocative'"
                     :propId="'Id'"
-                    :placeholderInputCBB="'Xưng hô'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.placeholderVocative
+                    "
                   ></misa-combobox>
                 </div>
                 <div class="col-md-tb">
@@ -430,7 +526,10 @@
                       @input="setIsBorderRed('NameContacter')"
                       @mouseenter="isHovering.NameContacter = true"
                       @mouseleave="isHovering.NameContacter = false"
-                      :placeholder="'Họ và tên'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.placeholderProviderName
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -448,7 +547,10 @@
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>Đại diện theo PL</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.lawyer
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -457,7 +559,10 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="'Đại diện theo PL'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.lawyer
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -514,7 +619,10 @@
                       @input="setIsBorderRed('PhoneNumberContacter')"
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
-                      :placeholder="'Số điện thoại'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.phoneNumberContacter
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -544,7 +652,10 @@
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-n" style="position: relative">
-                  <label>Người liên hệ</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.personalContact
+                  }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -552,7 +663,10 @@
                     :listEntitySearchCBB="listVocative"
                     :propName="'Vocative'"
                     :propId="'Id'"
-                    :placeholderInputCBB="'Xưng hô'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.placeholderVocative
+                    "
                   ></misa-combobox>
                 </div>
                 <div class="col-md-tb">
@@ -565,7 +679,10 @@
                       @input="setIsBorderRed('NameContacter')"
                       @mouseenter="isHovering.NameContacter = true"
                       @mouseleave="isHovering.NameContacter = false"
-                      :placeholder="'Họ và tên'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.placeholderProviderName
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -583,7 +700,10 @@
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>Người nhận hóa đơn điện tử</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.ameReceiver
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="NameReceiver"
@@ -592,7 +712,10 @@
                       @input="setIsBorderRed('NameReceiver')"
                       @mouseenter="isHovering.NameReceiver = true"
                       @mouseleave="isHovering.NameReceiver = false"
-                      :placeholder="'Họ và tên'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.placeholderProviderName
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -619,7 +742,7 @@
                       @input="setIsBorderRed('EmailContacter')"
                       @mouseenter="isHovering.EmailContacter = true"
                       @mouseleave="isHovering.EmailContacter = false"
-                      :placeholder="'EmailContacter'"
+                      :placeholder="'Email'"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -645,7 +768,10 @@
                       @input="setIsBorderRed('EmailReceiver')"
                       @mouseenter="isHovering.EmailReceiver = true"
                       @mouseleave="isHovering.EmailReceiver = false"
-                      :placeholder="'Email (Ngăn cách nhiều Email bởi dấu chấm phẩy)'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.emails
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -675,7 +801,10 @@
                       @input="setIsBorderRed('PhoneNumberContacter')"
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
-                      :placeholder="'Số điện thoại'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.phoneNumberContacter
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -703,7 +832,10 @@
                       @input="setIsBorderRed('PhoneNumberReceiver')"
                       @mouseenter="isHovering.PhoneNumberReceiver = true"
                       @mouseleave="isHovering.PhoneNumberReceiver = false"
-                      :placeholder="'Số điện thoại'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.phoneNumberContacter
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -723,7 +855,10 @@
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>Đại diện theo PL</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.lawyer
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -732,7 +867,10 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="'Đại diện theo PL'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.lawyer
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -757,7 +895,10 @@
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>Thông tin liên hệ</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.infoContact
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="EmailContacter"
@@ -784,7 +925,10 @@
               </div>
               <div class="half-content">
                 <div class="col-md-half">
-                  <label>Thông tin CMND/Thẻ căn cước</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.infoIdentity
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="IdentityNumberContacter"
@@ -795,7 +939,10 @@
                       @input="setIsBorderRed('IdentityNumberContacter')"
                       @mouseenter="isHovering.IdentityNumberContacter = true"
                       @mouseleave="isHovering.IdentityNumberContacter = false"
-                      :placeholder="'Số CMND/Thẻ căn cước'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.identityNumber
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -825,7 +972,10 @@
                       @input="setIsBorderRed('PhoneNumberContacter')"
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
-                      :placeholder="'Điện thoại di động'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.phonePersonal
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -882,7 +1032,10 @@
                       @input="setIsBorderRed('PhoneLandlineContacter')"
                       @mouseenter="isHovering.PhoneLandlineContacter = true"
                       @mouseleave="isHovering.PhoneLandlineContacter = false"
-                      :placeholder="'Điện thoại cố định'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.phoneLandline
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -910,7 +1063,10 @@
                       @input="setIsBorderRed('IdentityPlace')"
                       @mouseenter="isHovering.IdentityPlace = true"
                       @mouseleave="isHovering.IdentityPlace = false"
-                      :placeholder="'Nơi cấp'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.identityPlace
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -930,7 +1086,10 @@
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label> Đại diện theo PL </label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.lawyer
+                  }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -939,7 +1098,10 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="'Đại diện theo PL'"
+                      :placeholder="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.lawyer
+                      "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
@@ -967,15 +1129,18 @@
               <div class="full-content">
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
-                    <label>Điều khoản thanh toán</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.termPayment
+                    }}</label>
                     <misa-combobox-select-single
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :haederCBB="[
-                        'Mã điều khoản thanh toán',
-                        'Tên điều khoản thanh toán',
-                      ]"
+                      :haederCBB="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.headerCBBTermPayment
+                      "
                       :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
@@ -985,7 +1150,10 @@
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>Số ngày được nợ</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.numberDayOwed
+                    }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="NumberDayOwed"
@@ -1012,7 +1180,10 @@
                     </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>Số nợ tối đa</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.amountDebt
+                    }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="AmountDebt"
@@ -1048,7 +1219,10 @@
                     style="position: relative"
                     id="multiple-cbb-no-icon"
                   >
-                    <label>Tài khoản công nợ phải trả</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.accountPayable
+                    }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
@@ -1082,15 +1256,18 @@
               <div class="full-content">
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
-                    <label>Điều khoản thanh toán</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.termPayment
+                    }}</label>
                     <misa-combobox-select-single
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :haederCBB="[
-                        'Mã điều khoản thanh toán',
-                        'Tên điều khoản thanh toán',
-                      ]"
+                      :haederCBB="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.headerCBBTermPayment
+                      "
                       :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
@@ -1100,7 +1277,10 @@
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>Số ngày được nợ</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.numberDayOwed
+                    }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="NumberDayOwed"
@@ -1127,7 +1307,10 @@
                     </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>Số nợ tối đa</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.amountDebt
+                    }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="AmountDebt"
@@ -1482,7 +1665,7 @@ export default {
       this.onCancelDialogDataChange();
     });
     this.$_MISAEmitter.on("noDialogDataChange", () => {
-      this.onNoDialogDataChange();
+      this.$emit("closeFormDetail");
     });
     this.$_MISAEmitter.on("yesDialogDataChange", async () => {
       await this.onYesDialogDataChange();
@@ -1520,7 +1703,7 @@ export default {
 
     this.$_MISAEmitter.on("onSelectedEntityCBB", async (data, propName) => {
       if (propName == "Vocative") {
-        this.onSelectedVocative(data);
+        this.provider.Vocative = data.Vocative;
       }
       await this.onSelectedLocation(data, propName);
     });
@@ -1597,36 +1780,8 @@ export default {
   data() {
     return {
       // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
-      providerProperty: [
-        "ProviderCode",
-        "ProviderName",
-        "TaxCode",
-        "Address",
-        "PhoneNumber",
-        "Website",
-        "EmployeeId",
-        "FullName",
-        "Note",
-        "NameContacter",
-        "EmailContacter",
-        "PhoneNumberContacter",
-        "PhoneLandlineContacter",
-        "IdentityNumberContacter",
-        "IdentityDateContacter",
-        "IdentityPlace",
-        "Lawyer",
-        "NameReceiver",
-        "EmailReceiver",
-        "PhoneNumberReceiver",
-        "TermPaymentId",
-        "TermPaymentName",
-        "NumberDayOwed",
-        "AmountDebt",
-        "AccountReceivableId",
-        "AccountReceivableNumber",
-        "AccountPayableId",
-        "AccountPayableNumber",
-      ],
+      providerProperty:
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.providerProperty,
       // Khai báo đối tượng provider
       provider: {},
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
@@ -1648,24 +1803,11 @@ export default {
       // Khai báo biến chứa danh sách các ô input khi hover
       isHovering: {},
       // Khai báo danh sách xưng hô
-      listVocative: [
-        { Id: 1, Vocative: "Mr" },
-        { Id: 2, Vocative: "Mrs" },
-        { Id: 3, Vocative: "Ms" },
-        { Id: 4, Vocative: "Ông" },
-        { Id: 5, Vocative: "Bà" },
-        { Id: 6, Vocative: "Ngài" },
-        { Id: 7, Vocative: "Anh" },
-      ],
-
+      listVocative:
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative,
       // Biến quy định layout nào đang được chọn
-      selectLayout: {
-        infoContact: true,
-        termPayment: false,
-        bankAccount: false,
-        addressOther: false,
-        note: false,
-      },
+      selectLayout:
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.selectLayout,
       // Khai báo danh sách group
       listGroupSearch: [],
       // Khai báo trang hiện tại của group trong phân trang
@@ -1679,7 +1821,8 @@ export default {
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox điều khoản thanh toán
       searchTermPaymentTimeout: null,
       // Khởi tạo quốc gia mặc định
-      locationDefault: { LocationCode: "VN", LocationName: "Việt Nam" },
+      locationDefault:
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.locationDefault,
       // Khai báo biến lưu danh sách quốc gia
       listCountry: { All: [], Search: [] },
       // Khai báo biến lưu danh sách tỉnh
@@ -1770,15 +1913,12 @@ export default {
         this.listReceivable = await this.getListReceivalbe(20, 1, "");
         this.listPayable = await this.getListPayable(20, 1, "");
         this.listCountry.All = await this.getListLocation(1, "");
-        this.listCountry.Search = await this.getListLocation(1, "");
+        this.listCountry.Search = this.listCountry.All;
         this.listCity.All = await this.getListLocation(
           2,
           this.locationDefault.LocationCode
         );
-        this.listCity.Search = await this.getListLocation(
-          2,
-          this.locationDefault.LocationCode
-        );
+        this.listCity.Search = this.listCity.All;
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.providerSelected);
@@ -2041,10 +2181,22 @@ export default {
               break;
             case "FullName":
               if (this.provider.FullName && !this.provider.EmployeeId) {
-                this.errors.FullName = `Nhân viên mua hàng <${this.provider.FullName}> không tồn tại`;
+                this.errors.FullName = `${
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.employee
+                }${this.provider.FullName}${
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.end
+                }`;
                 this.isBorderRed.FullName = true;
                 this.dataNotNull.push(
-                  `Nhân viên mua hàng <${this.provider.FullName}> không tồn tại`
+                  `${
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .validateLoggic.employee
+                  }${this.provider.FullName}${
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .validateLoggic.end
+                  }`
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
@@ -2055,10 +2207,22 @@ export default {
                 this.provider.TermPaymentName &&
                 !this.provider.TermPaymentId
               ) {
-                this.errors.TermPaymentName = `Điều khoản thanh toán <${this.provider.TermPaymentName}> không tồn tại`;
+                this.errors.TermPaymentName = `${
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.termPayment
+                }${this.provider.TermPaymentName}${
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.end
+                }`;
                 this.isBorderRed.TermPaymentName = true;
                 this.dataNotNull.push(
-                  `Điều khoản thanh toán <${this.provider.TermPaymentName}> không tồn tại`
+                  `${
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .validateLoggic.termPayment
+                  }${this.provider.TermPaymentName}${
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .validateLoggic.end
+                  }`
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
@@ -2161,8 +2325,10 @@ export default {
     handleProviderExisted(providerExisted) {
       this.isShowDialogCodeExist = true;
       this.isBorderRed.ProviderCode = true;
-      this.errors["ProviderCode"] = `Mã nhà cung cấp
-       ${providerExisted.ProviderCode} ${
+      this.errors["ProviderCode"] = `${
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+          .providerCode
+      } <${providerExisted.ProviderCode}> ${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
       }`;
       this.contentProviderCodeExist = providerExisted.ProviderCode;
@@ -2461,15 +2627,6 @@ export default {
     onCancelDialogDataChange() {
       this.isShowDialogDataChange = false;
       this.focusCode();
-    },
-
-    /**
-     * Mô tả: Hàm xử lí sự kiện khi bấm vào button không trong dialog dữ liệu đã bị thay đổi
-     * created by : BNTIEN
-     * created date: 30-05-2023 23:42:10
-     */
-    onNoDialogDataChange() {
-      this.$emit("closeFormDetail");
     },
 
     /**
@@ -2820,12 +2977,28 @@ export default {
     },
 
     /**
-     * Mô tả: Chọn giá trị trong cbb xưng hô
+     * Mô tả: Tìm kiếm trong cbb xưng hô
      * created by : BNTIEN
-     * created date: 01-08-2023 05:09:12
+     * created date: 09-08-2023 09:35:37
      */
-    onSelectedVocative(data) {
-      this.provider.Vocative = data.Vocative;
+    onSearchChangeVocative(textSearch) {
+      this.listVocative = this.$_MISAResource[
+        this.$_LANG_CODE
+      ].PROVIDER.form.listVocative.filter((x) =>
+        x.Vocative.includes(textSearch)
+      );
+    },
+
+    /**
+     * Mô tả: Bấm phím trong cbb xưng hô
+     * created by : BNTIEN
+     * created date: 09-08-2023 09:46:15
+     */
+    onKeyDownVocativeCBB(index) {
+      this.provider.Vocative = this.listVocative =
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative[
+          index
+        ].Vocative;
     },
 
     /**
@@ -2839,10 +3012,7 @@ export default {
           this.provider.LocationCountry = data.LocationCountry;
           this.isBorderRed.LocationCountry = false;
           this.listCity.All = await this.getListLocation(2, data.LocationCode);
-          this.listCity.Search = await this.getListLocation(
-            2,
-            data.LocationCode
-          );
+          this.listCity.Search = this.listCity.All;
 
           this.provider.LocationCity = "";
           this.provider.LocationDistrict = "";
@@ -2859,10 +3029,7 @@ export default {
             3,
             data.LocationCode
           );
-          this.listDistrict.Search = await this.getListLocation(
-            3,
-            data.LocationCode
-          );
+          this.listDistrict.Search = this.listDistrict.All;
           this.provider.LocationDistrict = "";
           this.provider.LocationVillage = "";
           this.listVillage = { All: [], Search: [] };
@@ -2876,15 +3043,106 @@ export default {
             4,
             data.LocationCode
           );
-          this.listVillage.Search = await this.getListLocation(
-            4,
-            data.LocationCode
-          );
+          this.listVillage.Search = this.listVillage.All;
           this.provider.LocationVillage = "";
         }
       }
       if (propName == "LocationVillage") {
         this.provider.LocationVillage = data.LocationVillage;
+        this.isBorderRed.LocationVillage = false;
+      }
+    },
+
+    /**
+     * Mô tả: Tìm kiếm vị trí địa lí
+     * created by : BNTIEN
+     * created date: 09-08-2023 09:54:07
+     */
+    onSearchChangeLocation(newValue, propName) {
+      if (propName == "LocationCountry") {
+        this.listCountry.Search = this.listCountry.All.filter((x) =>
+          x.LocationCountry.includes(newValue)
+        );
+      }
+      if (propName == "LocationCity") {
+        this.listCity.Search = this.listCity.All.filter((x) =>
+          x.LocationCity.includes(newValue)
+        );
+      }
+      if (propName == "LocationDistrict") {
+        this.listDistrict.Search = this.listDistrict.All.filter((x) =>
+          x.LocationDistrict.includes(newValue)
+        );
+      }
+      if (propName == "LocationVillage") {
+        this.listVillage.Search = this.listVillage.All.filter((x) =>
+          x.LocationVillage.includes(newValue)
+        );
+      }
+    },
+
+    /**
+     * Mô tả: Chọn cbb vị trí địa lí
+     * created by : BNTIEN
+     * created date: 09-08-2023 10:01:54
+     */
+    async onKeyDownLocationCBB(index, propName) {
+      if (propName == "LocationCountry") {
+        if (
+          this.listCountry.Search[index].LocationCountry !=
+          this.provider.LocationCountry
+        ) {
+          this.provider.LocationCountry =
+            this.listCountry.Search[index].LocationCountry;
+          this.isBorderRed.LocationCountry = false;
+          this.listCity.All = await this.getListLocation(
+            2,
+            this.listCountry.Search[index].LocationCode
+          );
+          this.listCity.Search = this.listCity.All;
+
+          this.provider.LocationCity = "";
+          this.provider.LocationDistrict = "";
+          this.provider.LocationVillage = "";
+          this.listDistrict = { All: [], Search: [] };
+          this.listVillage = { All: [], Search: [] };
+        }
+      }
+      if (propName == "LocationCity") {
+        if (
+          this.listCity.Search[index].LocationCity != this.provider.LocationCity
+        ) {
+          this.provider.LocationCity = this.listCity.Search[index].LocationCity;
+          this.isBorderRed.LocationCity = false;
+          this.listDistrict.All = await this.getListLocation(
+            3,
+            this.listCity.Search[index].LocationCode
+          );
+          this.listDistrict.Search = this.listDistrict.All;
+          this.provider.LocationDistrict = "";
+          this.provider.LocationVillage = "";
+          this.listVillage = { All: [], Search: [] };
+        }
+      }
+      if (propName == "LocationDistrict") {
+        if (
+          this.listDistrict.Search[index].LocationDistrict !=
+          this.provider.LocationDistrict
+        ) {
+          this.provider.LocationDistrict =
+            this.listDistrict.Search[index].LocationDistrict;
+          this.isBorderRed.LocationDistrict = false;
+          this.listVillage.All = await this.getListLocation(
+            4,
+            this.listDistrict.Search[index].LocationCode
+          );
+          this.listVillage.Search = this.listVillage.All;
+          this.provider.LocationVillage = "";
+        }
+      }
+      if (propName == "LocationVillage") {
+        this.provider.LocationVillage =
+          this.listVillage.Search[index].LocationVillage;
         this.isBorderRed.LocationVillage = false;
       }
     },
@@ -2909,6 +3167,24 @@ export default {
       this.provider.AccountPayableId = account.AccountPayableId;
       this.provider.AccountPayableNumber = account.AccountPayableNumber;
       this.isBorderRed.AccountPayableNumber = false;
+    },
+
+    /**
+     * Mô tả: xử lí sự kiện khi bấm esc khi đang ở form detail
+     * created by : BNTIEN
+     * created date: 01-07-2023 01:05:25
+     */
+    async handleKeyDown(event) {
+      if (event.key === "Escape") {
+        // Nếu phím được nhấn là Esc, thực hiện hàm onCloseFormDetail
+        await this.onCloseFormDetail();
+      } else if (event.ctrlKey && event.key === "s") {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn phím Ctrl + S
+        this.btnSave();
+      } else if (event.ctrlKey && event.shiftKey && event.key === "S") {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của trình duyệt khi nhấn tổ hợp phím Ctrl + Shift + S
+        this.btnSaveAndAdd();
+      }
     },
   },
 

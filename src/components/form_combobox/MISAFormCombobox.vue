@@ -77,7 +77,7 @@
       >
         <img
           class="form-cbb-loading"
-          src="../../../assets/img/loading.svg"
+          src="../../assets/img/loading.svg"
           alt="loading"
         />
       </div> -->
@@ -189,6 +189,92 @@ export default {
     focus() {
       this.$refs["InputFormCBB"].focus();
     },
+
+    /**
+     * Mô tả: Hàm xử scroll theo khi bấm lên xuống
+     * created by : BNTIEN
+     * created date: 07-06-2023 08:37:33
+     */
+    scrollIndex(index, checkKeyCode) {
+      try {
+        const element = this.$refs.EntitySelectedItem[index];
+        if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
+          element.scrollIntoView({
+            block:
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+          });
+        } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
+          element.scrollIntoView({
+            block:
+              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+          });
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
+     * created by : BNTIEN
+     * created date: 06-06-2023 22:02:18
+     */
+    onKeyDownEntity(event) {
+      try {
+        const maxLength = this.listEntitySearchFormCBB.length;
+        if (maxLength == 0) {
+          return;
+        } else {
+          if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
+            // Bấm xuống
+            if (this.isShowSelectEntity) {
+              if (this.indexEntitySelected < maxLength - 1) {
+                this.indexEntitySelected++;
+              } else if (this.indexEntitySelected == maxLength - 1) {
+                this.indexEntitySelected = 0;
+              }
+              // scroll focus theo item được chọn
+              this.scrollIndex(
+                this.indexEntitySelected,
+                this.$_MISAEnum.KEY_CODE.DOWN
+              );
+            } else {
+              this.isShowSelectEntity = true;
+            }
+          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+            // Bấm lên
+            if (this.isShowSelectEntity) {
+              if (this.indexEntitySelected > 0) {
+                this.indexEntitySelected--;
+              } else if (this.indexEntitySelected == 0) {
+                this.indexEntitySelected = maxLength - 1;
+              }
+              // scroll focus theo item được chọn
+              this.scrollIndex(
+                this.indexEntitySelected,
+                this.$_MISAEnum.KEY_CODE.UP
+              );
+            } else {
+              this.isShowSelectEntity = true;
+            }
+          } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+            // Bấm enter
+            if (this.isShowSelectEntity) {
+              this.$_MISAEmitter.emit(
+                "onKeyDownFormCBB",
+                this.indexEntitySelected,
+                this.propCode
+              );
+              this.isShowSelectEntity = false;
+            } else {
+              this.isShowSelectEntity = true;
+            }
+          }
+        }
+      } catch {
+        return;
+      }
+    },
   },
 
   beforeUnmount() {
@@ -221,6 +307,10 @@ export default {
 }
 
 .border-red {
+  border: 1px solid red;
+}
+
+#info-payment-detail .border-red {
   border: 1px solid red;
 }
 
