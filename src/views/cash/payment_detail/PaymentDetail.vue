@@ -415,7 +415,7 @@
                 v-for="(item, index) in receipt.AccountantList"
                 :key="index"
               >
-                <tr @click="focusRow(index)">
+                <tr @click="focusRow(index)" v-if="item.Flag != 3">
                   <td class="table-col-1 text-center">{{ index + 1 }}</td>
                   <td class="table-col-2">
                     <misa-input
@@ -891,6 +891,8 @@ export default {
       statusSave: null,
       // Tái sử dụng helper
       helperCommon: helperCommon,
+      // Biến lưu danh sách hạch toán trước khi bị thay đổi ở chức năng sửa
+      accountantOlds: [],
     };
   },
 
@@ -1097,6 +1099,7 @@ export default {
             this.receipt.ReceiptId
           );
           this.receipt.AccountantList = res.data;
+          this.accountantOlds = JSON.parse(JSON.stringify(res.data));
         } else {
           this.setNewAccountant();
         }
@@ -1150,10 +1153,8 @@ export default {
      * created by : BNTIEN
      * created date: 30-06-2023 00:21:22
      */
-    hasDataChanged() {
-      return (
-        JSON.stringify(this.receiptSelected) !== JSON.stringify(this.receipt)
-      );
+    hasDataChanged(obj1, obj2) {
+      return JSON.stringify(obj1) !== JSON.stringify(obj2);
     },
     /**
      * Mô tả: Hàm set các lỗi nhập liệu phía fontend
@@ -1350,7 +1351,7 @@ export default {
         // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
         if (
           x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Customer ||
-          x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Provider
+          x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Employee
         ) {
           checkNoted = false;
           this.dataNotNull.push(
@@ -1367,7 +1368,7 @@ export default {
         }
         if (
           x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Customer ||
-          x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Provider
+          x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Employee
         ) {
           checkNoted = false;
           this.dataNotNull.push(
@@ -1414,6 +1415,30 @@ export default {
         });
       }
       return checkReturn;
+    },
+
+    /**
+     * Mô tả: Xử lí dữ liệu hạch toán của các dòng xem có thay đổi không
+     * created by : BNTIEN
+     * created date: 09-08-2023 22:26:24
+     */
+    handleAccountant() {
+      if (this.accountantOlds && this.accountantOlds.length > 0) {
+        for (let i = 0; i < this.accountantOlds.length; i++) {
+          if (
+            this.hasDataChanged(
+              this.accountantOlds[i],
+              this.receipt.AccountantList[i]
+            )
+          ) {
+            if (this.receipt.AccountantList[i].Flag != 3) {
+              this.receipt.AccountantList[i].Flag = 2;
+            }
+          } else {
+            this.receipt.AccountantList[i].Flag = 0;
+          }
+        }
+      }
     },
 
     /**
@@ -1513,6 +1538,7 @@ export default {
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
+              this.handleAccountant();
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
@@ -1631,6 +1657,7 @@ export default {
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
+              this.handleAccountant();
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
               this.receipt = {};
               await this.getNewCode();
@@ -2134,6 +2161,9 @@ export default {
             this.receipt.AccountantList.length - 1
           ],
         });
+        this.receipt.AccountantList[
+          this.receipt.AccountantList.length - 1
+        ].Flag = 1;
       } else if (
         !this.receipt.AccountantList ||
         this.receipt.AccountantList.length == 0
@@ -2142,6 +2172,7 @@ export default {
           ReceiptId: this.receipt.ReceiptId,
           Description: "",
           Money: 0,
+          Flag: 1,
         });
     },
 
@@ -2155,7 +2186,11 @@ export default {
         this.statusForm !== this.$_MISAEnum.FORM_MODE.View &&
         !this.receipt.IsNoted
       ) {
-        this.receipt.AccountantList.splice(index, 1);
+        if (this.receipt.AccountantList[index].Flag == 1) {
+          this.receipt.AccountantList.splice(index, 1);
+        } else {
+          this.receipt.AccountantList[index].Flag = 3;
+        }
       }
     },
 
@@ -2165,12 +2200,14 @@ export default {
      * created date: 05-08-2023 21:52:08
      */
     deleteAllRowAccountant() {
-      if (this.receipt.AccountantList.length > 0) {
-        this.receipt.AccountantList.splice(
-          0,
-          this.receipt.AccountantList.length
-        );
-      }
+      // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
+      this.receipt.AccountantList = this.receipt.AccountantList.filter(
+        (row) => row.Flag != 1
+      );
+      // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
+      this.receipt.AccountantList.map((row) => {
+        row.Flag = 3;
+      });
     },
 
     /**
