@@ -137,7 +137,8 @@ const PROVIDER = {
         validateLoggic:{
             employee: "Nhân viên mua hàng <",
             termPayment: "Điều khoản thanh toán <",
-            end: "> không tồn tại."
+            end: "> không tồn tại.",
+            account: "Số tài khoản không được phép trùng, vui lòng kiểm tra lại."
         },
         maxLength: {
             "ProviderCode": {Limit: 20, Warning : "Mã nhà cung cấp tối đa 20 kí tự."},

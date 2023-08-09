@@ -1444,7 +1444,7 @@
                   v-for="(item, index) in provider.AccountProviders"
                   :key="index"
                 >
-                  <tr>
+                  <tr v-if="item.Flag != 3">
                     <td class="table-input-col-1">
                       <misa-input v-model="item.AccountNumber"></misa-input>
                     </td>
@@ -1585,7 +1585,11 @@
                       }}
                     </th>
                     <th>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @click="handleLikeAddressProvider"
+                        :checked="checkedDeliveryAddress"
+                      />
                     </th>
                     <th style="font-weight: 400">
                       {{
@@ -1601,7 +1605,7 @@
                     v-for="(item, index) in provider.DeliveryAddresses"
                     :key="index"
                   >
-                    <tr class="table-input-has-data">
+                    <tr class="table-input-has-data" v-if="item.Flag != 3">
                       <td class="table-input-col-4" colspan="4">
                         <misa-input
                           v-model="item.DeliveryAddressName"
@@ -1729,6 +1733,7 @@ export default {
       this.onCancelDialogDataChange();
     });
     this.$_MISAEmitter.on("noDialogDataChange", () => {
+      this.handleSelectLayout("infoContact");
       this.$emit("closeFormDetail");
     });
     this.$_MISAEmitter.on("yesDialogDataChange", async () => {
@@ -1905,6 +1910,12 @@ export default {
       listPayable: [],
       // Khai báo biến lưu số dòng địa chỉ giao hàng
       rowNumberAddress: [1],
+      // Biến lưu danh sách tài khoản ngân hàng trước khi bị thay đổi ở chức năng sửa
+      accountProviderOlds: [],
+      // Biến lưu danh sách địa chỉ giao hàng trước khi bị thay đổi ở chức năng sửa
+      deliveryAddressOlds: [],
+      // Xác định trạng thái checkbox giống địa chỉ nhà cung cấp
+      checkedDeliveryAddress: false,
     };
   },
 
@@ -2015,10 +2026,8 @@ export default {
      * created by : BNTIEN
      * created date: 30-06-2023 00:21:22
      */
-    hasDataChanged() {
-      return (
-        JSON.stringify(this.providerSelected) !== JSON.stringify(this.provider)
-      );
+    hasDataChanged(obj1, obj2) {
+      return JSON.stringify(obj1) !== JSON.stringify(obj2);
     },
 
     /**
@@ -2133,6 +2142,7 @@ export default {
             this.provider.ProviderId
           );
           this.provider.AccountProviders = res.data;
+          this.accountProviderOlds = JSON.parse(JSON.stringify(res.data));
         } else {
           this.provider.AccountProviders = [];
         }
@@ -2153,6 +2163,7 @@ export default {
             this.provider.ProviderId
           );
           this.provider.DeliveryAddresses = res.data;
+          this.deliveryAddressOlds = JSON.parse(JSON.stringify(res.data));
         } else {
           this.provider.DeliveryAddresses = [];
         }
@@ -2168,9 +2179,10 @@ export default {
      */
     async onCloseFormDetail() {
       // Kiểm tra xem giữ liệu có thay đổi hay không (Trường hợp có thay đổi)
-      if (this.hasDataChanged()) {
+      if (this.hasDataChanged(this.providerSelected, this.provider)) {
         this.isShowDialogDataChange = true;
       } else {
+        this.handleSelectLayout("infoContact");
         this.$emit("closeFormDetail");
       }
     },
@@ -2418,6 +2430,77 @@ export default {
     },
 
     /**
+     * Mô tả: Validate tài khoản ngân hàng
+     * created by : BNTIEN
+     * created date: 09-08-2023 15:15:03
+     */
+    validateAccount() {
+      let accountNumbers = [];
+      if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
+        accountNumbers = this.provider.AccountProviders.map(
+          (item) => item.AccountNumber
+        );
+      } else {
+        accountNumbers = this.provider.AccountProviders.filter(
+          (row) => row.Flag != 3
+        ).map((item) => item.AccountNumber);
+      }
+      const accountNumberSet = new Set(accountNumbers);
+      if (accountNumbers.length !== accountNumberSet.size) {
+        return true;
+      }
+      return false;
+    },
+
+    /**
+     * Mô tả: Xử lí dữ liệu tài khoản ngân hàng của các dòng xem có thay đổi không
+     * created by : BNTIEN
+     * created date: 09-08-2023 19:17:36
+     */
+    handleAccount() {
+      if (this.accountProviderOlds && this.accountProviderOlds.length > 0) {
+        for (let i = 0; i < this.accountProviderOlds.length; i++) {
+          if (
+            this.hasDataChanged(
+              this.accountProviderOlds[i],
+              this.provider.AccountProviders[i]
+            )
+          ) {
+            if (this.provider.AccountProviders[i].Flag != 3) {
+              this.provider.AccountProviders[i].Flag = 2;
+            }
+          } else {
+            this.provider.AccountProviders[i].Flag = 0;
+          }
+        }
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí dữ liệu tài khoản ngân hàng của các dòng xem có thay đổi không
+     * created by : BNTIEN
+     * created date: 09-08-2023 19:17:36
+     */
+    handleDeliveryAddress() {
+      if (this.deliveryAddressOlds && this.deliveryAddressOlds.length > 0) {
+        for (let i = 0; i < this.deliveryAddressOlds.length; i++) {
+          if (
+            this.hasDataChanged(
+              this.deliveryAddressOlds[i],
+              this.provider.DeliveryAddresses[i]
+            )
+          ) {
+            if (this.provider.DeliveryAddresses[i].Flag != 3) {
+              this.provider.DeliveryAddresses[i].Flag = 2;
+            }
+          } else {
+            this.provider.DeliveryAddresses[i].Flag = 0;
+          }
+        }
+      }
+    },
+
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:05
@@ -2429,6 +2512,14 @@ export default {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
+            if (this.validateAccount()) {
+              this.dataNotNull.push(
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                  .validateLoggic.account
+              );
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let providerByCode = await this.checkProviderExists();
             // Nếu mã nhân viên chưa tồn tại trong hệ thống
@@ -2446,6 +2537,7 @@ export default {
                   this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                     .SUCCESS_CTEATE
                 );
+                this.handleSelectLayout("infoContact");
                 this.$emit("closeFormDetail");
                 this.$_MISAEmitter.emit("refreshDataTable");
               }
@@ -2460,12 +2552,20 @@ export default {
       } else {
         // Nếu form ở trạng thái sửa
         // Kiểm tra xem dữ liệu có thay đổi hay k (Trường hợp đã thay đổi)
-        if (this.hasDataChanged()) {
+        if (this.hasDataChanged(this.providerSelected, this.provider)) {
           this.validateProvider();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
+              if (this.validateAccount()) {
+                this.dataNotNull.push(
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.account
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
@@ -2475,6 +2575,8 @@ export default {
                   this.providerSelected.ProviderCode
               ) {
                 this.setGroupIds();
+                this.handleAccount();
+                this.handleDeliveryAddress();
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -2488,6 +2590,7 @@ export default {
                     this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
                       .SUCCESS_UPDATE
                   );
+                  this.handleSelectLayout("infoContact");
                   this.$emit("closeFormDetail");
                   this.$_MISAEmitter.emit("refreshDataTable");
                 }
@@ -2500,6 +2603,7 @@ export default {
             }
           }
         } else {
+          this.handleSelectLayout("infoContact");
           this.$emit("closeFormDetail");
         }
       }
@@ -2518,6 +2622,14 @@ export default {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
+            if (this.validateAccount()) {
+              this.dataNotNull.push(
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                  .validateLoggic.account
+              );
+              this.isShowDialogDataNotNull = true;
+              return;
+            }
             // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let providerByCode = await this.checkProviderExists();
             if (!providerByCode) {
@@ -2553,12 +2665,20 @@ export default {
         // Nếu form ở trạng thái sửa
       } else {
         // Kiểm tra xem dữ liệu có thay đổi hay k
-        if (this.hasDataChanged()) {
+        if (this.hasDataChanged(this.providerSelected, this.provider)) {
           this.validateProvider();
           if (this.dataNotNull.length > 0) {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
+              if (this.validateAccount()) {
+                this.dataNotNull.push(
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                    .validateLoggic.account
+                );
+                this.isShowDialogDataNotNull = true;
+                return;
+              }
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
@@ -2568,6 +2688,8 @@ export default {
                   this.providerSelected.ProviderCode
               ) {
                 this.setGroupIds();
+                this.handleAccount();
+                this.handleDeliveryAddress();
                 const res = await providerService.update(
                   this.providerSelected.ProviderId,
                   this.provider
@@ -2671,6 +2793,7 @@ export default {
      * created date: 29-05-2023 07:56:20
      */
     btnCancel() {
+      this.handleSelectLayout("infoContact");
       this.$emit("closeFormDetail");
     },
     /**
@@ -2719,15 +2842,21 @@ export default {
      */
     handleClickInstitute() {
       this.provider.IsPersonal = false;
+      this.$nextTick(() => {
+        this.$refs.TaxCode.focus();
+      });
     },
 
     /**
-     * Mô tả: Xử lí sự kiện click vào radio các nhân
+     * Mô tả: Xử lí sự kiện click vào radio cá nhân
      * created by : BNTIEN
      * created date: 28-07-2023 13:43:49
      */
     handleClickPersonal() {
       this.provider.IsPersonal = true;
+      this.$nextTick(() => {
+        this.$refs.ProviderCode.focus();
+      });
     },
 
     /**
@@ -2982,6 +3111,7 @@ export default {
         BankName: "",
         BankBranch: "",
         BankAddress: "",
+        Flag: 1,
       });
     },
 
@@ -2991,7 +3121,11 @@ export default {
      * created date: 30-07-2023 21:59:03
      */
     deleteRowAccount(index) {
-      this.provider.AccountProviders.splice(index, 1);
+      if (this.provider.AccountProviders[index].Flag == 1) {
+        this.provider.AccountProviders.splice(index, 1);
+      } else {
+        this.provider.AccountProviders[index].Flag = 3;
+      }
     },
 
     /**
@@ -3000,12 +3134,14 @@ export default {
      * created date: 01-08-2023 15:49:29
      */
     deleteAllRowAccount() {
-      if (this.provider.AccountProviders.length > 0) {
-        this.provider.AccountProviders.splice(
-          0,
-          this.provider.AccountProviders.length
-        );
-      }
+      // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
+      this.provider.AccountProviders = this.provider.AccountProviders.filter(
+        (row) => row.Flag != 1
+      );
+      // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
+      this.provider.AccountProviders.map((row) => {
+        row.Flag = 3;
+      });
     },
 
     /**
@@ -3014,7 +3150,10 @@ export default {
      * created date: 01-08-2023 16:04:10
      */
     btnAddRowAddress() {
-      this.provider.DeliveryAddresses.push({ DeliveryAddressName: "" });
+      this.provider.DeliveryAddresses.push({
+        DeliveryAddressName: "",
+        Flag: 1,
+      });
     },
 
     /**
@@ -3023,7 +3162,11 @@ export default {
      * created date: 30-07-2023 21:59:03
      */
     deleteRowAddress(index) {
-      this.provider.DeliveryAddresses.splice(index, 1);
+      if (this.provider.DeliveryAddresses[index].Flag == 1) {
+        this.provider.DeliveryAddresses.splice(index, 1);
+      } else {
+        this.provider.DeliveryAddresses[index].Flag = 3;
+      }
     },
 
     /**
@@ -3032,12 +3175,30 @@ export default {
      * created date: 01-08-2023 15:49:29
      */
     btnDeleteAllRowAddress() {
-      if (this.provider.DeliveryAddresses.length > 0) {
-        this.provider.DeliveryAddresses.splice(
-          0,
-          this.provider.DeliveryAddresses.length
-        );
+      // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
+      this.provider.DeliveryAddresses = this.provider.DeliveryAddresses.filter(
+        (row) => row.Flag != 1
+      );
+      // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
+      this.provider.DeliveryAddresses.map((row) => {
+        row.Flag = 3;
+      });
+    },
+
+    /**
+     * Mô tả: xử lí click checkbox giống địa chỉ nhà cung cấp
+     * created by : BNTIEN
+     * created date: 09-08-2023 21:57:25
+     */
+    handleLikeAddressProvider() {
+      if (!this.checkedDeliveryAddress) {
+        this.btnDeleteAllRowAddress();
+        this.provider.DeliveryAddresses.push({
+          DeliveryAddressName: this.provider.Address,
+          Flag: 1,
+        });
       }
+      this.checkedDeliveryAddress = !this.checkedDeliveryAddress;
     },
 
     /**

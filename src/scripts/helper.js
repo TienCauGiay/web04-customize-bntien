@@ -75,10 +75,12 @@ const helperCommon = {
     handleErrorInput: (errors, objectProperty) => {
       const dataNotNull = [];
       const isBorderRed = {};
-      for (const key of objectProperty) {
-        if (key in errors) {
-          dataNotNull.push(errors[key]);
-          isBorderRed[key] = true;
+      if(errors){
+        for (const key of objectProperty) {
+          if (key in errors) {
+            dataNotNull.push(errors[key]);
+            isBorderRed[key] = true;
+          }
         }
       }
       return {
