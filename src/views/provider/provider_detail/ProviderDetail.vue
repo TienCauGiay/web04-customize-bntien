@@ -702,7 +702,7 @@
                 <div class="col-md-l">
                   <label>{{
                     this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.ameReceiver
+                      .textProperty.nameReceiver
                   }}</label>
                   <div class="container-input">
                     <misa-input
@@ -1346,7 +1346,10 @@
                     style="position: relative"
                     id="multiple-cbb-no-icon"
                   >
-                    <label>Tài khoản công nợ phải thu</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.accountReceivable
+                    }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
@@ -1371,7 +1374,10 @@
                     style="position: relative"
                     id="multiple-cbb-no-icon"
                   >
-                    <label>Tài khoản công nợ phải trả</label>
+                    <label>{{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.accountPayable
+                    }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
@@ -1406,10 +1412,30 @@
             <table class="table-input" id="table-input-account">
               <thead class="table-input-title">
                 <tr>
-                  <th class="table-input-col-1">Số tài khoản</th>
-                  <th class="table-input-col-2">Tên ngân hàng</th>
-                  <th class="table-input-col-3">Chi nhánh</th>
-                  <th class="table-input-col-4">Tỉnh/TP của ngân hàng</th>
+                  <th class="table-input-col-1">
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.accountNumber
+                    }}
+                  </th>
+                  <th class="table-input-col-2">
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.bankName
+                    }}
+                  </th>
+                  <th class="table-input-col-3">
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.bankBranch
+                    }}
+                  </th>
+                  <th class="table-input-col-4">
+                    {{
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.cityOfBank
+                    }}
+                  </th>
                   <th class="table-input-col-5"></th>
                 </tr>
               </thead>
@@ -1445,11 +1471,17 @@
               <tfoot>
                 <td colspan="5">
                   <misa-button-extra
-                    :textButtonExtra="'Thêm dòng'"
+                    :textButtonExtra="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.addRow
+                    "
                     @click="btnAddRowAccount"
                   ></misa-button-extra>
                   <misa-button-extra
-                    :textButtonExtra="'Xóa hết dòng'"
+                    :textButtonExtra="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.deleteAllRow
+                    "
                     @click="deleteAllRowAccount"
                   ></misa-button-extra>
                 </td>
@@ -1468,7 +1500,10 @@
             <div class="content-select-layout-half">
               <div class="half-content">
                 <div class="col-md-l cbb-has-label" style="position: relative">
-                  <label>Vị trí địa lý</label>
+                  <label>{{
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                      .textProperty.location
+                  }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -1476,7 +1511,10 @@
                     :listEntitySearchCBB="listCountry.Search"
                     :propName="'LocationCountry'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="'Quốc gia'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.country
+                    "
                     :indexSelectedCBB="
                       listCountry.All.findIndex(
                         (obj) =>
@@ -1496,7 +1534,10 @@
                     :listEntitySearchCBB="listCity.Search"
                     :propName="'LocationCity'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="'Tỉnh/Thành phố'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.city
+                    "
                   ></misa-combobox>
                 </div>
               </div>
@@ -1509,7 +1550,10 @@
                     :listEntitySearchCBB="listDistrict.Search"
                     :propName="'LocationDistrict'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="'Quận/Huyện'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.district
+                    "
                   ></misa-combobox>
                 </div>
               </div>
@@ -1522,7 +1566,10 @@
                     :listEntitySearchCBB="listVillage.Search"
                     :propName="'LocationVillage'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="'Xã/Phường'"
+                    :placeholderInputCBB="
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                        .textProperty.village
+                    "
                   ></misa-combobox>
                 </div>
               </div>
@@ -1532,12 +1579,20 @@
                 <thead class="table-input-title">
                   <tr>
                     <th class="table-input-col-4" colspan="2">
-                      Địa chỉ giao hàng
+                      {{
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.deliveryAddress
+                      }}
                     </th>
                     <th>
                       <input type="checkbox" />
                     </th>
-                    <th style="font-weight: 400">Giống địa chỉ nhà cung cấp</th>
+                    <th style="font-weight: 400">
+                      {{
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.likeAddressProvider
+                      }}
+                    </th>
                     <th class="table-input-col-5"></th>
                   </tr>
                 </thead>
@@ -1566,11 +1621,17 @@
                 <tfoot>
                   <td colspan="4">
                     <misa-button-extra
-                      :textButtonExtra="'Thêm dòng'"
+                      :textButtonExtra="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.addRow
+                      "
                       @click="btnAddRowAddress"
                     ></misa-button-extra>
                     <misa-button-extra
-                      :textButtonExtra="'Xóa hết dòng'"
+                      :textButtonExtra="
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
+                          .textProperty.deleteAllRow
+                      "
                       @click="btnDeleteAllRowAddress"
                     ></misa-button-extra>
                   </td>
@@ -1583,7 +1644,10 @@
             v-if="selectLayout.note"
             id="content-select-layout-note"
           >
-            <label>Ghi chú</label>
+            <label>{{
+              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
+                .note
+            }}</label>
             <misa-input-textarea
               v-model="provider.Note"
               ref="Note"

@@ -1198,8 +1198,8 @@ export default {
             this.dataTable = await this.getListReceipt(20, 1, "", null);
           }
         }
-      } catch (error) {
-        console.log(error);
+      } catch {
+        return;
       }
     },
   },

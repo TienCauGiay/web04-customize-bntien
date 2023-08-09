@@ -49,7 +49,7 @@
       ></div>
       <div class="info-money-item-right">
         <div class="money">
-          <div class="format-money">0</div>
+          <div class="format-money">100.000.000</div>
         </div>
         <div class="content-money">
           <span>{{
@@ -187,12 +187,6 @@
                     .address
                 }}
               </th>
-              <!-- <th class="col-width-150 text-right">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .amountOwed
-                }}
-              </th> -->
               <th class="col-width-120">
                 {{
                   this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
@@ -428,7 +422,6 @@
       v-if="isShowToastMessage"
       :contentToast="contentToastSuccess"
     ></misa-toast-success>
-    <a href="" ref="ExportListProvider" v-show="false"></a>
   </div>
 </template>
 
@@ -1053,9 +1046,8 @@ export default {
      */
     async exportData() {
       try {
-        const link = this.$refs.ExportListProvider;
         this.isShowLoadding = true;
-        await providerService.exportData(link);
+        await providerService.exportData(this.textSearch);
         this.isShowLoadding = false;
       } catch {
         return;
