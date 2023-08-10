@@ -3,10 +3,9 @@
     class="cbb-multiple"
     id="cbb-multiple"
     :class="{
-      'border-red':
-        isBorderRedCBB[propName] ||
-        isBorderRedCBB[propId] ||
-        isBorderRedCBB[propCode],
+      'border-red': isShowCode
+        ? isBorderRedCBB[propId] || isBorderRedCBB[propCode]
+        : isBorderRedCBB[propId] || isBorderRedCBB[propName],
     }"
   >
     <div class="input-cbb-mutiple">
@@ -21,17 +20,8 @@
           :class="{ 'readonly-input-cbb': isReadonlyCBB }"
           :readonly="isReadonlyCBB"
         ></misa-input>
-        <div
-          class="misa-tooltip"
-          v-if="
-            isHoveringCBB &&
-            (isBorderRedCBB[propName] ||
-              isBorderRedCBB[propId] ||
-              !entityCBB[propName]) &&
-            (errorsCBB[propName] || errorsCBB[propId])
-          "
-        >
-          {{ errorsCBB[propName] ? errorsCBB[propName] : errorsCBB[propId] }}
+        <div class="misa-tooltip" v-if="isShowTooltip">
+          {{ contentTooltip }}
         </div>
       </div>
     </div>
@@ -107,6 +97,40 @@ export default {
     "isReadonlyCBB",
     "isFocusCBB",
   ],
+
+  computed: {
+    isShowTooltip() {
+      if (this.isShowCode) {
+        return (
+          this.isHoveringCBB &&
+          (this.isBorderRedCBB[this.propCode] ||
+            this.isBorderRedCBB[this.propId] ||
+            !this.entityCBB[this.propCode]) &&
+          (this.errorsCBB[this.propCode] || this.errorsCBB[this.propId])
+        );
+      } else {
+        return (
+          this.isHoveringCBB &&
+          (this.isBorderRedCBB[this.propName] ||
+            this.isBorderRedCBB[this.propId] ||
+            !this.entityCBB[this.propName]) &&
+          (this.errorsCBB[this.propName] || this.errorsCBB[this.propId])
+        );
+      }
+    },
+
+    contentTooltip() {
+      if (this.isShowCode) {
+        return this.errorsCBB[this.propCode]
+          ? this.errorsCBB[this.propCode]
+          : this.errorsCBB[this.propId];
+      } else {
+        return this.errorsCBB[this.propName]
+          ? this.errorsCBB[this.propName]
+          : this.errorsCBB[this.propId];
+      }
+    },
+  },
 
   data() {
     return {

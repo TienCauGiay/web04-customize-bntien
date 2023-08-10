@@ -183,7 +183,7 @@
 
 .container-input-payment-detail{
     height: 28px;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     column-gap: 6px;
     width: 100%;
@@ -571,6 +571,10 @@
 
 .footer-layout-right-body button:last-child:hover{
     background-color: #35bf22;
+}
+
+#info-payment-detail #cbb-provider{
+    display: flex;
 }
 
 #info-payment-detail #cbb-provider .select-item-cbb-multiple{

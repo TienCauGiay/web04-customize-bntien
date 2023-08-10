@@ -369,6 +369,7 @@
                     statusForm == this.$_MISAEnum.FORM_MODE.View ||
                     receipt.IsNoted
                   "
+                  :maxLength="20"
                 ></misa-input>
                 <div
                   class="misa-tooltip"
@@ -1102,6 +1103,7 @@ export default {
           );
           this.receipt.AccountantList = res.data;
           this.accountantOlds = JSON.parse(JSON.stringify(res.data));
+          console.log(this.receipt.AccountantList);
         } else {
           this.setNewAccountant();
         }
@@ -1128,7 +1130,7 @@ export default {
         this.receipt = JSON.parse(res);
         this.statusForm = this.statusFormMode;
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
-          // Sinh mã tự động
+          // Khởi tạo dữ liệu ban đầu
           this.AutoSetReceipt();
         }
         await this.getAccountant();
@@ -1509,9 +1511,7 @@ export default {
               this.receipt.IsNoted = this.checkIsNoted();
               let receiptInserted = await receiptService.create(this.receipt);
               this.receipt.ReceiptId = receiptInserted.data;
-              this.receipt.AccountantList.map(
-                (x) => (x.ReceiptId = receiptInserted.data)
-              );
+              await this.getAccountant();
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
@@ -1559,11 +1559,11 @@ export default {
               !receiptByCode ||
               receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber
             ) {
-              // Nếu số phiếu chi chưa tồn tại trong hệ thống
               this.receipt.TotalMoney = this.TotalMoney;
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
               this.handleAccountant();
+              console.log(this.receipt.AccountantList);
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
@@ -1682,6 +1682,7 @@ export default {
               await this.getNewCode();
               this.AutoSetReceipt();
               this.setNewAccountant();
+              this.statusForm = this.$_MISAEnum.FORM_MODE.Add;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";

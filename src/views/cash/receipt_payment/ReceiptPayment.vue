@@ -862,6 +862,7 @@ export default {
      */
     onDupliCateReceipt() {
       try {
+        this.selectedReceipt.IsNoted = false;
         this.receiptUpdate = this.selectedReceipt;
         this.isShowFormDetail = true;
         this.isOverlay = true;
