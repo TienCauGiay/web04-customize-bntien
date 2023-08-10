@@ -14,7 +14,7 @@
         <misa-input
           ref="InputCBB"
           :value="isShowCode ? entityCBB[propCode] : entityCBB[propName]"
-          @input="onSearchChange"
+          @input="onSearchChange($event)"
           @keydown="onKeyDownEntity"
           @mouseenter="isHoveringCBB = true"
           @mouseleave="isHoveringCBB = false"
@@ -165,11 +165,11 @@ export default {
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
-    async onSearchChange() {
+    async onSearchChange($event) {
       try {
         await this.$_MISAEmitter.emit(
           "onSearchChangeCBBSingle",
-          event.target.value,
+          $event.target.value,
           this.propId
         );
         this.isShowSelectEntity = true;
@@ -276,13 +276,15 @@ export default {
         const cbb = this.$refs.cbbSelectSingle;
         const remainingSpace =
           cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
-
+        const textSearch = this.isShowCode
+          ? this.entityCBB[this.propCode]
+          : this.entityCBB[this.propName];
         // Kiểm tra xem đã scroll đến cuối combobox chưa
         if (remainingSpace <= 10) {
           // Gọi API để lấy thêm dữ liệu
           await this.$_MISAEmitter.emit(
             "handleScrollCBBSingle",
-            this.textSearch,
+            textSearch,
             this.propId
           );
         }

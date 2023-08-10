@@ -1834,6 +1834,39 @@ export default {
         this.selectedPayable(data);
       }
     });
+
+    this.$_MISAEmitter.on(
+      "handleScrollCBBformCBB",
+      async (propCode, textSearch) => {
+        if (propCode == "AccountReceivableNumber") {
+          await this.handleScrollReceivable(textSearch);
+        }
+        if (propCode == "AccountPayableNumber") {
+          await this.handleScrollPayable(textSearch);
+        }
+      }
+    );
+
+    this.$_MISAEmitter.on(
+      "onSearchChangeFormCBB",
+      async (newValue, propCode) => {
+        if (propCode == "AccountReceivableNumber") {
+          await this.onSearchChangeReceivable(newValue);
+        }
+        if (propCode == "AccountPayableNumber") {
+          await this.onSearchChangePayable(newValue);
+        }
+      }
+    );
+
+    this.$_MISAEmitter.on("onKeyDownFormCBB", (index, propCode) => {
+      if (propCode == "AccountReceivableNumber") {
+        this.onKeyDownReceivable(index);
+      }
+      if (propCode == "AccountPayableNumber") {
+        this.onKeyDownPayable(index);
+      }
+    });
   },
 
   mounted() {
@@ -1906,8 +1939,16 @@ export default {
       currentPageTermPayment: this.$_MISAEnum.RECORD.CURRENT_PAGE,
       // Khai báo biến lưu danh sách tài khoản công nợ phải thu
       listReceivable: [],
+      // trang hiện tại của tài khoản công nợ phải thu
+      currentPageReceivable: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox tài khoản nợ phải thu
+      searchReceivableTimeout: null,
       // Khai báo biến lưu danh sách tài khoản công nợ phải trả
       listPayable: [],
+      // trang hiện tại của tài khoản công nợ phải trả
+      currentPagePayable: this.$_MISAEnum.RECORD.CURRENT_PAGE,
+      // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox tài khoản nợ phải trả
+      searchPayableTimeout: null,
       // Khai báo biến lưu số dòng địa chỉ giao hàng
       rowNumberAddress: [1],
       // Biến lưu danh sách tài khoản ngân hàng trước khi bị thay đổi ở chức năng sửa
@@ -3384,6 +3425,59 @@ export default {
     },
 
     /**
+     * Mô tả: scrool cbb tài khoản nợ
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:17:12
+     */
+    async handleScrollReceivable(textSearch) {
+      try {
+        this.currentPageReceivable += 1;
+        const newListReceivable = await this.getListReceivalbe(
+          20,
+          this.currentPageReceivable,
+          textSearch
+        );
+        this.listReceivable = [...this.listReceivable, ...newListReceivable];
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Tìm kiếm tài khoản công nợ phải thu
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:51:15
+     */
+    async onSearchChangeReceivable(newValue) {
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchReceivableTimeout);
+        this.provider.AccountReceivableId = "";
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchReceivableTimeout = setTimeout(async () => {
+          this.listReceivable = await this.getListReceivalbe(20, 1, newValue);
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Chọn tài khoản công nợ phải thu bằng phím
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:05:15
+     */
+    onKeyDownReceivable(index) {
+      this.provider.AccountReceivableId =
+        this.listReceivable[index].AccountReceivableId;
+      this.provider.AccountReceivableNumber =
+        this.listReceivable[index].AccountReceivableNumber;
+      this.isBorderRed.AccountReceivableNumber = false;
+    },
+
+    /**
      * Mô tả: Chọn tài khoản công nợ phải trả
      * created by : BNTIEN
      * created date: 01-08-2023 10:48:54
@@ -3391,6 +3485,58 @@ export default {
     selectedPayable(account) {
       this.provider.AccountPayableId = account.AccountPayableId;
       this.provider.AccountPayableNumber = account.AccountPayableNumber;
+      this.isBorderRed.AccountPayableNumber = false;
+    },
+
+    /**
+     * Mô tả: scroll cbb tài khoản công nợ phải trả
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:48:36
+     */
+    async handleScrollPayable(textSearch) {
+      try {
+        this.currentPagePayable += 1;
+        const newListPayable = await this.getListPayable(
+          20,
+          this.currentPagePayable,
+          textSearch
+        );
+        this.listPayable = [...this.listPayable, ...newListPayable];
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Tìm kiếm tài khoản công nợ phải trả
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:51:15
+     */
+    async onSearchChangePayable(newValue) {
+      try {
+        // Xóa bỏ timeout trước đó nếu có
+        clearTimeout(this.searchPayableTimeout);
+        this.provider.AccountPayableId = "";
+        if (!newValue.trim()) {
+          newValue = "";
+        }
+        this.searchPayableTimeout = setTimeout(async () => {
+          this.listPayable = await this.getListPayable(20, 1, newValue);
+        }, 500);
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: Chọn tài khoản công nợ phải trả bằng phím
+     * created by : BNTIEN
+     * created date: 10-08-2023 09:07:39
+     */
+    onKeyDownPayable(index) {
+      this.provider.AccountPayableId = this.listPayable[index].AccountPayableId;
+      this.provider.AccountPayableNumber =
+        this.listPayable[index].AccountPayableNumber;
       this.isBorderRed.AccountPayableNumber = false;
     },
 
@@ -3430,11 +3576,14 @@ export default {
     this.$_MISAEmitter.off("onSelectedEntityCBB");
     this.$_MISAEmitter.off("onSearchChangeCBB");
     this.$_MISAEmitter.off("onKeyDownEntityCBB");
+    this.$_MISAEmitter.off("onSelectedEntityFormCBB");
+    this.$_MISAEmitter.off("handleScrollCBBformCBB");
+    this.$_MISAEmitter.off("onSearchChangeFormCBB");
+    this.$_MISAEmitter.off("onKeyDownFormCBB");
     this.$refs.FormDetailProvider.removeEventListener(
       "keydown",
       this.handleKeyDown
     );
-    this.$_MISAEmitter.off("onSelectedEntityFormCBB");
   },
 };
 </script>

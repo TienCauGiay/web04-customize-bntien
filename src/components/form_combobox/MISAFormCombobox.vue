@@ -14,7 +14,7 @@
           ref="InputFormCBB"
           :placeholder="placeholderInputFormCBB"
           :value="valueInput"
-          @input="onSearchChange"
+          @input="onSearchChange($event)"
           :tabindex="tabindexFormCBB"
           @keydown="onKeyDownEntity"
           @mouseenter="isHoveringFormCBB = true"
@@ -70,6 +70,13 @@
             <div>{{ item[propName] }}</div>
           </div>
         </template>
+        <div
+          class="form-cbb-menu-item"
+          v-if="!listEntitySearchFormCBB.length"
+          :class="{ 'not-found-entity': !listEntitySearchFormCBB.length }"
+        >
+          {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
+        </div>
       </div>
       <!-- <div
         class="form-cbb-menu-item"
@@ -149,11 +156,11 @@ export default {
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
-    async onSearchChange() {
+    async onSearchChange($event) {
       try {
         await this.$_MISAEmitter.emit(
           "onSearchChangeFormCBB",
-          event.target.value,
+          $event.target.value,
           this.propCode
         );
         this.isShowSelectEntity = true;
@@ -178,7 +185,8 @@ export default {
           // Gọi API để lấy thêm dữ liệu
           await this.$_MISAEmitter.emit(
             "handleScrollCBBformCBB",
-            this.propCode
+            this.propCode,
+            this.valueInput
           );
         }
       } catch {
@@ -302,6 +310,8 @@ export default {
 }
 
 .not-found-entity {
+  align-items: center;
+  justify-content: center;
   text-align: center;
   opacity: 0.5;
 }

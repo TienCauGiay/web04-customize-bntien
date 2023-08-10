@@ -388,7 +388,7 @@ export default {
   created() {
     this.loadData();
 
-    this.getAllAccount();
+    this.getAllAccount(this.pageSize, this.pageNumber, "");
 
     this.$_MISAEmitter.on("cancelDialogDataChange", () => {
       this.onCancelDialogDataChange();
@@ -420,9 +420,14 @@ export default {
       this.selectedGeneralAccount(data);
     });
 
-    this.$_MISAEmitter.on("handleScrollCBBformCBB", async () => {
-      await this.handleScrollformCBB();
-    });
+    this.$_MISAEmitter.on(
+      "handleScrollCBBformCBB",
+      async (propCode, textSearch) => {
+        if (propCode == "AccountNumber") {
+          await this.handleScrollformCBB(textSearch);
+        }
+      }
+    );
 
     this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue) => {
       await this.onSearchChangeAccount(newValue);
@@ -553,12 +558,12 @@ export default {
      * created by : BNTIEN
      * created date: 23-07-2023 12:22:30
      */
-    async getAllAccount() {
+    async getAllAccount(pageSize, pageNumber, textSearch) {
       try {
         const res = await accountService.getCodeOrName(
-          this.pageSize,
-          this.pageNumber,
-          ""
+          pageSize,
+          pageNumber,
+          textSearch
         );
         this.accounts = [...this.accounts, ...res.data.Data];
       } catch {
@@ -1133,10 +1138,10 @@ export default {
      * created by : BNTIEN
      * created date: 03-08-2023 00:03:21
      */
-    async handleScrollformCBB() {
+    async handleScrollformCBB(textSearch) {
       try {
         this.pageNumber += 1;
-        await this.getAllAccount();
+        await this.getAllAccount(this.pageSize, this.pageNumber, textSearch);
       } catch {
         return;
       }

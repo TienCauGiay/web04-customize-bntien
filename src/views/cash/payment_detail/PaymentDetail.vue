@@ -769,14 +769,17 @@ export default {
       }
     });
 
-    this.$_MISAEmitter.on("handleScrollCBBformCBB", async (propCode) => {
-      if (propCode == "AccountDebtNumber") {
-        await this.handleScrollDebt();
+    this.$_MISAEmitter.on(
+      "handleScrollCBBformCBB",
+      async (propCode, textSearch) => {
+        if (propCode == "AccountDebtNumber") {
+          await this.handleScrollDebt(textSearch);
+        }
+        if (propCode == "AccountBalanceNumber") {
+          await this.handleScrollBalance(textSearch);
+        }
       }
-      if (propCode == "AccountBalanceNumber") {
-        await this.handleScrollBalance();
-      }
-    });
+    );
 
     this.$_MISAEmitter.on(
       "onSearchChangeFormCBB",
@@ -941,7 +944,10 @@ export default {
 
     TotalMoney() {
       if (this.receipt.AccountantList) {
-        const total = this.receipt.AccountantList.reduce(
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != 3
+        );
+        const total = accountantList.reduce(
           (total, item) => total + parseFloat(item.Money || 0),
           0
         );
@@ -1030,9 +1036,9 @@ export default {
      * created by : BNTIEN
      * created date: 05-08-2023 15:25:56
      */
-    async getListDebt() {
+    async getListDebt(curentPage, textSearch) {
       try {
-        const res = await accountService.getDebt(20, this.currentPageDebt, "");
+        const res = await accountService.getDebt(20, curentPage, textSearch);
         this.listAccountDebt = [...this.listAccountDebt, ...res.data];
       } catch {
         this.listAccountDebt = [];
@@ -1043,13 +1049,9 @@ export default {
      * created by : BNTIEN
      * created date: 05-08-2023 15:25:56
      */
-    async getListBalance() {
+    async getListBalance(curentPage, textSearch) {
       try {
-        const res = await accountService.getBalance(
-          20,
-          this.currentPageBalance,
-          ""
-        );
+        const res = await accountService.getBalance(20, curentPage, textSearch);
         this.listAccountBalance = [...this.listAccountBalance, ...res.data];
       } catch {
         this.listAccountBalance = [];
@@ -1072,7 +1074,7 @@ export default {
           x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
           x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Employee
       );
-      let accountant = { Description: this.receipt.Reason, Money: 0 };
+      let accountant = { Description: this.receipt.Reason, Money: 0, Flag: 1 };
       if (debtDefault) {
         accountant.AccountDebtId = debtDefault.AccountDebtId;
         accountant.AccountDebtNumber = debtDefault.AccountDebtNumber;
@@ -1117,8 +1119,8 @@ export default {
         await this.getNewCode();
         await this.getListProvider();
         await this.getListEmployee();
-        await this.getListDebt();
-        await this.getListBalance();
+        await this.getListDebt(1, "");
+        await this.getListBalance(1, "");
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.receiptSelected);
@@ -1347,7 +1349,11 @@ export default {
         return false;
       }
       let checkNoted = true;
-      this.receipt.AccountantList.map((x) => {
+      const accountantList = this.receipt.AccountantList.filter(
+        (accountant) => accountant.Flag != 3
+      );
+      if (accountantList.length == 0) return false;
+      accountantList.map((x) => {
         // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
         if (
           x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Customer ||
@@ -1388,6 +1394,28 @@ export default {
     },
 
     /**
+     * Mô tả: validate hạch toán chi tiết không được trống
+     * created by : BNTIEN
+     * created date: 10-08-2023 11:49:30
+     */
+    validateAccountantNotNull() {
+      if (
+        !this.receipt.AccountantList ||
+        this.receipt.AccountantList.length == 0
+      ) {
+        return true;
+      } else {
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != 3
+        );
+        if (accountantList.length == 0) {
+          return true;
+        }
+      }
+      return false;
+    },
+
+    /**
      * Mô tả: validate hạch toán
      * created by : BNTIEN
      * created date: 07-08-2023 14:58:52
@@ -1398,7 +1426,10 @@ export default {
         this.receipt.AccountantList &&
         this.receipt.AccountantList.length > 0
       ) {
-        checkReturn = this.receipt.AccountantList.some((item, index) => {
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != 3
+        );
+        checkReturn = accountantList.some((item, index) => {
           if (!item.AccountDebtId) {
             this.dataNotNull.push("Tài khoản nợ không được để trống");
             this.isBorderRed.AccountDebtId = true;
@@ -1456,10 +1487,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
-            if (
-              !this.receipt.AccountantList ||
-              this.receipt.AccountantList.length == 0
-            ) {
+            if (this.validateAccountantNotNull()) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
@@ -1511,10 +1539,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
-            if (
-              !this.receipt.AccountantList ||
-              this.receipt.AccountantList.length == 0
-            ) {
+            if (this.validateAccountantNotNull()) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
@@ -1576,10 +1601,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
-            if (
-              !this.receipt.AccountantList ||
-              this.receipt.AccountantList.length == 0
-            ) {
+            if (this.validateAccountantNotNull()) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
@@ -1631,10 +1653,7 @@ export default {
             this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
         } else {
           try {
-            if (
-              !this.receipt.AccountantList ||
-              this.receipt.AccountantList.length == 0
-            ) {
+            if (this.validateAccountantNotNull()) {
               this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
               this.titleDataNotnull =
                 this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
@@ -1878,6 +1897,7 @@ export default {
      * created date: 05-08-2023 11:39:17
      */
     async handleScrollEmployeeCBB(textSearch) {
+      console.log(textSearch);
       try {
         this.currentPageEmployee += 1;
         const filtered = await employeeService.getFilter(
@@ -2033,10 +2053,10 @@ export default {
      * created by : BNTIEN
      * created date: 08-08-2023 04:49:32
      */
-    async handleScrollDebt() {
+    async handleScrollDebt(textSearch) {
       try {
         this.currentPageDebt += 1;
-        await this.getListDebt();
+        await this.getListDebt(this.currentPageDebt, textSearch);
       } catch {
         return;
       }
@@ -2138,10 +2158,10 @@ export default {
      * created by : BNTIEN
      * created date: 08-08-2023 04:49:32
      */
-    async handleScrollBalance() {
+    async handleScrollBalance(textSearch) {
       try {
         this.currentPageBalance += 1;
-        await this.getListBalance();
+        await this.getListBalance(this.currentPageBalance, textSearch);
       } catch {
         return;
       }
