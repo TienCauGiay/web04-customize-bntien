@@ -62,3 +62,7 @@
     margin-left: unset;
 }
 
+.form-cbb-main div:last-child:hover{
+    border-radius: 0 0 4px 4px;
+}
+

@@ -73,6 +73,15 @@
             </template>
           </div>
         </template>
+        <div
+          class="form-cbb-menu-item"
+          v-if="!listEntitySearchCBB.Data.length"
+          :class="{
+            'not-found-entity': !listEntitySearchCBB.Data.length,
+          }"
+        >
+          Không tìm thấy
+        </div>
       </div>
     </div>
   </div>
@@ -365,5 +374,11 @@ input:focus {
 
 #info-payment-detail input {
   height: calc(28px - 0.667px * 2);
+}
+
+.not-found-entity {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

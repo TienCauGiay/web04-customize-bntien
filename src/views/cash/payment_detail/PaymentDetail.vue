@@ -440,7 +440,7 @@
                       :propName="'AccountName'"
                       :valueInput="item.AccountDebtNumber"
                       :propCode="'AccountDebtNumber'"
-                      :propBorderRed="'AccountDebtId'"
+                      :propBorderRed="`AccountDebtId${index}`"
                       :textColFirst="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountNumber
@@ -465,7 +465,7 @@
                       :propName="'AccountName'"
                       :valueInput="item.AccountBalanceNumber"
                       :propCode="'AccountBalanceNumber'"
-                      :propBorderRed="'AccountBalanceId'"
+                      :propBorderRed="`AccountBalanceId${index}`"
                       :textColFirst="
                         this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
                           .textProperty.accountNumber
@@ -1103,7 +1103,6 @@ export default {
           );
           this.receipt.AccountantList = res.data;
           this.accountantOlds = JSON.parse(JSON.stringify(res.data));
-          console.log(this.receipt.AccountantList);
         } else {
           this.setNewAccountant();
         }
@@ -1363,14 +1362,14 @@ export default {
         ) {
           checkNoted = false;
           this.dataNotNull.push(
-            `<TK nợ: ${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
+            `<TK nợ: <${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
           );
         } else {
           // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
           if (!this.receipt.ProviderId) {
             checkNoted = false;
             this.dataNotNull.push(
-              `Tài khoản ${x.AccountDebtNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
+              `Tài khoản nợ ${x.AccountDebtNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
             );
           }
         }
@@ -1380,14 +1379,14 @@ export default {
         ) {
           checkNoted = false;
           this.dataNotNull.push(
-            `<TK có: ${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
+            `<TK có: <${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
           );
         } else {
           // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
           if (!this.receipt.ProviderId) {
             checkNoted = false;
             this.dataNotNull.push(
-              `Tài khoản ${x.AccountBalanceNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
+              `Tài khoản có ${x.AccountBalanceNumber} chi tiết theo <Nhà cung cấp>, chứng từ hạch toán thiếu <Nhà cung cấp>`
             );
           }
         }
@@ -1434,6 +1433,7 @@ export default {
         checkReturn = accountantList.some((item, index) => {
           if (!item.AccountDebtId) {
             this.dataNotNull.push("Tài khoản nợ không được để trống");
+            this.isBorderRed[`AccountDebtId${index}`] = true;
             this.isBorderRed.AccountDebtId = true;
             this.indexSelectRow = index;
             return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
@@ -1441,6 +1441,7 @@ export default {
           if (!item.AccountBalanceId) {
             this.dataNotNull.push("Tài khoản có không được để trống");
             this.isBorderRed.AccountBalanceId = true;
+            this.isBorderRed[`AccountBalanceId${index}`] = true;
             this.indexSelectRow = index;
             return true; // Thoát khỏi vòng lặp ngay lập tức khi thỏa mãn điều kiện này
           }
@@ -1511,6 +1512,7 @@ export default {
               this.receipt.IsNoted = this.checkIsNoted();
               let receiptInserted = await receiptService.create(this.receipt);
               this.receipt.ReceiptId = receiptInserted.data;
+              this.isBorderRed = {};
               await this.getAccountant();
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
@@ -1563,8 +1565,9 @@ export default {
               // Kiểm tra xem có ghi sổ được không
               this.receipt.IsNoted = this.checkIsNoted();
               this.handleAccountant();
-              console.log(this.receipt.AccountantList);
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
+              await this.getAccountant();
+              this.isBorderRed = {};
               this.statusForm = this.$_MISAEnum.FORM_MODE.View;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
@@ -1627,6 +1630,7 @@ export default {
               await this.getNewCode();
               this.AutoSetReceipt();
               this.setNewAccountant();
+              this.$refs.ProviderId.focus();
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
                 this.titleDataNotnull = "Ghi sổ không thành công";
@@ -1679,9 +1683,11 @@ export default {
               this.handleAccountant();
               await receiptService.update(this.receipt.ReceiptId, this.receipt);
               this.receipt = {};
+              this.isBorderRed = {};
               await this.getNewCode();
               this.AutoSetReceipt();
               this.setNewAccountant();
+              this.$refs.ProviderId.focus();
               this.statusForm = this.$_MISAEnum.FORM_MODE.Add;
               if (this.dataNotNull.length > 0) {
                 this.isShowDialogDataNotNull = true;
@@ -1898,7 +1904,6 @@ export default {
      * created date: 05-08-2023 11:39:17
      */
     async handleScrollEmployeeCBB(textSearch) {
-      console.log(textSearch);
       try {
         this.currentPageEmployee += 1;
         const filtered = await employeeService.getFilter(
@@ -2048,6 +2053,7 @@ export default {
       this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
         accountDebt.UserObjectDebt;
       this.isBorderRed.AccountDebtId = false;
+      this.isBorderRed[`AccountDebtId${this.indexSelectRow}`] = false;
     },
     /**
      * Mô tả: Scroll tài khoản nợ
@@ -2069,6 +2075,7 @@ export default {
      */
     async onSearchChangeDebt(newValue) {
       this.isBorderRed.AccountDebtId = false;
+      this.isBorderRed[`AccountDebtId${this.indexSelectRow}`] = false;
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchDebtTimeout);
@@ -2108,6 +2115,7 @@ export default {
     async onSearchChangeBalance(newValue) {
       try {
         this.isBorderRed.AccountBalanceId = false;
+        this.isBorderRed[`AccountBalanceId${this.indexSelectRow}`] = false;
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchBalanceTimeout);
         this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId = "";
@@ -2153,6 +2161,7 @@ export default {
       this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
         accountBalance.UserObjectBalance;
       this.isBorderRed.AccountBalanceId = false;
+      this.isBorderRed[`AccountBalanceId${this.indexSelectRow}`] = false;
     },
     /**
      * Mô tả: Scroll tài khoản nợ
