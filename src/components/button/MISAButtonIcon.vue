@@ -1,8 +1,5 @@
 <template>
-  <button
-    @click="isShowImportExcel = !isShowImportExcel"
-    :class="{ bcg: isShowImportExcel }"
-  >
+  <button @click="isShowImportExcel = !isShowImportExcel" :class="{ bcg: isShowImportExcel }">
     <div class="dropdown-white-icon">
       <div class="import-excel" v-if="isShowImportExcel">
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.IMPORT_EXCEL }}

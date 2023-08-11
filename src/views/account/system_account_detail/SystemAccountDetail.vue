@@ -1,14 +1,7 @@
 <template>
-  <div
-    id="detail-add-system-account"
-    class="position-display-right"
-    ref="FormDetailSystemAccount"
-  >
+  <div id="detail-add-system-account" class="position-display-right" ref="FormDetailSystemAccount">
     <div class="form-detail-toolbar">
-      <div
-        class="question-icon icon-tb"
-        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"
-      ></div>
+      <div class="question-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
@@ -27,10 +20,7 @@
         <div class="full-content">
           <div class="col-md-quater">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountNumber
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -58,10 +48,7 @@
         <div class="half-content">
           <div class="col-md-l">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountName
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -76,9 +63,7 @@
               <div
                 class="misa-tooltip"
                 v-if="
-                  isHovering.AccountName &&
-                  (isBorderRed.AccountName || !account.AccountName) &&
-                  errors['AccountName']
+                  isHovering.AccountName && (isBorderRed.AccountName || !account.AccountName) && errors['AccountName']
                 "
               >
                 {{ errors["AccountName"] }}
@@ -89,10 +74,7 @@
         <div class="half-content">
           <div class="col-md-l">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountNameEnglish
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNameEnglish }}
             </label>
             <div class="container-input">
               <misa-input
@@ -103,13 +85,7 @@
                 @mouseenter="isHovering.AccountNameEnglish = true"
                 @mouseleave="isHovering.AccountNameEnglish = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="
-                  isHovering.AccountNameEnglish &&
-                  isBorderRed.AccountNameEnglish
-                "
-              >
+              <div class="misa-tooltip" v-if="isHovering.AccountNameEnglish && isBorderRed.AccountNameEnglish">
                 {{ errors["AccountNameEnglish"] }}
               </div>
             </div>
@@ -118,10 +94,7 @@
         <div class="half-content">
           <div class="col-md-half">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountGeneral
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountGeneral }}
             </label>
             <misa-form-combobox
               :isBorderRedFormCBB="isBorderRed"
@@ -132,23 +105,14 @@
               :valueInput="valueInputFormCBB"
               :propCode="'AccountNumber'"
               :propBorderRed="'ParentId'"
-              :textColFirst="
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountNumber
-              "
-              :textColSecond="
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .accountName
-              "
+              :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+              :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
               ref="ParentId"
             ></misa-form-combobox>
           </div>
           <div class="col-md-half" style="position: relative">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .nature
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.nature }}
               <span class="s-require">*</span>
             </label>
             <misa-combobox
@@ -158,55 +122,32 @@
               :listEntitySearchCBB="listNatureSearch"
               :propName="'Nature'"
               :propId="'NatureId'"
-              :indexSelectedCBB="
-                listNatureSearch.findIndex(
-                  (obj) => obj.Nature == account.Nature
-                )
-              "
+              :indexSelectedCBB="listNatureSearch.findIndex((obj) => obj.Nature == account.Nature)"
             ></misa-combobox>
           </div>
         </div>
         <div class="full-content-area">
           <div class="col-md-l">
-            <label
-              >{{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .explain
-              }}
-            </label>
-            <misa-input-textarea
-              v-model="account.Explain"
-            ></misa-input-textarea>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.explain }} </label>
+            <misa-input-textarea v-model="account.Explain"></misa-input-textarea>
           </div>
         </div>
         <div class="full-content">
           <div class="entity-check">
             <input type="checkbox" />
-            <span>{{
-              this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                .foreignCurrencyAccounting
-            }}</span>
+            <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.foreignCurrencyAccounting }}</span>
           </div>
         </div>
         <div class="system-account-track-detail">
-          <div
-            class="title-track-detail"
-            @click="isShowTrackDetail = !isShowTrackDetail"
-          >
+          <div class="title-track-detail" @click="isShowTrackDetail = !isShowTrackDetail">
             <div class="title-track-detail-icon">
               <div class="function-icon" style="scale: 1.5 1.5"></div>
             </div>
             <div class="title-track-detail-text">
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-                  .trackDetail
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.trackDetail }}
             </div>
           </div>
-          <div
-            class="content-track-detail"
-            :class="{ hidden: !isShowTrackDetail }"
-          >
+          <div class="content-track-detail" :class="{ hidden: !isShowTrackDetail }">
             <div class="content-track-detail-row">
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
@@ -215,10 +156,7 @@
                     :checked="account.UserObject > 0 && account.UserObject"
                     @click="handleToggleCheckbox('UserObject')"
                   />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.obj
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.obj }}</span>
                 </div>
                 <misa-select-option
                   :listData="listUserObject"
@@ -231,10 +169,7 @@
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.bankAccount
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.bankAccount }}</span>
                 </div>
               </div>
             </div>
@@ -242,20 +177,14 @@
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.objTHCP
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.objTHCP }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.construction
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.construction }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
@@ -264,20 +193,14 @@
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.order
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.order }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.contractSale
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.contractSale }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
@@ -286,20 +209,14 @@
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.contractPurchase
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.contractPurchase }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.itemCP
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.itemCP }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
@@ -308,20 +225,14 @@
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.unit
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.unit }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
-                  <span>{{
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .textProperty.rawCode
-                  }}</span>
+                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.rawCode }}</span>
                 </div>
                 <misa-select-option :isDisabledMenu="true"></misa-select-option>
               </div>
@@ -332,9 +243,7 @@
       <div class="form-detail-action">
         <div class="action-left">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL"
             @click="btnCancel"
           ></misa-button-extra>
         </div>
@@ -345,9 +254,7 @@
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD
-            "
+            :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD"
             @click="btnSaveAndAdd"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
           ></misa-button-default>
@@ -364,16 +271,11 @@
   <!-- dialog acoount id Exist -->
   <misa-dialog-data-exist
     v-if="isShowDialogCodeExist"
-    :textProp="
-      this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-        .accountNumber
-    "
+    :textProp="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
     :textEntityCodeExist="contentAccountNumberExist"
   ></misa-dialog-data-exist>
   <!-- dialog acoount save and close -->
-  <misa-dialog-data-change
-    v-if="isShowDialogDataChange"
-  ></misa-dialog-data-change>
+  <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
 </template>
 
 <script>
@@ -420,14 +322,11 @@ export default {
       this.selectedGeneralAccount(data);
     });
 
-    this.$_MISAEmitter.on(
-      "handleScrollCBBformCBB",
-      async (propCode, textSearch) => {
-        if (propCode == "AccountNumber") {
-          await this.handleScrollformCBB(textSearch);
-        }
+    this.$_MISAEmitter.on("handleScrollCBBformCBB", async (propCode, textSearch) => {
+      if (propCode == "AccountNumber") {
+        await this.handleScrollformCBB(textSearch);
       }
-    );
+    });
 
     this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue) => {
       await this.onSearchChangeAccount(newValue);
@@ -439,23 +338,13 @@ export default {
     this.focusCode();
     this.setValueInputFormCBB();
     // Đăng kí các sự kiện
-    this.$refs.FormDetailSystemAccount.addEventListener(
-      "keydown",
-      this.handleKeyDown
-    );
+    this.$refs.FormDetailSystemAccount.addEventListener("keydown", this.handleKeyDown);
   },
 
   data() {
     return {
       // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
-      accountProperty: [
-        "AccountNumber",
-        "AccountName",
-        "AccountNameEnglish",
-        "ParentId",
-        "Nature",
-        "Explain",
-      ],
+      accountProperty: ["AccountNumber", "AccountName", "AccountNameEnglish", "ParentId", "Nature", "Explain"],
       // Khai báo đối tượng employee
       account: {},
       // Khai báo danh sách đơn vị tìm kiếm
@@ -541,12 +430,10 @@ export default {
         }
         if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
           // Gán title cho form mode thêm mới
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleAdd;
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleAdd;
         } else {
           // Gán title cho form mode thêm sửa
-          this.titleFormMode =
-            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleEdit;
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleEdit;
         }
       } catch {
         return;
@@ -560,11 +447,7 @@ export default {
      */
     async getAllAccount(pageSize, pageNumber, textSearch) {
       try {
-        const res = await accountService.getCodeOrName(
-          pageSize,
-          pageNumber,
-          textSearch
-        );
+        const res = await accountService.getCodeOrName(pageSize, pageNumber, textSearch);
         this.accounts = [...this.accounts, ...res.data.Data];
       } catch {
         this.accounts = [];
@@ -586,9 +469,7 @@ export default {
      * created date: 23-07-2023 12:23:51
      */
     hasDataChanged() {
-      return (
-        JSON.stringify(this.accountSelected) !== JSON.stringify(this.account)
-      );
+      return JSON.stringify(this.accountSelected) !== JSON.stringify(this.account);
     },
     /**
      * Mô tả: Hàm sử lí sự kiện khi click vào icon close
@@ -622,16 +503,9 @@ export default {
      */
     setError(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[
-            key
-          ];
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[key];
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[
-            key
-          ]
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[key]);
       } catch {
         return;
       }
@@ -644,15 +518,9 @@ export default {
      */
     setErrorMaxLength(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[
-            key
-          ].Warning;
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[key].Warning;
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[key]
-            .Warning
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[key].Warning);
       } catch {
         return;
       }
@@ -672,30 +540,19 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.account[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[
-                    refInput
-                  ].Limit
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[refInput].Limit
                 )
               ) {
                 this.setErrorMaxLength(refInput);
               } else if (
                 helperCommon.isMinLengthInput(
                   this.account[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[
-                    refInput
-                  ].MinLength
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[refInput].MinLength
                 )
               ) {
-                this.errors[refInput] =
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[
-                    refInput
-                  ].Warning;
+                this.errors[refInput] = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[refInput].Warning;
                 this.isBorderRed[refInput] = true;
-                this.dataNotNull.push(
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[
-                    refInput
-                  ].Warning
-                );
+                this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.minLength[refInput].Warning);
               }
               break;
             case "AccountName":
@@ -705,9 +562,7 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.account[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[
-                    refInput
-                  ].Limit
+                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[refInput].Limit
                 )
               ) {
                 this.setErrorMaxLength(refInput);
@@ -715,15 +570,9 @@ export default {
               break;
             case "ParentId":
               if (this.valueInputFormCBB && !this.account.ParentId) {
-                this.errors[refInput] =
-                  this.$_MISAResource[
-                    this.$_LANG_CODE
-                  ].ACCOUNT.form.validateNotNull[refInput];
+                this.errors[refInput] = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[refInput];
                 this.isBorderRed[refInput] = true;
-                this.dataNotNull.push(
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                    .validateNotNull[refInput]
-                );
+                this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.validateNotNull[refInput]);
               }
               break;
             default:
@@ -731,8 +580,7 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.account[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                      .maxLength[refInput].Limit
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.maxLength[refInput].Limit
                   )
                 ) {
                   this.setErrorMaxLength(refInput);
@@ -751,10 +599,7 @@ export default {
      * created date: 23-07-2023 12:26:25
      */
     handleErrorInputAccount(errors, accountProperty) {
-      const responseHandle = helperCommon.handleErrorInput(
-        errors,
-        accountProperty
-      );
+      const responseHandle = helperCommon.handleErrorInput(errors, accountProperty);
       this.errors = responseHandle.error;
       this.isBorderRed = responseHandle.isBorderRed;
       this.dataNotNull = responseHandle.dataNotNull;
@@ -783,13 +628,8 @@ export default {
     handleEmployeeExisted(accountExisted) {
       this.isShowDialogCodeExist = true;
       this.isBorderRed.AccountNumber = true;
-      this.errors["AccountNumber"] = `${
-        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty
-          .accountNumber
-      }
-       ${accountExisted.AccountNumber} ${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
-      }`;
+      this.errors["AccountNumber"] = `${this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber}
+       ${accountExisted.AccountNumber} ${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END}`;
       this.contentAccountNumberExist = accountExisted.AccountNumber;
     },
     /**
@@ -818,16 +658,10 @@ export default {
             if (!accountByNumber) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await accountService.create(this.account);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE
                 );
                 this.$emit("closeFormDetail");
                 this.$_MISAEmitter.emit("refreshDataTable");
@@ -852,23 +686,12 @@ export default {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let accountByNumber = await this.checkAccountExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-              if (
-                !accountByNumber ||
-                accountByNumber.AccountNumber ===
-                  this.accountSelected.AccountNumber
-              ) {
-                const res = await accountService.update(
-                  this.accountSelected.AccountId,
-                  this.account
-                );
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
+              if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
+                const res = await accountService.update(this.accountSelected.AccountId, this.account);
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
                   );
                   this.$emit("closeFormDetail");
                   this.$_MISAEmitter.emit("refreshDataTable");
@@ -905,16 +728,10 @@ export default {
             if (!accountByNumber) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               const res = await accountService.create(this.account);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE
                 );
                 this.account = {};
                 this.isBorderRed = {};
@@ -941,27 +758,16 @@ export default {
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let accountByNumber = await this.checkAccountExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
-              if (
-                !accountByNumber ||
-                accountByNumber.AccountNumber ===
-                  this.accountSelected.AccountNumber
-              ) {
-                const res = await accountService.update(
-                  this.accountSelected.AccountId,
-                  this.account
-                );
+              if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
+                const res = await accountService.update(this.accountSelected.AccountId, this.account);
                 this.account = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 this.focusCode();
                 this.$_MISAEmitter.emit("refreshDataTable");
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
                   );
                 }
               } else {
@@ -1162,11 +968,7 @@ export default {
           newValue = "";
         }
         this.searchGeneralAccountTimeOut = setTimeout(async () => {
-          const newListAccount = await accountService.getCodeOrName(
-            20,
-            1,
-            newValue
-          );
+          const newListAccount = await accountService.getCodeOrName(20, 1, newValue);
           this.accounts = newListAccount.data.Data;
         }, 500);
       } catch {

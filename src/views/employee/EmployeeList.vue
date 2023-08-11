@@ -20,9 +20,7 @@
         ref="DeleteMulti"
       >
         <div class="select-function-delete">
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH }}</span>
           <div class="delete-multiple-icon">
             <div class="function-icon-disable"></div>
           </div>
@@ -36,10 +34,7 @@
       <div class="search-entity">
         <input
           type="search"
-          :placeholder="
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .PLACEHOLDER_SEARCH
-          "
+          :placeholder="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PLACEHOLDER_SEARCH"
           v-model="textSearch"
           @keydown.enter="onSearchEmployee"
           @input="autoSearch"
@@ -56,27 +51,19 @@
         class="excel-icon icon-tb"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
       ></div>
-      <div
-        class="setting-icon icon-tb"
-        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"
-      ></div>
+      <div class="setting-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"></div>
       <div class="utilities" @click="isShowUtilities = !isShowUtilities">
         <div class="utilities-text">
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES }}
         </div>
         <div class="function-icon-disable"></div>
         <div class="utilities-synchronized" v-if="isShowUtilities">
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .UTILITIES_SYNCHRONIZED
-          }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES_SYNCHRONIZED }}
         </div>
       </div>
       <div class="insert-data">
         <misa-button-default
-          :textButtonDefault="
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE
-          "
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE"
           @click="btnOpenFormDetail"
         ></misa-button-default>
         <misa-button-icon></misa-button-icon>
@@ -89,91 +76,43 @@
             <tr>
               <th type="checkbox" class="entity-border-left">
                 <div class="th-checkbox">
-                  <input
-                    class="checkbox-select-row"
-                    type="checkbox"
-                    @click="checkAllSelect"
-                    :checked="isCheckAll"
-                  />
+                  <input class="checkbox-select-row" type="checkbox" @click="checkAllSelect" :checked="isCheckAll" />
                 </div>
               </th>
               <th class="e-id">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.CODE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.CODE }}
               </th>
               <th class="e-fullname">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .FULLNAME
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FULLNAME }}
               </th>
               <th class="e-gender-table">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.GENDER }}
               </th>
               <th type="date" class="text-center e-birthday">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DOB
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DOB }}
               </th>
               <th class="e-identity-number">
-                <span
-                  :title="
-                    this.$_MISAResource[this.$_LANG_CODE].TOOLTIP
-                      .IDENTITY_NUMBER
-                  "
-                >
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                      .IDENTITY_NUMBER
-                  }}
+                <span :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.IDENTITY_NUMBER">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.IDENTITY_NUMBER }}
                 </span>
               </th>
               <th class="e-position">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .POSITION
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.POSITION }}
               </th>
               <th class="e-department">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .DEPARTMENT
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.DEPARTMENT }}
               </th>
               <th class="e-bank-account">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_ACCOUNT
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.BANK_ACCOUNT }}
               </th>
               <th class="e-bank-name">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_NAME
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.BANK_NAME }}
               </th>
-              <th
-                :title="
-                  this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.BANK_BRANCH
-                "
-                class="e-bank-branch"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .BANK_BRANCH
-                }}
+              <th :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.BANK_BRANCH" class="e-bank-branch">
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.BANK_BRANCH }}
               </th>
-              <th
-                type="feat"
-                class="text-center entity-border-right e-birthday"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .FEATURE
-                }}
+              <th type="feat" class="text-center entity-border-right e-birthday">
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FEATURE }}
               </th>
             </tr>
           </thead>
@@ -204,13 +143,10 @@
               <td class="e-gender-table">
                 {{
                   item.Gender === 0
-                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Male
+                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Male
                     : item.Gender === 1
-                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Female
-                    : this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER
-                        .Other
+                    ? this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Female
+                    : this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.GENDER.Other
                 }}
               </td>
               <td class="text-center e-birthday">
@@ -234,19 +170,11 @@
               <td class="e-bank-branch" :title="item.BankBranch">
                 {{ item.BankBranch }}
               </td>
-              <td
-                class="text-center entity-border-right e-birthday function-table"
-                @dblclick.stop
-              >
+              <td class="text-center entity-border-right e-birthday function-table" @dblclick.stop>
                 <span @click="onUpdateFormDetail(item)">
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                  }}
+                  {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE }}
                 </span>
-                <div
-                  class="function-table-content"
-                  @click="onOpenFeatureMenu($event, item)"
-                >
+                <div class="function-table-content" @click="onOpenFeatureMenu($event, item)">
                   <div class="function-icon-table function-icon-select"></div>
                 </div>
               </td>
@@ -281,10 +209,7 @@
         src="../../assets/img/loading.svg"
         alt="loading"
       />
-      <div
-        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
-        class="no-data"
-      >
+      <div v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0" class="no-data">
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
@@ -295,29 +220,13 @@
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
-        <div
-          class="pagination-detail-pagesize"
-          :class="{ 'active-record': isShowPaging }"
-          ref="PagingMenu"
-        >
-          <div
-            id="pagination-detail-pagesize-content"
-            class="pagination-detail-pagesize-content"
-          >
+        <div class="pagination-detail-pagesize" :class="{ 'active-record': isShowPaging }" ref="PagingMenu">
+          <div id="pagination-detail-pagesize-content" class="pagination-detail-pagesize-content">
             {{ selectedRecord }}
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
           </div>
-          <div
-            id="menu-paging-select"
-            class="menu-paging-select"
-            @click="onShowSelectPaging"
-          >
-            <div
-              class="function-icon"
-              :class="{ 'rotate-function-icon': isShowPaging }"
-            ></div>
+          <div id="menu-paging-select" class="menu-paging-select" @click="onShowSelectPaging">
+            <div class="function-icon" :class="{ 'rotate-function-icon': isShowPaging }"></div>
             <ul id="menu-paging" class="menu-paging" v-show="isShowPaging">
               <li
                 class="menu-paging-record"
@@ -327,10 +236,7 @@
                 :class="{ 'active-record-item': indexSelectedRecord === index }"
               >
                 {{ record }}
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .RECORD_ON_PAGE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
               </li>
             </ul>
           </div>
@@ -338,17 +244,10 @@
         <div class="pagination-page-number">
           <ul class="page-number">
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
-                    .PREVIOUS
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS)"
               :disabled="isFirstPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE }}
             </button>
             <button
               v-for="pageNumber in this.visiblePageNumbers"
@@ -359,27 +258,16 @@
               {{ pageNumber }}
             </button>
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT)"
               :disabled="isLastPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT }}
             </button>
           </ul>
         </div>
       </div>
     </div>
-    <div
-      v-if="isOverlay"
-      id="container-overlay"
-      class="container-overlay"
-      @closeFormDetail="onCloseFormDetail"
-    ></div>
+    <div v-if="isOverlay" id="container-overlay" class="container-overlay" @closeFormDetail="onCloseFormDetail"></div>
     <!-- employee detail -->
     <EmployeeDetail
       v-if="isShowFormDetail"
@@ -390,22 +278,14 @@
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :contentDeleteMultiple="
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT
-          .CONFIRM_DELETE_MULTIPLE
-      "
+      :contentDeleteMultiple="this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.CONFIRM_DELETE_MULTIPLE"
       :contentDelete="`${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.CONFIRM_DELETE_PRE
-      }${employeeCodeDeleteSelected}${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
-      }`"
+      }${employeeCodeDeleteSelected}${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END}`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- toast message -->
-    <misa-toast-success
-      v-if="isShowToastMessage"
-      :contentToast="contentToastSuccess"
-    ></misa-toast-success>
+    <misa-toast-success v-if="isShowToastMessage" :contentToast="contentToastSuccess"></misa-toast-success>
     <a href="" ref="ExportListEmployee" v-show="false"></a>
   </div>
 </template>
@@ -558,10 +438,7 @@ export default {
         return [];
       }
 
-      let startPage = Math.max(
-        this.currentPage - Math.floor(this.maxVisiblePages / 2),
-        1
-      );
+      let startPage = Math.max(this.currentPage - Math.floor(this.maxVisiblePages / 2), 1);
       let endPage = startPage + this.maxVisiblePages - 1;
       if (endPage > this.totalPages) {
         endPage = this.totalPages;
@@ -609,11 +486,7 @@ export default {
     async getListEmployee() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await employeeService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          ""
-        );
+        const resfilter = await employeeService.getFilter(this.selectedRecord, this.currentPage, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
       } catch {
@@ -627,9 +500,7 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord =
-        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
-        (this.textSearch = "");
+      (this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT), (this.textSearch = "");
       await this.getListEmployee();
     },
     /**
@@ -739,13 +610,9 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListEmployee();
         }
@@ -866,11 +733,7 @@ export default {
      */
     async goToPage(p) {
       let newPage;
-      if (
-        p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
-        this.currentPage > 1
-      ) {
+      if (p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS && this.currentPage > 1) {
         newPage = this.currentPage - 1;
       } else if (
         p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
@@ -878,8 +741,7 @@ export default {
       ) {
         newPage = this.currentPage + 1;
       } else if (
-        typeof p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        typeof p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
         p >= 1 &&
         p <= this.totalPages
       ) {
@@ -998,14 +860,10 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.ids = [];
           this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListEmployee();
         }

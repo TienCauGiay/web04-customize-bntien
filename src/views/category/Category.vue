@@ -7,55 +7,33 @@
       <div class="category-row">
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OBJECTS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OBJECTS }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.CUSTOMER
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.CUSTOMER }}
           </a>
           <router-link to="/provider">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.PROVIDER
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.PROVIDER }}
           </router-link>
           <router-link to="/employee">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.EMPLOYEE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.EMPLOYEE }}
           </router-link>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .GROUP_CUSTOMER_PROVIDER
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.GROUP_CUSTOMER_PROVIDER }}
           </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU
-                .SUPPLY_GOODS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.SUPPLY_GOODS }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .SUPPLY_GOODS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.SUPPLY_GOODS }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.WAREHOUSE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.WAREHOUSE }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .GROUP_MATERIAL_GOOD_SERVICE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.GROUP_MATERIAL_GOOD_SERVICE }}
           </a>
           <a>
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.UNIT }}
@@ -63,110 +41,67 @@
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ACCOUNTS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ACCOUNTS }}
           </a>
           <router-link to="/system-account">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .ACCOUNT_SYSTEM
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.ACCOUNT_SYSTEM }}
           </router-link>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TRANFER_ACCOUNT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TRANFER_ACCOUNT }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .ACCOUNT_DEFAULT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.ACCOUNT_DEFAULT }}
           </a>
         </div>
       </div>
       <div class="category-row">
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.EXPENSE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.EXPENSE }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .COSS_AGGREGATION_OBJECT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.COSS_AGGREGATION_OBJECT }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .EXPENSE_ITEM
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.EXPENSE_ITEM }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .CONSTRUCTION
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.CONSTRUCTION }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TYPE_CONSTRUCTION
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_CONSTRUCTION }}
           </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.BANKS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.BANKS }}
           </a>
           <a>
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.BANK }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .BANK_ACCOUNT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.BANK_ACCOUNT }}
           </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU
-                .BRANCH_DEPARTMENT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.BRANCH_DEPARTMENT }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .ORGANIZATIONAL_STRUCTURE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.ORGANIZATIONAL_STRUCTURE }}
           </a>
         </div>
       </div>
       <div class="category-row">
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ASSETS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ASSETS }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_TOOL
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_TOOL }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TYPE_ASSETS
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_ASSETS }}
           </a>
         </div>
         <div class="category-md-4">
@@ -174,68 +109,40 @@
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.TAX }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .SPECIAL_CONSUMPTION_TARIFF
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.SPECIAL_CONSUMPTION_TARIFF }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .RESOURCE_TAX_SCHEDULE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.RESOURCE_TAX_SCHEDULE }}
           </a>
         </div>
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OTHER
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.OTHER }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TERM_PAYMENT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TERM_PAYMENT }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .REVENUE_DISBURSEMENT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.REVENUE_DISBURSEMENT }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .STATISTICAL_CODE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.STATISTICAL_CODE }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TYPE_MONEY
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_MONEY }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TYPE_DOCUMENT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TYPE_DOCUMENT }}
           </a>
         </div>
       </div>
       <div class="category-row">
         <div class="category-md-4">
           <a class="title-menu-item">
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.SALARY
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.SALARY }}
           </a>
           <a>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM
-                .TIME_ATTENDANCE_SYMBOL
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.TIME_ATTENDANCE_SYMBOL }}
           </a>
         </div>
       </div>

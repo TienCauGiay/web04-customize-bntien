@@ -1,9 +1,6 @@
 <template>
   <div class="overlay-dialog">
-    <div
-      class="dialog-entity position-display-center"
-      id="dialog-danger-entity"
-    >
+    <div class="dialog-entity position-display-center" id="dialog-danger-entity">
       <div class="title-dialog">
         <h1>
           {{ this.title }}
@@ -24,9 +21,7 @@
       </div>
       <div class="dialog-danger-footer">
         <misa-button-default
-          :textButtonDefault="
-            this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE
-          "
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"
           @click="btnClose"
           ref="CloseForm"
           :tabindex="200"

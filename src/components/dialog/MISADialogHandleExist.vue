@@ -1,9 +1,6 @@
 <template>
   <div class="overlay-dialog">
-    <div
-      class="dialog-entity position-display-center"
-      id="dialog-warning-entity"
-    >
+    <div class="dialog-entity position-display-center" id="dialog-warning-entity">
       <div class="title-dialog">
         <h1>
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}

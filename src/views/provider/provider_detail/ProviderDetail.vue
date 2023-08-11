@@ -1,14 +1,7 @@
 <template>
-  <div
-    id="detail-info-provider"
-    class="position-display-center"
-    ref="FormDetailProvider"
-  >
+  <div id="detail-info-provider" class="position-display-center" ref="FormDetailProvider">
     <div class="form-detail-toolbar">
-      <div
-        class="question-icon icon-tb"
-        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"
-      ></div>
+      <div class="question-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.HELP"></div>
       <div
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
@@ -19,45 +12,19 @@
     <div class="form-detail-main">
       <div class="provider-title">
         <p>
-          <b>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-              .infoProvider
-          }}</b>
+          <b>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.infoProvider }}</b>
         </p>
         <div class="entity-check">
-          <input
-            type="radio"
-            name="typeObject"
-            :checked="!this.provider.IsPersonal"
-            @click="handleClickInstitute"
-          />
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-              .organization
-          }}</span>
+          <input type="radio" name="typeObject" :checked="!this.provider.IsPersonal" @click="handleClickInstitute" />
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.organization }}</span>
         </div>
         <div class="entity-check">
-          <input
-            type="radio"
-            name="typeObject"
-            :checked="this.provider.IsPersonal"
-            @click="handleClickPersonal"
-          />
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-              .personal
-          }}</span>
+          <input type="radio" name="typeObject" :checked="this.provider.IsPersonal" @click="handleClickPersonal" />
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.personal }}</span>
         </div>
         <div class="entity-check" id="provider-title-input-checkbox">
-          <input
-            type="checkbox"
-            :checked="provider.IsCustomer"
-            @click="toggleCheckboxCustomer"
-          />
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-              .isCustomer
-          }}</span>
+          <input type="checkbox" :checked="provider.IsCustomer" @click="toggleCheckboxCustomer" />
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.isCustomer }}</span>
         </div>
       </div>
       <div class="form-detail-content">
@@ -65,10 +32,7 @@
         <template v-if="!this.provider.IsPersonal">
           <div class="half-content">
             <div class="col-md-n">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .taxCode
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.taxCode }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.TaxCode"
@@ -78,20 +42,14 @@
                   @mouseenter="isHovering.TaxCode = true"
                   @mouseleave="isHovering.TaxCode = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.TaxCode && isBorderRed.TaxCode"
-                >
+                <div class="misa-tooltip" v-if="isHovering.TaxCode && isBorderRed.TaxCode">
                   {{ errors["TaxCode"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-tb">
               <label>
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .textProperty.providerCode
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerCode }}
                 <span class="s-require">*</span>
               </label>
               <div class="container-input">
@@ -118,10 +76,7 @@
           </div>
           <div class="half-content">
             <div class="col-md-n">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .phoneNumber
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phoneNumber }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.PhoneNumber"
@@ -131,19 +86,13 @@
                   @mouseenter="isHovering.PhoneNumber = true"
                   @mouseleave="isHovering.PhoneNumber = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.PhoneNumber && isBorderRed.PhoneNumber"
-                >
+                <div class="misa-tooltip" v-if="isHovering.PhoneNumber && isBorderRed.PhoneNumber">
                   {{ errors["PhoneNumber"] }}
                 </div>
               </div>
             </div>
             <div class="col-md-tb">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .website
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.website }}</label>
               <div class="container-input">
                 <misa-input
                   v-model="provider.Website"
@@ -153,10 +102,7 @@
                   @mouseenter="isHovering.Website = true"
                   @mouseleave="isHovering.Website = false"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.Website && isBorderRed.Website"
-                >
+                <div class="misa-tooltip" v-if="isHovering.Website && isBorderRed.Website">
                   {{ errors["Website"] }}
                 </div>
               </div>
@@ -165,10 +111,7 @@
           <div class="half-content">
             <div class="col-md-l">
               <label>
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .textProperty.providerName
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerName }}
                 <span class="s-require">*</span>
               </label>
               <div class="container-input">
@@ -195,10 +138,7 @@
           </div>
           <div class="half-content" id="group-provider">
             <div class="col-md-l">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .groupProvider
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.groupProvider }}</label>
               <misa-combobox-select-multiple
                 :listDataSelected="provider.GroupProvider"
                 :propCode="'GroupCode'"
@@ -210,10 +150,7 @@
           </div>
           <div class="half-content-2">
             <div class="col-md-l">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .address
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.address }}</label>
               <div class="container-input">
                 <misa-input-textarea
                   v-model="provider.Address"
@@ -222,15 +159,9 @@
                   @input="setIsBorderRed('Address')"
                   @mouseenter="isHovering.Address = true"
                   @mouseleave="isHovering.Address = false"
-                  :placeholder="
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.placeholderAddress
-                  "
+                  :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderAddress"
                 ></misa-input-textarea>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.Address && isBorderRed.Address"
-                >
+                <div class="misa-tooltip" v-if="isHovering.Address && isBorderRed.Address">
                   {{ errors["Address"] }}
                 </div>
               </div>
@@ -238,18 +169,12 @@
           </div>
           <div class="half-content">
             <div class="col-md-l">
-              <label>{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .purchasStaff
-              }}</label>
+              <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.purchasStaff }}</label>
               <misa-combobox-select-single
                 :propId="'EmployeeId'"
                 :propCode="'EmployeeCode'"
                 :propName="'FullName'"
-                :haederCBB="
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .textProperty.headerCBBEmployee
-                "
+                :haederCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.headerCBBEmployee"
                 :bodyCBB="['EmployeeCode', 'FullName']"
                 :isBorderRedCBB="isBorderRed"
                 :errorsCBB="errors"
@@ -264,10 +189,7 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-tb">
             <label>
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .providerCode
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerCode }}
               <span class="s-require">*</span>
             </label>
             <div class="container-input">
@@ -292,10 +214,7 @@
             </div>
           </div>
           <div class="col-md-n">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                .taxCode
-            }}</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.taxCode }}</label>
             <div class="container-input">
               <misa-input
                 v-model="provider.TaxCode"
@@ -305,25 +224,15 @@
                 @mouseenter="isHovering.TaxCode = true"
                 @mouseleave="isHovering.TaxCode = false"
               ></misa-input>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.TaxCode && isBorderRed.TaxCode"
-              >
+              <div class="misa-tooltip" v-if="isHovering.TaxCode && isBorderRed.TaxCode">
                 {{ errors["TaxCode"] }}
               </div>
             </div>
           </div>
         </div>
-        <div
-          class="half-content"
-          id="group-provider"
-          v-if="this.provider.IsPersonal"
-        >
+        <div class="half-content" id="group-provider" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                .groupProvider
-            }}</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.groupProvider }}</label>
             <misa-combobox-select-multiple
               :listDataSelected="provider.GroupProvider"
               :propCode="'GroupCode'"
@@ -336,10 +245,7 @@
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-n" style="position: relative">
             <label
-              >{{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .providerName
-              }}
+              >{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerName }}
               <span class="s-require">*</span>
             </label>
             <misa-combobox
@@ -350,8 +256,7 @@
               :propName="'Vocative'"
               :propId="'Id'"
               :placeholderInputCBB="
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .placeholderVocative
+                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderVocative
               "
             ></misa-combobox>
           </div>
@@ -365,10 +270,7 @@
                 @input="setIsBorderRed('ProviderName')"
                 @mouseenter="isHovering.ProviderName = true"
                 @mouseleave="isHovering.ProviderName = false"
-                :placeholder="
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .textProperty.placeholderProviderName
-                "
+                :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderProviderName"
               ></misa-input>
               <div
                 class="misa-tooltip"
@@ -385,18 +287,12 @@
         </div>
         <div class="half-content" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                .purchasStaff
-            }}</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.purchasStaff }}</label>
             <misa-combobox-select-single
               :propId="'EmployeeId'"
               :propCode="'EmployeeCode'"
               :propName="'FullName'"
-              :haederCBB="
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .headerCBBEmployee
-              "
+              :haederCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.headerCBBEmployee"
               :bodyCBB="['EmployeeCode', 'FullName']"
               :isBorderRedCBB="isBorderRed"
               :errorsCBB="errors"
@@ -408,10 +304,7 @@
         </div>
         <div class="half-content-2" v-if="this.provider.IsPersonal">
           <div class="col-md-l">
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                .address
-            }}</label>
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.address }}</label>
             <div class="container-input">
               <misa-input-textarea
                 v-model="provider.Address"
@@ -420,15 +313,9 @@
                 @input="setIsBorderRed('Address')"
                 @mouseenter="isHovering.Address = true"
                 @mouseleave="isHovering.Address = false"
-                :placeholder="
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .textProperty.placeholderAddress
-                "
+                :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderAddress"
               ></misa-input-textarea>
-              <div
-                class="misa-tooltip"
-                v-if="isHovering.Address && isBorderRed.Address"
-              >
+              <div class="misa-tooltip" v-if="isHovering.Address && isBorderRed.Address">
                 {{ errors["Address"] }}
               </div>
             </div>
@@ -441,68 +328,46 @@
               @click="handleSelectLayout('infoContact')"
               :class="{ 'active-layout': selectLayout.infoContact }"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .infoContact
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.infoContact }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('termPayment')"
               :class="{ 'active-layout': selectLayout.termPayment }"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .termPayment
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.termPayment }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('bankAccount')"
               :class="{ 'active-layout': selectLayout.bankAccount }"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .bankAccount
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.bankAccount }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('addressOther')"
               :class="{ 'active-layout': selectLayout.addressOther }"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .addressOther
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.addressOther }}
             </button>
             <button
               class="select-layout-item"
               @click="handleSelectLayout('note')"
               :class="{ 'active-layout': selectLayout.note }"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                  .note
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.note }}
             </button>
           </div>
           <!-- Là Tổ chức nhưng không là khách hàng -->
           <div
             class="content-select-layout"
-            v-if="
-              !this.provider.IsPersonal &&
-              selectLayout.infoContact &&
-              !provider.IsCustomer
-            "
+            v-if="!this.provider.IsPersonal && selectLayout.infoContact && !provider.IsCustomer"
           >
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-n" style="position: relative">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.personalContact
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.personalContact }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -511,8 +376,7 @@
                     :propName="'Vocative'"
                     :propId="'Id'"
                     :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.placeholderVocative
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderVocative
                     "
                   ></misa-combobox>
                 </div>
@@ -527,16 +391,14 @@
                       @mouseenter="isHovering.NameContacter = true"
                       @mouseleave="isHovering.NameContacter = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.placeholderProviderName
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderProviderName
                       "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.NameContacter &&
-                        (isBorderRed.NameContacter ||
-                          !provider.NameContacter) &&
+                        (isBorderRed.NameContacter || !provider.NameContacter) &&
                         errors['NameContacter']
                       "
                     >
@@ -547,10 +409,7 @@
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.lawyer
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -559,18 +418,11 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.lawyer
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
-                      v-if="
-                        isHovering.Lawyer &&
-                        (isBorderRed.Lawyer || !provider.Lawyer) &&
-                        errors['Lawyer']
-                      "
+                      v-if="isHovering.Lawyer && (isBorderRed.Lawyer || !provider.Lawyer) && errors['Lawyer']"
                     >
                       {{ errors["Lawyer"] }}
                     </div>
@@ -595,8 +447,7 @@
                       class="misa-tooltip"
                       v-if="
                         isHovering.EmailContacter &&
-                        (isBorderRed.EmailContacter ||
-                          !provider.EmailContacter) &&
+                        (isBorderRed.EmailContacter || !provider.EmailContacter) &&
                         errors['EmailContacter']
                       "
                     >
@@ -620,16 +471,14 @@
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.phoneNumberContacter
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phoneNumberContacter
                       "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.PhoneNumberContacter &&
-                        (isBorderRed.PhoneNumberContacter ||
-                          !provider.PhoneNumberContacter) &&
+                        (isBorderRed.PhoneNumberContacter || !provider.PhoneNumberContacter) &&
                         errors['PhoneNumberContacter']
                       "
                     >
@@ -643,19 +492,12 @@
           <!-- Là Tổ chức và là khách hàng -->
           <div
             class="content-select-layout"
-            v-if="
-              !this.provider.IsPersonal &&
-              selectLayout.infoContact &&
-              provider.IsCustomer
-            "
+            v-if="!this.provider.IsPersonal && selectLayout.infoContact && provider.IsCustomer"
           >
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-n" style="position: relative">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.personalContact
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.personalContact }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -664,8 +506,7 @@
                     :propName="'Vocative'"
                     :propId="'Id'"
                     :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.placeholderVocative
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderVocative
                     "
                   ></misa-combobox>
                 </div>
@@ -680,16 +521,14 @@
                       @mouseenter="isHovering.NameContacter = true"
                       @mouseleave="isHovering.NameContacter = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.placeholderProviderName
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderProviderName
                       "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.NameContacter &&
-                        (isBorderRed.NameContacter ||
-                          !provider.NameContacter) &&
+                        (isBorderRed.NameContacter || !provider.NameContacter) &&
                         errors['NameContacter']
                       "
                     >
@@ -700,10 +539,7 @@
               </div>
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.nameReceiver
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.nameReceiver }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="NameReceiver"
@@ -713,8 +549,7 @@
                       @mouseenter="isHovering.NameReceiver = true"
                       @mouseleave="isHovering.NameReceiver = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.placeholderProviderName
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.placeholderProviderName
                       "
                     ></misa-input>
                     <div
@@ -748,8 +583,7 @@
                       class="misa-tooltip"
                       v-if="
                         isHovering.EmailContacter &&
-                        (isBorderRed.EmailContacter ||
-                          !provider.EmailContacter) &&
+                        (isBorderRed.EmailContacter || !provider.EmailContacter) &&
                         errors['EmailContacter']
                       "
                     >
@@ -768,17 +602,13 @@
                       @input="setIsBorderRed('EmailReceiver')"
                       @mouseenter="isHovering.EmailReceiver = true"
                       @mouseleave="isHovering.EmailReceiver = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.emails
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.emails"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.EmailReceiver &&
-                        (isBorderRed.EmailReceiver ||
-                          !provider.EmailReceiver) &&
+                        (isBorderRed.EmailReceiver || !provider.EmailReceiver) &&
                         errors['EmailReceiver']
                       "
                     >
@@ -802,16 +632,14 @@
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.phoneNumberContacter
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phoneNumberContacter
                       "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.PhoneNumberContacter &&
-                        (isBorderRed.PhoneNumberContacter ||
-                          !provider.PhoneNumberContacter) &&
+                        (isBorderRed.PhoneNumberContacter || !provider.PhoneNumberContacter) &&
                         errors['PhoneNumberContacter']
                       "
                     >
@@ -833,16 +661,14 @@
                       @mouseenter="isHovering.PhoneNumberReceiver = true"
                       @mouseleave="isHovering.PhoneNumberReceiver = false"
                       :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.phoneNumberContacter
+                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phoneNumberContacter
                       "
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.PhoneNumberReceiver &&
-                        (isBorderRed.PhoneNumberReceiver ||
-                          !provider.PhoneNumberReceiver) &&
+                        (isBorderRed.PhoneNumberReceiver || !provider.PhoneNumberReceiver) &&
                         errors['PhoneNumberReceiver']
                       "
                     >
@@ -855,10 +681,7 @@
             <div class="content-select-layout-row-2">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.lawyer
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -867,18 +690,11 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.lawyer
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
-                      v-if="
-                        isHovering.Lawyer &&
-                        (isBorderRed.Lawyer || !provider.Lawyer) &&
-                        errors['Lawyer']
-                      "
+                      v-if="isHovering.Lawyer && (isBorderRed.Lawyer || !provider.Lawyer) && errors['Lawyer']"
                     >
                       {{ errors["Lawyer"] }}
                     </div>
@@ -888,17 +704,11 @@
             </div>
           </div>
           <!-- Là cá nhân nhưng không là khách hàng -->
-          <div
-            class="content-select-layout"
-            v-if="this.provider.IsPersonal && selectLayout.infoContact"
-          >
+          <div class="content-select-layout" v-if="this.provider.IsPersonal && selectLayout.infoContact">
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.infoContact
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.infoContact }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="EmailContacter"
@@ -913,8 +723,7 @@
                       class="misa-tooltip"
                       v-if="
                         isHovering.EmailContacter &&
-                        (isBorderRed.EmailContacter ||
-                          !provider.EmailContacter) &&
+                        (isBorderRed.EmailContacter || !provider.EmailContacter) &&
                         errors['EmailContacter']
                       "
                     >
@@ -925,10 +734,7 @@
               </div>
               <div class="half-content">
                 <div class="col-md-half">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.infoIdentity
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.infoIdentity }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="IdentityNumberContacter"
@@ -939,17 +745,13 @@
                       @input="setIsBorderRed('IdentityNumberContacter')"
                       @mouseenter="isHovering.IdentityNumberContacter = true"
                       @mouseleave="isHovering.IdentityNumberContacter = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.identityNumber
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.identityNumber"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.IdentityNumberContacter &&
-                        (isBorderRed.IdentityNumberContacter ||
-                          !provider.IdentityNumberContacter) &&
+                        (isBorderRed.IdentityNumberContacter || !provider.IdentityNumberContacter) &&
                         errors['IdentityNumberContacter']
                       "
                     >
@@ -972,17 +774,13 @@
                       @input="setIsBorderRed('PhoneNumberContacter')"
                       @mouseenter="isHovering.PhoneNumberContacter = true"
                       @mouseleave="isHovering.PhoneNumberContacter = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.phonePersonal
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phonePersonal"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.PhoneNumberContacter &&
-                        (isBorderRed.PhoneNumberContacter ||
-                          !provider.PhoneNumberContacter) &&
+                        (isBorderRed.PhoneNumberContacter || !provider.PhoneNumberContacter) &&
                         errors['PhoneNumberContacter']
                       "
                     >
@@ -1008,10 +806,7 @@
                     ></misa-input>
                     <div
                       class="misa-tooltip"
-                      v-if="
-                        isHovering.IdentityDateContacter &&
-                        isBorderRed.IdentityDateContacter
-                      "
+                      v-if="isHovering.IdentityDateContacter && isBorderRed.IdentityDateContacter"
                     >
                       {{ errors["IdentityDateContacter"] }}
                     </div>
@@ -1032,17 +827,13 @@
                       @input="setIsBorderRed('PhoneLandlineContacter')"
                       @mouseenter="isHovering.PhoneLandlineContacter = true"
                       @mouseleave="isHovering.PhoneLandlineContacter = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.phoneLandline
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.phoneLandline"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.PhoneLandlineContacter &&
-                        (isBorderRed.PhoneLandlineContacter ||
-                          !provider.PhoneLandlineContacter) &&
+                        (isBorderRed.PhoneLandlineContacter || !provider.PhoneLandlineContacter) &&
                         errors['PhoneLandlineContacter']
                       "
                     >
@@ -1063,17 +854,13 @@
                       @input="setIsBorderRed('IdentityPlace')"
                       @mouseenter="isHovering.IdentityPlace = true"
                       @mouseleave="isHovering.IdentityPlace = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.identityPlace
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.identityPlace"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
                       v-if="
                         isHovering.IdentityPlace &&
-                        (isBorderRed.IdentityPlace ||
-                          !provider.IdentityPlace) &&
+                        (isBorderRed.IdentityPlace || !provider.IdentityPlace) &&
                         errors['IdentityPlace']
                       "
                     >
@@ -1086,10 +873,7 @@
             <div class="content-select-layout-row">
               <div class="half-content">
                 <div class="col-md-l">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.lawyer
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer }}</label>
                   <div class="container-input">
                     <misa-input
                       ref="Lawyer"
@@ -1098,18 +882,11 @@
                       @input="setIsBorderRed('Lawyer')"
                       @mouseenter="isHovering.Lawyer = true"
                       @mouseleave="isHovering.Lawyer = false"
-                      :placeholder="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.lawyer
-                      "
+                      :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.lawyer"
                     ></misa-input>
                     <div
                       class="misa-tooltip"
-                      v-if="
-                        isHovering.Lawyer &&
-                        (isBorderRed.Lawyer || !provider.Lawyer) &&
-                        errors['Lawyer']
-                      "
+                      v-if="isHovering.Lawyer && (isBorderRed.Lawyer || !provider.Lawyer) && errors['Lawyer']"
                     >
                       {{ errors["Lawyer"] }}
                     </div>
@@ -1129,18 +906,12 @@
               <div class="full-content">
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.termPayment
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.termPayment }}</label>
                     <misa-combobox-select-single
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :haederCBB="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.headerCBBTermPayment
-                      "
+                      :haederCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.headerCBBTermPayment"
                       :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
@@ -1150,18 +921,12 @@
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.numberDayOwed
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.numberDayOwed }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
-                        :class="[
-                          { 'border-red': isBorderRed.NumberDayOwed },
-                          'right-to-left',
-                        ]"
+                        :class="[{ 'border-red': isBorderRed.NumberDayOwed }, 'right-to-left']"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
@@ -1170,8 +935,7 @@
                         class="misa-tooltip"
                         v-if="
                           isHovering.NumberDayOwed &&
-                          (isBorderRed.NumberDayOwed ||
-                            !provider.NumberDayOwed) &&
+                          (isBorderRed.NumberDayOwed || !provider.NumberDayOwed) &&
                           errors['NumberDayOwed']
                         "
                       >
@@ -1180,18 +944,12 @@
                     </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.amountDebt
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.amountDebt }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
-                        :class="[
-                          { 'border-red': isBorderRed.AmountDebt },
-                          'right-to-left',
-                        ]"
+                        :class="[{ 'border-red': isBorderRed.AmountDebt }, 'right-to-left']"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
@@ -1214,15 +972,8 @@
             <div class="content-select-layout-row">
               <div class="full-content">
                 <div class="full-content-quarter">
-                  <div
-                    class="col-md-quater"
-                    style="position: relative"
-                    id="multiple-cbb-no-icon"
-                  >
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.accountPayable
-                    }}</label>
+                  <div class="col-md-quater" style="position: relative" id="multiple-cbb-no-icon">
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.accountPayable }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
@@ -1232,14 +983,8 @@
                       :valueInput="provider.AccountPayableNumber"
                       :propCode="'AccountPayableNumber'"
                       :propBorderRed="'AccountPayableId'"
-                      :textColFirst="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountNumber
-                      "
-                      :textColSecond="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountName
-                      "
+                      :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+                      :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
                     ></misa-form-combobox>
                   </div>
                 </div>
@@ -1256,18 +1001,12 @@
               <div class="full-content">
                 <div class="full-content-quarter">
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.termPayment
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.termPayment }}</label>
                     <misa-combobox-select-single
                       :propCode="'TermPaymentCode'"
                       :propId="'TermPaymentId'"
                       :propName="'TermPaymentName'"
-                      :haederCBB="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.headerCBBTermPayment
-                      "
+                      :haederCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.headerCBBTermPayment"
                       :bodyCBB="['TermPaymentCode', 'TermPaymentName']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
@@ -1277,18 +1016,12 @@
                     ></misa-combobox-select-single>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.numberDayOwed
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.numberDayOwed }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
-                        :class="[
-                          { 'border-red': isBorderRed.NumberDayOwed },
-                          'right-to-left',
-                        ]"
+                        :class="[{ 'border-red': isBorderRed.NumberDayOwed }, 'right-to-left']"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
@@ -1297,8 +1030,7 @@
                         class="misa-tooltip"
                         v-if="
                           isHovering.NumberDayOwed &&
-                          (isBorderRed.NumberDayOwed ||
-                            !provider.NumberDayOwed) &&
+                          (isBorderRed.NumberDayOwed || !provider.NumberDayOwed) &&
                           errors['NumberDayOwed']
                         "
                       >
@@ -1307,18 +1039,12 @@
                     </div>
                   </div>
                   <div class="col-md-quater" style="position: relative">
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.amountDebt
-                    }}</label>
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.amountDebt }}</label>
                     <div class="container-input">
                       <misa-input
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
-                        :class="[
-                          { 'border-red': isBorderRed.AmountDebt },
-                          'right-to-left',
-                        ]"
+                        :class="[{ 'border-red': isBorderRed.AmountDebt }, 'right-to-left']"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
@@ -1341,14 +1067,9 @@
             <div class="content-select-layout-row">
               <div class="full-content">
                 <div class="full-content-quarter">
-                  <div
-                    class="col-md-quater"
-                    style="position: relative"
-                    id="multiple-cbb-no-icon"
-                  >
+                  <div class="col-md-quater" style="position: relative" id="multiple-cbb-no-icon">
                     <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.accountReceivable
+                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.accountReceivable
                     }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
@@ -1359,25 +1080,12 @@
                       :valueInput="provider.AccountReceivableNumber"
                       :propCode="'AccountReceivableNumber'"
                       :propBorderRed="'AccountReceivableId'"
-                      :textColFirst="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountNumber
-                      "
-                      :textColSecond="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountName
-                      "
+                      :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+                      :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
                     ></misa-form-combobox>
                   </div>
-                  <div
-                    class="col-md-quater"
-                    style="position: relative"
-                    id="multiple-cbb-no-icon"
-                  >
-                    <label>{{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.accountPayable
-                    }}</label>
+                  <div class="col-md-quater" style="position: relative" id="multiple-cbb-no-icon">
+                    <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.accountPayable }}</label>
                     <misa-form-combobox
                       :isBorderRedFormCBB="isBorderRed"
                       :entityFormCBB="provider"
@@ -1387,14 +1095,8 @@
                       :valueInput="provider.AccountPayableNumber"
                       :propCode="'AccountPayableNumber'"
                       :propBorderRed="'AccountPayableId'"
-                      :textColFirst="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountNumber
-                      "
-                      :textColSecond="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountName
-                      "
+                      :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+                      :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
                     ></misa-form-combobox>
                   </div>
                 </div>
@@ -1405,45 +1107,29 @@
             class="content-select-layout"
             v-if="selectLayout.bankAccount"
             :class="{
-              'overflow-auto':
-                selectLayout.bankAccount || selectLayout.addressOther,
+              'overflow-auto': selectLayout.bankAccount || selectLayout.addressOther,
             }"
           >
             <table class="table-input" id="table-input-account">
               <thead class="table-input-title">
                 <tr>
                   <th class="table-input-col-1">
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.accountNumber
-                    }}
+                    {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.accountNumber }}
                   </th>
                   <th class="table-input-col-2">
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.bankName
-                    }}
+                    {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.bankName }}
                   </th>
                   <th class="table-input-col-3">
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.bankBranch
-                    }}
+                    {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.bankBranch }}
                   </th>
                   <th class="table-input-col-4">
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.cityOfBank
-                    }}
+                    {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.cityOfBank }}
                   </th>
                   <th class="table-input-col-5"></th>
                 </tr>
               </thead>
               <tbody>
-                <template
-                  v-for="(item, index) in provider.AccountProviders"
-                  :key="index"
-                >
+                <template v-for="(item, index) in provider.AccountProviders" :key="index">
                   <tr v-if="item.Flag != 3">
                     <td class="table-input-col-1">
                       <misa-input v-model="item.AccountNumber"></misa-input>
@@ -1457,10 +1143,7 @@
                     <td class="table-input-col-4">
                       <misa-input v-model="item.CityOfBank"></misa-input>
                     </td>
-                    <td
-                      class="table-input-col-5"
-                      @click="deleteRowAccount(index)"
-                    >
+                    <td class="table-input-col-5" @click="deleteRowAccount(index)">
                       <div class="delete-row-table-input">
                         <div class="delete-icon"></div>
                       </div>
@@ -1471,17 +1154,11 @@
               <tfoot>
                 <td colspan="5">
                   <misa-button-extra
-                    :textButtonExtra="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.addRow
-                    "
+                    :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.addRow"
                     @click="btnAddRowAccount"
                   ></misa-button-extra>
                   <misa-button-extra
-                    :textButtonExtra="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.deleteAllRow
-                    "
+                    :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.deleteAllRow"
                     @click="deleteAllRowAccount"
                   ></misa-button-extra>
                 </td>
@@ -1493,17 +1170,13 @@
             id="address-Other"
             v-if="selectLayout.addressOther"
             :class="{
-              'overflow-auto':
-                selectLayout.bankAccount || selectLayout.addressOther,
+              'overflow-auto': selectLayout.bankAccount || selectLayout.addressOther,
             }"
           >
             <div class="content-select-layout-half">
               <div class="half-content">
                 <div class="col-md-l cbb-has-label" style="position: relative">
-                  <label>{{
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .textProperty.location
-                  }}</label>
+                  <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.location }}</label>
                   <misa-combobox
                     :isBorderRedCBB="isBorderRed"
                     :entityCBB="provider"
@@ -1511,15 +1184,9 @@
                     :listEntitySearchCBB="listCountry.Search"
                     :propName="'LocationCountry'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.country
-                    "
+                    :placeholderInputCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.country"
                     :indexSelectedCBB="
-                      listCountry.All.findIndex(
-                        (obj) =>
-                          obj.LocationCode == locationDefault.LocationCode
-                      )
+                      listCountry.All.findIndex((obj) => obj.LocationCode == locationDefault.LocationCode)
                     "
                   ></misa-combobox>
                 </div>
@@ -1534,10 +1201,7 @@
                     :listEntitySearchCBB="listCity.Search"
                     :propName="'LocationCity'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.city
-                    "
+                    :placeholderInputCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.city"
                   ></misa-combobox>
                 </div>
               </div>
@@ -1550,10 +1214,7 @@
                     :listEntitySearchCBB="listDistrict.Search"
                     :propName="'LocationDistrict'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.district
-                    "
+                    :placeholderInputCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.district"
                   ></misa-combobox>
                 </div>
               </div>
@@ -1566,10 +1227,7 @@
                     :listEntitySearchCBB="listVillage.Search"
                     :propName="'LocationVillage'"
                     :propId="'LocationId'"
-                    :placeholderInputCBB="
-                      this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                        .textProperty.village
-                    "
+                    :placeholderInputCBB="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.village"
                   ></misa-combobox>
                 </div>
               </div>
@@ -1579,43 +1237,25 @@
                 <thead class="table-input-title">
                   <tr>
                     <th class="table-input-col-4" colspan="2">
-                      {{
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.deliveryAddress
-                      }}
+                      {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.deliveryAddress }}
                     </th>
                     <th>
-                      <input
-                        type="checkbox"
-                        @click="handleLikeAddressProvider"
-                        :checked="checkedDeliveryAddress"
-                      />
+                      <input type="checkbox" @click="handleLikeAddressProvider" :checked="checkedDeliveryAddress" />
                     </th>
                     <th style="font-weight: 400">
-                      {{
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.likeAddressProvider
-                      }}
+                      {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.likeAddressProvider }}
                     </th>
                     <th class="table-input-col-5"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template
-                    v-for="(item, index) in provider.DeliveryAddresses"
-                    :key="index"
-                  >
+                  <template v-for="(item, index) in provider.DeliveryAddresses" :key="index">
                     <tr class="table-input-has-data" v-if="item.Flag != 3">
                       <td class="table-input-col-4" colspan="4">
-                        <misa-input
-                          v-model="item.DeliveryAddressName"
-                        ></misa-input>
+                        <misa-input v-model="item.DeliveryAddressName"></misa-input>
                       </td>
                       <td class="table-input-col-5">
-                        <div
-                          class="delete-row-table-input"
-                          @click="deleteRowAddress(index)"
-                        >
+                        <div class="delete-row-table-input" @click="deleteRowAddress(index)">
                           <div class="delete-icon"></div>
                         </div>
                       </td>
@@ -1625,17 +1265,11 @@
                 <tfoot>
                   <td colspan="4">
                     <misa-button-extra
-                      :textButtonExtra="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.addRow
-                      "
+                      :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.addRow"
                       @click="btnAddRowAddress"
                     ></misa-button-extra>
                     <misa-button-extra
-                      :textButtonExtra="
-                        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                          .textProperty.deleteAllRow
-                      "
+                      :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.deleteAllRow"
                       @click="btnDeleteAllRowAddress"
                     ></misa-button-extra>
                   </td>
@@ -1643,15 +1277,8 @@
               </table>
             </div>
           </div>
-          <div
-            class="content-select-layout"
-            v-if="selectLayout.note"
-            id="content-select-layout-note"
-          >
-            <label>{{
-              this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-                .note
-            }}</label>
+          <div class="content-select-layout" v-if="selectLayout.note" id="content-select-layout-note">
+            <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.note }}</label>
             <misa-input-textarea
               v-model="provider.Note"
               ref="Note"
@@ -1666,9 +1293,7 @@
       <div class="form-detail-action">
         <div class="action-left">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL"
             @click="btnCancel"
           ></misa-button-extra>
         </div>
@@ -1679,9 +1304,7 @@
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD
-            "
+            :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD"
             @click="btnSaveAndAdd"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
           ></misa-button-default>
@@ -1697,16 +1320,11 @@
     <!-- dialog employee id Exist -->
     <misa-dialog-data-exist
       v-if="isShowDialogCodeExist"
-      :textProp="
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-          .providerCode
-      "
+      :textProp="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerCode"
       :textEntityCodeExist="contentProviderCodeExist"
     ></misa-dialog-data-exist>
     <!-- dialog employee save and close -->
-    <misa-dialog-data-change
-      v-if="isShowDialogDataChange"
-    ></misa-dialog-data-change>
+    <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
   </div>
 </template>
 
@@ -1756,19 +1374,13 @@ export default {
       this.deleteGroupProvider(data);
     });
 
-    this.$_MISAEmitter.on(
-      "handleScrollCBBSelectMultiple",
-      async (textSearch) => {
-        await this.handleScrollCBBGroup(textSearch);
-      }
-    );
+    this.$_MISAEmitter.on("handleScrollCBBSelectMultiple", async (textSearch) => {
+      await this.handleScrollCBBGroup(textSearch);
+    });
 
-    this.$_MISAEmitter.on(
-      "onSearchChangeCBBSelectMultiple",
-      async (textSearch) => {
-        await this.onSearchChangeGroup(textSearch);
-      }
-    );
+    this.$_MISAEmitter.on("onSearchChangeCBBSelectMultiple", async (textSearch) => {
+      await this.onSearchChangeGroup(textSearch);
+    });
 
     this.$_MISAEmitter.on("onSelectedEntityCBB", async (data, propName) => {
       if (propName == "Vocative") {
@@ -1814,17 +1426,14 @@ export default {
       }
     });
 
-    this.$_MISAEmitter.on(
-      "handleScrollCBBSingle",
-      async (textSearch, propId) => {
-        if (propId == "EmployeeId") {
-          await this.handleScrollEmployeeCBB(textSearch);
-        }
-        if (propId == "TermPaymentId") {
-          await this.handleScrollTermPaymentCBB(textSearch);
-        }
+    this.$_MISAEmitter.on("handleScrollCBBSingle", async (textSearch, propId) => {
+      if (propId == "EmployeeId") {
+        await this.handleScrollEmployeeCBB(textSearch);
       }
-    );
+      if (propId == "TermPaymentId") {
+        await this.handleScrollTermPaymentCBB(textSearch);
+      }
+    });
 
     this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data, propCode) => {
       if (propCode == "AccountReceivableNumber") {
@@ -1835,29 +1444,23 @@ export default {
       }
     });
 
-    this.$_MISAEmitter.on(
-      "handleScrollCBBformCBB",
-      async (propCode, textSearch) => {
-        if (propCode == "AccountReceivableNumber") {
-          await this.handleScrollReceivable(textSearch);
-        }
-        if (propCode == "AccountPayableNumber") {
-          await this.handleScrollPayable(textSearch);
-        }
+    this.$_MISAEmitter.on("handleScrollCBBformCBB", async (propCode, textSearch) => {
+      if (propCode == "AccountReceivableNumber") {
+        await this.handleScrollReceivable(textSearch);
       }
-    );
+      if (propCode == "AccountPayableNumber") {
+        await this.handleScrollPayable(textSearch);
+      }
+    });
 
-    this.$_MISAEmitter.on(
-      "onSearchChangeFormCBB",
-      async (newValue, propCode) => {
-        if (propCode == "AccountReceivableNumber") {
-          await this.onSearchChangeReceivable(newValue);
-        }
-        if (propCode == "AccountPayableNumber") {
-          await this.onSearchChangePayable(newValue);
-        }
+    this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue, propCode) => {
+      if (propCode == "AccountReceivableNumber") {
+        await this.onSearchChangeReceivable(newValue);
       }
-    );
+      if (propCode == "AccountPayableNumber") {
+        await this.onSearchChangePayable(newValue);
+      }
+    });
 
     this.$_MISAEmitter.on("onKeyDownFormCBB", (index, propCode) => {
       if (propCode == "AccountReceivableNumber") {
@@ -1873,17 +1476,13 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
     // Đăng kí các sự kiện
-    this.$refs.FormDetailProvider.addEventListener(
-      "keydown",
-      this.handleKeyDown
-    );
+    this.$refs.FormDetailProvider.addEventListener("keydown", this.handleKeyDown);
   },
 
   data() {
     return {
       // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
-      providerProperty:
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.providerProperty,
+      providerProperty: this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.providerProperty,
       // Khai báo đối tượng provider
       provider: {},
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
@@ -1905,11 +1504,9 @@ export default {
       // Khai báo biến chứa danh sách các ô input khi hover
       isHovering: {},
       // Khai báo danh sách xưng hô
-      listVocative:
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative,
+      listVocative: this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative,
       // Biến quy định layout nào đang được chọn
-      selectLayout:
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.selectLayout,
+      selectLayout: this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.selectLayout,
       // Khai báo danh sách group
       listGroupSearch: [],
       // Khai báo trang hiện tại của group trong phân trang
@@ -1923,8 +1520,7 @@ export default {
       // Khai báo biến quy định sau 1 khoảng thời gian mới thực hiện tìm kiếm ở combobox điều khoản thanh toán
       searchTermPaymentTimeout: null,
       // Khởi tạo quốc gia mặc định
-      locationDefault:
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.locationDefault,
+      locationDefault: this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.locationDefault,
       // Khai báo biến lưu danh sách quốc gia
       listCountry: { All: [], Search: [] },
       // Khai báo biến lưu danh sách tỉnh
@@ -2030,10 +1626,7 @@ export default {
         this.listPayable = await this.getListPayable(20, 1, "");
         this.listCountry.All = await this.getListLocation(1, "");
         this.listCountry.Search = this.listCountry.All;
-        this.listCity.All = await this.getListLocation(
-          2,
-          this.locationDefault.LocationCode
-        );
+        this.listCity.All = await this.getListLocation(2, this.locationDefault.LocationCode);
         this.listCity.Search = this.listCity.All;
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
@@ -2092,11 +1685,7 @@ export default {
      */
     async getListEmployee() {
       try {
-        const res = await employeeService.getFilter(
-          20,
-          this.currentPageEmployee,
-          ""
-        );
+        const res = await employeeService.getFilter(20, this.currentPageEmployee, "");
         this.listEmployeeSearch = res.data;
       } catch {
         return;
@@ -2124,11 +1713,7 @@ export default {
      */
     async getListTermPayment(pageSize, pageNumber, textSearch) {
       try {
-        const res = await termPamentService.getFilter(
-          pageSize,
-          pageNumber,
-          textSearch
-        );
+        const res = await termPamentService.getFilter(pageSize, pageNumber, textSearch);
         return res.data;
       } catch {
         return [];
@@ -2142,11 +1727,7 @@ export default {
      */
     async getListReceivalbe(pageSize, pageNumber, textSearch) {
       try {
-        const res = await accountService.getReceivable(
-          pageSize,
-          pageNumber,
-          textSearch
-        );
+        const res = await accountService.getReceivable(pageSize, pageNumber, textSearch);
         return res.data;
       } catch {
         return [];
@@ -2160,11 +1741,7 @@ export default {
      */
     async getListPayable(pageSize, pageNumber, textSearch) {
       try {
-        const res = await accountService.getPayable(
-          pageSize,
-          pageNumber,
-          textSearch
-        );
+        const res = await accountService.getPayable(pageSize, pageNumber, textSearch);
         return res.data;
       } catch {
         return [];
@@ -2179,9 +1756,7 @@ export default {
     async getAccountProvider() {
       try {
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
-          const res = await accountProviderService.getByProviderId(
-            this.provider.ProviderId
-          );
+          const res = await accountProviderService.getByProviderId(this.provider.ProviderId);
           this.provider.AccountProviders = res.data;
           this.accountProviderOlds = JSON.parse(JSON.stringify(res.data));
         } else {
@@ -2200,9 +1775,7 @@ export default {
     async getDeliveryAddress() {
       try {
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
-          const res = await deliveryAddressService.getByProviderId(
-            this.provider.ProviderId
-          );
+          const res = await deliveryAddressService.getByProviderId(this.provider.ProviderId);
           this.provider.DeliveryAddresses = res.data;
           this.deliveryAddressOlds = JSON.parse(JSON.stringify(res.data));
         } else {
@@ -2234,16 +1807,9 @@ export default {
      */
     setError(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateNotNull[
-            key
-          ];
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateNotNull[key];
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateNotNull[
-            key
-          ]
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateNotNull[key]);
       } catch {
         return;
       }
@@ -2255,15 +1821,9 @@ export default {
      */
     setErrorMaxLength(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[
-            key
-          ].Warning;
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[key].Warning;
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[key]
-            .Warning
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[key].Warning);
       } catch {
         return;
       }
@@ -2284,9 +1844,7 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.provider[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[
-                    refInput
-                  ].Limit
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[refInput].Limit
                 )
               ) {
                 this.setErrorMaxLength(refInput);
@@ -2298,48 +1856,31 @@ export default {
               break;
             case "FullName":
               if (this.provider.FullName && !this.provider.EmployeeId) {
-                this.errors.FullName = `${
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.employee
-                }${this.provider.FullName}${
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.end
-                }`;
+                this.errors.FullName = `${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.employee}${
+                  this.provider.FullName
+                }${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.end}`;
                 this.isBorderRed.FullName = true;
                 this.dataNotNull.push(
-                  `${
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .validateLoggic.employee
-                  }${this.provider.FullName}${
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .validateLoggic.end
-                  }`
+                  `${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.employee}${
+                    this.provider.FullName
+                  }${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.end}`
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
               }
               break;
             case "TermPaymentName":
-              if (
-                this.provider.TermPaymentName &&
-                !this.provider.TermPaymentId
-              ) {
+              if (this.provider.TermPaymentName && !this.provider.TermPaymentId) {
                 this.errors.TermPaymentName = `${
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.termPayment
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.termPayment
                 }${this.provider.TermPaymentName}${
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.end
+                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.end
                 }`;
                 this.isBorderRed.TermPaymentName = true;
                 this.dataNotNull.push(
-                  `${
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .validateLoggic.termPayment
-                  }${this.provider.TermPaymentName}${
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .validateLoggic.end
-                  }`
+                  `${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.termPayment}${
+                    this.provider.TermPaymentName
+                  }${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.end}`
                 );
                 this.isShowDialogDataNotNull = true;
                 return;
@@ -2350,8 +1891,7 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.provider[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .maxLength[refInput].Limit
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[refInput].Limit
                   )
                 ) {
                   this.setErrorMaxLength(refInput);
@@ -2366,14 +1906,11 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.provider[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .maxLength[refInput].Limit
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[refInput].Limit
                   )
                 ) {
                   this.setErrorMaxLength(refInput);
-                } else if (
-                  helperCommon.isFormatEmail(this.provider[refInput])
-                ) {
+                } else if (helperCommon.isFormatEmail(this.provider[refInput])) {
                   this.setError(refInput);
                 }
               }
@@ -2390,8 +1927,7 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.provider[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                      .maxLength[refInput].Limit
+                    this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.maxLength[refInput].Limit
                   )
                 ) {
                   this.setErrorMaxLength(refInput);
@@ -2410,10 +1946,7 @@ export default {
      * created date: 29-06-2023 07:07:16
      */
     handleErrorInputProvider(errors, providerProperty) {
-      const responseHandle = helperCommon.handleErrorInput(
-        errors,
-        providerProperty
-      );
+      const responseHandle = helperCommon.handleErrorInput(errors, providerProperty);
       this.errors = responseHandle.error;
       this.isBorderRed = responseHandle.isBorderRed;
       this.dataNotNull = responseHandle.dataNotNull;
@@ -2443,11 +1976,8 @@ export default {
       this.isShowDialogCodeExist = true;
       this.isBorderRed.ProviderCode = true;
       this.errors["ProviderCode"] = `${
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty
-          .providerCode
-      } <${providerExisted.ProviderCode}> ${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
-      }`;
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerCode
+      } <${providerExisted.ProviderCode}> ${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END}`;
       this.contentProviderCodeExist = providerExisted.ProviderCode;
     },
 
@@ -2459,9 +1989,7 @@ export default {
     setGroupIds() {
       try {
         if (this.provider.GroupProvider) {
-          this.provider.GroupIds = this.provider.GroupProvider.map(
-            (x) => x.GroupId
-          );
+          this.provider.GroupIds = this.provider.GroupProvider.map((x) => x.GroupId);
         } else {
           this.provider.GroupIds = [];
         }
@@ -2478,13 +2006,11 @@ export default {
     validateAccount() {
       let accountNumbers = [];
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
-        accountNumbers = this.provider.AccountProviders.map(
+        accountNumbers = this.provider.AccountProviders.map((item) => item.AccountNumber);
+      } else {
+        accountNumbers = this.provider.AccountProviders.filter((row) => row.Flag != 3).map(
           (item) => item.AccountNumber
         );
-      } else {
-        accountNumbers = this.provider.AccountProviders.filter(
-          (row) => row.Flag != 3
-        ).map((item) => item.AccountNumber);
       }
       const accountNumberSet = new Set(accountNumbers);
       if (accountNumbers.length !== accountNumberSet.size) {
@@ -2501,12 +2027,7 @@ export default {
     handleAccount() {
       if (this.accountProviderOlds && this.accountProviderOlds.length > 0) {
         for (let i = 0; i < this.accountProviderOlds.length; i++) {
-          if (
-            this.hasDataChanged(
-              this.accountProviderOlds[i],
-              this.provider.AccountProviders[i]
-            )
-          ) {
+          if (this.hasDataChanged(this.accountProviderOlds[i], this.provider.AccountProviders[i])) {
             if (this.provider.AccountProviders[i].Flag != 3) {
               this.provider.AccountProviders[i].Flag = 2;
             }
@@ -2525,12 +2046,7 @@ export default {
     handleDeliveryAddress() {
       if (this.deliveryAddressOlds && this.deliveryAddressOlds.length > 0) {
         for (let i = 0; i < this.deliveryAddressOlds.length; i++) {
-          if (
-            this.hasDataChanged(
-              this.deliveryAddressOlds[i],
-              this.provider.DeliveryAddresses[i]
-            )
-          ) {
+          if (this.hasDataChanged(this.deliveryAddressOlds[i], this.provider.DeliveryAddresses[i])) {
             if (this.provider.DeliveryAddresses[i].Flag != 3) {
               this.provider.DeliveryAddresses[i].Flag = 2;
             }
@@ -2554,10 +2070,7 @@ export default {
         } else {
           try {
             if (this.validateAccount()) {
-              this.dataNotNull.push(
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                  .validateLoggic.account
-              );
+              this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.account);
               this.isShowDialogDataNotNull = true;
               return;
             }
@@ -2567,16 +2080,10 @@ export default {
             if (!providerByCode) {
               this.setGroupIds();
               const res = await providerService.create(this.provider);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE
                 );
                 this.handleSelectLayout("infoContact");
                 this.$emit("closeFormDetail");
@@ -2600,36 +2107,22 @@ export default {
           } else {
             try {
               if (this.validateAccount()) {
-                this.dataNotNull.push(
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.account
-                );
+                this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.account);
                 this.isShowDialogDataNotNull = true;
                 return;
               }
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-              if (
-                !providerByCode ||
-                providerByCode.ProviderCode ===
-                  this.providerSelected.ProviderCode
-              ) {
+              if (!providerByCode || providerByCode.ProviderCode === this.providerSelected.ProviderCode) {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
-                const res = await providerService.update(
-                  this.providerSelected.ProviderId,
-                  this.provider
-                );
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
+                const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
                   );
                   this.handleSelectLayout("infoContact");
                   this.$emit("closeFormDetail");
@@ -2664,10 +2157,7 @@ export default {
         } else {
           try {
             if (this.validateAccount()) {
-              this.dataNotNull.push(
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                  .validateLoggic.account
-              );
+              this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.account);
               this.isShowDialogDataNotNull = true;
               return;
             }
@@ -2677,16 +2167,10 @@ export default {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               this.setGroupIds();
               const res = await providerService.create(this.provider);
-              if (
-                this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(
-                  res.status
-                ) &&
-                res.data > 0
-              ) {
+              if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .SUCCESS_CTEATE
+                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_CTEATE
                 );
                 this.provider = {};
                 this.isBorderRed = {};
@@ -2713,42 +2197,28 @@ export default {
           } else {
             try {
               if (this.validateAccount()) {
-                this.dataNotNull.push(
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form
-                    .validateLoggic.account
-                );
+                this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.validateLoggic.account);
                 this.isShowDialogDataNotNull = true;
                 return;
               }
               // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
               // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
-              if (
-                !providerByCode ||
-                providerByCode.ProviderCode ===
-                  this.providerSelected.ProviderCode
-              ) {
+              if (!providerByCode || providerByCode.ProviderCode === this.providerSelected.ProviderCode) {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
-                const res = await providerService.update(
-                  this.providerSelected.ProviderId,
-                  this.provider
-                );
+                const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
                 this.provider = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 await this.getNewCode();
                 this.provider.ProviderCode = this.newProviderCode;
                 this.focusCode();
                 this.$_MISAEmitter.emit("refreshDataTable");
-                if (
-                  this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-                  res.data > 0
-                ) {
+                if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .SUCCESS_UPDATE
+                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
                   );
                 }
               } else {
@@ -2782,17 +2252,11 @@ export default {
       }
 
       // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
-      if (
-        listPropError.includes("EmployeeId") &&
-        !listPropError.includes("FullName")
-      ) {
+      if (listPropError.includes("EmployeeId") && !listPropError.includes("FullName")) {
         listPropError.push("FullName");
       }
 
-      if (
-        listPropError.includes("TermPaymentId") &&
-        !listPropError.includes("TermPaymentName")
-      ) {
+      if (listPropError.includes("TermPaymentId") && !listPropError.includes("TermPaymentName")) {
         listPropError.push("TermPaymentName");
       }
 
@@ -2917,9 +2381,7 @@ export default {
     toggleSelectGroup(group, isUnSelect) {
       try {
         if (isUnSelect) {
-          this.provider.GroupProvider = this.provider.GroupProvider.filter(
-            (x) => x.GroupId != group.GroupId
-          );
+          this.provider.GroupProvider = this.provider.GroupProvider.filter((x) => x.GroupId != group.GroupId);
         } else {
           if (!this.provider.GroupProvider) {
             this.provider.GroupProvider = [];
@@ -2942,9 +2404,7 @@ export default {
      */
     deleteGroupProvider(data) {
       try {
-        this.provider.GroupProvider = this.provider.GroupProvider.filter(
-          (x) => x.GroupId != data.GroupId
-        );
+        this.provider.GroupProvider = this.provider.GroupProvider.filter((x) => x.GroupId != data.GroupId);
       } catch {
         return;
       }
@@ -2958,15 +2418,8 @@ export default {
     async handleScrollCBBGroup(textSearchGroup) {
       try {
         this.currentPageGroup += 1;
-        const filteredGroups = await groupService.getFilter(
-          20,
-          this.currentPageGroup,
-          textSearchGroup
-        );
-        this.listGroupSearch.Data = [
-          ...this.listGroupSearch.Data,
-          ...filteredGroups.data.Data,
-        ];
+        const filteredGroups = await groupService.getFilter(20, this.currentPageGroup, textSearchGroup);
+        this.listGroupSearch.Data = [...this.listGroupSearch.Data, ...filteredGroups.data.Data];
       } catch {
         return;
       }
@@ -2979,11 +2432,7 @@ export default {
      */
     async onSearchChangeGroup(textSearchGroup) {
       try {
-        const filteredGroups = await groupService.getFilter(
-          20,
-          1,
-          textSearchGroup
-        );
+        const filteredGroups = await groupService.getFilter(20, 1, textSearchGroup);
         this.listGroupSearch = filteredGroups.data;
       } catch {
         return;
@@ -3018,11 +2467,7 @@ export default {
           newValue = "";
         }
         this.searchEmployeeTimeout = setTimeout(async () => {
-          const newListEmployee = await employeeService.getFilter(
-            20,
-            1,
-            newValue
-          );
+          const newListEmployee = await employeeService.getFilter(20, 1, newValue);
           this.listEmployeeSearch = newListEmployee.data;
         }, 500);
       } catch {
@@ -3049,15 +2494,8 @@ export default {
     async handleScrollEmployeeCBB(textSearch) {
       try {
         this.currentPageEmployee += 1;
-        const filtered = await employeeService.getFilter(
-          20,
-          this.currentPageEmployee,
-          textSearch
-        );
-        this.listEmployeeSearch.Data = [
-          ...this.listEmployeeSearch.Data,
-          ...filtered.data.Data,
-        ];
+        const filtered = await employeeService.getFilter(20, this.currentPageEmployee, textSearch);
+        this.listEmployeeSearch.Data = [...this.listEmployeeSearch.Data, ...filtered.data.Data];
       } catch {
         return;
       }
@@ -3092,11 +2530,7 @@ export default {
           newValue = "";
         }
         this.searchTermPaymentTimeout = setTimeout(async () => {
-          const newListTermPayment = await termPamentService.getFilter(
-            20,
-            1,
-            newValue
-          );
+          const newListTermPayment = await termPamentService.getFilter(20, 1, newValue);
           this.listTermPayment = newListTermPayment.data;
         }, 500);
       } catch {
@@ -3110,12 +2544,9 @@ export default {
      * created date: 01-08-2023 08:33:33
      */
     onKeyDownTermPaymentCBBSingle(index) {
-      this.provider.TermPaymentName =
-        this.listTermPayment.Data[index].TermPaymentName;
-      this.provider.TermPaymentId =
-        this.listTermPayment.Data[index].TermPaymentId;
-      this.provider.NumberDayOwed =
-        this.listTermPayment.Data[index].NumberDayOwed;
+      this.provider.TermPaymentName = this.listTermPayment.Data[index].TermPaymentName;
+      this.provider.TermPaymentId = this.listTermPayment.Data[index].TermPaymentId;
+      this.provider.NumberDayOwed = this.listTermPayment.Data[index].NumberDayOwed;
       this.isBorderRed.TermPaymentName = false;
     },
 
@@ -3127,15 +2558,8 @@ export default {
     async handleScrollTermPaymentCBB(textSearch) {
       try {
         this.currentPageTermPayment += 1;
-        const filtered = await termPamentService.getFilter(
-          20,
-          this.currentPageTermPayment,
-          textSearch
-        );
-        this.listTermPayment.Data = [
-          ...this.listTermPayment.Data,
-          ...filtered.data.Data,
-        ];
+        const filtered = await termPamentService.getFilter(20, this.currentPageTermPayment, textSearch);
+        this.listTermPayment.Data = [...this.listTermPayment.Data, ...filtered.data.Data];
       } catch {
         return;
       }
@@ -3176,9 +2600,7 @@ export default {
      */
     deleteAllRowAccount() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.provider.AccountProviders = this.provider.AccountProviders.filter(
-        (row) => row.Flag != 1
-      );
+      this.provider.AccountProviders = this.provider.AccountProviders.filter((row) => row.Flag != 1);
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.provider.AccountProviders.map((row) => {
         row.Flag = 3;
@@ -3217,9 +2639,7 @@ export default {
      */
     btnDeleteAllRowAddress() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.provider.DeliveryAddresses = this.provider.DeliveryAddresses.filter(
-        (row) => row.Flag != 1
-      );
+      this.provider.DeliveryAddresses = this.provider.DeliveryAddresses.filter((row) => row.Flag != 1);
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.provider.DeliveryAddresses.map((row) => {
         row.Flag = 3;
@@ -3248,9 +2668,7 @@ export default {
      * created date: 09-08-2023 09:35:37
      */
     onSearchChangeVocative(textSearch) {
-      this.listVocative = this.$_MISAResource[
-        this.$_LANG_CODE
-      ].PROVIDER.form.listVocative.filter((x) =>
+      this.listVocative = this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative.filter((x) =>
         x.Vocative.includes(textSearch)
       );
     },
@@ -3262,9 +2680,7 @@ export default {
      */
     onKeyDownVocativeCBB(index) {
       this.provider.Vocative = this.listVocative =
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative[
-          index
-        ].Vocative;
+        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.listVocative[index].Vocative;
     },
 
     /**
@@ -3291,10 +2707,7 @@ export default {
         if (data.LocationCity != this.provider.LocationCity) {
           this.provider.LocationCity = data.LocationCity;
           this.isBorderRed.LocationCity = false;
-          this.listDistrict.All = await this.getListLocation(
-            3,
-            data.LocationCode
-          );
+          this.listDistrict.All = await this.getListLocation(3, data.LocationCode);
           this.listDistrict.Search = this.listDistrict.All;
           this.provider.LocationDistrict = "";
           this.provider.LocationVillage = "";
@@ -3305,10 +2718,7 @@ export default {
         if (data.LocationDistrict != this.provider.LocationDistrict) {
           this.provider.LocationDistrict = data.LocationDistrict;
           this.isBorderRed.LocationDistrict = false;
-          this.listVillage.All = await this.getListLocation(
-            4,
-            data.LocationCode
-          );
+          this.listVillage.All = await this.getListLocation(4, data.LocationCode);
           this.listVillage.Search = this.listVillage.All;
           this.provider.LocationVillage = "";
         }
@@ -3326,24 +2736,16 @@ export default {
      */
     onSearchChangeLocation(newValue, propName) {
       if (propName == "LocationCountry") {
-        this.listCountry.Search = this.listCountry.All.filter((x) =>
-          x.LocationCountry.includes(newValue)
-        );
+        this.listCountry.Search = this.listCountry.All.filter((x) => x.LocationCountry.includes(newValue));
       }
       if (propName == "LocationCity") {
-        this.listCity.Search = this.listCity.All.filter((x) =>
-          x.LocationCity.includes(newValue)
-        );
+        this.listCity.Search = this.listCity.All.filter((x) => x.LocationCity.includes(newValue));
       }
       if (propName == "LocationDistrict") {
-        this.listDistrict.Search = this.listDistrict.All.filter((x) =>
-          x.LocationDistrict.includes(newValue)
-        );
+        this.listDistrict.Search = this.listDistrict.All.filter((x) => x.LocationDistrict.includes(newValue));
       }
       if (propName == "LocationVillage") {
-        this.listVillage.Search = this.listVillage.All.filter((x) =>
-          x.LocationVillage.includes(newValue)
-        );
+        this.listVillage.Search = this.listVillage.All.filter((x) => x.LocationVillage.includes(newValue));
       }
     },
 
@@ -3354,17 +2756,10 @@ export default {
      */
     async onKeyDownLocationCBB(index, propName) {
       if (propName == "LocationCountry") {
-        if (
-          this.listCountry.Search[index].LocationCountry !=
-          this.provider.LocationCountry
-        ) {
-          this.provider.LocationCountry =
-            this.listCountry.Search[index].LocationCountry;
+        if (this.listCountry.Search[index].LocationCountry != this.provider.LocationCountry) {
+          this.provider.LocationCountry = this.listCountry.Search[index].LocationCountry;
           this.isBorderRed.LocationCountry = false;
-          this.listCity.All = await this.getListLocation(
-            2,
-            this.listCountry.Search[index].LocationCode
-          );
+          this.listCity.All = await this.getListLocation(2, this.listCountry.Search[index].LocationCode);
           this.listCity.Search = this.listCity.All;
 
           this.provider.LocationCity = "";
@@ -3375,15 +2770,10 @@ export default {
         }
       }
       if (propName == "LocationCity") {
-        if (
-          this.listCity.Search[index].LocationCity != this.provider.LocationCity
-        ) {
+        if (this.listCity.Search[index].LocationCity != this.provider.LocationCity) {
           this.provider.LocationCity = this.listCity.Search[index].LocationCity;
           this.isBorderRed.LocationCity = false;
-          this.listDistrict.All = await this.getListLocation(
-            3,
-            this.listCity.Search[index].LocationCode
-          );
+          this.listDistrict.All = await this.getListLocation(3, this.listCity.Search[index].LocationCode);
           this.listDistrict.Search = this.listDistrict.All;
           this.provider.LocationDistrict = "";
           this.provider.LocationVillage = "";
@@ -3391,24 +2781,16 @@ export default {
         }
       }
       if (propName == "LocationDistrict") {
-        if (
-          this.listDistrict.Search[index].LocationDistrict !=
-          this.provider.LocationDistrict
-        ) {
-          this.provider.LocationDistrict =
-            this.listDistrict.Search[index].LocationDistrict;
+        if (this.listDistrict.Search[index].LocationDistrict != this.provider.LocationDistrict) {
+          this.provider.LocationDistrict = this.listDistrict.Search[index].LocationDistrict;
           this.isBorderRed.LocationDistrict = false;
-          this.listVillage.All = await this.getListLocation(
-            4,
-            this.listDistrict.Search[index].LocationCode
-          );
+          this.listVillage.All = await this.getListLocation(4, this.listDistrict.Search[index].LocationCode);
           this.listVillage.Search = this.listVillage.All;
           this.provider.LocationVillage = "";
         }
       }
       if (propName == "LocationVillage") {
-        this.provider.LocationVillage =
-          this.listVillage.Search[index].LocationVillage;
+        this.provider.LocationVillage = this.listVillage.Search[index].LocationVillage;
         this.isBorderRed.LocationVillage = false;
       }
     },
@@ -3432,11 +2814,7 @@ export default {
     async handleScrollReceivable(textSearch) {
       try {
         this.currentPageReceivable += 1;
-        const newListReceivable = await this.getListReceivalbe(
-          20,
-          this.currentPageReceivable,
-          textSearch
-        );
+        const newListReceivable = await this.getListReceivalbe(20, this.currentPageReceivable, textSearch);
         this.listReceivable = [...this.listReceivable, ...newListReceivable];
       } catch {
         return;
@@ -3470,10 +2848,8 @@ export default {
      * created date: 10-08-2023 09:05:15
      */
     onKeyDownReceivable(index) {
-      this.provider.AccountReceivableId =
-        this.listReceivable[index].AccountReceivableId;
-      this.provider.AccountReceivableNumber =
-        this.listReceivable[index].AccountReceivableNumber;
+      this.provider.AccountReceivableId = this.listReceivable[index].AccountReceivableId;
+      this.provider.AccountReceivableNumber = this.listReceivable[index].AccountReceivableNumber;
       this.isBorderRed.AccountReceivableNumber = false;
     },
 
@@ -3496,11 +2872,7 @@ export default {
     async handleScrollPayable(textSearch) {
       try {
         this.currentPagePayable += 1;
-        const newListPayable = await this.getListPayable(
-          20,
-          this.currentPagePayable,
-          textSearch
-        );
+        const newListPayable = await this.getListPayable(20, this.currentPagePayable, textSearch);
         this.listPayable = [...this.listPayable, ...newListPayable];
       } catch {
         return;
@@ -3535,8 +2907,7 @@ export default {
      */
     onKeyDownPayable(index) {
       this.provider.AccountPayableId = this.listPayable[index].AccountPayableId;
-      this.provider.AccountPayableNumber =
-        this.listPayable[index].AccountPayableNumber;
+      this.provider.AccountPayableNumber = this.listPayable[index].AccountPayableNumber;
       this.isBorderRed.AccountPayableNumber = false;
     },
 
@@ -3580,10 +2951,7 @@ export default {
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
     this.$_MISAEmitter.off("onSearchChangeFormCBB");
     this.$_MISAEmitter.off("onKeyDownFormCBB");
-    this.$refs.FormDetailProvider.removeEventListener(
-      "keydown",
-      this.handleKeyDown
-    );
+    this.$refs.FormDetailProvider.removeEventListener("keydown", this.handleKeyDown);
   },
 };
 </script>

@@ -25,17 +25,10 @@
         </div>
       </div>
     </div>
-    <div
-      class="icon-cbb-multiple"
-      :class="{ 'readonly-input-cbb': isReadonlyCBB }"
-    >
+    <div class="icon-cbb-multiple" :class="{ 'readonly-input-cbb': isReadonlyCBB }">
       <div class="icon-l plus-green-icon"></div>
     </div>
-    <div
-      class="e-icon-cbb"
-      @click="openMenu"
-      :class="{ 'readonly-input-cbb': isReadonlyCBB }"
-    >
+    <div class="e-icon-cbb" @click="openMenu" :class="{ 'readonly-input-cbb': isReadonlyCBB }">
       <div class="function-icon"></div>
     </div>
   </div>
@@ -47,19 +40,12 @@
   >
     <div class="form-cbb-menu" id="form-cbb-menu-select-single">
       <div class="form-cbb-menu-title">
-        <div
-          v-for="(item, index) in haederCBB"
-          :key="index"
-          :class="`col-${index + 1}-cbb-menu-item`"
-        >
+        <div v-for="(item, index) in haederCBB" :key="index" :class="`col-${index + 1}-cbb-menu-item`">
           {{ item }}
         </div>
       </div>
       <div class="form-cbb-main" ref="cbbSelectSingle" @scroll="handleScroll">
-        <template
-          v-for="(item, index) in listEntitySearchCBB.Data"
-          :key="item[propId]"
-        >
+        <template v-for="(item, index) in listEntitySearchCBB.Data" :key="item[propId]">
           <div
             class="form-cbb-menu-item"
             @click="onSelectedEntity(item, index)"
@@ -112,17 +98,13 @@ export default {
       if (this.isShowCode) {
         return (
           this.isHoveringCBB &&
-          (this.isBorderRedCBB[this.propCode] ||
-            this.isBorderRedCBB[this.propId] ||
-            !this.entityCBB[this.propCode]) &&
+          (this.isBorderRedCBB[this.propCode] || this.isBorderRedCBB[this.propId] || !this.entityCBB[this.propCode]) &&
           (this.errorsCBB[this.propCode] || this.errorsCBB[this.propId])
         );
       } else {
         return (
           this.isHoveringCBB &&
-          (this.isBorderRedCBB[this.propName] ||
-            this.isBorderRedCBB[this.propId] ||
-            !this.entityCBB[this.propName]) &&
+          (this.isBorderRedCBB[this.propName] || this.isBorderRedCBB[this.propId] || !this.entityCBB[this.propName]) &&
           (this.errorsCBB[this.propName] || this.errorsCBB[this.propId])
         );
       }
@@ -130,13 +112,9 @@ export default {
 
     contentTooltip() {
       if (this.isShowCode) {
-        return this.errorsCBB[this.propCode]
-          ? this.errorsCBB[this.propCode]
-          : this.errorsCBB[this.propId];
+        return this.errorsCBB[this.propCode] ? this.errorsCBB[this.propCode] : this.errorsCBB[this.propId];
       } else {
-        return this.errorsCBB[this.propName]
-          ? this.errorsCBB[this.propName]
-          : this.errorsCBB[this.propId];
+        return this.errorsCBB[this.propName] ? this.errorsCBB[this.propName] : this.errorsCBB[this.propId];
       }
     },
   },
@@ -200,11 +178,7 @@ export default {
      */
     async onSearchChange($event) {
       try {
-        await this.$_MISAEmitter.emit(
-          "onSearchChangeCBBSingle",
-          $event.target.value,
-          this.propId
-        );
+        await this.$_MISAEmitter.emit("onSearchChangeCBBSingle", $event.target.value, this.propId);
         this.isShowSelectEntity = true;
       } catch {
         return;
@@ -221,13 +195,11 @@ export default {
         const element = this.$refs.EntitySelectedItem[index];
         if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
           element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
           });
         } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
           element.scrollIntoView({
-            block:
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
           });
         }
       } catch {
@@ -256,10 +228,7 @@ export default {
                   this.indexEntitySelected = 0;
                 }
                 // scroll focus theo item được chọn
-                this.scrollIndex(
-                  this.indexEntitySelected,
-                  this.$_MISAEnum.KEY_CODE.DOWN
-                );
+                this.scrollIndex(this.indexEntitySelected, this.$_MISAEnum.KEY_CODE.DOWN);
               } else {
                 this.isShowSelectEntity = true;
               }
@@ -272,21 +241,14 @@ export default {
                   this.indexEntitySelected = maxLength - 1;
                 }
                 // scroll focus theo item được chọn
-                this.scrollIndex(
-                  this.indexEntitySelected,
-                  this.$_MISAEnum.KEY_CODE.UP
-                );
+                this.scrollIndex(this.indexEntitySelected, this.$_MISAEnum.KEY_CODE.UP);
               } else {
                 this.isShowSelectEntity = true;
               }
             } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
               // Bấm enter
               if (this.isShowSelectEntity) {
-                this.$_MISAEmitter.emit(
-                  "onKeyDownEntityCBBSingle",
-                  this.indexEntitySelected,
-                  this.propId
-                );
+                this.$_MISAEmitter.emit("onKeyDownEntityCBBSingle", this.indexEntitySelected, this.propId);
                 this.isShowSelectEntity = false;
               } else {
                 this.isShowSelectEntity = true;
@@ -307,19 +269,12 @@ export default {
     async handleScroll() {
       try {
         const cbb = this.$refs.cbbSelectSingle;
-        const remainingSpace =
-          cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
-        const textSearch = this.isShowCode
-          ? this.entityCBB[this.propCode]
-          : this.entityCBB[this.propName];
+        const remainingSpace = cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
+        const textSearch = this.isShowCode ? this.entityCBB[this.propCode] : this.entityCBB[this.propName];
         // Kiểm tra xem đã scroll đến cuối combobox chưa
         if (remainingSpace <= 10) {
           // Gọi API để lấy thêm dữ liệu
-          await this.$_MISAEmitter.emit(
-            "handleScrollCBBSingle",
-            textSearch,
-            this.propId
-          );
+          await this.$_MISAEmitter.emit("handleScrollCBBSingle", textSearch, this.propId);
         }
       } catch {
         return;

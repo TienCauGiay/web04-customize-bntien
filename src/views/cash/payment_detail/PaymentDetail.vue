@@ -6,23 +6,17 @@
           <div class="top-header-left-icon">
             <div class="refresh-time-icon"></div>
           </div>
-          <div class="name-payment-slip">
-            Phiếu chi {{ receipt.ReceiptNumber }}
-          </div>
+          <div class="name-payment-slip">Phiếu chi {{ receipt.ReceiptNumber }}</div>
           <div class="top-header-select-option">
             <div class="content-header-select-option">
               {{ textSelectLayout }}
             </div>
-            <button
-              class="header-icon-arrow"
-              @click="isShowOptionHeader = !isShowOptionHeader"
-            >
+            <button class="header-icon-arrow" @click="isShowOptionHeader = !isShowOptionHeader">
               <div class="function-icon"></div>
             </button>
             <div class="menu-select-option-header" v-show="isShowOptionHeader">
               <template
-                v-for="(item, index) in this.$_MISAResource[this.$_LANG_CODE]
-                  .RECEIPT_PAYMENT.FORM_PAYMENT.optionHeader"
+                v-for="(item, index) in this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.optionHeader"
                 :key="index"
               >
                 <div
@@ -69,28 +63,13 @@
                       :propCode="'ProviderCode'"
                       :propName="'ProviderName'"
                       :isShowCode="true"
-                      :haederCBB="[
-                        'Đối tượng',
-                        'Tên đối tượng',
-                        'Mã số thuế',
-                        'Địa chỉ',
-                        'Điện thoại',
-                      ]"
-                      :bodyCBB="[
-                        'ProviderCode',
-                        'ProviderName',
-                        'TaxCode',
-                        'Address',
-                        'PhoneNumber',
-                      ]"
+                      :haederCBB="['Đối tượng', 'Tên đối tượng', 'Mã số thuế', 'Địa chỉ', 'Điện thoại']"
+                      :bodyCBB="['ProviderCode', 'ProviderName', 'TaxCode', 'Address', 'PhoneNumber']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="receipt"
                       :listEntitySearchCBB="listProviderSearch"
-                      :isReadonlyCBB="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted
-                      "
+                      :isReadonlyCBB="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                       ref="ProviderId"
                     ></misa-combobox-select-single>
                   </div>
@@ -109,8 +88,7 @@
                       :class="[
                         { 'border-red': isBorderRed.ProviderName },
                         {
-                          'readonly-input':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                          'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View,
                         },
                       ]"
                       @input="setIsBorderRed('ProviderName')"
@@ -118,10 +96,7 @@
                       @mouseleave="isHovering.ProviderName = false"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
-                    <div
-                      class="misa-tooltip"
-                      v-if="isHovering.ProviderName && isBorderRed.ProviderName"
-                    >
+                    <div class="misa-tooltip" v-if="isHovering.ProviderName && isBorderRed.ProviderName">
                       {{ errors["ProviderName"] }}
                     </div>
                   </div>
@@ -139,8 +114,7 @@
                       :class="[
                         { 'border-red': isBorderRed.ReceiveName },
                         {
-                          'readonly-input':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                          'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View,
                         },
                       ]"
                       @input="setIsBorderRed('ReceiveName')"
@@ -148,10 +122,7 @@
                       @mouseleave="isHovering.ReceiveName = false"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
-                    <div
-                      class="misa-tooltip"
-                      v-if="isHovering.ReceiveName && isBorderRed.ReceiveName"
-                    >
+                    <div class="misa-tooltip" v-if="isHovering.ReceiveName && isBorderRed.ReceiveName">
                       {{ errors["ReceiveName"] }}
                     </div>
                   </div>
@@ -167,8 +138,7 @@
                       :class="[
                         { 'border-red': isBorderRed.Address },
                         {
-                          'readonly-input':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                          'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View,
                         },
                       ]"
                       @input="setIsBorderRed('Address')"
@@ -176,10 +146,7 @@
                       @mouseleave="isHovering.Address = false"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
-                    <div
-                      class="misa-tooltip"
-                      v-if="isHovering.Address && isBorderRed.Address"
-                    >
+                    <div class="misa-tooltip" v-if="isHovering.Address && isBorderRed.Address">
                       {{ errors["Address"] }}
                     </div>
                   </div>
@@ -197,8 +164,7 @@
                       :class="[
                         { 'border-red': isBorderRed.Reason },
                         {
-                          'readonly-input':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                          'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View,
                         },
                       ]"
                       @input="setIsBorderRed('Reason')"
@@ -206,10 +172,7 @@
                       @mouseleave="isHovering.Reason = false"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     ></misa-input>
-                    <div
-                      class="misa-tooltip"
-                      v-if="isHovering.Reason && isBorderRed.Reason"
-                    >
+                    <div class="misa-tooltip" v-if="isHovering.Reason && isBorderRed.Reason">
                       {{ errors["Reason"] }}
                     </div>
                   </div>
@@ -225,25 +188,13 @@
                       :propCode="'EmployeeCode'"
                       :propId="'EmployeeId'"
                       :propName="'FullName'"
-                      :haederCBB="[
-                        'Mã nhân viên',
-                        'Tên nhân viên',
-                        'Đơn vị',
-                        'ĐT di động',
-                      ]"
-                      :bodyCBB="[
-                        'EmployeeCode',
-                        'FullName',
-                        'DepartmentName',
-                        'PhoneNumber',
-                      ]"
+                      :haederCBB="['Mã nhân viên', 'Tên nhân viên', 'Đơn vị', 'ĐT di động']"
+                      :bodyCBB="['EmployeeCode', 'FullName', 'DepartmentName', 'PhoneNumber']"
                       :isBorderRedCBB="isBorderRed"
                       :errorsCBB="errors"
                       :entityCBB="receipt"
                       :listEntitySearchCBB="listEmployeeSearch"
-                      :isReadonlyCBB="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View
-                      "
+                      :isReadonlyCBB="statusForm == this.$_MISAEnum.FORM_MODE.View"
                       ref="EmployeeId"
                     ></misa-combobox-select-single>
                   </div>
@@ -260,8 +211,7 @@
                       { 'border-red': isBorderRed.QuantityAttach },
                       'right-to-left',
                       {
-                        'readonly-input':
-                          statusForm == this.$_MISAEnum.FORM_MODE.View,
+                        'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View,
                       },
                     ]"
                     @input="setIsBorderRed('QuantityAttach')"
@@ -293,23 +243,15 @@
                       'border-red': isBorderRed.AccountingDate,
                     },
                     {
-                      'readonly-input':
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted,
+                      'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted,
                     },
                   ]"
                   @input="setIsBorderRed('AccountingDate')"
                   @mouseenter="isHovering.AccountingDate = true"
                   @mouseleave="isHovering.AccountingDate = false"
-                  :readonly="
-                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                    receipt.IsNoted
-                  "
+                  :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.AccountingDate && isBorderRed.AccountingDate"
-                >
+                <div class="misa-tooltip" v-if="isHovering.AccountingDate && isBorderRed.AccountingDate">
                   {{ errors["AccountingDate"] }}
                 </div>
               </div>
@@ -327,23 +269,15 @@
                       'border-red': isBorderRed.ReceiptDate,
                     },
                     {
-                      'readonly-input':
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted,
+                      'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted,
                     },
                   ]"
                   @input="setIsBorderRed('ReceiptDate')"
                   @mouseenter="isHovering.ReceiptDate = true"
                   @mouseleave="isHovering.ReceiptDate = false"
-                  :readonly="
-                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                    receipt.IsNoted
-                  "
+                  :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                 ></misa-input>
-                <div
-                  class="misa-tooltip"
-                  v-if="isHovering.ReceiptDate && isBorderRed.ReceiptDate"
-                >
+                <div class="misa-tooltip" v-if="isHovering.ReceiptDate && isBorderRed.ReceiptDate">
                   {{ errors["ReceiptDate"] }}
                 </div>
               </div>
@@ -357,18 +291,13 @@
                   :class="[
                     { 'border-red': isBorderRed.ReceiptNumber },
                     {
-                      'readonly-input':
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted,
+                      'readonly-input': statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted,
                     },
                   ]"
                   @input="setIsBorderRed('ReceiptNumber')"
                   @mouseenter="isHovering.ReceiptNumber = true"
                   @mouseleave="isHovering.ReceiptNumber = false"
-                  :readonly="
-                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                    receipt.IsNoted
-                  "
+                  :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                   :maxLength="20"
                 ></misa-input>
                 <div
@@ -387,10 +316,7 @@
         </div>
         <div class="layout-input-total">
           <div class="text-total-money">Tổng tiền</div>
-          <div
-            class="total-money"
-            :class="{ 'color-money-red': TotalMoney < 0 }"
-          >
+          <div class="total-money" :class="{ 'color-money-red': TotalMoney < 0 }">
             {{ helperCommon.formatCurrency(TotalMoney) }}
           </div>
         </div>
@@ -405,17 +331,12 @@
                 <th class="table-col-2">Diễn giải</th>
                 <th class="table-col-3">TK nợ</th>
                 <th class="table-col-4">Tk có</th>
-                <th class="table-col-5 text-right" style="padding-right: 12px">
-                  Số tiền
-                </th>
+                <th class="table-col-5 text-right" style="padding-right: 12px">Số tiền</th>
                 <th class="table-col-6"></th>
               </tr>
             </thead>
             <tbody>
-              <template
-                v-for="(item, index) in receipt.AccountantList"
-                :key="index"
-              >
+              <template v-for="(item, index) in receipt.AccountantList" :key="index">
                 <tr @click="focusRow(index)" v-if="item.Flag != 3">
                   <td class="table-col-1 text-center">{{ index + 1 }}</td>
                   <td class="table-col-2">
@@ -423,8 +344,7 @@
                       v-model="item.Description"
                       :class="[
                         {
-                          'readonly-input-table':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View,
+                          'readonly-input-table': statusForm == this.$_MISAEnum.FORM_MODE.View,
                         },
                       ]"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
@@ -441,18 +361,9 @@
                       :valueInput="item.AccountDebtNumber"
                       :propCode="'AccountDebtNumber'"
                       :propBorderRed="`AccountDebtId${index}`"
-                      :textColFirst="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountNumber
-                      "
-                      :textColSecond="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountName
-                      "
-                      :isReadonlyCBB="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted
-                      "
+                      :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+                      :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
+                      :isReadonlyCBB="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                       :ref="`AccountDebtId${index}`"
                     ></misa-form-combobox>
                   </td>
@@ -466,18 +377,9 @@
                       :valueInput="item.AccountBalanceNumber"
                       :propCode="'AccountBalanceNumber'"
                       :propBorderRed="`AccountBalanceId${index}`"
-                      :textColFirst="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountNumber
-                      "
-                      :textColSecond="
-                        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form
-                          .textProperty.accountName
-                      "
-                      :isReadonlyCBB="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted
-                      "
+                      :textColFirst="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountNumber"
+                      :textColSecond="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.accountName"
+                      :isReadonlyCBB="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                       :ref="`AccountBalanceId${index}`"
                     ></misa-form-combobox>
                   </td>
@@ -486,17 +388,12 @@
                       v-model="item.Money"
                       :class="[
                         {
-                          'readonly-input-table':
-                            statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                            receipt.IsNoted,
+                          'readonly-input-table': statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted,
                         },
                         'right-to-left',
                         { 'color-money-red': item.Money < 0 },
                       ]"
-                      :readonly="
-                        statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                        receipt.IsNoted
-                      "
+                      :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                       :maxLength="15"
                     ></misa-input>
                   </td>
@@ -524,18 +421,12 @@
                 <misa-button-extra
                   :textButtonExtra="'Thêm dòng'"
                   @click="btnAddRowAccountant"
-                  :disabled="
-                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                    receipt.IsNoted
-                  "
+                  :disabled="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                 ></misa-button-extra>
                 <misa-button-extra
                   :textButtonExtra="'Xóa hết dòng'"
                   @click="deleteAllRowAccountant"
-                  :disabled="
-                    statusForm == this.$_MISAEnum.FORM_MODE.View ||
-                    receipt.IsNoted
-                  "
+                  :disabled="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
                 ></misa-button-extra>
               </td>
             </tfoot>
@@ -551,9 +442,7 @@
           <div class="attach-max-memory">Dung lượng tối đa 5MB</div>
         </div>
         <div class="body-layout-attach-center">
-          <button class="attach-center-acction">
-            Kéo/thả tệp vào đây hoặc bấm vào đây
-          </button>
+          <button class="attach-center-acction">Kéo/thả tệp vào đây hoặc bấm vào đây</button>
         </div>
       </div>
     </div>
@@ -565,9 +454,7 @@
         <div class="footer-layout-right">
           <button class="btn-black" @click="btnSave">Cất</button>
           <div class="select-button">
-            <button class="btn-green" @click="btnSaveAndAdd">
-              Cất và Thêm
-            </button>
+            <button class="btn-green" @click="btnSaveAndAdd">Cất và Thêm</button>
             <div class="boundary-btn"></div>
             <button class="btn-green-icon">
               <div class="dropdown-white-icon"></div>
@@ -575,9 +462,7 @@
           </div>
         </div>
       </template>
-      <template
-        v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && !receipt.IsNoted"
-      >
+      <template v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && !receipt.IsNoted">
         <div class="footer-layout-left">
           <div class="footer-layout-left-header">
             <button class="btn-black">
@@ -612,19 +497,12 @@
             </div>
           </div>
           <div class="footer-layout-right-body">
-            <button
-              @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit"
-              class="btn-black"
-            >
-              Sửa
-            </button>
+            <button @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit" class="btn-black">Sửa</button>
             <button @click="btnNote">Ghi sổ</button>
           </div>
         </div>
       </template>
-      <template
-        v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && receipt.IsNoted"
-      >
+      <template v-if="statusForm == this.$_MISAEnum.FORM_MODE.View && receipt.IsNoted">
         <div class="footer-layout-left">
           <div class="footer-layout-left-header">
             <button class="btn-black">
@@ -659,12 +537,7 @@
             </div>
           </div>
           <div class="footer-layout-right-body">
-            <button
-              @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit"
-              class="btn-black"
-            >
-              Sửa nhanh
-            </button>
+            <button @click="statusForm = this.$_MISAEnum.FORM_MODE.Edit" class="btn-black">Sửa nhanh</button>
             <button @click="btnUnNote">Bỏ ghi</button>
           </div>
         </div>
@@ -682,9 +555,7 @@
       :contentExist="contentReceiptNumberExist"
     ></misa-dialog-handle-exist>
     <!-- dialog employee save and close -->
-    <misa-dialog-data-change
-      v-if="isShowDialogDataChange"
-    ></misa-dialog-data-change>
+    <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
   </div>
 </template>
 
@@ -749,17 +620,14 @@ export default {
         this.onKeyDownProviderCBBSingle(index);
       }
     });
-    this.$_MISAEmitter.on(
-      "handleScrollCBBSingle",
-      async (textSearch, propId) => {
-        if (propId == "EmployeeId") {
-          await this.handleScrollEmployeeCBB(textSearch);
-        }
-        if (propId == "ProviderId") {
-          await this.handleScrollProviderCBB(textSearch);
-        }
+    this.$_MISAEmitter.on("handleScrollCBBSingle", async (textSearch, propId) => {
+      if (propId == "EmployeeId") {
+        await this.handleScrollEmployeeCBB(textSearch);
       }
-    );
+      if (propId == "ProviderId") {
+        await this.handleScrollProviderCBB(textSearch);
+      }
+    });
 
     this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data, propCode) => {
       if (propCode == "AccountDebtNumber") {
@@ -770,29 +638,23 @@ export default {
       }
     });
 
-    this.$_MISAEmitter.on(
-      "handleScrollCBBformCBB",
-      async (propCode, textSearch) => {
-        if (propCode == "AccountDebtNumber") {
-          await this.handleScrollDebt(textSearch);
-        }
-        if (propCode == "AccountBalanceNumber") {
-          await this.handleScrollBalance(textSearch);
-        }
+    this.$_MISAEmitter.on("handleScrollCBBformCBB", async (propCode, textSearch) => {
+      if (propCode == "AccountDebtNumber") {
+        await this.handleScrollDebt(textSearch);
       }
-    );
+      if (propCode == "AccountBalanceNumber") {
+        await this.handleScrollBalance(textSearch);
+      }
+    });
 
-    this.$_MISAEmitter.on(
-      "onSearchChangeFormCBB",
-      async (newValue, propCode) => {
-        if (propCode == "AccountDebtNumber") {
-          await this.onSearchChangeDebt(newValue);
-        }
-        if (propCode == "AccountBalanceNumber") {
-          await this.onSearchChangeBalance(newValue);
-        }
+    this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue, propCode) => {
+      if (propCode == "AccountDebtNumber") {
+        await this.onSearchChangeDebt(newValue);
       }
-    );
+      if (propCode == "AccountBalanceNumber") {
+        await this.onSearchChangeBalance(newValue);
+      }
+    });
 
     this.$_MISAEmitter.on("onKeyDownFormCBB", (index, propCode) => {
       if (propCode == "AccountDebtNumber") {
@@ -832,9 +694,7 @@ export default {
         "AccountBalanceId",
       ],
       // Khai báo biến lưu text cbb chọn layout
-      textSelectLayout:
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-          .optionHeader[0],
+      textSelectLayout: this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.optionHeader[0],
       // Chỉ số ban đầu trong cbb chọn layout
       indexSelectedLayout: 0,
       // Khai báo đối tượng employee
@@ -910,9 +770,7 @@ export default {
       get() {
         if (this.receipt.AccountingDate) {
           const isoDate = this.receipt.AccountingDate;
-          const formattedDate = isoDate.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
+          const formattedDate = isoDate.split(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE)[0];
           return formattedDate;
         }
         return "";
@@ -931,9 +789,7 @@ export default {
       get() {
         if (this.receipt.ReceiptDate) {
           const isoDate = this.receipt.ReceiptDate;
-          const formattedReceiptDate = isoDate.split(
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE
-          )[0];
+          const formattedReceiptDate = isoDate.split(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SPLIT_DATE)[0];
           return formattedReceiptDate;
         }
         return "";
@@ -945,13 +801,8 @@ export default {
 
     TotalMoney() {
       if (this.receipt.AccountantList) {
-        const accountantList = this.receipt.AccountantList.filter(
-          (accountant) => accountant.Flag != 3
-        );
-        const total = accountantList.reduce(
-          (total, item) => total + parseFloat(item.Money || 0),
-          0
-        );
+        const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
+        const total = accountantList.reduce((total, item) => total + parseFloat(item.Money || 0), 0);
         return total;
       } else {
         return 0;
@@ -961,10 +812,7 @@ export default {
 
   watch: {
     "receipt.Reason": function (newVal, oldVal) {
-      if (
-        this.receipt.AccountantList &&
-        this.receipt.AccountantList.length > 0
-      ) {
+      if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
         this.receipt.AccountantList.map((row) => {
           if (oldVal == row.Description) {
             row.Description = newVal;
@@ -974,10 +822,7 @@ export default {
     },
 
     "receipt.AccountingDate": function (newVal, oldVal) {
-      if (
-        oldVal == undefined ||
-        helperCommon.setNewDate(oldVal) == this.receipt.ReceiptDate
-      ) {
+      if (oldVal == undefined || helperCommon.setNewDate(oldVal) == this.receipt.ReceiptDate) {
         this.receipt.ReceiptDate = helperCommon.setNewDate(newVal);
       }
     },
@@ -1004,11 +849,7 @@ export default {
      */
     async getListProvider() {
       try {
-        const res = await providerService.getFilter(
-          this.selectedRecordProvider,
-          this.currentPageProvider,
-          ""
-        );
+        const res = await providerService.getFilter(this.selectedRecordProvider, this.currentPageProvider, "");
         this.listProviderSearch = res.data;
       } catch {
         return;
@@ -1022,11 +863,7 @@ export default {
      */
     async getListEmployee() {
       try {
-        const res = await employeeService.getFilter(
-          this.selectedRecordEmployee,
-          this.currentPageEmployee,
-          ""
-        );
+        const res = await employeeService.getFilter(this.selectedRecordEmployee, this.currentPageEmployee, "");
         this.listEmployeeSearch = res.data;
       } catch {
         return;
@@ -1098,9 +935,7 @@ export default {
     async getAccountant() {
       try {
         if (this.receipt.ReceiptId) {
-          const res = await accountantService.getByReceiptId(
-            this.receipt.ReceiptId
-          );
+          const res = await accountantService.getByReceiptId(this.receipt.ReceiptId);
           this.receipt.AccountantList = res.data;
           this.accountantOlds = JSON.parse(JSON.stringify(res.data));
         } else {
@@ -1166,15 +1001,9 @@ export default {
      */
     setError(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[
-            this.$_LANG_CODE
-          ].RECEIPT_PAYMENT.FORM_PAYMENT.validateNotNull[key];
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.validateNotNull[key];
         this.isBorderRed[key] = true;
-        this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-            .validateNotNull[key]
-        );
+        this.dataNotNull.push(this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.validateNotNull[key]);
       } catch {
         return;
       }
@@ -1186,14 +1015,10 @@ export default {
      */
     setErrorMaxLength(key) {
       try {
-        this.errors[key] =
-          this.$_MISAResource[
-            this.$_LANG_CODE
-          ].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[key].Warning;
+        this.errors[key] = this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[key].Warning;
         this.isBorderRed[key] = true;
         this.dataNotNull.push(
-          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-            .maxLength[key].Warning
+          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[key].Warning
         );
       } catch {
         return;
@@ -1214,8 +1039,7 @@ export default {
               } else if (
                 helperCommon.isMaxLengthInput(
                   this.receipt[refInput],
-                  this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
-                    .FORM_PAYMENT.maxLength[refInput].Limit
+                  this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[refInput].Limit
                 )
               ) {
                 this.setErrorMaxLength(refInput);
@@ -1225,28 +1049,21 @@ export default {
               if (this.receipt.ProviderCode && !this.receipt.ProviderId) {
                 this.errors.ProviderId = `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`;
                 this.isBorderRed.ProviderId = true;
-                this.dataNotNull.push(
-                  `Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`
-                );
+                this.dataNotNull.push(`Mã nhà cung cấp <${this.receipt.ProviderCode}> không tồn tại trong hệ thống.`);
               }
               break;
             case "FullName":
               if (this.receipt.FullName && !this.receipt.EmployeeId) {
                 this.errors.FullName = `Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`;
                 this.isBorderRed.FullName = true;
-                this.dataNotNull.push(
-                  `Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`
-                );
+                this.dataNotNull.push(`Nhân viên <${this.receipt.FullName}> không tồn tại trong hệ thống.`);
               }
               break;
             case "AccountingDate":
               if (helperCommon.isEmptyInput(this.receipt[refInput])) {
                 this.setError(refInput);
               }
-              if (
-                new Date(this.receipt.ReceiptDate) >
-                new Date(this.receipt.AccountingDate)
-              ) {
+              if (new Date(this.receipt.ReceiptDate) > new Date(this.receipt.AccountingDate)) {
                 this.errors.AccountingDate = `Ngày hạch toán phải lớn hơn hoặc bằng ngày chứng từ ${this.receipt.ReceiptDate}`;
                 this.isBorderRed.AccountingDate = true;
                 this.dataNotNull.push(
@@ -1269,8 +1086,7 @@ export default {
                 if (
                   helperCommon.isMaxLengthInput(
                     this.receipt[refInput],
-                    this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
-                      .FORM_PAYMENT.maxLength[refInput].Limit
+                    this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.maxLength[refInput].Limit
                   )
                 ) {
                   this.setErrorMaxLength(refInput);
@@ -1289,17 +1105,13 @@ export default {
      * created date: 29-06-2023 07:07:16
      */
     handleErrorInputReceipt(errors, receiptProperty) {
-      const responseHandle = helperCommon.handleErrorInput(
-        errors,
-        receiptProperty
-      );
+      const responseHandle = helperCommon.handleErrorInput(errors, receiptProperty);
       this.errors = responseHandle.error;
       this.isBorderRed = responseHandle.isBorderRed;
       this.dataNotNull = responseHandle.dataNotNull;
       if (this.dataNotNull.length > 0) {
         this.isShowDialogDataNotNull = true;
-        this.titleDataNotnull =
-          this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
       }
     },
     /**
@@ -1323,19 +1135,12 @@ export default {
     handleReceiptExisted(receiptExisted) {
       this.isShowDialogHandleExist = true;
       this.isBorderRed.ReceiptNumber = true;
-      this.errors["ReceiptNumber"] = `${
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-          .exist_pre
-      }${receiptExisted.ReceiptNumber}> ${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END
-      }`;
+      this.errors["ReceiptNumber"] = `${this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.exist_pre}${
+        receiptExisted.ReceiptNumber
+      }> ${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.EXIST_DETAIL_END}`;
       this.contentReceiptNumberExist = `${
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-          .exist_pre
-      }${receiptExisted.ReceiptNumber}${
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT
-          .exist_end
-      }`;
+        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.exist_pre
+      }${receiptExisted.ReceiptNumber}${this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.exist_end}`;
     },
     /**
      * Mô tả: Hàm kiểm tra xem có ghi sổ được không
@@ -1343,16 +1148,11 @@ export default {
      * created date: 06-08-2023 09:47:34
      */
     checkIsNoted() {
-      if (
-        this.receipt.AccountantList &&
-        this.receipt.AccountantList.length == 0
-      ) {
+      if (this.receipt.AccountantList && this.receipt.AccountantList.length == 0) {
         return false;
       }
       let checkNoted = true;
-      const accountantList = this.receipt.AccountantList.filter(
-        (accountant) => accountant.Flag != 3
-      );
+      const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
       if (accountantList.length == 0) return false;
       accountantList.map((x) => {
         // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
@@ -1361,9 +1161,7 @@ export default {
           x.UserObjectDebt == this.$_MISAEnum.OBJ_ACCOUNT.Employee
         ) {
           checkNoted = false;
-          this.dataNotNull.push(
-            `<TK nợ: <${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
-          );
+          this.dataNotNull.push(`<TK nợ: <${x.AccountDebtNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`);
         } else {
           // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
           if (!this.receipt.ProviderId) {
@@ -1378,9 +1176,7 @@ export default {
           x.UserObjectBalance == this.$_MISAEnum.OBJ_ACCOUNT.Employee
         ) {
           checkNoted = false;
-          this.dataNotNull.push(
-            `<TK có: <${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`
-          );
+          this.dataNotNull.push(`<TK có: <${x.AccountBalanceNumber}> không theo nhà cung cấp, vui lòng kiểm tra lại`);
         } else {
           // Nếu theo nhà cung cấp nhưng chưa chọn nhà cung cấp
           if (!this.receipt.ProviderId) {
@@ -1400,15 +1196,10 @@ export default {
      * created date: 10-08-2023 11:49:30
      */
     validateAccountantNotNull() {
-      if (
-        !this.receipt.AccountantList ||
-        this.receipt.AccountantList.length == 0
-      ) {
+      if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0) {
         return true;
       } else {
-        const accountantList = this.receipt.AccountantList.filter(
-          (accountant) => accountant.Flag != 3
-        );
+        const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
         if (accountantList.length == 0) {
           return true;
         }
@@ -1423,13 +1214,8 @@ export default {
      */
     validateAccountant() {
       let checkReturn = false;
-      if (
-        this.receipt.AccountantList &&
-        this.receipt.AccountantList.length > 0
-      ) {
-        const accountantList = this.receipt.AccountantList.filter(
-          (accountant) => accountant.Flag != 3
-        );
+      if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
+        const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
         checkReturn = accountantList.some((item, index) => {
           if (!item.AccountDebtId) {
             this.dataNotNull.push("Tài khoản nợ không được để trống");
@@ -1459,12 +1245,7 @@ export default {
     handleAccountant() {
       if (this.accountantOlds && this.accountantOlds.length > 0) {
         for (let i = 0; i < this.accountantOlds.length; i++) {
-          if (
-            this.hasDataChanged(
-              this.accountantOlds[i],
-              this.receipt.AccountantList[i]
-            )
-          ) {
+          if (this.hasDataChanged(this.accountantOlds[i], this.receipt.AccountantList[i])) {
             if (this.receipt.AccountantList[i].Flag != 3) {
               this.receipt.AccountantList[i].Flag = 2;
             }
@@ -1482,109 +1263,76 @@ export default {
      */
     async btnSave() {
       this.statusSave = this.$_MISAEnum.STATUS_BUTTON.Save;
+      this.validateReceipt();
+      if (this.dataNotNull.length > 0) {
+        this.isShowDialogDataNotNull = true;
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        return;
+      }
+      if (this.validateAccountantNotNull()) {
+        this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        this.isShowDialogDataNotNull = true;
+        return;
+      }
+      if (this.validateAccountant()) {
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        this.isShowDialogDataNotNull = true;
+        return;
+      }
       if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
-        this.validateReceipt();
-        if (this.dataNotNull.length > 0) {
-          this.isShowDialogDataNotNull = true;
-          this.titleDataNotnull =
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-        } else {
+        // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+        let receiptByCode = await this.checkReceiptExists();
+        // Nếu mã nhân viên chưa tồn tại trong hệ thống
+        if (!receiptByCode) {
+          this.receipt.TotalMoney = this.TotalMoney;
+          // Kiểm tra xem có ghi sổ được không
+          this.receipt.IsNoted = this.checkIsNoted();
           try {
-            if (this.validateAccountantNotNull()) {
-              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            if (this.validateAccountant()) {
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let receiptByCode = await this.checkReceiptExists();
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống
-            if (!receiptByCode) {
-              this.receipt.TotalMoney = this.TotalMoney;
-              // Kiểm tra xem có ghi sổ được không
-              this.receipt.IsNoted = this.checkIsNoted();
-              let receiptInserted = await receiptService.create(this.receipt);
-              this.receipt.ReceiptId = receiptInserted.data;
-              this.isBorderRed = {};
-              await this.getAccountant();
-              this.statusForm = this.$_MISAEnum.FORM_MODE.View;
-              if (this.dataNotNull.length > 0) {
-                this.isShowDialogDataNotNull = true;
-                this.titleDataNotnull = "Ghi sổ không thành công";
-              } else {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  "Ghi sổ thành công"
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleReceiptExisted(receiptByCode);
-            }
+            let receiptInserted = await receiptService.create(this.receipt);
+            this.receipt.ReceiptId = receiptInserted.data;
           } catch (error) {
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
+          this.isBorderRed = {};
+          await this.getAccountant();
+          this.statusForm = this.$_MISAEnum.FORM_MODE.View;
+          if (this.dataNotNull.length > 0) {
+            this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull = "Ghi sổ không thành công";
+          } else {
+            this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+          }
+        } else {
+          // Nếu mã nhân viên đã tồn tại trong hệ thống
+          this.handleReceiptExisted(receiptByCode);
         }
       } else if (this.statusForm === this.$_MISAEnum.FORM_MODE.Edit) {
-        // Nếu form ở trạng thái sửa
-        this.validateReceipt();
-        if (this.dataNotNull.length > 0) {
-          this.isShowDialogDataNotNull = true;
-          this.titleDataNotnull =
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-        } else {
+        // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+        let receiptByCode = await this.checkReceiptExists();
+        // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+        if (!receiptByCode || receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber) {
+          this.receipt.TotalMoney = this.TotalMoney;
+          // Kiểm tra xem có ghi sổ được không
+          this.receipt.IsNoted = this.checkIsNoted();
+          this.handleAccountant();
           try {
-            if (this.validateAccountantNotNull()) {
-              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            if (this.validateAccountant()) {
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let receiptByCode = await this.checkReceiptExists();
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
-            if (
-              !receiptByCode ||
-              receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber
-            ) {
-              this.receipt.TotalMoney = this.TotalMoney;
-              // Kiểm tra xem có ghi sổ được không
-              this.receipt.IsNoted = this.checkIsNoted();
-              this.handleAccountant();
-              await receiptService.update(this.receipt.ReceiptId, this.receipt);
-              await this.getAccountant();
-              this.isBorderRed = {};
-              this.statusForm = this.$_MISAEnum.FORM_MODE.View;
-              if (this.dataNotNull.length > 0) {
-                this.isShowDialogDataNotNull = true;
-                this.titleDataNotnull = "Ghi sổ không thành công";
-              } else {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  "Ghi sổ thành công"
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleReceiptExisted(receiptByCode);
-            }
+            await receiptService.update(this.receipt.ReceiptId, this.receipt);
           } catch (error) {
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
+          await this.getAccountant();
+          this.isBorderRed = {};
+          this.statusForm = this.$_MISAEnum.FORM_MODE.View;
+          if (this.dataNotNull.length > 0) {
+            this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull = "Ghi sổ không thành công";
+          } else {
+            this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+          }
+        } else {
+          // Nếu mã nhân viên đã tồn tại trong hệ thống
+          this.handleReceiptExisted(receiptByCode);
         }
       }
     },
@@ -1595,116 +1343,84 @@ export default {
      */
     async btnSaveAndAdd() {
       this.statusSave = this.$_MISAEnum.STATUS_BUTTON.SaveAndAdd;
+      this.validateReceipt();
+      if (this.dataNotNull.length > 0) {
+        this.isShowDialogDataNotNull = true;
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        return;
+      }
+      if (this.validateAccountantNotNull()) {
+        this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        this.isShowDialogDataNotNull = true;
+        return;
+      }
+      if (this.validateAccountant()) {
+        this.titleDataNotnull = this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
+        this.isShowDialogDataNotNull = true;
+        return;
+      }
       // Nếu form ở trạng thái thêm mới
       if (this.statusForm === this.$_MISAEnum.FORM_MODE.Add) {
-        this.validateReceipt();
-        if (this.dataNotNull.length > 0) {
-          this.isShowDialogDataNotNull = true;
-          this.titleDataNotnull =
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-        } else {
+        // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+        let receiptByCode = await this.checkReceiptExists();
+        if (!receiptByCode) {
+          this.receipt.TotalMoney = this.TotalMoney;
+          // Kiểm tra xem có ghi sổ được không
+          this.receipt.IsNoted = this.checkIsNoted();
+          // Nếu mã nhân viên chưa tồn tại trong hệ thống
           try {
-            if (this.validateAccountantNotNull()) {
-              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            if (this.validateAccountant()) {
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let receiptByCode = await this.checkReceiptExists();
-            if (!receiptByCode) {
-              this.receipt.TotalMoney = this.TotalMoney;
-              // Kiểm tra xem có ghi sổ được không
-              this.receipt.IsNoted = this.checkIsNoted();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
-              await receiptService.create(this.receipt);
-              this.receipt = {};
-              this.isBorderRed = {};
-              await this.getNewCode();
-              this.AutoSetReceipt();
-              this.setNewAccountant();
-              this.$refs.ProviderId.focus();
-              if (this.dataNotNull.length > 0) {
-                this.isShowDialogDataNotNull = true;
-                this.titleDataNotnull = "Ghi sổ không thành công";
-              } else {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  "Ghi sổ thành công"
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleReceiptExisted(receiptByCode);
-            }
+            await receiptService.create(this.receipt);
           } catch (error) {
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
+          this.receipt = {};
+          this.isBorderRed = {};
+          await this.getNewCode();
+          this.AutoSetReceipt();
+          this.setNewAccountant();
+          this.$refs.ProviderId.focus();
+          if (this.dataNotNull.length > 0) {
+            this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull = "Ghi sổ không thành công";
+          } else {
+            this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+          }
+        } else {
+          // Nếu mã nhân viên đã tồn tại trong hệ thống
+          this.handleReceiptExisted(receiptByCode);
         }
         // Nếu form ở trạng thái sửa
-      } else {
-        this.validateReceipt();
-        if (this.dataNotNull.length > 0) {
-          this.isShowDialogDataNotNull = true;
-          this.titleDataNotnull =
-            this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-        } else {
+      } else if (this.statusForm === this.$_MISAEnum.FORM_MODE.Edit) {
+        // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+        let receiptByCode = await this.checkReceiptExists();
+        // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
+        if (!receiptByCode || receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber) {
+          this.receipt.TotalMoney = this.TotalMoney;
+          // Kiểm tra xem có ghi sổ được không
+          this.receipt.IsNoted = this.checkIsNoted();
+          this.handleAccountant();
           try {
-            if (this.validateAccountantNotNull()) {
-              this.dataNotNull.push("Bạn phải nhập chứng từ chi tiết.");
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            if (this.validateAccountant()) {
-              this.titleDataNotnull =
-                this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID;
-              this.isShowDialogDataNotNull = true;
-              return;
-            }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
-            let receiptByCode = await this.checkReceiptExists();
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
-            if (
-              !receiptByCode ||
-              receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber
-            ) {
-              this.receipt.TotalMoney = this.TotalMoney;
-              // Kiểm tra xem có ghi sổ được không
-              this.receipt.IsNoted = this.checkIsNoted();
-              this.handleAccountant();
-              await receiptService.update(this.receipt.ReceiptId, this.receipt);
-              this.receipt = {};
-              this.isBorderRed = {};
-              await this.getNewCode();
-              this.AutoSetReceipt();
-              this.setNewAccountant();
-              this.$refs.ProviderId.focus();
-              this.statusForm = this.$_MISAEnum.FORM_MODE.Add;
-              if (this.dataNotNull.length > 0) {
-                this.isShowDialogDataNotNull = true;
-                this.titleDataNotnull = "Ghi sổ không thành công";
-              } else {
-                this.$_MISAEmitter.emit(
-                  "onShowToastMessage",
-                  "Ghi sổ thành công"
-                );
-              }
-            } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
-              this.handleReceiptExisted(receiptByCode);
-            }
+            await receiptService.update(this.receipt.ReceiptId, this.receipt);
           } catch (error) {
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
+          this.receipt = {};
+          this.isBorderRed = {};
+          await this.getNewCode();
+          this.AutoSetReceipt();
+          this.setNewAccountant();
+          this.$refs.ProviderId.focus();
+          this.statusForm = this.$_MISAEnum.FORM_MODE.Add;
+          if (this.dataNotNull.length > 0) {
+            this.isShowDialogDataNotNull = true;
+            this.titleDataNotnull = "Ghi sổ không thành công";
+          } else {
+            this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+          }
+        } else {
+          // Nếu mã nhân viên đã tồn tại trong hệ thống
+          this.handleReceiptExisted(receiptByCode);
         }
       }
     },
@@ -1723,16 +1439,10 @@ export default {
         }
       }
       // thêm thuộc tính DepartmentName vào listPropError để xử lí focus nếu chưa có
-      if (
-        listPropError.includes("ProviderId") &&
-        !listPropError.includes("ProviderCode")
-      ) {
+      if (listPropError.includes("ProviderId") && !listPropError.includes("ProviderCode")) {
         listPropError.push("ProviderCode");
       }
-      if (
-        listPropError.includes("EmployeeId") &&
-        !listPropError.includes("FullName")
-      ) {
+      if (listPropError.includes("EmployeeId") && !listPropError.includes("FullName")) {
         listPropError.push("FullName");
       }
       for (const prop of this.receiptProperty) {
@@ -1875,11 +1585,7 @@ export default {
           newValue = "";
         }
         this.searchEmployeeTimeout = setTimeout(async () => {
-          const newListEmployee = await employeeService.getFilter(
-            20,
-            1,
-            newValue
-          );
+          const newListEmployee = await employeeService.getFilter(20, 1, newValue);
           this.listEmployeeSearch = newListEmployee.data;
         }, 500);
       } catch {
@@ -1906,15 +1612,8 @@ export default {
     async handleScrollEmployeeCBB(textSearch) {
       try {
         this.currentPageEmployee += 1;
-        const filtered = await employeeService.getFilter(
-          20,
-          this.currentPageEmployee,
-          textSearch
-        );
-        this.listEmployeeSearch.Data = [
-          ...this.listEmployeeSearch.Data,
-          ...filtered.data.Data,
-        ];
+        const filtered = await employeeService.getFilter(20, this.currentPageEmployee, textSearch);
+        this.listEmployeeSearch.Data = [...this.listEmployeeSearch.Data, ...filtered.data.Data];
       } catch {
         return;
       }
@@ -1959,11 +1658,7 @@ export default {
           newValue = "";
         }
         this.searchProviderTimeout = setTimeout(async () => {
-          const newListProvider = await providerService.getFilter(
-            20,
-            1,
-            newValue
-          );
+          const newListProvider = await providerService.getFilter(20, 1, newValue);
           this.listProviderSearch = newListProvider.data;
         }, 500);
       } catch {
@@ -1977,16 +1672,13 @@ export default {
      * created date: 01-08-2023 08:33:33
      */
     onKeyDownProviderCBBSingle(index) {
-      this.receipt.ProviderName =
-        this.listProviderSearch.Data[index].ProviderName;
+      this.receipt.ProviderName = this.listProviderSearch.Data[index].ProviderName;
       this.receipt.ProviderId = this.listProviderSearch.Data[index].ProviderId;
-      this.receipt.ProviderCode =
-        this.listProviderSearch.Data[index].ProviderCode;
+      this.receipt.ProviderCode = this.listProviderSearch.Data[index].ProviderCode;
       this.receipt.EmployeeId = this.listProviderSearch.Data[index].EmployeeId;
       this.receipt.FullName = this.listProviderSearch.Data[index].FullName;
       if (this.listProviderSearch.Data[index].IsPersonal) {
-        this.receipt.ReceiveName =
-          this.listProviderSearch.Data[index].ProviderName;
+        this.receipt.ReceiveName = this.listProviderSearch.Data[index].ProviderName;
       }
       this.receipt.Address = this.listProviderSearch.Data[index].Address;
       this.receipt.Reason = `Chi tiền cho ${this.listProviderSearch.Data[index].ProviderName}`;
@@ -2004,15 +1696,8 @@ export default {
     async handleScrollProviderCBB(textSearch) {
       try {
         this.currentPageProvider += 1;
-        const filtered = await providerService.getFilter(
-          20,
-          this.currentPageProvider,
-          textSearch
-        );
-        this.listProviderSearch.Data = [
-          ...this.listProviderSearch.Data,
-          ...filtered.data.Data,
-        ];
+        const filtered = await providerService.getFilter(20, this.currentPageProvider, textSearch);
+        this.listProviderSearch.Data = [...this.listProviderSearch.Data, ...filtered.data.Data];
       } catch {
         return;
       }
@@ -2044,14 +1729,10 @@ export default {
      * created date: 05-08-2023 20:05:15
      */
     selectedDebt(accountDebt) {
-      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId =
-        accountDebt.AccountDebtId;
-      this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber =
-        accountDebt.AccountDebtNumber;
-      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt =
-        accountDebt.IsParentDebt;
-      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
-        accountDebt.UserObjectDebt;
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId = accountDebt.AccountDebtId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber = accountDebt.AccountDebtNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt = accountDebt.IsParentDebt;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt = accountDebt.UserObjectDebt;
       this.isBorderRed.AccountDebtId = false;
       this.isBorderRed[`AccountDebtId${this.indexSelectRow}`] = false;
     },
@@ -2098,14 +1779,11 @@ export default {
      * created date: 09-08-2023 09:02:29
      */
     onKeyDownAccountDebt(index) {
-      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId =
-        this.listAccountDebt[index].AccountDebtId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountDebtId = this.listAccountDebt[index].AccountDebtId;
       this.receipt.AccountantList[this.indexSelectRow].AccountDebtNumber =
         this.listAccountDebt[index].AccountDebtNumber;
-      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt =
-        this.listAccountDebt[index].IsParentDebt;
-      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt =
-        this.listAccountDebt[index].UserObjectDebt;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentDebt = this.listAccountDebt[index].IsParentDebt;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectDebt = this.listAccountDebt[index].UserObjectDebt;
     },
     /**
      * Mô tả: Tìm kiếm tài khoản nợ
@@ -2119,17 +1797,12 @@ export default {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchBalanceTimeout);
         this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId = "";
-        this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
-          "";
+        this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber = "";
         if (!newValue.trim()) {
           newValue = "";
         }
         this.searchBalanceTimeout = setTimeout(async () => {
-          const newListBalance = await accountService.getBalance(
-            20,
-            1,
-            newValue
-          );
+          const newListBalance = await accountService.getBalance(20, 1, newValue);
           this.listAccountBalance = newListBalance.data;
         }, 500);
       } catch {
@@ -2141,8 +1814,7 @@ export default {
         this.listAccountBalance[index].AccountBalanceId;
       this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
         this.listAccountBalance[index].AccountBalanceNumber;
-      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance =
-        this.listAccountBalance[index].IsParentBalance;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance = this.listAccountBalance[index].IsParentBalance;
       this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
         this.listAccountBalance[index].UserObjectBalance;
     },
@@ -2152,14 +1824,10 @@ export default {
      * created date: 05-08-2023 20:05:15
      */
     selectedBalance(accountBalance) {
-      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId =
-        accountBalance.AccountBalanceId;
-      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber =
-        accountBalance.AccountBalanceNumber;
-      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance =
-        accountBalance.IsParentBalance;
-      this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance =
-        accountBalance.UserObjectBalance;
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceId = accountBalance.AccountBalanceId;
+      this.receipt.AccountantList[this.indexSelectRow].AccountBalanceNumber = accountBalance.AccountBalanceNumber;
+      this.receipt.AccountantList[this.indexSelectRow].IsParentBalance = accountBalance.IsParentBalance;
+      this.receipt.AccountantList[this.indexSelectRow].UserObjectBalance = accountBalance.UserObjectBalance;
       this.isBorderRed.AccountBalanceId = false;
       this.isBorderRed[`AccountBalanceId${this.indexSelectRow}`] = false;
     },
@@ -2182,22 +1850,12 @@ export default {
      * created date: 05-08-2023 21:52:20
      */
     btnAddRowAccountant() {
-      if (
-        this.receipt.AccountantList &&
-        this.receipt.AccountantList.length > 0
-      ) {
+      if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
         this.receipt.AccountantList.push({
-          ...this.receipt.AccountantList[
-            this.receipt.AccountantList.length - 1
-          ],
+          ...this.receipt.AccountantList[this.receipt.AccountantList.length - 1],
         });
-        this.receipt.AccountantList[
-          this.receipt.AccountantList.length - 1
-        ].Flag = 1;
-      } else if (
-        !this.receipt.AccountantList ||
-        this.receipt.AccountantList.length == 0
-      )
+        this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = 1;
+      } else if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0)
         this.receipt.AccountantList.push({
           ReceiptId: this.receipt.ReceiptId,
           Description: "",
@@ -2212,10 +1870,7 @@ export default {
      * created date: 05-08-2023 21:50:18
      */
     deleteRowAccountant(index) {
-      if (
-        this.statusForm !== this.$_MISAEnum.FORM_MODE.View &&
-        !this.receipt.IsNoted
-      ) {
+      if (this.statusForm !== this.$_MISAEnum.FORM_MODE.View && !this.receipt.IsNoted) {
         if (this.receipt.AccountantList[index].Flag == 1) {
           this.receipt.AccountantList.splice(index, 1);
         } else {
@@ -2231,9 +1886,7 @@ export default {
      */
     deleteAllRowAccountant() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.receipt.AccountantList = this.receipt.AccountantList.filter(
-        (row) => row.Flag != 1
-      );
+      this.receipt.AccountantList = this.receipt.AccountantList.filter((row) => row.Flag != 1);
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.receipt.AccountantList.map((row) => {
         row.Flag = 3;
@@ -2251,10 +1904,7 @@ export default {
       if (checkNoted) {
         const res = await receiptService.updateNote(this.receipt);
         this.receipt.IsNoted = !this.receipt.IsNoted;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
         }
       } else {

@@ -1,9 +1,6 @@
 <template>
   <div class="overlay-dialog">
-    <div
-      class="dialog-entity position-display-center"
-      id="dialog-question-entity"
-    >
+    <div class="dialog-entity position-display-center" id="dialog-question-entity">
       <div class="title-dialog">
         <h1>
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CLOSE_RECORD }}
@@ -14,18 +11,14 @@
         <div class="question-blue-icon dialog-content-icon"></div>
         <div class="dialog-content-main">
           <p>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.DATA_CHANGE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.DATA_CHANGE }}
           </p>
         </div>
       </div>
       <div class="dialog-question-footer">
         <div class="dialog-question-footer-left">
           <misa-button-extra
-            :textButtonExtra="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL
-            "
+            :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CANCEL"
             class="btn-no-minwwidth"
             @click="btnCancel"
             :tabindex="102"
@@ -39,9 +32,7 @@
             :tabindex="101"
           ></misa-button-extra>
           <misa-button-default
-            :textButtonDefault="
-              this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES
-            "
+            :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.YES"
             class="btn-no-minwwidth"
             @click="btnYes"
             :tabindex="100"

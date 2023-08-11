@@ -20,10 +20,7 @@
     <div class="col-md-l a-select-entity" v-if="isShowMenuSelect">
       <ul>
         <template v-for="(item, index) in listData" :key="index">
-          <li
-            @click="handleSelectItem(item, index)"
-            :class="{ 'item-selected': index == indexSelected }"
-          >
+          <li @click="handleSelectItem(item, index)" :class="{ 'item-selected': index == indexSelected }">
             {{ item[propName] }}
           </li>
         </template>
@@ -36,13 +33,7 @@
 export default {
   name: "MISASelectOption",
 
-  props: [
-    "listData",
-    "propName",
-    "propCode",
-    "isDisabledMenu",
-    "valueSelected",
-  ],
+  props: ["listData", "propName", "propCode", "isDisabledMenu", "valueSelected"],
 
   created() {
     this.$_MISAEmitter.on("selectedDefaultItem", () => {

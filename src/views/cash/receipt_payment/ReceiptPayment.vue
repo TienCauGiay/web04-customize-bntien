@@ -2,35 +2,16 @@
   <div class="receipt-payment" id="receipt-payment">
     <div class="cash-info-money">
       <div class="cash-info-money-item" style="border-left: 4px solid #00a9f2">
-        <div class="cash-info-money-item-text">
-          Tổng thu đầu năm đến hiện tại
-        </div>
-        <div
-          class="cash-info-money-item-number"
-          :title="'Bấm vào để xem chi tiết'"
-        >
-          0,00
-        </div>
+        <div class="cash-info-money-item-text">Tổng thu đầu năm đến hiện tại</div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">0,00</div>
       </div>
       <div class="cash-info-money-item" style="border-left: 4px solid #ff7f2c">
-        <div class="cash-info-money-item-text">
-          Tổng chi đầu năm đến hiện tại
-        </div>
-        <div
-          class="cash-info-money-item-number"
-          :title="'Bấm vào để xem chi tiết'"
-        >
-          0,00
-        </div>
+        <div class="cash-info-money-item-text">Tổng chi đầu năm đến hiện tại</div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">0,00</div>
       </div>
       <div class="cash-info-money-item" style="border-left: 4px solid #74cb2f">
         <div class="cash-info-money-item-text">Tồn quỹ hiện tại</div>
-        <div
-          class="cash-info-money-item-number"
-          :title="'Bấm vào để xem chi tiết'"
-        >
-          1948703501,00
-        </div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">1948703501,00</div>
       </div>
       <button class="refresh-cash-money">
         <div class="icon-l refresh-icon" style="scale: 0.6 0.6"></div>
@@ -51,9 +32,7 @@
             ref="DeleteMulti"
           >
             <div class="select-function-delete">
-              <span>{{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
-              }}</span>
+              <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH }}</span>
               <div class="delete-multiple-icon">
                 <div class="function-icon-disable"></div>
               </div>
@@ -81,10 +60,7 @@
           <button class="filter-receipt">
             <div class="select-filter-receipt">
               <span>{{ textFilterReceipt }}</span>
-              <div
-                class="filter-receipt-icon"
-                @click="isShowFilterReceipt = !isShowFilterReceipt"
-              >
+              <div class="filter-receipt-icon" @click="isShowFilterReceipt = !isShowFilterReceipt">
                 <div class="function-icon-disable"></div>
               </div>
               <div class="filter-receipt-menu" v-show="isShowFilterReceipt">
@@ -105,9 +81,7 @@
           <div class="search-entity">
             <input
               type="search"
-              :placeholder="
-                this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch
-              "
+              :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch"
               v-model="textSearch"
               @keydown.enter="onSearchReceipt"
               @input="autoSearch"
@@ -126,29 +100,19 @@
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
             style="margin-top: 3px"
           ></div>
-          <div
-            class="setting-icon icon-tb"
-            :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"
-          ></div>
+          <div class="setting-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"></div>
           <div class="insert-data">
-            <misa-button-default
-              :textButtonDefault="'Thu tiền'"
-            ></misa-button-default>
+            <misa-button-default :textButtonDefault="'Thu tiền'"></misa-button-default>
             <button>
               <div class="dropdown-white-icon"></div>
             </button>
           </div>
           <div class="insert-data">
-            <misa-button-default
-              :textButtonDefault="'Chi tiền'"
-              @click="btnOpenFormDetail"
-            ></misa-button-default>
+            <misa-button-default :textButtonDefault="'Chi tiền'" @click="btnOpenFormDetail"></misa-button-default>
             <button @click="isShowMenuInsert = !isShowMenuInsert">
               <div class="dropdown-white-icon"></div>
               <div class="menu-select-insert-data" v-show="isShowMenuInsert">
-                <div class="item-select-insert-data" @click="btnOpenFormDetail">
-                  Phiếu chi
-                </div>
+                <div class="item-select-insert-data" @click="btnOpenFormDetail">Phiếu chi</div>
                 <div class="item-select-insert-data">Trả tiền theo hóa đơn</div>
                 <div class="item-select-insert-data">Nộp thuế</div>
                 <div class="item-select-insert-data">Nộp bảo hiểm</div>
@@ -164,12 +128,7 @@
             <tr>
               <th type="checkbox" class="entity-border-left">
                 <div class="th-checkbox">
-                  <input
-                    class="checkbox-select-row"
-                    type="checkbox"
-                    @click="checkAllSelect"
-                    :checked="isCheckAll"
-                  />
+                  <input class="checkbox-select-row" type="checkbox" @click="checkAllSelect" :checked="isCheckAll" />
                 </div>
               </th>
               <th class="text-center col-width-150">Ngày hạch toán</th>
@@ -180,14 +139,8 @@
               <th class="col-width-150">Đối tượng</th>
               <th class="col-width-120">Mã đối tượng</th>
               <th class="col-width-350">Địa chỉ</th>
-              <th
-                type="feat"
-                class="text-center entity-border-right e-birthday"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .FEATURE
-                }}
+              <th type="feat" class="text-center entity-border-right e-birthday">
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FEATURE }}
               </th>
             </tr>
           </thead>
@@ -197,10 +150,7 @@
               v-for="item in dataTable.Data"
               :key="item.ReceiptId"
               @dblclick="onViewFormDetail(item)"
-              :class="[
-                { checkedRow: checkRow().includes(item.ReceiptId) },
-                { unNoted: !item.IsNoted },
-              ]"
+              :class="[{ checkedRow: checkRow().includes(item.ReceiptId) }, { unNoted: !item.IsNoted }]"
             >
               <td class="entity-border-left" @dblclick.stop>
                 <div class="th-checkbox">
@@ -219,9 +169,7 @@
                 {{ helperCommon.formatDate(item.ReceiptDate) }}
               </td>
               <td class="col-width-120 color-blue" :title="item.ReceiptNumber">
-                <span @click="onViewFormDetail(item)">{{
-                  item.ReceiptNumber
-                }}</span>
+                <span @click="onViewFormDetail(item)">{{ item.ReceiptNumber }}</span>
               </td>
               <td
                 class="text-right col-width-150"
@@ -242,17 +190,9 @@
               <td class="col-width-350" :title="item.Address">
                 {{ item.Address }}
               </td>
-              <td
-                class="text-center entity-border-right e-birthday function-table"
-                @dblclick.stop
-              >
-                <span @click="onViewFormDetail(item)" style="font-weight: 500">
-                  Xem
-                </span>
-                <div
-                  class="function-table-content"
-                  @click="onOpenFeatureMenu($event, item)"
-                >
+              <td class="text-center entity-border-right e-birthday function-table" @dblclick.stop>
+                <span @click="onViewFormDetail(item)" style="font-weight: 500"> Xem </span>
+                <div class="function-table-content" @click="onOpenFeatureMenu($event, item)">
                   <div class="function-icon-table function-icon-select"></div>
                 </div>
               </td>
@@ -261,10 +201,7 @@
               <td></td>
               <td class="text-center">Tổng</td>
               <td colspan="2"></td>
-              <td
-                class="text-right"
-                :class="{ 'color-money-red': totalAmount < 0 }"
-              >
+              <td class="text-right" :class="{ 'color-money-red': totalAmount < 0 }">
                 {{ helperCommon.formatCurrency(totalAmount) }}
               </td>
               <td colspan="4"></td>
@@ -287,9 +224,7 @@
                 {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
               </div>
               <div @click="onDupliCateReceipt">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DUPLICATE }}
               </div>
             </template>
             <template v-if="this.selectedReceipt.IsNoted">
@@ -305,46 +240,24 @@
           src="../../../assets//img/loading.svg"
           alt="loading"
         />
-        <div
-          v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
-          class="no-data"
-        >
+        <div v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0" class="no-data">
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
         </div>
       </div>
       <div id="pagination" class="pagination">
         <p>
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-          <b>{{
-            this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0
-          }}</b>
+          <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
         </p>
         <div class="pagination-detail">
-          <div
-            class="pagination-detail-pagesize"
-            :class="{ 'active-record': isShowPaging }"
-            ref="PagingMenu"
-          >
-            <div
-              id="pagination-detail-pagesize-content"
-              class="pagination-detail-pagesize-content"
-            >
+          <div class="pagination-detail-pagesize" :class="{ 'active-record': isShowPaging }" ref="PagingMenu">
+            <div id="pagination-detail-pagesize-content" class="pagination-detail-pagesize-content">
               {{ selectedRecord }}
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                  .RECORD_ON_PAGE
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
             </div>
-            <div
-              id="menu-paging-select"
-              class="menu-paging-select"
-              @click="onShowSelectPaging"
-            >
-              <div
-                class="function-icon"
-                :class="{ 'rotate-function-icon': isShowPaging }"
-              ></div>
+            <div id="menu-paging-select" class="menu-paging-select" @click="onShowSelectPaging">
+              <div class="function-icon" :class="{ 'rotate-function-icon': isShowPaging }"></div>
               <ul id="menu-paging" class="menu-paging" v-show="isShowPaging">
                 <li
                   class="menu-paging-record"
@@ -356,10 +269,7 @@
                   }"
                 >
                   {{ record }}
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                      .RECORD_ON_PAGE
-                  }}
+                  {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
                 </li>
               </ul>
             </div>
@@ -367,17 +277,10 @@
           <div class="pagination-page-number">
             <ul class="page-number">
               <button
-                @click="
-                  goToPage(
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
-                      .PREVIOUS
-                  )
-                "
+                @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS)"
                 :disabled="isFirstPage"
               >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE }}
               </button>
               <button
                 v-for="pageNumber in this.visiblePageNumbers"
@@ -388,28 +291,17 @@
                 {{ pageNumber }}
               </button>
               <button
-                @click="
-                  goToPage(
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
-                  )
-                "
+                @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT)"
                 :disabled="isLastPage"
               >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT }}
               </button>
             </ul>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="isOverlay"
-      id="container-overlay"
-      class="container-overlay"
-      @closeFormDetail="onCloseFormDetail"
-    ></div>
+    <div v-if="isOverlay" id="container-overlay" class="container-overlay" @closeFormDetail="onCloseFormDetail"></div>
     <PaymentDetail
       v-if="isShowFormDetail"
       @closeFormDetail="onCloseFormDetail"
@@ -419,15 +311,10 @@
     <!-- dialog employee confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :contentDeleteMultiple="
-        this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT
-          .contentDeleteMultiple
-      "
+      :contentDeleteMultiple="this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.contentDeleteMultiple"
       :contentDelete="`${
         this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.contentDelete
-      }${receiptNumberDeleteSelected}${
-        this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
-      }`"
+      }${receiptNumberDeleteSelected}${this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END}`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- dialog employee input data not blank -->
@@ -437,10 +324,7 @@
       :title="titleDialogError"
     ></misa-dialog-error>
     <!-- toast message -->
-    <misa-toast-success
-      v-if="isShowToastMessage"
-      :contentToast="contentToastSuccess"
-    ></misa-toast-success>
+    <misa-toast-success v-if="isShowToastMessage" :contentToast="contentToastSuccess"></misa-toast-success>
   </div>
 </template>
 
@@ -611,10 +495,7 @@ export default {
         return [];
       }
 
-      let startPage = Math.max(
-        this.currentPage - Math.floor(this.maxVisiblePages / 2),
-        1
-      );
+      let startPage = Math.max(this.currentPage - Math.floor(this.maxVisiblePages / 2), 1);
       let endPage = startPage + this.maxVisiblePages - 1;
       if (endPage > this.totalPages) {
         endPage = this.totalPages;
@@ -658,10 +539,7 @@ export default {
      */
     totalAmount() {
       if (this.dataTable.Data) {
-        return this.dataTable.Data.map((x) => x.TotalMoney).reduce(
-          (total, current) => total + current,
-          0
-        );
+        return this.dataTable.Data.map((x) => x.TotalMoney).reduce((total, current) => total + current, 0);
       }
       return 0;
     },
@@ -676,12 +554,7 @@ export default {
     async getListReceipt(selectedRecord, currentPage, textSearch, keyFilter) {
       try {
         this.isShowLoadding = true;
-        const resfilter = await receiptService.getFilter(
-          selectedRecord,
-          currentPage,
-          textSearch,
-          keyFilter
-        );
+        const resfilter = await receiptService.getFilter(selectedRecord, currentPage, textSearch, keyFilter);
         this.isShowLoadding = false;
         return resfilter.data;
       } catch {
@@ -810,13 +683,9 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           this.dataTable = await this.getListReceipt(20, 1, "", null);
         }
@@ -940,11 +809,7 @@ export default {
      */
     async goToPage(p) {
       let newPage;
-      if (
-        p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
-        this.currentPage > 1
-      ) {
+      if (p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS && this.currentPage > 1) {
         newPage = this.currentPage - 1;
       } else if (
         p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
@@ -952,8 +817,7 @@ export default {
       ) {
         newPage = this.currentPage + 1;
       } else if (
-        typeof p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        typeof p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
         p >= 1 &&
         p <= this.totalPages
       ) {
@@ -1069,9 +933,7 @@ export default {
       try {
         this.isShowLoadding = true;
         // Lấy các chứng từ không xóa được (đã ghi sổ) để thông báo
-        const receiptNoDelete = this.dataTable.Data.filter(
-          (row) => row.IsNoted && this.ids.includes(row.ReceiptId)
-        );
+        const receiptNoDelete = this.dataTable.Data.filter((row) => row.IsNoted && this.ids.includes(row.ReceiptId));
         const res = await receiptService.deleteMutiple(this.ids);
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
@@ -1079,24 +941,17 @@ export default {
 
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status)) {
           if (res.data == this.ids.length) {
-            this.contentToastSuccess =
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+            this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
             this.onShowToastMessage();
             this.ids = [];
           } else if (res.data < this.ids.length) {
             this.dataNotNull.push(`Số chứng từ được xử lí: ${this.ids.length}`);
             this.dataNotNull.push(`Số chứng từ thành công: ${res.data}`);
-            this.dataNotNull.push(
-              `Số chứng từ không thành công: ${this.ids.length - res.data}`
-            );
+            this.dataNotNull.push(`Số chứng từ không thành công: ${this.ids.length - res.data}`);
             if (receiptNoDelete && receiptNoDelete.length > 0) {
-              const receiptNumbers = receiptNoDelete.map(
-                (row) => row.ReceiptNumber
-              );
+              const receiptNumbers = receiptNoDelete.map((row) => row.ReceiptNumber);
               this.dataNotNull.push(
-                `Các chứng từ sau đã được ghi sổ: ${receiptNumbers.join(
-                  ", "
-                )}, vui lòng kiểm tra lại.`
+                `Các chứng từ sau đã được ghi sổ: ${receiptNumbers.join(", ")}, vui lòng kiểm tra lại.`
               );
             }
             this.titleDialogError = "Kết quả xóa chứng từ";
@@ -1190,10 +1045,7 @@ export default {
       try {
         if (this.ids && this.ids.length > 0) {
           const res = await receiptService.updateMultipleNote(this.ids, false);
-          if (
-            this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-            res.data > 0
-          ) {
+          if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
             this.contentToastSuccess = "Bỏ ghi sổ thành công";
             this.onShowToastMessage();
             this.dataTable = await this.getListReceipt(20, 1, "", null);

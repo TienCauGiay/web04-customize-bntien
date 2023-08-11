@@ -12,19 +12,14 @@
   </div>
   <div class="content-info-money">
     <div class="info-money-item">
-      <div
-        class="info-money-item-left"
-        style="background-color: rgb(237, 118, 81)"
-      ></div>
+      <div class="info-money-item-left" style="background-color: rgb(237, 118, 81)"></div>
       <div class="info-money-item-right">
         <div class="money">
           <div class="format-money">1.336.000.000</div>
           <div class="icon-l filter-icon"></div>
         </div>
         <div class="content-money">
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.overdue
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.overdue }}</span>
         </div>
       </div>
     </div>
@@ -36,28 +31,19 @@
           <div class="icon-l filter-icon"></div>
         </div>
         <div class="content-money">
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.totalLiabiliti
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.totalLiabiliti }}</span>
         </div>
       </div>
     </div>
     <div class="info-money-item">
-      <div
-        class="info-money-item-left"
-        style="background-color: var(--color-btn-default)"
-      ></div>
+      <div class="info-money-item-left" style="background-color: var(--color-btn-default)"></div>
       <div class="info-money-item-right">
         <div class="money">
           <div class="format-money">100.000.000</div>
         </div>
         <div class="content-money">
-          <span>{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.recentPayment
-          }}</span>
-          <span class="content-money-last-child">{{
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.figureUpto
-          }}</span>
+          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.recentPayment }}</span>
+          <span class="content-money-last-child">{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.figureUpto }}</span>
         </div>
       </div>
     </div>
@@ -79,9 +65,7 @@
           ref="DeleteMulti"
         >
           <div class="select-function-delete">
-            <span>{{
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH
-            }}</span>
+            <span>{{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.EXCUTE_BATCH }}</span>
             <div class="delete-multiple-icon">
               <div class="function-icon-disable"></div>
             </div>
@@ -109,9 +93,7 @@
       <div class="search-entity">
         <input
           type="search"
-          :placeholder="
-            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch
-          "
+          :placeholder="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.placeholderSearch"
           v-model="textSearch"
           @keydown.enter="onSearchProvider"
           @input="autoSearch"
@@ -128,27 +110,19 @@
         class="excel-icon icon-tb"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXCEL"
       ></div>
-      <div
-        class="setting-icon icon-tb"
-        :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"
-      ></div>
+      <div class="setting-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"></div>
       <div class="utilities" @click="isShowUtilities = !isShowUtilities">
         <div class="utilities-text">
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES }}
         </div>
         <div class="function-icon-disable"></div>
         <div class="utilities-synchronized" v-if="isShowUtilities">
-          {{
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-              .UTILITIES_SYNCHRONIZED
-          }}
+          {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UTILITIES_SYNCHRONIZED }}
         </div>
       </div>
       <div class="insert-data">
         <misa-button-default
-          :textButtonDefault="
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE
-          "
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE"
           @click="btnOpenFormDetail"
         ></misa-button-default>
         <misa-button-icon></misa-button-icon>
@@ -161,58 +135,29 @@
             <tr>
               <th type="checkbox" class="entity-border-left">
                 <div class="th-checkbox">
-                  <input
-                    class="checkbox-select-row"
-                    type="checkbox"
-                    @click="checkAllSelect"
-                    :checked="isCheckAll"
-                  />
+                  <input class="checkbox-select-row" type="checkbox" @click="checkAllSelect" :checked="isCheckAll" />
                 </div>
               </th>
               <th class="col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .providerCode
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.providerCode }}
               </th>
               <th class="col-width-250">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .providerName
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.providerName }}
               </th>
               <th class="col-width-350">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .address
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.address }}
               </th>
               <th class="col-width-120">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .rawCode
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.rawCode }}
               </th>
               <th class="col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .phoneNumber
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.phoneNumber }}
               </th>
               <th class="col-width-300">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName
-                    .purchasStaff
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.purchasStaff }}
               </th>
-              <th
-                type="feat"
-                class="text-center entity-border-right e-birthday"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME
-                    .FEATURE
-                }}
+              <th type="feat" class="text-center entity-border-right e-birthday">
+                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FEATURE }}
               </th>
             </tr>
           </thead>
@@ -251,19 +196,11 @@
                 {{ item.PhoneNumber }}
               </td>
               <td class="col-width-300">{{ item.FullName }}</td>
-              <td
-                class="text-center entity-border-right e-birthday function-table"
-                @dblclick.stop
-              >
+              <td class="text-center entity-border-right e-birthday function-table" @dblclick.stop>
                 <span @click="onUpdateFormDetail(item)">
-                  {{
-                    this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                  }}
+                  {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE }}
                 </span>
-                <div
-                  class="function-table-content"
-                  @click="onOpenFeatureMenu($event, item)"
-                >
+                <div class="function-table-content" @click="onOpenFeatureMenu($event, item)">
                   <div class="function-icon-table function-icon-select"></div>
                 </div>
               </td>
@@ -298,10 +235,7 @@
         src="../../../assets/img/loading.svg"
         alt="loading"
       />
-      <div
-        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
-        class="no-data"
-      >
+      <div v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0" class="no-data">
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
@@ -312,29 +246,13 @@
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
-        <div
-          class="pagination-detail-pagesize"
-          :class="{ 'active-record': isShowPaging }"
-          ref="PagingMenu"
-        >
-          <div
-            id="pagination-detail-pagesize-content"
-            class="pagination-detail-pagesize-content"
-          >
+        <div class="pagination-detail-pagesize" :class="{ 'active-record': isShowPaging }" ref="PagingMenu">
+          <div id="pagination-detail-pagesize-content" class="pagination-detail-pagesize-content">
             {{ selectedRecord }}
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
           </div>
-          <div
-            id="menu-paging-select"
-            class="menu-paging-select"
-            @click="onShowSelectPaging"
-          >
-            <div
-              class="function-icon"
-              :class="{ 'rotate-function-icon': isShowPaging }"
-            ></div>
+          <div id="menu-paging-select" class="menu-paging-select" @click="onShowSelectPaging">
+            <div class="function-icon" :class="{ 'rotate-function-icon': isShowPaging }"></div>
             <ul id="menu-paging" class="menu-paging" v-show="isShowPaging">
               <li
                 class="menu-paging-record"
@@ -344,10 +262,7 @@
                 :class="{ 'active-record-item': indexSelectedRecord === index }"
               >
                 {{ record }}
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .RECORD_ON_PAGE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
               </li>
             </ul>
           </div>
@@ -355,17 +270,10 @@
         <div class="pagination-page-number">
           <ul class="page-number">
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
-                    .PREVIOUS
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS)"
               :disabled="isFirstPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE }}
             </button>
             <button
               v-for="pageNumber in this.visiblePageNumbers"
@@ -376,16 +284,10 @@
               {{ pageNumber }}
             </button>
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT)"
               :disabled="isLastPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT }}
             </button>
           </ul>
         </div>
@@ -398,30 +300,18 @@
       :providerSelected="providerUpdate"
       :statusFormMode="isStatusFormMode"
     ></ProviderDetail>
-    <div
-      v-if="isOverlay"
-      id="container-overlay"
-      class="container-overlay"
-      @closeFormDetail="onCloseFormDetail"
-    ></div>
+    <div v-if="isOverlay" id="container-overlay" class="container-overlay" @closeFormDetail="onCloseFormDetail"></div>
     <!-- dialog confirm delete -->
     <misa-dialog-confirm-delete
       :isDeleteMultiple="isDeleteMultipleDialog"
-      :contentDeleteMultiple="
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.multiple
-      "
+      :contentDeleteMultiple="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.multiple"
       :contentDelete="`${
         this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.prev
-      }${providerCodeDeleteSelected}${
-        this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.end
-      }`"
+      }${providerCodeDeleteSelected}${this.$_MISAResource[this.$_LANG_CODE].PROVIDER.confirmDelete.end}`"
       v-if="isShowDialogConfirmDelete"
     ></misa-dialog-confirm-delete>
     <!-- toast message -->
-    <misa-toast-success
-      v-if="isShowToastMessage"
-      :contentToast="contentToastSuccess"
-    ></misa-toast-success>
+    <misa-toast-success v-if="isShowToastMessage" :contentToast="contentToastSuccess"></misa-toast-success>
   </div>
 </template>
 
@@ -571,10 +461,7 @@ export default {
         return [];
       }
 
-      let startPage = Math.max(
-        this.currentPage - Math.floor(this.maxVisiblePages / 2),
-        1
-      );
+      let startPage = Math.max(this.currentPage - Math.floor(this.maxVisiblePages / 2), 1);
       let endPage = startPage + this.maxVisiblePages - 1;
       if (endPage > this.totalPages) {
         endPage = this.totalPages;
@@ -622,11 +509,7 @@ export default {
     async getListProvider() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await providerService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          ""
-        );
+        const resfilter = await providerService.getFilter(this.selectedRecord, this.currentPage, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
       } catch {
@@ -640,9 +523,7 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord =
-        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
-        (this.textSearch = "");
+      (this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT), (this.textSearch = "");
       await this.getListProvider();
     },
     /**
@@ -705,9 +586,7 @@ export default {
      */
     async onUpdateFormDetail(provider) {
       try {
-        const groupProvider = await groupProviderService.getByProviderId(
-          provider.ProviderId
-        );
+        const groupProvider = await groupProviderService.getByProviderId(provider.ProviderId);
         this.providerUpdate = provider;
         this.providerUpdate.GroupProvider = groupProvider.data;
         this.isShowFormDetail = true;
@@ -760,13 +639,9 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListProvider();
         }
@@ -812,9 +687,7 @@ export default {
      */
     async onDupliCateProvider() {
       try {
-        const groupProvider = await groupProviderService.getByProviderId(
-          this.selectedProvider.ProviderId
-        );
+        const groupProvider = await groupProviderService.getByProviderId(this.selectedProvider.ProviderId);
         this.providerUpdate = this.selectedProvider;
         this.providerUpdate.GroupProvider = groupProvider.data;
         this.isShowFormDetail = true;
@@ -891,11 +764,7 @@ export default {
      */
     async goToPage(p) {
       let newPage;
-      if (
-        p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
-        this.currentPage > 1
-      ) {
+      if (p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS && this.currentPage > 1) {
         newPage = this.currentPage - 1;
       } else if (
         p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
@@ -903,8 +772,7 @@ export default {
       ) {
         newPage = this.currentPage + 1;
       } else if (
-        typeof p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        typeof p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
         p >= 1 &&
         p <= this.totalPages
       ) {
@@ -1023,14 +891,10 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.ids = [];
           this.isDeleteMultipleDialog = false;
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListProvider();
         }

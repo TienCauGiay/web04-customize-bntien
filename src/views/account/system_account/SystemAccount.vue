@@ -15,9 +15,7 @@
       <div class="search-account">
         <input
           type="search"
-          :placeholder="
-            this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.placeholderSearch
-          "
+          :placeholder="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.placeholderSearch"
           name="search-account"
           v-model="textSearch"
           @keydown.enter="onSearchAccount"
@@ -49,9 +47,7 @@
       </div>
       <div class="insert-data">
         <misa-button-default
-          :textButtonDefault="
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE
-          "
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.ADD_EMPLOYEE"
           @click="btnOpenFormDetail"
         ></misa-button-default>
         <misa-button-icon></misa-button-icon>
@@ -63,83 +59,51 @@
           <thead>
             <tr>
               <th class="as-account-number-1 col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .accountNumber
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.accountNumber }}
               </th>
               <th class="as-account-name col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .accountName
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.accountName }}
               </th>
               <th class="as-nature col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .nature
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.nature }}
               </th>
               <th class="as-name-english col-width-250">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .accountNameEnglish
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.accountNameEnglish }}
               </th>
               <th class="as-explain col-width-350">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .explain
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.explain }}
               </th>
               <th class="as-status col-width-150">
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .state
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.state }}
               </th>
-              <th
-                class="text-center as-feature entity-border-right function-table"
-              >
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName
-                    .feature
-                }}
+              <th class="text-center as-feature entity-border-right function-table">
+                {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.colTableName.feature }}
               </th>
             </tr>
           </thead>
           <tbody>
-            <template
-              v-for="(item, index) in dataTable.Data"
-              :key="item.AccountId"
-            >
+            <template v-for="(item, index) in dataTable.Data" :key="item.AccountId">
               <tr
                 :class="{
                   'text-bold': item.IsParent == this.$_MISAEnum.BOOL.TRUE,
                 }"
                 v-if="
                   item.IsRoot == this.$_MISAEnum.BOOL.TRUE ||
-                  (this.rowParents[item.ParentId].isMinus &&
-                    this.rowParents[item.ParentId].showChildren)
+                  (this.rowParents[item.ParentId].isMinus && this.rowParents[item.ParentId].showChildren)
                 "
                 @dblclick="onUpdateFormDetail(item)"
               >
-                <td
-                  :class="`as-account-number-${item.Grade}`"
-                  class="col-width-150"
-                >
+                <td :class="`as-account-number-${item.Grade}`" class="col-width-150">
                   <span
                     @dblclick.stop
                     :class="[
                       {
                         'plus-square-icon':
-                          item.IsParent == this.$_MISAEnum.BOOL.TRUE &&
-                          !this.rowParents[item.AccountId].isMinus,
+                          item.IsParent == this.$_MISAEnum.BOOL.TRUE && !this.rowParents[item.AccountId].isMinus,
                       },
                       {
                         'minus-square-icon':
-                          item.IsParent == this.$_MISAEnum.BOOL.TRUE &&
-                          this.rowParents[item.AccountId].isMinus,
+                          item.IsParent == this.$_MISAEnum.BOOL.TRUE && this.rowParents[item.AccountId].isMinus,
                       },
                     ]"
                     @click="handleToggleRow(item, index)"
@@ -157,25 +121,15 @@
                 <td class="as-status col-width-150">
                   {{
                     item.State == this.$_MISAEnum.BOOL.TRUE
-                      ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
-                          .usingAccount
-                      : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
-                          .stopUsingAccount
+                      ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.usingAccount
+                      : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.stopUsingAccount
                   }}
                 </td>
-                <td
-                  class="text-center as-feature entity-border-right function-table"
-                  @dblclick.stop
-                >
+                <td class="text-center as-feature entity-border-right function-table" @dblclick.stop>
                   <span @click="onUpdateFormDetail(item)">
-                    {{
-                      this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE
-                    }}
+                    {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE }}
                   </span>
-                  <div
-                    class="function-table-content"
-                    @click="onOpenFeatureMenu($event, item)"
-                  >
+                  <div class="function-table-content" @click="onOpenFeatureMenu($event, item)">
                     <div class="function-icon-table function-icon-select"></div>
                   </div>
                 </td>
@@ -201,9 +155,7 @@
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
           <div>
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT }}
           </div>
           <div @click="onToggleUsing">{{ this.textStateAccount }}</div>
         </div>
@@ -215,10 +167,7 @@
         src="../../../assets/img/loading.svg"
         alt="loading"
       />
-      <div
-        v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0"
-        class="no-data"
-      >
+      <div v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0" class="no-data">
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
       </div>
     </div>
@@ -229,29 +178,13 @@
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
-        <div
-          class="pagination-detail-pagesize"
-          :class="{ 'active-record': isShowPaging }"
-          ref="PagingMenu"
-        >
-          <div
-            id="pagination-detail-pagesize-content"
-            class="pagination-detail-pagesize-content"
-          >
+        <div class="pagination-detail-pagesize" :class="{ 'active-record': isShowPaging }" ref="PagingMenu">
+          <div id="pagination-detail-pagesize-content" class="pagination-detail-pagesize-content">
             {{ selectedRecord }}
-            {{
-              this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE
-            }}
+            {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
           </div>
-          <div
-            id="menu-paging-select"
-            class="menu-paging-select"
-            @click="onShowSelectPaging"
-          >
-            <div
-              class="function-icon"
-              :class="{ 'rotate-function-icon': isShowPaging }"
-            ></div>
+          <div id="menu-paging-select" class="menu-paging-select" @click="onShowSelectPaging">
+            <div class="function-icon" :class="{ 'rotate-function-icon': isShowPaging }"></div>
             <ul id="menu-paging" class="menu-paging" v-show="isShowPaging">
               <li
                 class="menu-paging-record"
@@ -261,10 +194,7 @@
                 :class="{ 'active-record-item': indexSelectedRecord === index }"
               >
                 {{ record }}
-                {{
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT
-                    .RECORD_ON_PAGE
-                }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD_ON_PAGE }}
               </li>
             </ul>
           </div>
@@ -272,17 +202,10 @@
         <div class="pagination-page-number">
           <ul class="page-number">
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE
-                    .PREVIOUS
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS)"
               :disabled="isFirstPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_PRE }}
             </button>
             <button
               v-for="pageNumber in this.visiblePageNumbers"
@@ -293,27 +216,16 @@
               {{ pageNumber }}
             </button>
             <button
-              @click="
-                goToPage(
-                  this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT
-                )
-              "
+              @click="goToPage(this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT)"
               :disabled="isLastPage"
             >
-              {{
-                this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT
-              }}
+              {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGING_NEXT }}
             </button>
           </ul>
         </div>
       </div>
     </div>
-    <div
-      v-if="isOverlay"
-      id="container-overlay"
-      class="container-overlay"
-      @closeFormDetail="onCloseFormDetail"
-    ></div>
+    <div v-if="isOverlay" id="container-overlay" class="container-overlay" @closeFormDetail="onCloseFormDetail"></div>
     <!-- form thêm mới, sửa tìa khoản -->
     <SystemAccountDetail
       v-if="isShowFormDetail"
@@ -323,9 +235,7 @@
     ></SystemAccountDetail>
     <!-- dialog account confirm delete -->
     <misa-dialog-confirm-delete
-      :contentDelete="`${
-        this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDelete
-      }${accountNumberDeleteSelected}${
+      :contentDelete="`${this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDelete}${accountNumberDeleteSelected}${
         this.$_MISAResource[this.$_LANG_CODE].DIALOG.CONTENT.END
       }`"
       v-if="isShowDialogConfirmDelete"
@@ -337,10 +247,7 @@
       :title="this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.deleteFailed"
     ></misa-dialog-error>
     <!-- toast message -->
-    <misa-toast-success
-      v-if="isShowToastMessage"
-      :contentToast="contentToastSuccess"
-    ></misa-toast-success>
+    <misa-toast-success v-if="isShowToastMessage" :contentToast="contentToastSuccess"></misa-toast-success>
     <misa-dialog-handle-task v-if="isShowToggleState"></misa-dialog-handle-task>
   </div>
 </template>
@@ -506,10 +413,7 @@ export default {
         return [];
       }
 
-      let startPage = Math.max(
-        this.currentPage - Math.floor(this.maxVisiblePages / 2),
-        1
-      );
+      let startPage = Math.max(this.currentPage - Math.floor(this.maxVisiblePages / 2), 1);
       let endPage = startPage + this.maxVisiblePages - 1;
       if (endPage > this.totalPages) {
         endPage = this.totalPages;
@@ -534,14 +438,7 @@ export default {
     async getListAccount() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await accountService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          "",
-          true,
-          1,
-          ""
-        );
+        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "", true, 1, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
 
@@ -561,9 +458,7 @@ export default {
       this.statusExpand.isExpand = false;
       this.statusExpand.isClicked = false;
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord =
-        this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT),
-        (this.textSearch = "");
+      (this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT), (this.textSearch = "");
       await this.getListAccount();
     },
     /**
@@ -599,10 +494,8 @@ export default {
         e.stopPropagation();
         this.textStateAccount =
           account.State == this.$_MISAEnum.BOOL.TRUE
-            ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
-                .stopUsingAccount
-            : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState
-                .useAccount;
+            ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.stopUsingAccount
+            : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.useAccount;
         this.selectedAccount = account;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
@@ -666,9 +559,7 @@ export default {
           if (!this.rowParents[item.AccountId].isClicked) {
             let reschildrens = null;
             this.isShowLoadding = true;
-            reschildrens = await accountService.getAllChildren(
-              item.AccountNumber
-            );
+            reschildrens = await accountService.getAllChildren(item.AccountNumber);
             this.isShowLoadding = false;
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
@@ -699,9 +590,7 @@ export default {
           let parents = [];
           // Lấy danh sách các dòng hện đang là cha trong dataTable và đang có trạng thái dấu cộng
           parents = this.dataTable.Data.filter(
-            (row) =>
-              row.IsParent == this.$_MISAEnum.BOOL.TRUE &&
-              !this.rowParents[row.AccountId].isMinus
+            (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE && !this.rowParents[row.AccountId].isMinus
           );
           // Thay đổi trạng thái của icon, click và showChildren cho các node đó
           parents.map((row) => {
@@ -713,16 +602,10 @@ export default {
           while (parents.length > 0) {
             // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
             this.isShowLoadding = true;
-            const childrens = await accountService.getAllChildren(
-              parents[0].AccountNumber
-            );
+            const childrens = await accountService.getAllChildren(parents[0].AccountNumber);
             this.isShowLoadding = false;
             // Thêm vào dataTable
-            this.dataTable.Data.splice(
-              this.dataTable.Data.indexOf(parents[0]) + 1,
-              0,
-              ...childrens.data
-            );
+            this.dataTable.Data.splice(this.dataTable.Data.indexOf(parents[0]) + 1, 0, ...childrens.data);
             // Cập nhật trạng thái cho các dòng vừa mới thêm vào dataTable
             for (const row of childrens.data) {
               // Kiểm tra xem trong số những dòng con vừa tìm được có dòng nào là cha của các dòng khác không
@@ -746,8 +629,7 @@ export default {
           this.dataTable.Data.filter(
             (x) =>
               (x.IsRoot == this.$_MISAEnum.BOOL.TRUE ||
-                (!this.rowParents[x.ParentId].isMinus &&
-                  !this.rowParents[x.ParentId].showChildren)) &&
+                (!this.rowParents[x.ParentId].isMinus && !this.rowParents[x.ParentId].showChildren)) &&
               x.IsParent == this.$_MISAEnum.BOOL.TRUE
           ).map((row) => {
             this.rowParents[row.AccountId].isMinus = true;
@@ -757,9 +639,7 @@ export default {
       } else {
         // Thu gọn dataTable
         this.dataTable.Data.filter(
-          (x) =>
-            x.IsRoot == this.$_MISAEnum.BOOL.TRUE &&
-            x.IsParent == this.$_MISAEnum.BOOL.TRUE
+          (x) => x.IsRoot == this.$_MISAEnum.BOOL.TRUE && x.IsParent == this.$_MISAEnum.BOOL.TRUE
         ).map((row) => {
           this.rowParents[row.AccountId].isMinus = false;
           this.updateStatusShowChildren(row.AccountId, false);
@@ -777,14 +657,7 @@ export default {
     async updateDataTable() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await accountService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          "",
-          true,
-          1,
-          ""
-        );
+        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "", true, 1, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
 
@@ -818,14 +691,10 @@ export default {
       this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
 
       // Kiểm tra nếu dòng xóa đang là cha của các dòng khác thì không cho xóa
-      const rowDelete = await accountService.getByCode(
-        this.accountNumberDeleteSelected
-      );
+      const rowDelete = await accountService.getByCode(this.accountNumberDeleteSelected);
       if (rowDelete.data.IsParent == this.$_MISAEnum.BOOL.TRUE) {
         this.isShowDialogDataError = true;
-        this.dataError.push(
-          this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDeleteFailed
-        );
+        this.dataError.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDeleteFailed);
       } else {
         this.isShowDialogConfirmDelete = true;
       }
@@ -871,12 +740,8 @@ export default {
         this.isShowLoadding = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
-          this.contentToastSuccess =
-            this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
+          this.contentToastSuccess = this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_DELETE;
           this.onShowToastMessage();
           await this.getListAccount();
         }
@@ -939,16 +804,9 @@ export default {
     async updateStateAccount(account, state, isUpdateChildren) {
       try {
         this.isShowLoadding = true;
-        const res = await accountService.updateState(
-          account,
-          state,
-          isUpdateChildren
-        );
+        const res = await accountService.updateState(account, state, isUpdateChildren);
         this.isShowLoadding = false;
-        if (
-          this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) &&
-          res.data > 0
-        ) {
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.$_MISAEmitter.emit(
             "onShowToastMessageUpdate",
             this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SUCCESS_UPDATE
@@ -972,9 +830,7 @@ export default {
           this.updateStateAccount(this.selectedAccount, 0, 1);
         } else {
           if (this.selectedAccount.ParentId) {
-            const parent = await accountService.getById(
-              this.selectedAccount.ParentId
-            );
+            const parent = await accountService.getById(this.selectedAccount.ParentId);
             if (parent.data.State != this.$_MISAEnum.BOOL.TRUE) {
               this.dataError.push(
                 "Tài khoản cha đang ở trạng thái ngừng sử dụng. Bạn không thể thiết lập trạng thái sử dụng cho tài khoản con."
@@ -1079,11 +935,7 @@ export default {
      */
     async goToPage(p) {
       let newPage;
-      if (
-        p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS &&
-        this.currentPage > 1
-      ) {
+      if (p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.PREVIOUS && this.currentPage > 1) {
         newPage = this.currentPage - 1;
       } else if (
         p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NEXT &&
@@ -1091,8 +943,7 @@ export default {
       ) {
         newPage = this.currentPage + 1;
       } else if (
-        typeof p ===
-          this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
+        typeof p === this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.PAGE.NUMBER &&
         p >= 1 &&
         p <= this.totalPages
       ) {

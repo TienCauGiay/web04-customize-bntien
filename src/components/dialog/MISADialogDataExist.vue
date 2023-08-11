@@ -1,9 +1,6 @@
 <template>
   <div class="overlay-dialog">
-    <div
-      class="dialog-entity position-display-center"
-      id="dialog-warning-entity"
-    >
+    <div class="dialog-entity position-display-center" id="dialog-warning-entity">
       <div class="title-dialog">
         <h1>
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID }}
@@ -22,9 +19,7 @@
       </div>
       <div class="dialog-warning-footer">
         <misa-button-default
-          :textButtonDefault="
-            this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE
-          "
+          :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.AGREE"
           @click="btnAgree"
           ref="Agree"
           :tabindex="300"

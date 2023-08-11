@@ -10,31 +10,19 @@
         </div>
       </template>
       <div class="textfiled-cbb-select-multiple">
-        <input
-          class="input-cbb-select-multiple"
-          type="text"
-          v-model="textSearch"
-          @input="onSearchChange"
-        />
+        <input class="input-cbb-select-multiple" type="text" v-model="textSearch" @input="onSearchChange" />
       </div>
     </div>
     <div class="cbb-select-multiple-action">
       <div class="select-multiple-action-add">
         <div class="plus-green-icon"></div>
       </div>
-      <div
-        class="select-multiple-action-dropdown"
-        @click="this.isShowSelectMenu = !this.isShowSelectMenu"
-      >
+      <div class="select-multiple-action-dropdown" @click="this.isShowSelectMenu = !this.isShowSelectMenu">
         <div class="function-icon"></div>
       </div>
     </div>
   </div>
-  <div
-    class="select-item-cbb-multiple"
-    style="position: relative"
-    v-if="isShowSelectMenu"
-  >
+  <div class="select-item-cbb-multiple" style="position: relative" v-if="isShowSelectMenu">
     <div class="form-cbb-menu" id="form-cbb-menu-select-multiple">
       <div class="form-cbb-menu-title">
         <div class="col-1-cbb-menu-item">Mã nhóm KH</div>
@@ -42,19 +30,12 @@
       </div>
       <div class="form-cbb-main" ref="cbbSelectMultiple" @scroll="handleScroll">
         <template v-for="item in listEntitySearchCBB.Data" :key="item[propId]">
-          <div
-            class="form-cbb-menu-item"
-            @click="toggleSelectEntity(item)"
-            v-if="listEntitySearchCBB.Data.length > 0"
-          >
+          <div class="form-cbb-menu-item" @click="toggleSelectEntity(item)" v-if="listEntitySearchCBB.Data.length > 0">
             <div class="col-1-cbb-menu-item">{{ item[propCode] }}</div>
             <div class="col-2-cbb-menu-item">
               {{ item[propName] }}
             </div>
-            <div
-              class="checked-green-icon"
-              v-show="listCode.includes(item[propCode])"
-            ></div>
+            <div class="checked-green-icon" v-show="listCode.includes(item[propCode])"></div>
           </div>
         </template>
       </div>
@@ -66,13 +47,7 @@
 export default {
   name: "MISAComboboxMultiple",
 
-  props: [
-    "listDataSelected",
-    "propId",
-    "propCode",
-    "propName",
-    "listEntitySearchCBB",
-  ],
+  props: ["listDataSelected", "propId", "propCode", "propName", "listEntitySearchCBB"],
 
   computed: {
     listCode() {
@@ -128,16 +103,12 @@ export default {
     async handleScroll() {
       try {
         const cbb = this.$refs.cbbSelectMultiple;
-        const remainingSpace =
-          cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
+        const remainingSpace = cbb.scrollHeight - (cbb.scrollTop + cbb.clientHeight);
 
         // Kiểm tra xem đã scroll đến cuối combobox chưa
         if (remainingSpace <= 10) {
           // Gọi API để lấy thêm dữ liệu
-          await this.$_MISAEmitter.emit(
-            "handleScrollCBBSelectMultiple",
-            this.textSearch
-          );
+          await this.$_MISAEmitter.emit("handleScrollCBBSelectMultiple", this.textSearch);
         }
       } catch {
         return;
@@ -151,10 +122,7 @@ export default {
      */
     async onSearchChange() {
       try {
-        await this.$_MISAEmitter.emit(
-          "onSearchChangeCBBSelectMultiple",
-          this.textSearch
-        );
+        await this.$_MISAEmitter.emit("onSearchChangeCBBSelectMultiple", this.textSearch);
         this.isShowSelectMenu = true;
       } catch {
         return;

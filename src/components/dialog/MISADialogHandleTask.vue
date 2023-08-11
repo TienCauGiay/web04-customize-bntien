@@ -7,10 +7,7 @@
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
       <div class="dialog-content-main">
-        <p>
-          Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả Tài khoản con
-          không?
-        </p>
+        <p>Bạn có muốn thiết lập trạng thái "Sử dụng" cho tất cả Tài khoản con không?</p>
       </div>
     </div>
     <div class="dialog-warning-delete-footer">
