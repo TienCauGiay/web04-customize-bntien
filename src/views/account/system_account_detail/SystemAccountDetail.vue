@@ -6,7 +6,6 @@
         @click="onCloseFormDetail"
         class="close-icon icon-tb"
         id="system-account-exit"
-        @keydown.tab.prevent="resetTab($event.target.value)"
         :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.EXIST"
       ></div>
     </div>
@@ -257,6 +256,7 @@
             :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].BUTTON.SAVE_AND_ADD"
             @click="btnSaveAndAdd"
             :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SAVE_AND_ADD"
+            @keydown.tab.prevent="resetTab($event.target.value)"
           ></misa-button-default>
         </div>
       </div>
@@ -314,7 +314,15 @@ export default {
       this.onSelectedNature(data);
     });
 
+    this.$_MISAEmitter.on("onKeyDownEntityCBB", (index) => {
+      this.onKeyDownNature(index);
+    });
+
     this.$_MISAEmitter.on("onSelectedSelectOption", (data, prop) => {
+      this.account[prop] = data;
+    });
+
+    this.$_MISAEmitter.on("onKeyDownSelectOption", (data, prop) => {
       this.account[prop] = data;
     });
 
@@ -330,6 +338,10 @@ export default {
 
     this.$_MISAEmitter.on("onSearchChangeFormCBB", async (newValue) => {
       await this.onSearchChangeAccount(newValue);
+    });
+
+    this.$_MISAEmitter.on("onKeyDownFormCBB", async (index) => {
+      this.onKeyDownAccount(index);
     });
   },
 
@@ -497,6 +509,17 @@ export default {
     },
 
     /**
+     * Mô tả: Chọn tài khoản tổng hợp bằng bàn phím
+     * created by : BNTIEN
+     * created date: 11-08-2023 09:40:34
+     */
+    onKeyDownAccount(index) {
+      this.account.ParentId = this.accounts[index].AccountId;
+      this.valueInputFormCBB = this.accounts[index].AccountNumber;
+      this.isBorderRed.ParentId = false;
+    },
+
+    /**
      * Mô tả: Hàm set các lỗi nhập liệu phía fontend
      * created by : BNTIEN
      * created date: 23-07-2023 12:24:37
@@ -641,6 +664,17 @@ export default {
       this.account.Nature = nature.Nature;
       this.isBorderRed.Nature = false;
     },
+
+    /**
+     * Mô tả: Chọn Tính chất bằng bàn phím
+     * created by : BNTIEN
+     * created date: 11-08-2023 09:47:20
+     */
+    onKeyDownNature(index) {
+      this.account.Nature = this.listNatureSearch[index].Nature;
+      this.isBorderRed.Nature = false;
+    },
+
     /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
@@ -878,7 +912,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm reset tabindex về ô inputsố tài khoản khi tab nhảy đến icon close
+     * Mô tả: Hàm xử lí tabindex
      * created by : BNTIEN
      * created date: 23-07-2023 12:26:43
      */
@@ -984,10 +1018,13 @@ export default {
     this.$_MISAEmitter.off("closeDialogCodeExist");
     this.$_MISAEmitter.off("closeDialogDataError");
     this.$_MISAEmitter.off("onSelectedEntityCBB");
+    this.$_MISAEmitter.off("onKeyDownEntityCBB");
     this.$_MISAEmitter.off("onSelectedSelectOption");
+    this.$_MISAEmitter.off("onKeyDownSelectOption");
     this.$_MISAEmitter.off("onSelectedEntityFormCBB");
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
     this.$_MISAEmitter.off("onSearchChangeFormCBB");
+    this.$_MISAEmitter.off("onKeyDownFormCBB");
   },
 };
 </script>

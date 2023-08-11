@@ -626,12 +626,7 @@ export default {
           }
         } else {
           // Nếu đã mở rộng ít nhất 1 lần
-          this.dataTable.Data.filter(
-            (x) =>
-              (x.IsRoot == this.$_MISAEnum.BOOL.TRUE ||
-                (!this.rowParents[x.ParentId].isMinus && !this.rowParents[x.ParentId].showChildren)) &&
-              x.IsParent == this.$_MISAEnum.BOOL.TRUE
-          ).map((row) => {
+          this.dataTable.Data.filter((x) => x.IsParent == this.$_MISAEnum.BOOL.TRUE).map((row) => {
             this.rowParents[row.AccountId].isMinus = true;
             this.updateStatusShowChildren(row.AccountId, true);
           });

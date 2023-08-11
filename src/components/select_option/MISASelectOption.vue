@@ -7,6 +7,7 @@
         :class="{ noDisabled: !isDisabledMenu }"
         :value="itemSelected[propName]"
         readonly
+        @keydown="onKeyDownEntity"
       />
       <button
         :disabled="isDisabledMenu"
@@ -20,7 +21,11 @@
     <div class="col-md-l a-select-entity" v-if="isShowMenuSelect">
       <ul>
         <template v-for="(item, index) in listData" :key="index">
-          <li @click="handleSelectItem(item, index)" :class="{ 'item-selected': index == indexSelected }">
+          <li
+            ref="EntitySelectedItem"
+            @click="handleSelectItem(item, index)"
+            :class="{ 'item-selected': index == indexSelected }"
+          >
             {{ item[propName] }}
           </li>
         </template>
@@ -60,6 +65,91 @@ export default {
   },
 
   methods: {
+    /**
+     * Mô tả: Hàm xử scroll theo khi bấm lên xuống
+     * created by : BNTIEN
+     * created date: 11-08-2023 10:21:18
+     */
+    scrollIndex(index, checkKeyCode) {
+      try {
+        const element = this.$refs.EntitySelectedItem[index];
+        if (checkKeyCode === this.$_MISAEnum.KEY_CODE.DOWN) {
+          element.scrollIntoView({
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.END,
+          });
+        } else if (checkKeyCode === this.$_MISAEnum.KEY_CODE.UP) {
+          element.scrollIntoView({
+            block: this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.SCROLL.START,
+          });
+        }
+      } catch {
+        return;
+      }
+    },
+
+    /**
+     * Mô tả: sự kiện bấm phím
+     * created by : BNTIEN
+     * created date: 11-08-2023 10:21:26
+     */
+    onKeyDownEntity(event) {
+      if (!this.isDisabledMenu) {
+        try {
+          const maxLength = this.listData.length;
+          if (maxLength == 0) {
+            return;
+          } else {
+            if (event.keyCode == this.$_MISAEnum.KEY_CODE.DOWN) {
+              // Bấm xuống
+              if (this.isShowMenuSelect) {
+                if (this.indexSelected < maxLength - 1) {
+                  this.indexSelected++;
+                } else if (this.indexSelected == maxLength - 1) {
+                  this.indexSelected = 0;
+                }
+                // scroll focus theo item được chọn
+                this.scrollIndex(this.indexSelected, this.$_MISAEnum.KEY_CODE.DOWN);
+              } else {
+                this.isShowMenuSelect = true;
+              }
+            } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.UP) {
+              // Bấm lên
+              if (this.isShowMenuSelect) {
+                if (this.indexSelected > 0) {
+                  this.indexSelected--;
+                } else if (this.indexSelected == 0) {
+                  this.indexSelected = maxLength - 1;
+                }
+                // scroll focus theo item được chọn
+                this.scrollIndex(this.indexSelected, this.$_MISAEnum.KEY_CODE.UP);
+              } else {
+                this.isShowMenuSelect = true;
+              }
+            } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
+              // Bấm enter
+              if (this.isShowMenuSelect) {
+                this.itemSelected = this.listData[this.indexSelected];
+                this.$_MISAEmitter.emit(
+                  "onKeyDownSelectOption",
+                  this.listData[this.indexSelected][this.propCode],
+                  this.propCode.substring(0, this.propCode.length - 4)
+                );
+                this.isShowMenuSelect = false;
+              } else {
+                this.isShowMenuSelect = true;
+              }
+            }
+          }
+        } catch {
+          return;
+        }
+      }
+    },
+    /**
+     * Mô tả: Chọn giá trị trong cbb
+     * created by : BNTIEN
+     * created date: 11-08-2023 10:17:42
+     */
     handleSelectItem(item, index) {
       this.itemSelected = item;
       this.indexSelected = index;
