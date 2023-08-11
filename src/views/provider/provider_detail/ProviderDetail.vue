@@ -923,14 +923,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.numberDayOwed }}</label>
                     <div class="container-input">
-                      <misa-input
+                      <misa-number
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
                         :class="[{ 'border-red': isBorderRed.NumberDayOwed }, 'right-to-left']"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
-                      ></misa-input>
+                        :maxLength="18"
+                      ></misa-number>
                       <div
                         class="misa-tooltip"
                         v-if="
@@ -946,14 +947,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.amountDebt }}</label>
                     <div class="container-input">
-                      <misa-input
+                      <misa-number
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
                         :class="[{ 'border-red': isBorderRed.AmountDebt }, 'right-to-left']"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
-                      ></misa-input>
+                        :maxLength="18"
+                      ></misa-number>
                       <div
                         class="misa-tooltip"
                         v-if="
@@ -1025,6 +1027,7 @@
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
+                        :maxLength="18"
                       ></misa-input>
                       <div
                         class="misa-tooltip"
@@ -1048,6 +1051,7 @@
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
+                        :maxLength="18"
                       ></misa-input>
                       <div
                         class="misa-tooltip"

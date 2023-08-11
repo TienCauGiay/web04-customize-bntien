@@ -94,21 +94,23 @@
                 @dblclick="onUpdateFormDetail(item)"
               >
                 <td :class="`as-account-number-${item.Grade}`" class="col-width-150">
-                  <span
-                    @dblclick.stop
-                    :class="[
-                      {
-                        'plus-square-icon':
-                          item.IsParent == this.$_MISAEnum.BOOL.TRUE && !this.rowParents[item.AccountId].isMinus,
-                      },
-                      {
-                        'minus-square-icon':
-                          item.IsParent == this.$_MISAEnum.BOOL.TRUE && this.rowParents[item.AccountId].isMinus,
-                      },
-                    ]"
-                    @click="handleToggleRow(item, index)"
-                  ></span>
-                  <span>{{ item.AccountNumber }}</span>
+                  <div class="td-col-1-account">
+                    <span
+                      @dblclick.stop
+                      :class="[
+                        {
+                          'plus-square-icon':
+                            item.IsParent == this.$_MISAEnum.BOOL.TRUE && !this.rowParents[item.AccountId].isMinus,
+                        },
+                        {
+                          'minus-square-icon':
+                            item.IsParent == this.$_MISAEnum.BOOL.TRUE && this.rowParents[item.AccountId].isMinus,
+                        },
+                      ]"
+                      @click="handleToggleRow(item, index)"
+                    ></span>
+                    <span>{{ item.AccountNumber }}</span>
+                  </div>
                 </td>
                 <td class="as-account-name col-width-150">
                   {{ item.AccountName }}
@@ -587,50 +589,12 @@ export default {
       if (!this.statusExpand.isExpand) {
         // Nếu chưa mở rộng lần nào, tức là chưa gọi api
         if (!this.statusExpand.isClicked) {
-          let parents = [];
-          // Lấy danh sách các dòng hện đang là cha trong dataTable và đang có trạng thái dấu cộng
-          parents = this.dataTable.Data.filter(
-            (row) => row.IsParent == this.$_MISAEnum.BOOL.TRUE && !this.rowParents[row.AccountId].isMinus
-          );
-          // Thay đổi trạng thái của icon, click và showChildren cho các node đó
-          parents.map((row) => {
-            this.rowParents[row.AccountId].isMinus = true;
-            this.rowParents[row.AccountId].isClicked = true;
-            this.rowParents[row.AccountId].showChildren = true;
-          });
-          // Duyệt đến khi không có dòng nào là cha nữa
-          while (parents.length > 0) {
-            // Lấy danh sách tất cả các con của phần tử đầu tiên trong danh sách các dòng có con
-            this.isShowLoadding = true;
-            const childrens = await accountService.getAllChildren(parents[0].AccountNumber);
-            this.isShowLoadding = false;
-            // Thêm vào dataTable
-            this.dataTable.Data.splice(this.dataTable.Data.indexOf(parents[0]) + 1, 0, ...childrens.data);
-            // Cập nhật trạng thái cho các dòng vừa mới thêm vào dataTable
-            for (const row of childrens.data) {
-              // Kiểm tra xem trong số những dòng con vừa tìm được có dòng nào là cha của các dòng khác không
-              if (row.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-                this.rowParents[row.AccountId] = {
-                  isMinus: true,
-                  isClicked: true,
-                  showChildren: true,
-                  parentId: row.ParentId,
-                };
-                // Thêm dòng cha mới vào danh sách các dòng hiện đang là cha
-                parents.push(row);
-              }
-            }
-
-            // Xóa phần tử đầu tiên trong danh sách những dòng hiện đang là cha sau khi đã duyệt xong
-            parents.splice(0, 1);
-          }
-        } else {
-          // Nếu đã mở rộng ít nhất 1 lần
-          this.dataTable.Data.filter((x) => x.IsParent == this.$_MISAEnum.BOOL.TRUE).map((row) => {
-            this.rowParents[row.AccountId].isMinus = true;
-            this.updateStatusShowChildren(row.AccountId, true);
-          });
+          const res = await accountService.getExpand(this.selectedRecord, this.currentPage, this.textSearch);
+          this.dataTable.Data = res.data;
         }
+        // Nếu đã mở rộng ít nhất 1 lần
+        this.rowParents = {};
+        this.setRowParent(this.dataTable.Data, true);
       } else {
         // Thu gọn dataTable
         this.dataTable.Data.filter(

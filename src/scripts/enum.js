@@ -100,7 +100,9 @@ const MISAEnum = {
         // Phím di chuyển xuống
         UP: 38,
         // Phím Enter
-        ENTER: 13
+        ENTER: 13,
+        // Dấu trừ
+        MINUS: 45,
     },
 
     // Check 1 trạng thái checkbox có là khách hàng trong form employee

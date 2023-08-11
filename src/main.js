@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import MISAInputText from './components/input/MISAInputText.vue';
+import MISAInputText from './components/input/MISAInput.vue';
+import MISANumber from './components/input/MISANumber.vue';
 import MISAInputTextArea from './components/input/MISAInputTextArea.vue';
 import MISASelectOption from './components/select_option/MISASelectOption.vue';
 import MISADialogConfirmDelete from './components/dialog/MISADialogConfirmDelete.vue';
@@ -25,6 +26,7 @@ import MISAEmitter from 'tiny-emitter/instance'
 
 var app = createApp(App);
 app.component("misa-input", MISAInputText);
+app.component("misa-number", MISANumber);
 app.component("misa-input-textarea", MISAInputTextArea);
 app.component("misa-select-option", MISASelectOption);
 app.component("misa-dialog-confirm-delete", MISADialogConfirmDelete);

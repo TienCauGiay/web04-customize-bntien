@@ -203,7 +203,7 @@
               <div class="layout-input-cotent-left-4">
                 <div class="label-input">Kèm theo</div>
                 <div class="quantity">
-                  <misa-input
+                  <misa-number
                     :placeholder="'Số lượng'"
                     ref="QuantityAttach"
                     v-model="receipt.QuantityAttach"
@@ -219,7 +219,7 @@
                     @mouseleave="isHovering.QuantityAttach = false"
                     :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                     :maxLength="11"
-                  ></misa-input>
+                  ></misa-number>
                   <div>chứng từ gốc</div>
                 </div>
               </div>

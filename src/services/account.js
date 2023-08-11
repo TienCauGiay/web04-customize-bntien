@@ -32,6 +32,17 @@ class AccountService extends BaseServices {
         return response;
     }
 
+    async getExpand(pageSize, pageNumber, textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/expand`, {
+            params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
+                textSearch: textSearch
+            }
+        });
+        return response;
+    }
+
             /**
      * Mô tả: Lấy danh sách tài khoản công nợ phải thu
      * created by : BNTIEN
@@ -126,7 +137,6 @@ class AccountService extends BaseServices {
         });
         return response;
     }
-
 }
 
 export default new AccountService();

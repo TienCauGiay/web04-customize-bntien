@@ -100,3 +100,25 @@
     right: 0;
     z-index: 8000;
 }
+
+#list-account-system table td:first-child{
+    white-space: unset;
+    overflow: unset;
+    text-overflow: unset;
+}
+
+.td-col-1-account{
+    display: flex;
+    align-items: center;
+}
+
+.td-col-1-account span:first-child{
+    min-width: 20px;
+}
+
+.td-col-1-account span:last-child{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: calc(100% - 20px);
+}
