@@ -156,9 +156,9 @@
           <div @click="onDeleteAccount">
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
           </div>
-          <div>
+          <!-- <div>
             {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TRANFER_ACCOUNT }}
-          </div>
+          </div> -->
           <div @click="onToggleUsing">{{ this.textStateAccount }}</div>
         </div>
       </teleport>
@@ -266,7 +266,7 @@ export default {
   },
 
   created() {
-    //Gọi hàm lấy danh sách tài khoản hệ thống
+    // Lấy danh sách tài khoản hệ thống
     this.getListAccount();
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("closeDialogError", () => {
@@ -300,7 +300,6 @@ export default {
       this.isShowToastMessage = false;
     });
 
-    ////
     this.$_MISAEmitter.on("confirmYesTaskEntity", async () => {
       await this.confirmUpdateStateChildren();
     });
@@ -346,6 +345,8 @@ export default {
       isStatusFormMode: this.$_MISAEnum.FORM_MODE.Add,
       // Khai báo trạng thái hiển thị của toast message
       isShowToastMessage: false,
+      // Khai báo biến lưu nội dung của toast message
+      contentToastSuccess: "",
       // Khai báo 1 tài khoản được chọn để xử lí hàm sửa
       accountUpdate: {},
       // Khai báo AccountId của tài khoản cần xóa
@@ -354,8 +355,6 @@ export default {
       accountNumberDeleteSelected: "",
       // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
       isShowDialogConfirmDelete: false,
-      // Khai báo biến lưu nội dung của toast message
-      contentToastSuccess: "",
       // Khai báo biến lưu nội dung tìm kiếm
       textSearch: "",
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
@@ -381,7 +380,7 @@ export default {
     /**
      * Mô tả: Tính tổng số trang trong phân trang
      * created by : BNTIEN
-     * created date: 04-06-2023 02:49:32
+     * created date: 12-08-2023 11:11:27
      */
     totalPages() {
       return Math.ceil(this.dataTable.TotalRecord / this.selectedRecord);
@@ -389,7 +388,7 @@ export default {
     /**
      * Mô tả: Nếu đang ở trang đầu thì button prev không hoạt động
      * created by : BNTIEN
-     * created date: 27-06-2023 11:19:25
+     * created date: 12-08-2023 11:11:27
      */
     isFirstPage() {
       return this.currentPage === this.$_MISAEnum.RECORD.CURRENT_PAGE;
@@ -397,7 +396,7 @@ export default {
     /**
      * Mô tả: Nếu đang ở trang cuối thì button next không hoạt động
      * created by : BNTIEN
-     * created date: 27-06-2023 11:19:25
+     * created date: 12-08-2023 11:11:27
      */
     isLastPage() {
       if (!this.totalPages || this.totalPages === 0) {
@@ -408,7 +407,7 @@ export default {
     /**
      * Mô tả: Tính tổng số trang sẽ hiển thị
      * created by : BNTIEN
-     * created date: 04-06-2023 02:49:32
+     * created date: 12-08-2023 11:11:27
      */
     visiblePageNumbers() {
       if (!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0) {
@@ -433,7 +432,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Hàm lấy dữ liệu tài khoản từ api
+     * Mô tả: Gọi api lấy danh sách tài khoản
      * created by : BNTIEN
      * created date: 19-07-2023 03:36:08
      */
@@ -460,7 +459,8 @@ export default {
       this.statusExpand.isExpand = false;
       this.statusExpand.isClicked = false;
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT), (this.textSearch = "");
+      this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
+      this.textSearch = "";
       await this.getListAccount();
     },
     /**
@@ -501,7 +501,7 @@ export default {
         this.selectedAccount = account;
         this.isShowColFeature = true;
         const positionIcon = e.target.getBoundingClientRect();
-        const left = positionIcon.right - 190;
+        const left = positionIcon.right - 110;
         let top = 0;
         if (positionIcon.bottom > 450) {
           top = positionIcon.bottom - 100;
@@ -559,9 +559,8 @@ export default {
       try {
         if (!this.rowParents[item.AccountId].isMinus) {
           if (!this.rowParents[item.AccountId].isClicked) {
-            let reschildrens = null;
             this.isShowLoadding = true;
-            reschildrens = await accountService.getAllChildren(item.AccountNumber);
+            const reschildrens = await accountService.getAllChildren(item.AccountNumber);
             this.isShowLoadding = false;
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
@@ -592,7 +591,6 @@ export default {
           const res = await accountService.getExpand(this.selectedRecord, this.currentPage, this.textSearch);
           this.dataTable.Data = res.data;
         }
-        // Nếu đã mở rộng ít nhất 1 lần
         this.rowParents = {};
         this.setRowParent(this.dataTable.Data, true);
       } else {

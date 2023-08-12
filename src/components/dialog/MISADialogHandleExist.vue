@@ -45,7 +45,7 @@ export default {
       this.$refs.No.$el.focus();
     },
     /**
-     * Mô tả: Hàm gọi sự kiện đóng dialog code đã tồn tại
+     * Mô tả: Hàm gọi sự kiện đóng dialog dữ liệu đã tồn tại
      * created by : BNTIEN
      * created date: 29-05-2023 08:32:41
      */

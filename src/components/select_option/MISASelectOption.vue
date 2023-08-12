@@ -47,6 +47,9 @@ export default {
     this.$_MISAEmitter.on("unSelectedDefaultItem", () => {
       this.itemSelected = {};
     });
+    this.$_MISAEmitter.on("closeMenuSelectOption", () => {
+      this.isShowMenuSelect = false;
+    });
   },
 
   mounted() {
@@ -88,7 +91,7 @@ export default {
     },
 
     /**
-     * Mô tả: sự kiện bấm phím
+     * Mô tả: Xử lí keydowm lên xuống, enter
      * created by : BNTIEN
      * created date: 11-08-2023 10:21:26
      */
@@ -146,7 +149,7 @@ export default {
       }
     },
     /**
-     * Mô tả: Chọn giá trị trong cbb
+     * Mô tả: Chọn giá trị
      * created by : BNTIEN
      * created date: 11-08-2023 10:17:42
      */
@@ -165,6 +168,7 @@ export default {
   beforeUnmount() {
     this.$_MISAEmitter.off("selectedDefaultItem");
     this.$_MISAEmitter.off("unSelectedDefaultItem");
+    this.$_MISAEmitter.off("closeMenuSelectOption");
   },
 };
 </script>

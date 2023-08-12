@@ -67,7 +67,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm gọi sự kiện xóa nhiều nhân viên
+     * Mô tả: Hàm gọi sự kiện xóa nhiều
      * created by : BNTIEN
      * created date: 28-06-2023 11:23:05
      */

@@ -32,6 +32,11 @@ class AccountService extends BaseServices {
         return response;
     }
 
+    /**
+     * Mô tả: Lấy danh sách tài khoản khi bấm mở rộng
+     * created by : BNTIEN
+     * created date: 12-08-2023 00:29:44
+     */
     async getExpand(pageSize, pageNumber, textSearch){
         const response = await this.entity.get(`${this.getBaseUrl()}/expand`, {
             params: {
@@ -43,8 +48,8 @@ class AccountService extends BaseServices {
         return response;
     }
 
-            /**
-     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+    /**
+     * Mô tả: Tìm kiếm tài khoản theo số tài khoản, tên tài khoản
      * created by : BNTIEN
      * created date: 01-08-2023 10:11:46
      */
@@ -107,7 +112,7 @@ class AccountService extends BaseServices {
     }
 
     /**
-     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+     * Mô tả: Lấy danh sách tài khoản nợ
      * created by : BNTIEN
      * created date: 01-08-2023 10:11:46
      */
@@ -122,8 +127,8 @@ class AccountService extends BaseServices {
         return response;
     }
 
-        /**
-     * Mô tả: Lấy danh sách tài khoản công nợ phải thu
+    /**
+     * Mô tả: Lấy danh sách tài khoản có
      * created by : BNTIEN
      * created date: 01-08-2023 10:11:46
      */

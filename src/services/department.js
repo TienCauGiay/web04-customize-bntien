@@ -4,7 +4,7 @@ class DepartmentService extends BaseServices{
     controller = "Departments"
 
     /**
-     * Mô tả: tìm kiếm theo tên
+     * Mô tả: tìm kiếm phòng ban theo tên
      * created by : BNTIEN
      * created date: 21-06-2023 15:17:53
      */

@@ -91,7 +91,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Hàm xử lí sự kiện ẩn hiện options chọn đơn vị
+     * Mô tả: Toggle menu
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:42
      */
@@ -100,7 +100,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn đơn vị
+     * Mô tả: Chọn item trong combobox
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
      */
@@ -146,7 +146,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
+     * Mô tả: Xử lí keydown lên, xuống, enter trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:02:18
      */

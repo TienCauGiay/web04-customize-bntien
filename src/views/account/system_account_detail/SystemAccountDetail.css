@@ -120,3 +120,7 @@
 #detail-add-system-account .form-detail-action button {
   height: 26px;
 }
+
+.text-checkbox{
+  cursor: pointer;
+}

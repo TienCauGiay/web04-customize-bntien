@@ -151,7 +151,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Mỏ menu
+     * Mô tả: Toggle menu
      * created by : BNTIEN
      * created date: 06-08-2023 16:42:33
      */
@@ -162,7 +162,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
+     * Mô tả: Tìm kiếm item
      * created by : BNTIEN
      * created date: 30-07-2023 08:48:34
      */
@@ -208,7 +208,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện bấm lên xuống enter để chọn đơn vị
+     * Mô tả: Xử kí keydown lên xuống, enter
      * created by : BNTIEN
      * created date: 06-06-2023 22:02:18
      */
@@ -281,6 +281,11 @@ export default {
       }
     },
 
+    /**
+     * Mô tả: Xử lí focus vào ô input trong combobox
+     * created by : BNTIEN
+     * created date: 12-08-2023 00:21:00
+     */
     focus() {
       this.$refs["InputCBB"].focus();
     },

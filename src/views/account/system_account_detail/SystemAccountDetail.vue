@@ -109,7 +109,7 @@
               ref="ParentId"
             ></misa-form-combobox>
           </div>
-          <div class="col-md-half" style="position: relative">
+          <div class="col-md-half" style="position: relative" ref="Nature">
             <label>
               {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.nature }}
               <span class="s-require">*</span>
@@ -133,8 +133,10 @@
         </div>
         <div class="full-content">
           <div class="entity-check">
-            <input type="checkbox" />
-            <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.foreignCurrencyAccounting }}</span>
+            <input type="checkbox" :checked="checkedAccounting" />
+            <span class="text-checkbox" @click="checkedAccounting = !checkedAccounting">
+              {{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.foreignCurrencyAccounting }}
+            </span>
           </div>
         </div>
         <div class="system-account-track-detail">
@@ -155,15 +157,19 @@
                     :checked="account.UserObject > 0 && account.UserObject"
                     @click="handleToggleCheckbox('UserObject')"
                   />
-                  <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.obj }}</span>
+                  <span class="text-checkbox" @click="handleToggleCheckbox('UserObject')">{{
+                    this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.obj
+                  }}</span>
                 </div>
-                <misa-select-option
-                  :listData="listUserObject"
-                  :propCode="'UserObjectCode'"
-                  :propName="'UserObjectName'"
-                  :valueSelected="setValueInputSelectOption"
-                  :isDisabledMenu="!account.UserObject"
-                ></misa-select-option>
+                <div ref="UserObject">
+                  <misa-select-option
+                    :listData="listUserObject"
+                    :propCode="'UserObjectCode'"
+                    :propName="'UserObjectName'"
+                    :valueSelected="setValueInputSelectOption"
+                    :isDisabledMenu="!account.UserObject"
+                  ></misa-select-option>
+                </div>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
@@ -290,8 +296,6 @@ export default {
   created() {
     this.loadData();
 
-    this.getAllAccount(this.pageSize, this.pageNumber, "");
-
     this.$_MISAEmitter.on("cancelDialogDataChange", () => {
       this.onCancelDialogDataChange();
     });
@@ -350,6 +354,9 @@ export default {
     this.focusCode();
     this.setValueInputFormCBB();
     // Đăng kí các sự kiện
+    window.addEventListener("click", this.clickOutsideAccountGeneral);
+    window.addEventListener("click", this.clickOutsideNature);
+    window.addEventListener("click", this.clickOutsideUserObject);
     this.$refs.FormDetailSystemAccount.addEventListener("keydown", this.handleKeyDown);
   },
 
@@ -404,6 +411,8 @@ export default {
       valueInputFormCBB: "",
       // Biến quy định trạng thái ẩn hiện theo dõi chi tiết
       isShowTrackDetail: true,
+      // Biển quy định trạng thái checkbox có hạch toán ngoại tệ
+      checkedAccounting: false,
     };
   },
 
@@ -431,6 +440,7 @@ export default {
      */
     async loadData() {
       try {
+        await this.getAllAccount(this.pageSize, this.pageNumber, "");
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
         let res = JSON.stringify(this.accountSelected);
@@ -461,6 +471,11 @@ export default {
       try {
         const res = await accountService.getCodeOrName(pageSize, pageNumber, textSearch);
         this.accounts = [...this.accounts, ...res.data.Data];
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+          this.accounts = this.accounts.filter(
+            (account) => account.AccountNumber != this.accountSelected.AccountNumber
+          );
+        }
       } catch {
         this.accounts = [];
       }
@@ -1004,9 +1019,47 @@ export default {
         this.searchGeneralAccountTimeOut = setTimeout(async () => {
           const newListAccount = await accountService.getCodeOrName(20, 1, newValue);
           this.accounts = newListAccount.data.Data;
+          if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+            this.accounts = this.accounts.filter(
+              (account) => account.AccountNumber != this.accountSelected.AccountNumber
+            );
+          }
         }, 500);
       } catch {
         return;
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí click outside combobox tài khoản tổng hợp
+     * created by : BNTIEN
+     * created date: 12-08-2023 01:36:22
+     */
+    clickOutsideAccountGeneral(event) {
+      if (!this.$refs.ParentId.$el.contains(event.target)) {
+        this.$_MISAEmitter.emit("closeMenuItemFormCBB");
+      }
+    },
+
+    /**
+     * Mô tả: Xử lí click outside combobox tính chất
+     * created by : BNTIEN
+     * created date: 12-08-2023 01:44:51
+     */
+    clickOutsideNature(event) {
+      if (!this.$refs.Nature.contains(event.target)) {
+        this.$_MISAEmitter.emit("closeMenuItemCBB");
+      }
+    },
+
+    /**
+     * Mô tả: xử lí click ouside select option chọn đối tượng
+     * created by : BNTIEN
+     * created date: 12-08-2023 10:31:16
+     */
+    clickOutsideUserObject(event) {
+      if (!this.$refs.UserObject.contains(event.target)) {
+        this.$_MISAEmitter.emit("closeMenuSelectOption");
       }
     },
   },
@@ -1025,6 +1078,9 @@ export default {
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
     this.$_MISAEmitter.off("onSearchChangeFormCBB");
     this.$_MISAEmitter.off("onKeyDownFormCBB");
+    window.removeEventListener("click", this.clickOutsideAccountGeneral);
+    window.removeEventListener("click", this.clickOutsideNature);
+    window.removeEventListener("click", this.clickOutsideUserObject);
   },
 };
 </script>

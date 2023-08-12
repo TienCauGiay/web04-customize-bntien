@@ -69,7 +69,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Toggle lựa chọn nhóm
+     * Mô tả: Toggle menu
      * created by : BNTIEN
      * created date: 29-07-2023 21:35:19
      */
@@ -116,7 +116,7 @@ export default {
     },
 
     /**
-     * Mô tả: Tìm kiếm nhóm nhà cung cấp
+     * Mô tả: Tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 29-07-2023 23:18:53
      */

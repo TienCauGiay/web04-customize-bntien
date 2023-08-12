@@ -19,7 +19,6 @@ class ReceiptService extends BaseServices {
      * created by : BNTIEN
      * created date: 04-08-2023 05:39:31
      */
-
     async getFilter(pageSize, pageNumber, textSearch, keyFilter){
         const response = await this.entity.get(`${this.getBaseUrl()}/filter`, {
             params: {
@@ -55,7 +54,7 @@ class ReceiptService extends BaseServices {
     }
 
     /**
-     * Mô tả: Xuất danh sách nhân viên ra excel
+     * Mô tả: Xuất danh sách phiếu thu/chi ra excel
      * created by : BNTIEN
      * created date: 04-07-2023 00:34:50
      */
