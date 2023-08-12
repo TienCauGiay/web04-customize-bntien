@@ -122,7 +122,7 @@
                 <td class="as-explain col-width-350">{{ item.Explain }}</td>
                 <td class="as-status col-width-150">
                   {{
-                    item.State == this.$_MISAEnum.BOOL.TRUE
+                    item.State == this.$_MISAEnum.STATE.Using
                       ? this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.usingAccount
                       : this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.valueState.stopUsingAccount
                   }}
@@ -439,7 +439,7 @@ export default {
     async getListAccount() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "", true, 1, "");
+        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
 
@@ -614,7 +614,7 @@ export default {
     async updateDataTable() {
       try {
         this.isShowLoadding = true;
-        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "", true, 1, "");
+        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "");
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
 
@@ -784,7 +784,11 @@ export default {
       try {
         // Nếu tài khoản đang ở trạng thái sử dụng
         if (this.selectedAccount.State == this.$_MISAEnum.BOOL.TRUE) {
-          this.updateStateAccount(this.selectedAccount, 0, 1);
+          this.updateStateAccount(
+            this.selectedAccount,
+            this.$_MISAEnum.STATE.StopUsing,
+            this.$_MISAEnum.UPDATE_CHILDREN.TRUE
+          );
         } else {
           if (this.selectedAccount.ParentId) {
             const parent = await accountService.getById(this.selectedAccount.ParentId);
@@ -802,7 +806,11 @@ export default {
             this.isShowToggleState = true;
             this.isOverlay = true;
           } else {
-            this.updateStateAccount(this.selectedAccount, 1, 1);
+            this.updateStateAccount(
+              this.selectedAccount,
+              this.$_MISAEnum.STATE.Using,
+              this.$_MISAEnum.UPDATE_CHILDREN.TRUE
+            );
           }
         }
       } catch {
@@ -817,7 +825,11 @@ export default {
      */
     async confirmUpdateStateChildren() {
       try {
-        this.updateStateAccount(this.selectedAccount, 1, 1);
+        this.updateStateAccount(
+          this.selectedAccount,
+          this.$_MISAEnum.STATE.Using,
+          this.$_MISAEnum.UPDATE_CHILDREN.TRUE
+        );
         this.isShowToggleState = false;
         this.isOverlay = false;
       } catch {
@@ -832,7 +844,11 @@ export default {
      */
     async confirmNoUpdateStateChildren() {
       try {
-        this.updateStateAccount(this.selectedAccount, 1, 0);
+        this.updateStateAccount(
+          this.selectedAccount,
+          this.$_MISAEnum.STATE.Using,
+          this.$_MISAEnum.UPDATE_CHILDREN.FALSE
+        );
         this.isShowToggleState = false;
         this.isOverlay = false;
       } catch {
@@ -849,23 +865,30 @@ export default {
         this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
         if (!this.textSearch.trim()) {
           this.textSearch = "";
-        }
-        this.isShowLoadding = true;
-        const filteredAccounts = await accountService.getFilter(
-          this.selectedRecord,
-          this.currentPage,
-          this.textSearch.trim(),
-          true,
-          1,
-          ""
-        );
-        this.isShowLoadding = false;
-        this.dataTable = filteredAccounts.data;
+          this.isShowLoadding = true;
+          const filteredAccounts = await accountService.getFilter(
+            this.selectedRecord,
+            this.currentPage,
+            this.textSearch.trim()
+          );
+          this.isShowLoadding = false;
+          this.dataTable = filteredAccounts.data;
 
-        this.statusExpand.isExpand = false;
-        this.statusExpand.isClicked = false;
-        this.rowParents = {};
-        this.setRowParent(this.dataTable.Data, false);
+          this.statusExpand.isExpand = false;
+          this.statusExpand.isClicked = false;
+          this.rowParents = {};
+          this.setRowParent(this.dataTable.Data, false);
+        } else {
+          this.isShowLoadding = true;
+          const searchAccounts = await accountService.getBySearch(this.textSearch.trim());
+          this.isShowLoadding = false;
+          this.dataTable.Data = searchAccounts.data;
+
+          this.statusExpand.isExpand = true;
+          this.statusExpand.isClicked = true;
+          this.rowParents = {};
+          this.setRowParent(this.dataTable.Data, true);
+        }
       } catch {
         return;
       }

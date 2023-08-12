@@ -124,6 +124,22 @@ const MISAEnum = {
         Provider: 2,
         // Nhân viên
         Employee: 3
+    },
+
+    // Trạng thái
+    STATE: {
+        // Sử dụng
+        Using: 1,
+        // Ngưng sử dụng
+        StopUsing: 0
+    },
+
+    // Quy định trạng thái có cập nhật trạng thái sử dụng của các node con trong bảng tài khoản không
+    UPDATE_CHILDREN:{
+        // Có
+        TRUE: 1,
+        // Không
+        FALSE: 0,
     }
 } 
 

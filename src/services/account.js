@@ -8,15 +8,12 @@ class AccountService extends BaseServices {
      * created by : BNTIEN
      * created date: 19-07-2023 03:33:35
      */
-    async getFilter(pageSize, pageNumber, textSearch, isRoot, grade, accountNumber){
+    async getFilter(pageSize, pageNumber, textSearch){
         const response = await this.entity.get(`${this.getBaseUrl()}/filter`, {
             params: {
                 pageSize: pageSize,
                 pageNumber: pageNumber,
                 textSearch: textSearch,
-                isRoot: isRoot,
-                grade: grade,
-                accountNumber: accountNumber,
             }
         });
         return response;
@@ -29,6 +26,15 @@ class AccountService extends BaseServices {
      */
     async getAllChildren(accountNumber){
         const response = await this.entity.get(`${this.getBaseUrl()}/children`, {params:{accountNumber: accountNumber}});
+        return response;
+    }
+
+    async getBySearch(textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/search`, {
+            params: {
+                textSearch: textSearch,
+            }
+        });
         return response;
     }
 
@@ -53,8 +59,8 @@ class AccountService extends BaseServices {
      * created by : BNTIEN
      * created date: 01-08-2023 10:11:46
      */
-    async getCodeOrName(pageSize, pageNumber, textSearch){
-        const response = await this.entity.get(`${this.getBaseUrl()}/codeorname`, {
+    async getBySearchFilter(pageSize, pageNumber, textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/searchfilter`, {
             params: {
                 pageSize: pageSize,
                 pageNumber: pageNumber,

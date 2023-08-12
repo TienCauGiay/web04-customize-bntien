@@ -469,7 +469,7 @@ export default {
      */
     async getAllAccount(pageSize, pageNumber, textSearch) {
       try {
-        const res = await accountService.getCodeOrName(pageSize, pageNumber, textSearch);
+        const res = await accountService.getBySearchFilter(pageSize, pageNumber, textSearch);
         this.accounts = [...this.accounts, ...res.data.Data];
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
           this.accounts = this.accounts.filter(
@@ -1017,7 +1017,7 @@ export default {
           newValue = "";
         }
         this.searchGeneralAccountTimeOut = setTimeout(async () => {
-          const newListAccount = await accountService.getCodeOrName(20, 1, newValue);
+          const newListAccount = await accountService.getBySearchFilter(20, 1, newValue);
           this.accounts = newListAccount.data.Data;
           if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
             this.accounts = this.accounts.filter(
