@@ -1,4 +1,5 @@
 const SYSTEM_ACCOUNT = {
+    FILE_NAME: "Danh_sach_he_thong_tai_khoan",
     title: "Hệ thống tài khoản",
     textAccount: "tài khoản",
     placeholderSearch: "Tìm kiếm theo số, tên tài khoản",

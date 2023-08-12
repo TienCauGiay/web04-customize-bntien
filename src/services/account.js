@@ -1,4 +1,5 @@
 import BaseServices from "./base";
+import ACCOUNT from '@/scripts/resource_component/rc_account.js'
 
 class AccountService extends BaseServices {
     controller = "Accounts";
@@ -29,6 +30,11 @@ class AccountService extends BaseServices {
         return response;
     }
 
+    /**
+     * Mô tả: Tìm kiếm trên page account system
+     * created by : BNTIEN
+     * created date: 12-08-2023 17:36:17
+     */
     async getBySearch(textSearch){
         const response = await this.entity.get(`${this.getBaseUrl()}/search`, {
             params: {
@@ -146,6 +152,27 @@ class AccountService extends BaseServices {
                 textSearch: textSearch,
             }
         });
+        return response;
+    }
+
+    /**
+     * Mô tả: Xuất excel
+     * created by : BNTIEN
+     * created date: 12-08-2023 17:36:48
+     */
+    async exportData(textSearch){
+        const response = await this.entity.get(`${this.getBaseUrl()}/export`, { 
+            params: {
+                textSearch: textSearch,
+            }, 
+            responseType: 'blob' 
+        });
+        const file = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const urlLink = window.URL.createObjectURL(file);
+        const link = document.createElement('a');
+        link.href = urlLink;
+        link.setAttribute('download', ACCOUNT.FILE_NAME);
+        link.click();
         return response;
     }
 }

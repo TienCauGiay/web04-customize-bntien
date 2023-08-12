@@ -613,6 +613,7 @@ export default {
      */
     async updateDataTable() {
       try {
+        this.textSearch = "";
         this.isShowLoadding = true;
         const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "");
         this.isShowLoadding = false;
@@ -933,6 +934,20 @@ export default {
       if (newPage !== undefined && newPage !== this.currentPage) {
         this.currentPage = newPage;
         await this.updateDataTable();
+      }
+    },
+    /**
+     * Mô tả: Xuất excel
+     * created by : BNTIEN
+     * created date: 12-08-2023 17:39:51
+     */
+    async exportData() {
+      try {
+        this.isShowLoadding = true;
+        await accountService.exportData(this.textSearch);
+        this.isShowLoadding = false;
+      } catch {
+        return;
       }
     },
     /**
