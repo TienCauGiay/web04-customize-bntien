@@ -25,8 +25,8 @@ class AccountService extends BaseServices {
      * created by : BNTIEN
      * created date: 21-07-2023 11:27:18
      */
-    async getAllChildren(accountNumber){
-        const response = await this.entity.get(`${this.getBaseUrl()}/children`, {params:{accountNumber: accountNumber}});
+    async getAllChildren(parentId){
+        const response = await this.entity.get(`${this.getBaseUrl()}/children`, {params:{ parentId: parentId }});
         return response;
     }
 

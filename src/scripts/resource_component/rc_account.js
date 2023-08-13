@@ -23,7 +23,20 @@ const SYSTEM_ACCOUNT = {
     deleteFailed : "Xóa không thành công",
     contentDeleteFailed : "Không thể xóa danh mục cha nếu chưa xóa danh mục con.",
     contentDelete: "Bạn có thực sự muốn xóa tài khoản <",
+    textLogicToggleUsing: "Tài khoản cha đang ở trạng thái ngừng sử dụng. Bạn không thể thiết lập trạng thái sử dụng cho tài khoản con.",
     form: {
+        accountProperty: ["AccountNumber", "AccountName", "AccountNameEnglish", "ParentId", "Nature", "Explain"],
+        listNature: [
+            { Id: 1, Nature: "Dư nợ" },
+            { Id: 2, Nature: "Dư có" },
+            { Id: 3, Nature: "Lưỡng tính" },
+            { Id: 4, Nature: "Không có số dư" },
+        ],
+        listUserObject: [
+            { UserObjectCode: 1, UserObjectName: "Khách hàng" },
+            { UserObjectCode: 2, UserObjectName: "Nhà cung cấp" },
+            { UserObjectCode: 3, UserObjectName: "Nhân viên" },
+        ],
         textProperty:{
             accountNumber: "Số tài khoản",
             accountName: "Tên tài khoản",
@@ -43,6 +56,9 @@ const SYSTEM_ACCOUNT = {
             itemCP: "Khoản mục CP",
             unit: "Đơn vị",
             rawCode: "Mã thống kê",
+            customer: "Khách hàng",
+            provider: "Nhà cung cấp",
+            employee: "Nhân viên",
         },
         validateNotNull: {
             "AccountNumber": "Số tài khoản không được để trống.",

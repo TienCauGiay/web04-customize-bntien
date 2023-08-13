@@ -444,6 +444,8 @@ export default {
         this.dataTable = resfilter.data;
 
         // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
+        this.statusExpand.isExpand = false;
+        this.statusExpand.isClicked = false;
         this.rowParents = {};
         this.setRowParent(this.dataTable.Data, false);
       } catch {
@@ -560,7 +562,7 @@ export default {
         if (!this.rowParents[item.AccountId].isMinus) {
           if (!this.rowParents[item.AccountId].isClicked) {
             this.isShowLoadding = true;
-            const reschildrens = await accountService.getAllChildren(item.AccountNumber);
+            const reschildrens = await accountService.getAllChildren(item.AccountId);
             this.isShowLoadding = false;
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
@@ -647,15 +649,7 @@ export default {
     async onDeleteAccount() {
       this.accountIdDeleteSelected = this.selectedAccount.AccountId;
       this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
-
-      // Kiểm tra nếu dòng xóa đang là cha của các dòng khác thì không cho xóa
-      const rowDelete = await accountService.getByCode(this.accountNumberDeleteSelected);
-      if (rowDelete.data.IsParent == this.$_MISAEnum.BOOL.TRUE) {
-        this.isShowDialogDataError = true;
-        this.dataError.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDeleteFailed);
-      } else {
-        this.isShowDialogConfirmDelete = true;
-      }
+      this.isShowDialogConfirmDelete = true;
       this.isOverlay = true;
     },
     /**
@@ -703,8 +697,11 @@ export default {
           this.onShowToastMessage();
           await this.getListAccount();
         }
-      } catch {
-        return;
+      } catch (error) {
+        this.isShowLoadding = false;
+        this.isShowDialogConfirmDelete = false;
+        this.dataError.push(error.Data);
+        this.isShowDialogDataError = true;
       }
     },
 
@@ -771,8 +768,10 @@ export default {
           );
           await this.getListAccount();
         }
-      } catch {
-        return;
+      } catch (error) {
+        this.isShowLoadding = false;
+        this.dataError.push(error.Data);
+        this.isShowDialogDataError = true;
       }
     },
 
@@ -783,7 +782,7 @@ export default {
      */
     async onToggleUsing() {
       try {
-        // Nếu tài khoản đang ở trạng thái sử dụng
+        // Nếu tài khoản đang ở trạng thái sử dụng => ngưng sử dụng nó và tất cả các con của nó
         if (this.selectedAccount.State == this.$_MISAEnum.BOOL.TRUE) {
           this.updateStateAccount(
             this.selectedAccount,
@@ -791,18 +790,7 @@ export default {
             this.$_MISAEnum.UPDATE_CHILDREN.TRUE
           );
         } else {
-          if (this.selectedAccount.ParentId) {
-            const parent = await accountService.getById(this.selectedAccount.ParentId);
-            if (parent.data.State != this.$_MISAEnum.BOOL.TRUE) {
-              this.dataError.push(
-                "Tài khoản cha đang ở trạng thái ngừng sử dụng. Bạn không thể thiết lập trạng thái sử dụng cho tài khoản con."
-              );
-              this.isShowDialogDataError = true;
-              this.isOverlay = true;
-              return;
-            }
-          }
-          // Nếu tài khoản đó đang là cha thì mới hỏi
+          // Nếu tài khoản đó đang là cha thì hỏi có muốn cập nhật trạng thái cho các con của nó không
           if (this.selectedAccount.IsParent == this.$_MISAEnum.BOOL.TRUE) {
             this.isShowToggleState = true;
             this.isOverlay = true;
@@ -826,12 +814,12 @@ export default {
      */
     async confirmUpdateStateChildren() {
       try {
+        this.isShowToggleState = false;
         this.updateStateAccount(
           this.selectedAccount,
           this.$_MISAEnum.STATE.Using,
           this.$_MISAEnum.UPDATE_CHILDREN.TRUE
         );
-        this.isShowToggleState = false;
         this.isOverlay = false;
       } catch {
         return;
@@ -845,12 +833,12 @@ export default {
      */
     async confirmNoUpdateStateChildren() {
       try {
+        this.isShowToggleState = false;
         this.updateStateAccount(
           this.selectedAccount,
           this.$_MISAEnum.STATE.Using,
           this.$_MISAEnum.UPDATE_CHILDREN.FALSE
         );
-        this.isShowToggleState = false;
         this.isOverlay = false;
       } catch {
         return;

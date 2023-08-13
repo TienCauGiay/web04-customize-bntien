@@ -363,29 +363,20 @@ export default {
   data() {
     return {
       // Khai báo mảng lưu các thuộc tính cần validate theo thứ tự, phục vụ cho việc focus, hiển thị lỗi theo thứ tự
-      accountProperty: ["AccountNumber", "AccountName", "AccountNameEnglish", "ParentId", "Nature", "Explain"],
+      accountProperty: this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.accountProperty,
       // Khai báo đối tượng employee
       account: {},
       // Khai báo danh sách đơn vị tìm kiếm
-      listNatureSearch: [
-        { Id: 1, Nature: "Dư nợ" },
-        { Id: 2, Nature: "Dư có" },
-        { Id: 3, Nature: "Lưỡng tính" },
-        { Id: 4, Nature: "Không có số dư" },
-      ],
+      listNatureSearch: this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.listNature,
       // Khai báo danh sách đối tượng người dùng
-      listUserObject: [
-        { UserObjectCode: 1, UserObjectName: "Khách hàng" },
-        { UserObjectCode: 2, UserObjectName: "Nhà cung cấp" },
-        { UserObjectCode: 3, UserObjectName: "Nhân viên" },
-      ],
+      listUserObject: this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.listUserObject,
       // Khai báo trạng thái hiển thị của dialog cảnh báo dữ liệu k được để trống
       isShowDialogDataNotNull: false,
       // Khai báo biến xác định nội dung trường nào k được để trống
       dataNotNull: [],
-      // Khai báo trạng thái hiển thị của dialog cảnh báo mã nhân viên đã tồn tại
+      // Khai báo trạng thái hiển thị của dialog cảnh báo số tài khoản đã tồn tại
       isShowDialogCodeExist: false,
-      // Khai báo biến xác định thông tin của mã nhân viên đã tồn tại
+      // Khai báo biến xác định thông tin của số tài khoản đã tồn tại
       contentAccountNumberExist: "",
       // Khai báo biến quy định trang thái hiển thị dialog dữ liệu đã bị thay đổi
       isShowDialogDataChange: false,
@@ -420,12 +411,12 @@ export default {
     setValueInputSelectOption() {
       let res = "";
 
-      if (this.account.UserObject == 1) {
-        res = "Khách hàng";
-      } else if (this.account.UserObject == 2) {
-        res = "Nhà cung cấp";
-      } else if (this.account.UserObject == 3) {
-        res = "Nhân viên";
+      if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Customer) {
+        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.customer;
+      } else if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Provider) {
+        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.provider;
+      } else if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Employee) {
+        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.employee;
       }
 
       return res;
@@ -491,7 +482,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm kiểm tra xem employee có thay đổi sau khi mở form detail không
+     * Mô tả: Hàm kiểm tra xem account có thay đổi sau khi mở form detail không
      * created by : BNTIEN
      * created date: 23-07-2023 12:23:51
      */
@@ -702,10 +693,10 @@ export default {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            // Kiểm tra xem số tài khoản đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let accountByNumber = await this.checkAccountExists();
             if (!accountByNumber) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              // Nếu số tài khoản chưa tồn tại trong hệ thống
               const res = await accountService.create(this.account);
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
@@ -716,7 +707,7 @@ export default {
                 this.$_MISAEmitter.emit("refreshDataTable");
               }
             } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              // Nếu số tài khoản đã tồn tại trong hệ thống
               this.handleEmployeeExisted(accountByNumber);
             }
           } catch (error) {
@@ -732,9 +723,9 @@ export default {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+              // Kiểm tra xem số tài khoản đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let accountByNumber = await this.checkAccountExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+              // Nếu số tài khoản chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với tài khoản đang sửa
               if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
                 const res = await accountService.update(this.accountSelected.AccountId, this.account);
                 if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
@@ -746,7 +737,7 @@ export default {
                   this.$_MISAEmitter.emit("refreshDataTable");
                 }
               } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
+                // Nếu số tài khoản đã tồn tại trong hệ thống
                 this.handleEmployeeExisted(accountByNumber);
               }
             } catch (error) {
@@ -772,10 +763,10 @@ export default {
           this.isShowDialogDataNotNull = true;
         } else {
           try {
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            // Kiểm tra xem số tài khoản đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let accountByNumber = await this.checkAccountExists();
             if (!accountByNumber) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              // Nếu số tài khoản chưa tồn tại trong hệ thống
               const res = await accountService.create(this.account);
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
@@ -788,7 +779,7 @@ export default {
                 this.focusCode();
               }
             } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              // Nếu số tài khoản đã tồn tại trong hệ thống
               this.handleEmployeeExisted(accountByNumber);
             }
           } catch (error) {
@@ -804,9 +795,9 @@ export default {
             this.isShowDialogDataNotNull = true;
           } else {
             try {
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+              // Kiểm tra xem số tài khoản đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let accountByNumber = await this.checkAccountExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
+              // Nếu số tài khoản chưa tồn tại trong hệ thống hoặc tồn tại trùng với tài khoản đang sửa
               if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
                 const res = await accountService.update(this.accountSelected.AccountId, this.account);
                 this.account = {};
@@ -820,7 +811,7 @@ export default {
                   );
                 }
               } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
+                // Nếu số tài khoản đã tồn tại trong hệ thống
                 this.handleEmployeeExisted(accountByNumber);
               }
             } catch (error) {
@@ -1012,6 +1003,8 @@ export default {
       try {
         // Xóa bỏ timeout trước đó nếu có
         clearTimeout(this.searchGeneralAccountTimeOut);
+        delete this.account.ParentId;
+        this.valueInputFormCBB = newValue;
         this.account.ParentId = "";
         if (!newValue.trim()) {
           newValue = "";
