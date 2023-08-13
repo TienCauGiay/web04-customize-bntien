@@ -5,7 +5,7 @@
         type="text"
         class="a-textfield-cbb"
         :class="{ noDisabled: !isDisabledMenu }"
-        :value="itemSelected[propName]"
+        :value="entity[propName]"
         readonly
         @keydown="onKeyDownEntity"
       />
@@ -38,22 +38,18 @@
 export default {
   name: "MISASelectOption",
 
-  props: ["listData", "propName", "propCode", "isDisabledMenu", "valueSelected"],
+  props: ["listData", "propName", "propCode", "isDisabledMenu", "entity", "indexSelect"],
 
   created() {
-    this.$_MISAEmitter.on("selectedDefaultItem", () => {
-      this.itemSelected = this.listData[0];
-    });
-    this.$_MISAEmitter.on("unSelectedDefaultItem", () => {
-      this.itemSelected = {};
-    });
     this.$_MISAEmitter.on("closeMenuSelectOption", () => {
       this.isShowMenuSelect = false;
     });
   },
 
   mounted() {
-    this.itemSelected[this.propName] = this.valueSelected;
+    if (this.indexSelect) {
+      this.indexSelected = this.indexSelect;
+    }
   },
 
   data() {
@@ -131,12 +127,7 @@ export default {
             } else if (event.keyCode == this.$_MISAEnum.KEY_CODE.ENTER) {
               // Bấm enter
               if (this.isShowMenuSelect) {
-                this.itemSelected = this.listData[this.indexSelected];
-                this.$_MISAEmitter.emit(
-                  "onKeyDownSelectOption",
-                  this.listData[this.indexSelected][this.propCode],
-                  this.propCode.substring(0, this.propCode.length - 4)
-                );
+                this.$_MISAEmitter.emit("onKeyDownSelectOption", this.indexSelected, this.propCode);
                 this.isShowMenuSelect = false;
               } else {
                 this.isShowMenuSelect = true;
@@ -154,20 +145,13 @@ export default {
      * created date: 11-08-2023 10:17:42
      */
     handleSelectItem(item, index) {
-      this.itemSelected = item;
       this.indexSelected = index;
       this.isShowMenuSelect = false;
-      this.$_MISAEmitter.emit(
-        "onSelectedSelectOption",
-        item[this.propCode],
-        this.propCode.substring(0, this.propCode.length - 4)
-      );
+      this.$_MISAEmitter.emit("onSelectedSelectOption", item, this.propCode);
     },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("selectedDefaultItem");
-    this.$_MISAEmitter.off("unSelectedDefaultItem");
     this.$_MISAEmitter.off("closeMenuSelectOption");
   },
 };

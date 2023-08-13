@@ -164,10 +164,11 @@
                 <div ref="UserObject">
                   <misa-select-option
                     :listData="listUserObject"
-                    :propCode="'UserObjectCode'"
+                    :propCode="'UserObject'"
                     :propName="'UserObjectName'"
-                    :valueSelected="setValueInputSelectOption"
+                    :entity="account"
                     :isDisabledMenu="!account.UserObject"
+                    :indexSelect="listUserObject.findIndex((obj) => obj.UserObject == account.UserObject)"
                   ></misa-select-option>
                 </div>
               </div>
@@ -184,14 +185,26 @@
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.objTHCP }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.construction }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
@@ -200,14 +213,26 @@
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.order }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.contractSale }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
@@ -216,14 +241,26 @@
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.contractPurchase }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.itemCP }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
             </div>
             <div class="content-track-detail-row">
@@ -232,14 +269,26 @@
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.unit }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
               <div class="content-track-detail-halfrow">
                 <div class="entity-check">
                   <input type="checkbox" />
                   <span>{{ this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.rawCode }}</span>
                 </div>
-                <misa-select-option :isDisabledMenu="true"></misa-select-option>
+                <misa-select-option
+                  :isDisabledMenu="true"
+                  :listData="listUserObject"
+                  :propCode="'UserObject'"
+                  :propName="'UserObjectName'"
+                  :entity="obj"
+                ></misa-select-option>
               </div>
             </div>
           </div>
@@ -293,8 +342,8 @@ export default {
 
   props: ["accountSelected", "statusFormMode"],
 
-  created() {
-    this.loadData();
+  async created() {
+    await this.loadData();
 
     this.$_MISAEmitter.on("cancelDialogDataChange", () => {
       this.onCancelDialogDataChange();
@@ -322,12 +371,14 @@ export default {
       this.onKeyDownNature(index);
     });
 
-    this.$_MISAEmitter.on("onSelectedSelectOption", (data, prop) => {
-      this.account[prop] = data;
+    this.$_MISAEmitter.on("onSelectedSelectOption", (data) => {
+      this.account.UserObject = data.UserObject;
+      this.account.UserObjectName = data.UserObjectName;
     });
 
-    this.$_MISAEmitter.on("onKeyDownSelectOption", (data, prop) => {
-      this.account[prop] = data;
+    this.$_MISAEmitter.on("onKeyDownSelectOption", (index) => {
+      this.account.UserObject = this.listUserObject[index].UserObject;
+      this.account.UserObjectName = this.listUserObject[index].UserObjectName;
     });
 
     this.$_MISAEmitter.on("onSelectedEntityFormCBB", (data) => {
@@ -352,7 +403,6 @@ export default {
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
-    this.setValueInputFormCBB();
     // Đăng kí các sự kiện
     window.addEventListener("click", this.clickOutsideAccountGeneral);
     window.addEventListener("click", this.clickOutsideNature);
@@ -404,23 +454,9 @@ export default {
       isShowTrackDetail: true,
       // Biển quy định trạng thái checkbox có hạch toán ngoại tệ
       checkedAccounting: false,
+      // Biến lưu các đối tượng chưa dùng
+      obj: { UserObject: "", UserObjectName: "" },
     };
-  },
-
-  computed: {
-    setValueInputSelectOption() {
-      let res = "";
-
-      if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Customer) {
-        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.customer;
-      } else if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Provider) {
-        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.provider;
-      } else if (this.account.UserObject == this.$_MISAEnum.OBJ_ACCOUNT.Employee) {
-        res = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.employee;
-      }
-
-      return res;
-    },
   },
 
   methods: {
@@ -431,6 +467,13 @@ export default {
      */
     async loadData() {
       try {
+        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Add) {
+          // Gán title cho form mode thêm mới
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleAdd;
+        } else {
+          // Gán title cho form mode thêm sửa
+          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleEdit;
+        }
         await this.getAllAccount(this.pageSize, this.pageNumber, "");
         // Nếu form ở trạng thái thêm mới
         // Chuyển đối tượng sang chuỗi json
@@ -441,13 +484,8 @@ export default {
         if (!this.account.Nature) {
           this.account.Nature = this.listNatureSearch[0].Nature;
         }
-        if (this.statusFormMode !== this.$_MISAEnum.FORM_MODE.Edit) {
-          // Gán title cho form mode thêm mới
-          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleAdd;
-        } else {
-          // Gán title cho form mode thêm sửa
-          this.titleFormMode = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.titleEdit;
-        }
+        console.log(this.account);
+        await this.setValueInputFormCBB();
       } catch {
         return;
       }
@@ -951,12 +989,14 @@ export default {
      */
     handleToggleCheckbox(prop) {
       try {
-        if (!this.account[prop]) {
-          this.account[prop] = 1;
-          this.$_MISAEmitter.emit("selectedDefaultItem");
-        } else {
-          this.account[prop] = null;
-          this.$_MISAEmitter.emit("unSelectedDefaultItem");
+        if (prop == "UserObject") {
+          if (!this.account[prop]) {
+            this.account.UserObject = 1;
+            this.account.UserObjectName = "Khách hàng";
+          } else {
+            this.account.UserObject = null;
+            this.account.UserObjectName = null;
+          }
         }
       } catch {
         return;

@@ -33,9 +33,9 @@ const SYSTEM_ACCOUNT = {
             { Id: 4, Nature: "Không có số dư" },
         ],
         listUserObject: [
-            { UserObjectCode: 1, UserObjectName: "Khách hàng" },
-            { UserObjectCode: 2, UserObjectName: "Nhà cung cấp" },
-            { UserObjectCode: 3, UserObjectName: "Nhân viên" },
+            { UserObject: 1, UserObjectName: "Khách hàng" },
+            { UserObject: 2, UserObjectName: "Nhà cung cấp" },
+            { UserObject: 3, UserObjectName: "Nhân viên" },
         ],
         textProperty:{
             accountNumber: "Số tài khoản",
