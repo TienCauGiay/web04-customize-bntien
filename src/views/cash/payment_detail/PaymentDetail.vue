@@ -1867,18 +1867,22 @@ export default {
      * created date: 05-08-2023 21:52:20
      */
     btnAddRowAccountant() {
-      if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
-        this.receipt.AccountantList.push({
-          ...this.receipt.AccountantList[this.receipt.AccountantList.length - 1],
-        });
-        this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = 1;
-      } else if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0)
-        this.receipt.AccountantList.push({
-          ReceiptId: this.receipt.ReceiptId,
-          Description: "",
-          Money: 0,
-          Flag: 1,
-        });
+      try {
+        if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
+          this.receipt.AccountantList.push({
+            ...this.receipt.AccountantList[this.receipt.AccountantList.length - 1],
+          });
+          this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = 1;
+        } else if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0)
+          this.receipt.AccountantList.push({
+            ReceiptId: this.receipt.ReceiptId,
+            Description: "",
+            Money: 0,
+            Flag: 1,
+          });
+      } catch {
+        return;
+      }
     },
 
     /**
@@ -1887,12 +1891,16 @@ export default {
      * created date: 05-08-2023 21:50:18
      */
     deleteRowAccountant(index) {
-      if (this.statusForm !== this.$_MISAEnum.FORM_MODE.View && !this.receipt.IsNoted) {
-        if (this.receipt.AccountantList[index].Flag == 1) {
-          this.receipt.AccountantList.splice(index, 1);
-        } else {
-          this.receipt.AccountantList[index].Flag = 3;
+      try {
+        if (this.statusForm !== this.$_MISAEnum.FORM_MODE.View && !this.receipt.IsNoted) {
+          if (this.receipt.AccountantList[index].Flag == 1) {
+            this.receipt.AccountantList.splice(index, 1);
+          } else {
+            this.receipt.AccountantList[index].Flag = 3;
+          }
         }
+      } catch {
+        return;
       }
     },
 
@@ -1916,17 +1924,22 @@ export default {
      * created date: 06-08-2023 15:32:31
      */
     async btnNote() {
-      // Kiểm tra xem có ghi sổ được không
-      const checkNoted = this.checkIsNoted();
-      if (checkNoted) {
-        const res = await receiptService.updateNote(this.receipt);
-        this.receipt.IsNoted = !this.receipt.IsNoted;
-        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
-          this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+      try {
+        // Kiểm tra xem có ghi sổ được không
+        const checkNoted = this.checkIsNoted();
+        this.convertMoney();
+        if (checkNoted) {
+          const res = await receiptService.updateNote(this.receipt);
+          this.receipt.IsNoted = !this.receipt.IsNoted;
+          if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
+            this.$_MISAEmitter.emit("onShowToastMessage", "Ghi sổ thành công");
+          }
+        } else {
+          this.isShowDialogDataNotNull = true;
+          this.titleDataNotnull = "Ghi sổ không thành công";
         }
-      } else {
-        this.isShowDialogDataNotNull = true;
-        this.titleDataNotnull = "Ghi sổ không thành công";
+      } catch {
+        return;
       }
     },
 
@@ -1936,8 +1949,13 @@ export default {
      * created date: 06-08-2023 15:39:26
      */
     async btnUnNote() {
-      await receiptService.updateNote(this.receipt);
-      this.receipt.IsNoted = !this.receipt.IsNoted;
+      try {
+        this.convertMoney();
+        await receiptService.updateNote(this.receipt);
+        this.receipt.IsNoted = !this.receipt.IsNoted;
+      } catch {
+        return;
+      }
     },
   },
 

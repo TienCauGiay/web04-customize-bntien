@@ -615,9 +615,8 @@ export default {
      */
     async updateDataTable() {
       try {
-        this.textSearch = "";
         this.isShowLoadding = true;
-        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "");
+        const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, this.textSearch);
         this.isShowLoadding = false;
         this.dataTable = resfilter.data;
 
@@ -871,9 +870,13 @@ export default {
         } else {
           // Nếu giá trị tìm kiếm khác rỗng, gọi api search
           this.isShowLoadding = true;
-          const searchAccounts = await accountService.getBySearch(this.textSearch.trim());
+          const searchAccounts = await accountService.getBySearch(
+            this.selectedRecord,
+            this.currentPage,
+            this.textSearch.trim()
+          );
           this.isShowLoadding = false;
-          this.dataTable.Data = searchAccounts.data;
+          this.dataTable = searchAccounts.data;
 
           this.statusExpand.isExpand = true;
           this.statusExpand.isClicked = true;

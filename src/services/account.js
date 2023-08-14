@@ -35,9 +35,11 @@ class AccountService extends BaseServices {
      * created by : BNTIEN
      * created date: 12-08-2023 17:36:17
      */
-    async getBySearch(textSearch){
+    async getBySearch(pageSize, pageNumber, textSearch){
         const response = await this.entity.get(`${this.getBaseUrl()}/search`, {
             params: {
+                pageSize: pageSize,
+                pageNumber: pageNumber,
                 textSearch: textSearch,
             }
         });

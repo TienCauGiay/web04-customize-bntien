@@ -930,7 +930,7 @@
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
-                        :maxLength="18"
+                        :maxLength="10"
                       ></misa-number>
                       <div
                         class="misa-tooltip"
@@ -954,7 +954,7 @@
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
-                        :maxLength="18"
+                        :maxLength="14"
                       ></misa-number>
                       <div
                         class="misa-tooltip"
@@ -1020,15 +1020,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.numberDayOwed }}</label>
                     <div class="container-input">
-                      <misa-input
+                      <misa-number
                         ref="NumberDayOwed"
                         v-model="provider.NumberDayOwed"
                         :class="[{ 'border-red': isBorderRed.NumberDayOwed }, 'right-to-left']"
                         @input="setIsBorderRed('NumberDayOwed')"
                         @mouseenter="isHovering.NumberDayOwed = true"
                         @mouseleave="isHovering.NumberDayOwed = false"
-                        :maxLength="18"
-                      ></misa-input>
+                        :maxLength="10"
+                      ></misa-number>
                       <div
                         class="misa-tooltip"
                         v-if="
@@ -1044,15 +1044,15 @@
                   <div class="col-md-quater" style="position: relative">
                     <label>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.amountDebt }}</label>
                     <div class="container-input">
-                      <misa-input
+                      <misa-number
                         ref="AmountDebt"
                         v-model="provider.AmountDebt"
                         :class="[{ 'border-red': isBorderRed.AmountDebt }, 'right-to-left']"
                         @input="setIsBorderRed('AmountDebt')"
                         @mouseenter="isHovering.AmountDebt = true"
                         @mouseleave="isHovering.AmountDebt = false"
-                        :maxLength="18"
-                      ></misa-input>
+                        :maxLength="14"
+                      ></misa-number>
                       <div
                         class="misa-tooltip"
                         v-if="
@@ -2083,6 +2083,12 @@ export default {
             // Nếu mã nhân viên chưa tồn tại trong hệ thống
             if (!providerByCode) {
               this.setGroupIds();
+              if (this.provider.NumberDayOwed) {
+                this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
+              }
+              if (this.provider.AmountDebt) {
+                this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
+              }
               const res = await providerService.create(this.provider);
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
@@ -2122,6 +2128,12 @@ export default {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
+                if (this.provider.NumberDayOwed) {
+                  this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
+                }
+                if (this.provider.AmountDebt) {
+                  this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
+                }
                 const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
                 if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
@@ -2170,6 +2182,12 @@ export default {
             if (!providerByCode) {
               // Nếu mã nhân viên chưa tồn tại trong hệ thống
               this.setGroupIds();
+              if (this.provider.NumberDayOwed) {
+                this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
+              }
+              if (this.provider.AmountDebt) {
+                this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
+              }
               const res = await providerService.create(this.provider);
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
@@ -2212,6 +2230,12 @@ export default {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
+                if (this.provider.NumberDayOwed) {
+                  this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
+                }
+                if (this.provider.AmountDebt) {
+                  this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
+                }
                 const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
                 this.provider = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
