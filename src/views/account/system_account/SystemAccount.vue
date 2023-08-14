@@ -852,6 +852,7 @@ export default {
     async onSearchAccount() {
       try {
         this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+        // Nếu giá trị tìm kiếm rỗng, gọi api filter
         if (!this.textSearch.trim()) {
           this.textSearch = "";
           this.isShowLoadding = true;
@@ -868,6 +869,7 @@ export default {
           this.rowParents = {};
           this.setRowParent(this.dataTable.Data, false);
         } else {
+          // Nếu giá trị tìm kiếm khác rỗng, gọi api search
           this.isShowLoadding = true;
           const searchAccounts = await accountService.getBySearch(this.textSearch.trim());
           this.isShowLoadding = false;

@@ -3,7 +3,7 @@
     class="textfield"
     type="text"
     :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)"
+    @input="onInput($event)"
     :title="titleContent"
     ref="inputText"
     :maxlength="maxLength"
@@ -21,6 +21,10 @@ export default {
   methods: {
     focus() {
       this.$refs.inputText.focus();
+    },
+
+    onInput($event) {
+      this.$emit("update:modelValue", $event.target.value);
     },
   },
 };

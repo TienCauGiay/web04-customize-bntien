@@ -20,6 +20,7 @@ export default {
     modelValue: String,
     titleContent: String,
     maxLength: Number,
+    isMoney: Boolean,
   },
 
   data() {
@@ -42,9 +43,15 @@ export default {
      * created date: 11-08-2023 13:38:56
      */
     onInput($event) {
-      const cleanedValue = $event.target.value.replace(/[^0-9.]/g, "");
-      $event.target.value = cleanedValue;
-      this.$emit("update:modelValue", $event.target.value);
+      if (this.isMoney) {
+        const cleanedValue = $event.target.value.replace(/[^-0-9.]/g, "");
+        $event.target.value = cleanedValue;
+        this.$emit("update:modelValue", $event.target.value);
+      } else {
+        const cleanedValue = $event.target.value.replace(/[^0-9.]/g, "");
+        $event.target.value = cleanedValue;
+        this.$emit("update:modelValue", $event.target.value);
+      }
     },
   },
 

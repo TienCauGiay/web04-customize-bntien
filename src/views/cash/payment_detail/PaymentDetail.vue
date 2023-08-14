@@ -384,18 +384,19 @@
                     ></misa-form-combobox>
                   </td>
                   <td class="table-col-5 text-right">
-                    <misa-input
+                    <misa-number
                       v-model="item.Money"
                       :class="[
                         {
                           'readonly-input-table': statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted,
                         },
                         'right-to-left',
-                        { 'color-money-red': item.Money < 0 },
+                        { 'color-money-red': String(item.Money).replace(/\./g, '') < 0 },
                       ]"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View || receipt.IsNoted"
-                      :maxLength="15"
-                    ></misa-input>
+                      :maxLength="14"
+                      :isMoney="true"
+                    ></misa-number>
                   </td>
                   <td class="table-col-6" @click="deleteRowAccountant(index)">
                     <div class="delete-row-table-input">
@@ -802,7 +803,10 @@ export default {
     TotalMoney() {
       if (this.receipt.AccountantList) {
         const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
-        const total = accountantList.reduce((total, item) => total + parseFloat(item.Money || 0), 0);
+        const total = accountantList.reduce((total, item) => {
+          const moneyWithoutCommas = String(item.Money).replace(/\./g, "");
+          return total + parseFloat(moneyWithoutCommas || 0);
+        }, 0);
         return total;
       } else {
         return 0;
@@ -1257,6 +1261,19 @@ export default {
     },
 
     /**
+     * Mô tả: Bỏ dấu chấm ở các giá trị tiền, số trước khi thêm
+     * created by : BNTIEN
+     * created date: 14-08-2023 11:05:29
+     */
+    convertMoney() {
+      this.receipt.TotalMoney = this.TotalMoney;
+      this.receipt.QuantityAttach = this.receipt.QuantityAttach.replace(/\./g, "");
+      this.receipt.AccountantList.forEach((item) => {
+        item.Money = String(item.Money).replace(/\./g, "");
+      });
+    },
+
+    /**
      * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất trên form chi tiết
      * created by : BNTIEN
      * created date: 29-05-2023 07:55:05
@@ -1285,7 +1302,7 @@ export default {
         let receiptByCode = await this.checkReceiptExists();
         // Nếu mã nhân viên chưa tồn tại trong hệ thống
         if (!receiptByCode) {
-          this.receipt.TotalMoney = this.TotalMoney;
+          this.convertMoney();
           // Kiểm tra xem có ghi sổ được không
           this.receipt.IsNoted = this.checkIsNoted();
           try {
@@ -1312,7 +1329,7 @@ export default {
         let receiptByCode = await this.checkReceiptExists();
         // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
         if (!receiptByCode || receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber) {
-          this.receipt.TotalMoney = this.TotalMoney;
+          this.convertMoney();
           // Kiểm tra xem có ghi sổ được không
           this.receipt.IsNoted = this.checkIsNoted();
           this.handleAccountant();
@@ -1365,7 +1382,7 @@ export default {
         // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
         let receiptByCode = await this.checkReceiptExists();
         if (!receiptByCode) {
-          this.receipt.TotalMoney = this.TotalMoney;
+          this.convertMoney();
           // Kiểm tra xem có ghi sổ được không
           this.receipt.IsNoted = this.checkIsNoted();
           // Nếu mã nhân viên chưa tồn tại trong hệ thống
@@ -1396,7 +1413,7 @@ export default {
         let receiptByCode = await this.checkReceiptExists();
         // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
         if (!receiptByCode || receiptByCode.ReceiptNumber === this.receipt.ReceiptNumber) {
-          this.receipt.TotalMoney = this.TotalMoney;
+          this.convertMoney();
           // Kiểm tra xem có ghi sổ được không
           this.receipt.IsNoted = this.checkIsNoted();
           this.handleAccountant();

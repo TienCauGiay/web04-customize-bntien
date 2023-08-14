@@ -11,7 +11,7 @@
       </div>
       <div class="cash-info-money-item" style="border-left: 4px solid #74cb2f">
         <div class="cash-info-money-item-text">Tồn quỹ hiện tại</div>
-        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">1948703501,00</div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">1.948.714.501,00</div>
       </div>
       <button class="refresh-cash-money">
         <div class="icon-l refresh-icon" style="scale: 0.6 0.6"></div>

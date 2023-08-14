@@ -125,6 +125,8 @@ const MISAResource = {
                 END:"end",
             },
             FUNCTION: "function",
+            titleDialogSystemError: "Lỗi hệ thống!!!",
+            contentDialogSystemError: "Vui lòng liên hệ MISA để được trợ giúp."
         },
         FORM:{
             ADD_EMPLOYEE:"Thêm nhân viên",
