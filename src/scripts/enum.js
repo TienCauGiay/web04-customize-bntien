@@ -60,7 +60,7 @@ const MISAEnum = {
         // Số bản ghi trên trang
         RECORD_DEFAULT : 20,
         // Các option phân trang
-        RECORD_OPTIONS : [5, 10, 20, 30, 50, 100],
+        RECORD_OPTIONS : [10, 20, 30, 50, 100],
         // Chỉ số của trang đang được chọn
         INDEX_SELECTED_DEFAULT: 1,
     },

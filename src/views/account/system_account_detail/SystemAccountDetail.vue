@@ -813,6 +813,8 @@ export default {
                 );
                 this.account = {};
                 this.isBorderRed = {};
+                this.accounts = [];
+                await this.getAllAccount(this.pageSize, this.pageNumber, "");
                 this.$_MISAEmitter.emit("refreshDataTable");
                 this.focusCode();
               }
@@ -841,6 +843,9 @@ export default {
                 this.account = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 this.focusCode();
+                this.isBorderRed = {};
+                this.accounts = [];
+                await this.getAllAccount(this.pageSize, this.pageNumber, "");
                 this.$_MISAEmitter.emit("refreshDataTable");
                 if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
