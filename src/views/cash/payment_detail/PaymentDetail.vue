@@ -240,7 +240,10 @@
                 </div>
                 <div class="quantity">
                   <misa-number
-                    :placeholder="'Số lượng'"
+                    :placeholder="
+                      this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.textProperty
+                        .placeholderQuantity
+                    "
                     ref="QuantityAttach"
                     v-model="receipt.QuantityAttach"
                     :class="[
@@ -417,6 +420,7 @@
                       ]"
                       :readonly="statusForm == this.$_MISAEnum.FORM_MODE.View"
                       :maxLength="255"
+                      ref="Description"
                     ></misa-input>
                   </td>
                   <td class="table-col-3" id="td-3-form-cbb">
@@ -2057,18 +2061,26 @@ export default {
      */
     btnAddRowAccountant() {
       try {
-        if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
-          this.receipt.AccountantList.push({
-            ...this.receipt.AccountantList[this.receipt.AccountantList.length - 1],
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+        );
+        if (accountantList.length > 0) {
+          const newAccountant = { ...accountantList[accountantList.length - 1], Flag: this.$_MISAEnum.STATUS_FLAG.Add };
+          this.receipt.AccountantList.push(newAccountant);
+          this.$nextTick(() => {
+            this.$refs.Description[accountantList.length].focus();
           });
-          this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = this.$_MISAEnum.STATUS_FLAG.Add;
-        } else if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0)
+        } else if (accountantList.length == 0) {
           this.receipt.AccountantList.push({
             ReceiptId: this.receipt.ReceiptId,
             Description: "",
             Money: 0,
             Flag: this.$_MISAEnum.STATUS_FLAG.Add,
           });
+          this.$nextTick(() => {
+            this.$refs.Description[0].focus();
+          });
+        }
       } catch {
         return;
       }

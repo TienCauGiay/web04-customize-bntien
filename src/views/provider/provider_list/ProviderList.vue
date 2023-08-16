@@ -195,7 +195,7 @@
               <td class="col-width-150" :title="item.PhoneNumber">
                 {{ item.PhoneNumber }}
               </td>
-              <td class="col-width-300">{{ item.FullName }}</td>
+              <td class="col-width-300" :title="item.FullName">{{ item.FullName }}</td>
               <td class="text-center entity-border-right e-birthday function-table" @dblclick.stop>
                 <span @click="onUpdateFormDetail(item)">
                   {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.UPDATE }}

@@ -96,6 +96,7 @@ const RECEIPT_PAYMENT = {
             employee: "Nhân viên",
             headerCBBEmployee: ['Mã nhân viên', 'Tên nhân viên', 'Đơn vị', 'ĐT di động'],
             bodyCBBEmployee: ['EmployeeCode', 'FullName', 'DepartmentName', 'PhoneNumber'],
+            placeholderQuantity: "Số lượng",
             attach: "Kèm theo",
             receiptRoot: "Chứng từ gốc",
             referrence: "Tham chiếu",

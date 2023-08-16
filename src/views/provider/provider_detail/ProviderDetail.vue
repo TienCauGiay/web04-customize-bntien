@@ -16,15 +16,21 @@
         </p>
         <div class="entity-check">
           <input type="radio" name="typeObject" :checked="!this.provider.IsPersonal" @click="handleClickInstitute" />
-          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.organization }}</span>
+          <span @click="handleClickInstitute">{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.organization
+          }}</span>
         </div>
         <div class="entity-check">
           <input type="radio" name="typeObject" :checked="this.provider.IsPersonal" @click="handleClickPersonal" />
-          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.personal }}</span>
+          <span @click="handleClickPersonal">{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.personal
+          }}</span>
         </div>
         <div class="entity-check" id="provider-title-input-checkbox">
           <input type="checkbox" :checked="provider.IsCustomer" @click="toggleCheckboxCustomer" />
-          <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.isCustomer }}</span>
+          <span @click="toggleCheckboxCustomer">{{
+            this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.isCustomer
+          }}</span>
         </div>
       </div>
       <div class="form-detail-content">
@@ -1136,7 +1142,7 @@
                 <template v-for="(item, index) in provider.AccountProviders" :key="index">
                   <tr v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
                     <td class="table-input-col-1">
-                      <misa-input v-model="item.AccountNumber"></misa-input>
+                      <misa-input v-model="item.AccountNumber" ref="AccountNumber"></misa-input>
                     </td>
                     <td class="table-input-col-2">
                       <misa-input v-model="item.BankName"></misa-input>
@@ -1169,14 +1175,7 @@
               </tfoot>
             </table>
           </div>
-          <div
-            class="content-select-layout"
-            id="address-Other"
-            v-if="selectLayout.addressOther"
-            :class="{
-              'overflow-auto': selectLayout.bankAccount || selectLayout.addressOther,
-            }"
-          >
+          <div class="content-select-layout" id="address-Other" v-if="selectLayout.addressOther">
             <div class="content-select-layout-half">
               <div class="half-content">
                 <div class="col-md-l cbb-has-label" style="position: relative">
@@ -1236,29 +1235,35 @@
                 </div>
               </div>
             </div>
-            <div class="content-select-layout-half">
+            <div
+              id="delivery-address"
+              class="content-select-layout-half"
+              :class="{
+                'overflow-auto': selectLayout.bankAccount || selectLayout.addressOther,
+              }"
+            >
               <table class="table-input" id="table-input-address-other">
                 <thead class="table-input-title">
                   <tr>
-                    <th class="table-input-col-4" colspan="2">
+                    <th class="delivery-1" colspan="2">
                       {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.deliveryAddress }}
                     </th>
-                    <th>
+                    <th class="delivery-2">
                       <input type="checkbox" @click="handleLikeAddressProvider" :checked="checkedDeliveryAddress" />
                     </th>
-                    <th style="font-weight: 400">
+                    <th class="delivery-3" style="font-weight: 400">
                       {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.likeAddressProvider }}
                     </th>
-                    <th class="table-input-col-5"></th>
+                    <th class="delivery-4"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <template v-for="(item, index) in provider.DeliveryAddresses" :key="index">
                     <tr class="table-input-has-data" v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
-                      <td class="table-input-col-4" colspan="4">
-                        <misa-input v-model="item.DeliveryAddressName"></misa-input>
+                      <td colspan="4">
+                        <misa-input v-model="item.DeliveryAddressName" ref="DeliveryAddressName"></misa-input>
                       </td>
-                      <td class="table-input-col-5">
+                      <td class="delivery-4">
                         <div class="delete-row-table-input" @click="deleteRowAddress(index)">
                           <div class="delete-icon"></div>
                         </div>
@@ -2629,6 +2634,12 @@ export default {
         BankAddress: "",
         Flag: this.$_MISAEnum.STATUS_FLAG.Add,
       });
+      const accountNumbers = this.provider.AccountProviders.filter(
+        (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+      );
+      this.$nextTick(() => {
+        this.$refs.AccountNumber[accountNumbers.length - 1].focus();
+      });
     },
 
     /**
@@ -2669,6 +2680,12 @@ export default {
       this.provider.DeliveryAddresses.push({
         DeliveryAddressName: "",
         Flag: this.$_MISAEnum.STATUS_FLAG.Add,
+      });
+      const deliveryAddress = this.provider.DeliveryAddresses.filter(
+        (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+      );
+      this.$nextTick(() => {
+        this.$refs.DeliveryAddressName[deliveryAddress.length - 1].focus();
       });
     },
 

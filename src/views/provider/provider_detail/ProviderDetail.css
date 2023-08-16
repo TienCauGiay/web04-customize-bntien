@@ -284,7 +284,36 @@
   display: flex;
   column-gap: 10px;
   flex-wrap: wrap;
-  padding-bottom: 15px;
+  /* padding-bottom: 15px; */
+}
+
+#delivery-address {
+  max-height: 200px;
+  margin-top: 2px;
+  display: unset;
+}
+
+#delivery-address thead {
+  vertical-align: bottom;
+}
+
+#delivery-address thead tr {
+  height: 32px;
+}
+
+.delivery-1{
+  width: 200px;
+  max-width: 200px;
+}
+
+.delivery-2, .delivery-4{
+  width: 32px;
+  max-width: 20px;
+}
+
+.delivery-3{
+  width: 200px;
+  max-width: 200px;
 }
 
 #table-input-address-other{

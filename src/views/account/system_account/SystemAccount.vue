@@ -112,14 +112,14 @@
                     <span>{{ item.AccountNumber }}</span>
                   </div>
                 </td>
-                <td class="as-account-name col-width-150">
+                <td class="as-account-name col-width-150" :title="item.AccountName">
                   {{ item.AccountName }}
                 </td>
-                <td class="as-nature col-width-150">{{ item.Nature }}</td>
-                <td class="as-name-english col-width-250">
+                <td class="as-nature col-width-150" :title="item.Nature">{{ item.Nature }}</td>
+                <td class="as-name-english col-width-250" :title="item.AccountNameEnglish">
                   {{ item.AccountNameEnglish }}
                 </td>
-                <td class="as-explain col-width-350">{{ item.Explain }}</td>
+                <td class="as-explain col-width-350" :title="item.Explain">{{ item.Explain }}</td>
                 <td class="as-status col-width-150">
                   {{
                     item.State == this.$_MISAEnum.STATE.Using
