@@ -994,7 +994,7 @@ export default {
         if (prop == "UserObject") {
           if (!this.account[prop]) {
             this.account.UserObject = 1;
-            this.account.UserObjectName = "Khách hàng";
+            this.account.UserObjectName = this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.form.textProperty.customer;
           } else {
             this.account.UserObject = null;
             this.account.UserObjectName = null;

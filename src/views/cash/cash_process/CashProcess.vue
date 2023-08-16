@@ -2,10 +2,10 @@
   <div class="main-cash">
     <div class="main-cash-left">
       <div class="main-cash-content">
-        <div class="main-cash-content-title">NGHIỆP VỤ TIỀN MẶT</div>
+        <div class="main-cash-content-title">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.title }}</div>
         <div class="main-cash-content-body">
           <div class="receive">
-            <div class="title-button">Thu tiền</div>
+            <div class="title-button">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.receive }}</div>
             <div class="menu-process">
               <div class="menu-item-process" v-for="(item, index) in receiveMenu" :key="index">
                 {{ item }}
@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="payment">
-            <div class="title-button">Chi tiền</div>
+            <div class="title-button">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.payment }}</div>
             <div class="menu-process">
               <div class="menu-item-process" v-for="(item, index) in paymentMenu" :key="index">
                 {{ item }}
@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="audit">
-            <div class="title-button">Kiểm kê quỹ</div>
+            <div class="title-button">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.audit }}</div>
             <div class="menu-process">
               <div class="menu-item-process" v-for="(item, index) in auditMenu" :key="index">
                 {{ item }}
@@ -35,48 +35,66 @@
           <div class="cash-acction-item-icon">
             <div class="customer-icon"></div>
           </div>
-          <div class="cash-action-item-text">Khách hàng</div>
+          <div class="cash-action-item-text">
+            {{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.customer }}
+          </div>
         </a>
         <router-link to="/provider" class="cash-acction-item">
           <div class="cash-acction-item-icon">
             <div class="provider-icon"></div>
           </div>
-          <div class="cash-action-item-text">Nhà cung cấp</div>
+          <div class="cash-action-item-text">
+            {{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.provider }}
+          </div>
         </router-link>
         <router-link to="/employee" class="cash-acction-item">
           <div class="cash-acction-item-icon">
             <div class="employee-green-icon"></div>
           </div>
-          <div class="cash-action-item-text">Nhân viên</div>
+          <div class="cash-action-item-text">
+            {{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.employee }}
+          </div>
         </router-link>
         <a class="cash-acction-item">
           <div class="cash-acction-item-icon">
             <div class="option-icon"></div>
           </div>
-          <div class="cash-action-item-text">Tùy chọn</div>
+          <div class="cash-action-item-text">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.option }}</div>
         </a>
       </div>
     </div>
     <div class="main-cash-right">
-      <div class="main-cash-right-title">BÁO CÁO</div>
+      <div class="main-cash-right-title">{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.title }}</div>
       <div class="main-cash-right-content">
         <div class="cash-right-content-item">
-          <li><a>Bảng kê số dư tiền theo ngày</a></li>
+          <li>
+            <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.balanceByDay }}</a>
+          </li>
         </div>
         <div class="cash-right-content-item">
-          <li><a>Dòng tiền</a></li>
+          <li>
+            <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.cashFlow }}</a>
+          </li>
         </div>
         <div class="cash-right-content-item">
-          <li><a>S03a1-DN: Sổ nhật ký thu tiền</a></li>
+          <li>
+            <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.cashCollectionDiary }}</a>
+          </li>
         </div>
         <div class="cash-right-content-item">
-          <li><a>Sổ kế toán chi tiết quỹ tiền mặt</a></li>
+          <li>
+            <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.detailAccounting }}</a>
+          </li>
         </div>
         <div class="cash-right-content-item">
-          <li><a>S03a2-DN: Sổ nhật ký chi tiền</a></li>
+          <li>
+            <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.cashPaymentDiary }}</a>
+          </li>
         </div>
       </div>
-      <div class="main-cash-right-footer"><a>Tất cả báo cáo</a></div>
+      <div class="main-cash-right-footer">
+        <a>{{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.right.allReport }}</a>
+      </div>
     </div>
   </div>
 </template>

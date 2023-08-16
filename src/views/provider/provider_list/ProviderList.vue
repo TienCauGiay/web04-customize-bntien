@@ -15,7 +15,7 @@
       <div class="info-money-item-left" style="background-color: rgb(237, 118, 81)"></div>
       <div class="info-money-item-right">
         <div class="money">
-          <div class="format-money">1.336.000.000</div>
+          <div class="format-money">{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.moneyOne }}</div>
           <div class="icon-l filter-icon"></div>
         </div>
         <div class="content-money">
@@ -27,7 +27,7 @@
       <div class="info-money-item-left" style="background-color: #858383"></div>
       <div class="info-money-item-right">
         <div class="money">
-          <div class="format-money">13.135.323.869</div>
+          <div class="format-money">{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.moneyTwo }}</div>
           <div class="icon-l filter-icon"></div>
         </div>
         <div class="content-money">
@@ -39,7 +39,7 @@
       <div class="info-money-item-left" style="background-color: var(--color-btn-default)"></div>
       <div class="info-money-item-right">
         <div class="money">
-          <div class="format-money">100.000.000</div>
+          <div class="format-money">{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.moneyThree }}</div>
         </div>
         <div class="content-money">
           <span>{{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.recentPayment }}</span>

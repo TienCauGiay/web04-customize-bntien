@@ -2,21 +2,35 @@
   <div class="receipt-payment" id="receipt-payment">
     <div class="cash-info-money">
       <div class="cash-info-money-item" style="border-left: 4px solid #00a9f2">
-        <div class="cash-info-money-item-text">Tổng thu đầu năm đến hiện tại</div>
-        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">0,00</div>
+        <div class="cash-info-money-item-text">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.totalReceive }}
+        </div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.moneyOne }}
+        </div>
       </div>
       <div class="cash-info-money-item" style="border-left: 4px solid #ff7f2c">
-        <div class="cash-info-money-item-text">Tổng chi đầu năm đến hiện tại</div>
-        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">0,00</div>
+        <div class="cash-info-money-item-text">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.totalPayment }}
+        </div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.moneyOne }}
+        </div>
       </div>
       <div class="cash-info-money-item" style="border-left: 4px solid #74cb2f">
-        <div class="cash-info-money-item-text">Tồn quỹ hiện tại</div>
-        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">1.948.714.501,00</div>
+        <div class="cash-info-money-item-text">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.fundBalance }}
+        </div>
+        <div class="cash-info-money-item-number" :title="'Bấm vào để xem chi tiết'">
+          {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.moneyTwo }}
+        </div>
       </div>
       <button class="refresh-cash-money">
         <div class="icon-l refresh-icon" style="scale: 0.6 0.6"></div>
       </button>
-      <div class="time-cash-money">Số liệu tính đến: 7h35</div>
+      <div class="time-cash-money">
+        {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.figureUpTo }}
+      </div>
     </div>
     <div class="receipt-payment-content">
       <div class="receipt-payment-content-action">
@@ -41,7 +55,9 @@
               <div class="menu-item-delete" @click="onShowDialogDeleteMulti">
                 {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
               </div>
-              <div class="menu-item-delete" @click="onUnNote">Bỏ ghi</div>
+              <div class="menu-item-delete" @click="onUnNote">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.unNote }}
+              </div>
             </div>
           </button>
           <button class="delete-multiple filter-provider" :class="'no-disable'">
@@ -75,7 +91,9 @@
               </div>
             </div>
           </button>
-          <div class="filter-receipt-text">Đầu năm tới hiện tại</div>
+          <div class="filter-receipt-text">
+            {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.nextYearPresent }}
+          </div>
         </div>
         <div class="content-action-right">
           <div class="search-entity">
@@ -102,21 +120,36 @@
           ></div>
           <div class="setting-icon icon-tb" :title="this.$_MISAResource[this.$_LANG_CODE].TOOLTIP.SETTING_MAIN"></div>
           <div class="insert-data">
-            <misa-button-default :textButtonDefault="'Thu tiền'"></misa-button-default>
+            <misa-button-default
+              :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.receive"
+            ></misa-button-default>
             <button>
               <div class="dropdown-white-icon"></div>
             </button>
           </div>
           <div class="insert-data">
-            <misa-button-default :textButtonDefault="'Chi tiền'" @click="btnOpenFormDetail"></misa-button-default>
+            <misa-button-default
+              :textButtonDefault="this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.payment"
+              @click="btnOpenFormDetail"
+            ></misa-button-default>
             <button @click="isShowMenuInsert = !isShowMenuInsert">
               <div class="dropdown-white-icon"></div>
               <div class="menu-select-insert-data" v-show="isShowMenuInsert">
-                <div class="item-select-insert-data" @click="btnOpenFormDetail">Phiếu chi</div>
-                <div class="item-select-insert-data">Trả tiền theo hóa đơn</div>
-                <div class="item-select-insert-data">Nộp thuế</div>
-                <div class="item-select-insert-data">Nộp bảo hiểm</div>
-                <div class="item-select-insert-data">Trả lương</div>
+                <div class="item-select-insert-data" @click="btnOpenFormDetail">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.paymentV2 }}
+                </div>
+                <div class="item-select-insert-data">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.payByBill }}
+                </div>
+                <div class="item-select-insert-data">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.taxPayer }}
+                </div>
+                <div class="item-select-insert-data">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.submitInsurance }}
+                </div>
+                <div class="item-select-insert-data">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.paySalary }}
+                </div>
               </div>
             </button>
           </div>
@@ -131,16 +164,32 @@
                   <input class="checkbox-select-row" type="checkbox" @click="checkAllSelect" :checked="isCheckAll" />
                 </div>
               </th>
-              <th class="text-center col-width-150">Ngày hạch toán</th>
-              <th class="text-center col-width-150">Ngày chứng từ</th>
-              <th class="col-width-120">Số chứng từ</th>
-              <th class="text-right col-width-150">Số tiền</th>
-              <th class="col-width-250">Diễn giải</th>
-              <th class="col-width-150">Đối tượng</th>
-              <th class="col-width-120">Mã đối tượng</th>
-              <th class="col-width-350">Địa chỉ</th>
+              <th class="text-center col-width-150">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.accountingDate }}
+              </th>
+              <th class="text-center col-width-150">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.receiptDate }}
+              </th>
+              <th class="col-width-120">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.receiptNumber }}
+              </th>
+              <th class="text-right col-width-150">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.numberMoney }}
+              </th>
+              <th class="col-width-250">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.reason }}
+              </th>
+              <th class="col-width-150">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.obj }}
+              </th>
+              <th class="col-width-120">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.codeObj }}
+              </th>
+              <th class="col-width-350">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.address }}
+              </th>
               <th type="feat" class="text-center entity-border-right e-birthday">
-                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FEATURE }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.tableHeader.feature }}
               </th>
             </tr>
           </thead>
@@ -191,7 +240,9 @@
                 {{ item.Address }}
               </td>
               <td class="text-center entity-border-right e-birthday function-table" @dblclick.stop>
-                <span @click="onViewFormDetail(item)" style="font-weight: 500"> Xem </span>
+                <span @click="onViewFormDetail(item)" style="font-weight: 500">
+                  {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.view }}
+                </span>
                 <div class="function-table-content" @click="onOpenFeatureMenu($event, item)">
                   <div class="function-icon-table function-icon-select"></div>
                 </div>
@@ -199,7 +250,9 @@
             </tr>
             <tr class="tr-last-child">
               <td></td>
-              <td class="text-center">Tổng</td>
+              <td class="text-center">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.total }}
+              </td>
               <td colspan="2"></td>
               <td class="text-right" :class="{ 'color-money-red': totalAmount < 0 }">
                 {{ helperCommon.formatCurrency(totalAmount) }}
@@ -219,7 +272,9 @@
             }"
           >
             <template v-if="!this.selectedReceipt.IsNoted">
-              <div @click="toggleNote">Ghi sổ</div>
+              <div @click="toggleNote">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.note }}
+              </div>
               <div @click="onDeleteReceipt">
                 {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.DELETE }}
               </div>
@@ -228,8 +283,12 @@
               </div>
             </template>
             <template v-if="this.selectedReceipt.IsNoted">
-              <div @click="toggleNote">Bỏ ghi</div>
-              <div @click="onDupliCateReceipt">Nhân bản</div>
+              <div @click="toggleNote">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.unNote }}
+              </div>
+              <div @click="onDupliCateReceipt">
+                {{ this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.duplicate }}
+              </div>
             </template>
           </div>
         </teleport>
@@ -341,7 +400,7 @@ export default {
   },
 
   async created() {
-    // Gọi hàm lấy dữ liệu danh sách nhân viên
+    // Gọi hàm lấy dữ liệu danh sách phiếu thu/chi
     this.dataTable = await this.getListReceipt(20, 1, "", this.statusFilter);
     // Đăng kí các sự kiện
     this.$_MISAEmitter.on("onShowToastMessage", (data) => {
@@ -369,7 +428,7 @@ export default {
       await this.btnConfirmYesDeleteMultipleReceipt();
     });
     this.$_MISAEmitter.on("closeToastMessage", () => {
-      this.btnCloseToastMessage();
+      this.isShowToastMessage = false;
     });
 
     this.$_MISAEmitter.on("closeDialogError", () => {
@@ -389,9 +448,9 @@ export default {
       // Biến quy định trạng thái hiển thị menu item tất cả
       isShowFilterReceipt: false,
       // Biến quy định text trong button tất cả
-      textFilterReceipt: "Tất cả",
+      textFilterReceipt: this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.all,
       // select option filter
-      optionFilterReceipt: ["Tất cả", "Phiếu thu", "Phiếu chi"],
+      optionFilterReceipt: this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.optionReceipt,
       // Biến quy định trạng thái hiển thị menu insert
       isShowMenuInsert: false,
       // Khai báo biến quy định trạng thái hiển thị của form chi tiết
@@ -408,15 +467,15 @@ export default {
       isShowToastMessage: false,
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
-      // Khai báo 1 nhân viên được chọn để xử lí hàm sửa
+      // Khai báo 1 phiếu chi được chọn để xử lí hàm sửa
       receiptUpdate: {},
       // Khai báo số bản ghi mặc định được hiển thi trên table
       selectedRecord: this.$_MISAEnum.RECORD.RECORD_DEFAULT,
       // Khai báo list số bản ghi có thể lựa chọn để hiển thị trên trang
       recordOptions: this.$_MISAEnum.RECORD.RECORD_OPTIONS,
-      // Khai báo EmployeeId của nhân viên cần xóa
+      // Khai báo ReceiptId của phiếu chi cần xóa
       receiptIdDeleteSelected: "",
-      // Khai báo EmployeeCode của nhân viên cần xóa
+      // Khai báo ReceiptNumber của phiếu chi cần xóa
       receiptNumberDeleteSelected: "",
       // Khai báo biến quy định trạng thái ẩn hiển dialog confirm delete
       isShowDialogConfirmDelete: false,
@@ -444,7 +503,7 @@ export default {
       isDeleteMultipleDialog: null,
       // Khai báo biến tùy chỉnh top, left cho feature menu
       positionFeatureMenu: {},
-      // Khai báo biến lưu employee khi bấm vào col feature
+      // Khai báo biến lưu receipt khi bấm vào col feature
       selectedReceipt: {},
       // Biến quy định trạng thái hiện thị dialog data not null
       isShowDialogDataNotNull: false,
@@ -547,7 +606,7 @@ export default {
 
   methods: {
     /**
-     * Mô tả: Hàm lấy dữ liệu nhân viên từ api
+     * Mô tả: Hàm lấy dữ liệu phiếu thu/chi từ api
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:20
      */
@@ -574,7 +633,7 @@ export default {
       this.dataTable = await this.getListReceipt(20, 1, "", this.statusFilter);
     },
     /**
-     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới nhân viên
+     * Mô tả: Hàm xử lí sự kiên mở form chi tiết khi click vào button thêm mới phiếu chi
      * created by : BNTIEN
      * created date: 29-05-2023 07:48:01
      */
@@ -628,7 +687,7 @@ export default {
       this.isShowPaging = !this.isShowPaging;
     },
     /**
-     * Mô tả: Hàm xử lí cập nhật thông tin nhân viên
+     * Mô tả: Hàm xử lí xem thông tin phiếu chi
      * created by : BNTIEN
      * created date: 29-05-2023 07:49:56
      */
@@ -660,7 +719,7 @@ export default {
       this.updateDataTable();
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa nhân viên thì hiển thị dialog xác nhận xóa
+     * Mô tả: Hàm xử lí sự kiện khi bấm vào item xóa phiếu chi thì hiển thị dialog xác nhận xóa
      * created by : BNTIEN
      * created date: 29-05-2023 07:50:15
      */
@@ -672,7 +731,7 @@ export default {
       this.receiptNumberDeleteSelected = this.selectedReceipt.ReceiptNumber;
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 nhân viên
+     * Mô tả: Hàm xử lí sự kiện khi người dùng xác nhận xóa 1 phiếu chi
      * created by : BNTIEN
      * created date: 28-05-2023 21:09:01
      */
@@ -717,15 +776,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện đóng toast mesage
-     * created by : BNTIEN
-     * created date: 31-05-2023 00:42:10
-     */
-    btnCloseToastMessage() {
-      this.isShowToastMessage = false;
-    },
-    /**
-     * Mô tả: Hàm nhân bản 1 nhân viên
+     * Mô tả: Hàm nhân bản 1 phiếu chi
      * created by : BNTIEN
      * created date: 28-06-2023 13:59:30
      */
@@ -741,7 +792,7 @@ export default {
       }
     },
     /**
-     * Mô tả: Hàm tìm kiếm nhân viên theo mã hoặc tên
+     * Mô tả: Hàm tìm kiếm phiếu chi
      * created by : BNTIEN
      * created date: 04-06-2023 00:20:21
      */
@@ -925,7 +976,7 @@ export default {
       this.isDeleteMultipleDialog = true;
     },
     /**
-     * Mô tả: Hàm thực hiện xóa nhiều nhân viên theo list id đã chọn
+     * Mô tả: Hàm thực hiện xóa nhiều phiếu chi theo list id đã chọn
      * created by : BNTIEN
      * created date: 28-06-2023 09:36:08
      */
@@ -945,16 +996,33 @@ export default {
             this.onShowToastMessage();
             this.ids = [];
           } else if (res.data < this.ids.length) {
-            this.dataNotNull.push(`Số chứng từ được xử lí: ${this.ids.length}`);
-            this.dataNotNull.push(`Số chứng từ thành công: ${res.data}`);
-            this.dataNotNull.push(`Số chứng từ không thành công: ${this.ids.length - res.data}`);
+            this.dataNotNull.push(
+              `${this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.numberReceiptHandle} ${
+                this.ids.length
+              }`
+            );
+            this.dataNotNull.push(
+              `${this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.numberReceiptSuccess} ${
+                res.data
+              }`
+            );
+            this.dataNotNull.push(
+              `${this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.numberReceiptNotSuccess} ${
+                this.ids.length - res.data
+              }`
+            );
             if (receiptNoDelete && receiptNoDelete.length > 0) {
               const receiptNumbers = receiptNoDelete.map((row) => row.ReceiptNumber);
               this.dataNotNull.push(
-                `Các chứng từ sau đã được ghi sổ: ${receiptNumbers.join(", ")}, vui lòng kiểm tra lại.`
+                `${
+                  this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.recetptNoted
+                } ${receiptNumbers.join(", ")}, ${
+                  this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.pleaseCheck
+                }`
               );
             }
-            this.titleDialogError = "Kết quả xóa chứng từ";
+            this.titleDialogError =
+              this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.titleResultHandleReceipt;
             this.isShowDialogDataNotNull = true;
             this.isOverlay = true;
           }
@@ -1015,7 +1083,8 @@ export default {
         await this.refreshData();
       } catch (error) {
         this.dataNotNull.push(error.Data);
-        this.titleDialogError = "Ghi sổ không thành công";
+        this.titleDialogError =
+          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.freeText.noteNotSuccess;
         this.isShowDialogDataNotNull = true;
         this.isOverlay = true;
       }
@@ -1046,7 +1115,8 @@ export default {
         if (this.ids && this.ids.length > 0) {
           const res = await receiptService.updateMultipleNote(this.ids, false);
           if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
-            this.contentToastSuccess = "Bỏ ghi sổ thành công";
+            this.contentToastSuccess =
+              this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.unNoteSuccess;
             this.onShowToastMessage();
             this.dataTable = await this.getListReceipt(20, 1, "", null);
           }

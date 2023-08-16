@@ -1315,19 +1315,19 @@
         </div>
       </div>
     </div>
-    <!-- dialog employee input data not blank -->
+    <!-- dialog input data not blank -->
     <misa-dialog-data-not-null
       v-if="isShowDialogDataNotNull"
       :valueNotNull="dataNotNull"
       :title="this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.DATA_INVALID"
     ></misa-dialog-data-not-null>
-    <!-- dialog employee id Exist -->
+    <!-- dialog id Exist -->
     <misa-dialog-data-exist
       v-if="isShowDialogCodeExist"
       :textProp="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.providerCode"
       :textEntityCodeExist="contentProviderCodeExist"
     ></misa-dialog-data-exist>
-    <!-- dialog employee save and close -->
+    <!-- dialog save and close -->
     <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
   </div>
 </template>
@@ -1493,15 +1493,15 @@ export default {
       isShowDialogDataNotNull: false,
       // Khai báo biến xác định nội dung trường nào k được để trống
       dataNotNull: [],
-      // Khai báo trạng thái hiển thị của dialog cảnh báo mã nhân viên đã tồn tại
+      // Khai báo trạng thái hiển thị của dialog cảnh báo mã nhà cung cấp đã tồn tại
       isShowDialogCodeExist: false,
-      // Khai báo biến xác định thông tin của mã nhân viên đã tồn tại
+      // Khai báo biến xác định thông tin của mã nhà cung cấp đã tồn tại
       contentProviderCodeExist: "",
       // Khai báo biến quy định trang thái hiển thị dialog dữ liệu đã bị thay đổi
       isShowDialogDataChange: false,
       // Khai báo biến xác định border red
       isBorderRed: {},
-      // Khai báo biên lưu mã nhân viên tự động sinh ra
+      // Khai báo biên lưu mã nhà cung cấp tự động sinh ra
       newProviderCode: null,
       // Khai báo biến chứa danh sách đối tượng lỗi
       errors: {},
@@ -1602,7 +1602,7 @@ export default {
     },
 
     /**
-     * Mô tả: Lấy nhân viên có giá trị lớn nhất trong hệ thống
+     * Mô tả: Lấy mã nhà cung cấp có giá trị lớn nhất trong hệ thống
      * created by : BNTIEN
      * created date: 24-06-2023 09:57:13
      */
@@ -1651,7 +1651,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm focus vào ô input mã nhân viên
+     * Mô tả: Hàm focus vào ô input mã số thuế
      * created by : BNTIEN
      * created date: 27-06-2023 01:53:48
      */
@@ -1683,7 +1683,7 @@ export default {
     },
 
     /**
-     * Mô tả: Tìm kiếm phân trang nhân viên mua hàng, tạm thời lấy luôn bảng nhân viên
+     * Mô tả: Tìm kiếm phân trang nhân viên mua hàng
      * created by : BNTIEN
      * created date: 30-07-2023 00:10:44
      */
@@ -1959,7 +1959,7 @@ export default {
       }
     },
     /**
-     * Mô tả: Hàm kiểm tra xem mã nhân viên đã tồn tại trong database hay chưa
+     * Mô tả: Hàm kiểm tra xem mã nhà cung cấp đã tồn tại trong database hay chưa
      * created by : BNTIEN
      * created date: 29-06-2023 23:46:11
      */
@@ -1972,7 +1972,7 @@ export default {
       }
     },
     /**
-     * Mô tả: Hàm xử lí khi mã nhân viên đã tồn tại trong hệ thống
+     * Mô tả: Hàm xử lí khi mã nhà cung cấp đã tồn tại trong hệ thống
      * created by : BNTIEN
      * created date: 30-06-2023 00:30:22
      */
@@ -2078,9 +2078,9 @@ export default {
               this.isShowDialogDataNotNull = true;
               return;
             }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            // Kiểm tra xem mã nhà cung cấp đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let providerByCode = await this.checkProviderExists();
-            // Nếu mã nhân viên chưa tồn tại trong hệ thống
+            // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống
             if (!providerByCode) {
               this.setGroupIds();
               if (this.provider.NumberDayOwed) {
@@ -2100,7 +2100,7 @@ export default {
                 this.$_MISAEmitter.emit("refreshDataTable");
               }
             } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              // Nếu mã nhà cung cấp đã tồn tại trong hệ thống
               this.handleProviderExisted(providerByCode);
             }
           } catch (error) {
@@ -2121,9 +2121,9 @@ export default {
                 this.isShowDialogDataNotNull = true;
                 return;
               }
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+              // Kiểm tra xem mã nhà cung cấp đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhân viên đang sửa
+              // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với nhà cung cấp đang sửa
               if (!providerByCode || providerByCode.ProviderCode === this.providerSelected.ProviderCode) {
                 this.setGroupIds();
                 this.handleAccount();
@@ -2145,7 +2145,7 @@ export default {
                   this.$_MISAEmitter.emit("refreshDataTable");
                 }
               } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
+                // Nếu mã nhà cung cấp đã tồn tại trong hệ thống
                 this.handleProviderExisted(providerByCode);
               }
             } catch (error) {
@@ -2177,10 +2177,10 @@ export default {
               this.isShowDialogDataNotNull = true;
               return;
             }
-            // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+            // Kiểm tra xem mã nhà cung cấp đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
             let providerByCode = await this.checkProviderExists();
             if (!providerByCode) {
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống
+              // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống
               this.setGroupIds();
               if (this.provider.NumberDayOwed) {
                 this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
@@ -2202,7 +2202,7 @@ export default {
                 this.focusCode();
               }
             } else {
-              // Nếu mã nhân viên đã tồn tại trong hệ thống
+              // Nếu mã nhà cung cấp đã tồn tại trong hệ thống
               this.handleProviderExisted(providerByCode);
             }
           } catch (error) {
@@ -2223,9 +2223,9 @@ export default {
                 this.isShowDialogDataNotNull = true;
                 return;
               }
-              // Kiểm tra xem mã nhân viên đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
+              // Kiểm tra xem mã nhà cung cấp đã tồn tại trong database chưa, nếu đã tồn tại thì thông báo cho người dùng
               let providerByCode = await this.checkProviderExists();
-              // Nếu mã nhân viên chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhân viên đang sửa
+              // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống hoặc tồn tại trùng với nhà cung cấp đang sửa
               if (!providerByCode || providerByCode.ProviderCode === this.providerSelected.ProviderCode) {
                 this.setGroupIds();
                 this.handleAccount();
@@ -2250,7 +2250,7 @@ export default {
                   );
                 }
               } else {
-                // Nếu mã nhân viên đã tồn tại trong hệ thống
+                // Nếu mã nhà cung cấp đã tồn tại trong hệ thống
                 this.handleProviderExisted(providerByCode);
               }
             } catch (error) {
@@ -2330,7 +2330,7 @@ export default {
       this.$emit("closeFormDetail");
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện đóng dialog cảnh báo mã nhân viên đã tồn tại
+     * Mô tả: Hàm xử lí sự kiện đóng dialog cảnh báo mã nhà cung cấp đã tồn tại
      * created by : BNTIEN
      * created date: 29-05-2023 08:28:19
      */
@@ -2360,7 +2360,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm reset tabindex về ô input mã nhân viên khi tab nhảy đến icon close
+     * Mô tả: Hàm reset tabindex về ô input mã nhà cung cấp khi tab nhảy đến icon close
      * created by : BNTIEN
      * created date: 01-06-2023 14:24:19
      */
@@ -2530,7 +2530,7 @@ export default {
     },
 
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn nhân viên mua hàng
+     * Mô tả: Hàm xử lí sự kiện khi người dùng chọn điều khoản thanh toán
      * created by : BNTIEN
      * created date: 29-05-2023 07:54:52`
      */
@@ -2542,7 +2542,7 @@ export default {
     },
 
     /**
-     * Mô tả: Lắng nghe sự thay đổi text trong input search employee và tìm kiếm trong combobox
+     * Mô tả: Lắng nghe sự thay đổi text trong input search điều khoản thanh toán và tìm kiếm trong combobox
      * created by : BNTIEN
      * created date: 06-06-2023 22:31:16
      */
@@ -2567,7 +2567,7 @@ export default {
     },
 
     /**
-     * Mô tả: Xử lí sự kiện keydown cbb nhân viên mua hàng
+     * Mô tả: Xử lí sự kiện keydown cbb điều khoản thanh toán
      * created by : BNTIEN
      * created date: 01-08-2023 08:33:33
      */
