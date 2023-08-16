@@ -12,10 +12,10 @@
           <a>
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.CUSTOMER }}
           </a>
-          <router-link to="/provider">
+          <router-link to="/category/provider">
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.PROVIDER }}
           </router-link>
-          <router-link to="/employee">
+          <router-link to="/category/employee">
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.EMPLOYEE }}
           </router-link>
           <a>
@@ -43,7 +43,7 @@
           <a class="title-menu-item">
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.TITLE_MEMU.ACCOUNTS }}
           </a>
-          <router-link to="/system-account">
+          <router-link to="/category/system-account">
             {{ this.$_MISAResource[this.$_LANG_CODE].CATEGORY.MENU_ITEM.ACCOUNT_SYSTEM }}
           </router-link>
           <a>

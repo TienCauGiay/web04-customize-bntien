@@ -13,10 +13,10 @@ import ReceiptPayment from '@/views/cash/receipt_payment/ReceiptPayment';
  * created date: 01-06-2023 13:11:40
  */
 const routers = [
-    {path: "/employee", component: EmployeeList, name: "EmployeeListRouter"},
     {path: "/category", component: CategoryPage, name: "CategoryRouter"},
-    {path: "/system-account", component: SystemAccount, name: "SystemAccountRouter"},
-    {path: "/provider", component: ProviderList, name: "ProviderListRouter"},
+    {path: "/category/employee", component: EmployeeList, name: "EmployeeListRouter"},
+    {path: "/category/system-account", component: SystemAccount, name: "SystemAccountRouter"},
+    {path: "/category/provider", component: ProviderList, name: "ProviderListRouter"},
     {
         path: "/cash", 
         component: CashHomePage, 

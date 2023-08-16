@@ -196,7 +196,7 @@
           <tbody>
             <tr
               v-show="dataTable.TotalRecord"
-              v-for="item in dataTable.Data"
+              v-for="item in dataTable?.Data"
               :key="item.ReceiptId"
               @dblclick="onViewFormDetail(item)"
               :class="[{ checkedRow: checkRow().includes(item.ReceiptId) }, { unNoted: !item.IsNoted }]"
@@ -293,20 +293,20 @@
           </div>
         </teleport>
         <img
-          v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
+          v-show="isShowLoadding && this.dataTable?.TotalRecord !== undefined"
           class="loading"
           :class="{ 'loadding-form-detail': isShowFormDetail }"
           src="../../../assets//img/loading.svg"
           alt="loading"
         />
-        <div v-if="!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0" class="no-data">
+        <div v-if="!this.dataTable?.TotalRecord || this.dataTable?.TotalRecord === 0" class="no-data">
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.NO_DATA }}
         </div>
       </div>
       <div id="pagination" class="pagination">
         <p>
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-          <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
+          <b>{{ this.dataTable?.TotalRecord ? this.dataTable?.TotalRecord : 0 }}</b>
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
         </p>
         <div class="pagination-detail">
@@ -523,7 +523,7 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     totalPages() {
-      return Math.ceil(this.dataTable.TotalRecord / this.selectedRecord);
+      return Math.ceil(this.dataTable?.TotalRecord / this.selectedRecord);
     },
     /**
      * Mô tả: Nếu đang ở trang đầu thì button prev không hoạt động
@@ -550,7 +550,7 @@ export default {
      * created date: 04-06-2023 02:49:32
      */
     visiblePageNumbers() {
-      if (!this.dataTable.TotalRecord || this.dataTable.TotalRecord === 0) {
+      if (!this.dataTable?.TotalRecord || this.dataTable?.TotalRecord === 0) {
         return [];
       }
 
@@ -582,7 +582,7 @@ export default {
      * created date: 28-06-2023 08:41:29
      */
     isCheckAll() {
-      if (!this.dataTable.Data) return false;
+      if (!this.dataTable?.Data) return false;
       if (this.dataTable.Data.length == 0) return false;
       for (let i = 0; i < this.dataTable.Data.length; i++) {
         if (!this.ids.includes(this.dataTable.Data[i].ReceiptId)) {
@@ -597,7 +597,7 @@ export default {
      * created date: 04-08-2023 05:59:39
      */
     totalAmount() {
-      if (this.dataTable.Data) {
+      if (this.dataTable?.Data) {
         return this.dataTable.Data.map((x) => x.TotalMoney).reduce((total, current) => total + current, 0);
       }
       return 0;

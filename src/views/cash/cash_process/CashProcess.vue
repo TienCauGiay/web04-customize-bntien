@@ -39,7 +39,7 @@
             {{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.customer }}
           </div>
         </a>
-        <router-link to="/provider" class="cash-acction-item">
+        <router-link to="/category/provider" class="cash-acction-item">
           <div class="cash-acction-item-icon">
             <div class="provider-icon"></div>
           </div>
@@ -47,7 +47,7 @@
             {{ this.$_MISAResource[this.$_LANG_CODE].CASH.process.main.provider }}
           </div>
         </router-link>
-        <router-link to="/employee" class="cash-acction-item">
+        <router-link to="/category/employee" class="cash-acction-item">
           <div class="cash-acction-item-icon">
             <div class="employee-green-icon"></div>
           </div>
