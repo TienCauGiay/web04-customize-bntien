@@ -2,7 +2,7 @@
   <div class="dialog-entity position-display-center">
     <div class="title-dialog">
       <h1>Xác nhận thay đổi</h1>
-      <div class="close-icon" @click="btnNoConfirm"></div>
+      <div class="close-icon" @click="btnClose" :title="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"></div>
     </div>
     <div class="dialog-content">
       <div class="warning-yellow-icon dialog-content-icon"></div>
@@ -54,6 +54,15 @@ export default {
      */
     btnNoConfirm() {
       this.$_MISAEmitter.emit("confirmNoTaskEntity");
+    },
+
+    /**
+     * Mô tả: Hàm đóng dialog
+     * created by : BNTIEN
+     * created date: 16-08-2023 22:20:42
+     */
+    btnClose() {
+      this.$_MISAEmitter.emit("closeTaskEntity");
     },
   },
 };

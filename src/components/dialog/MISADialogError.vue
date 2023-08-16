@@ -5,7 +5,7 @@
         <h1>
           {{ this.title }}
         </h1>
-        <div class="close-icon" @click="btnClose"></div>
+        <div class="close-icon" @click="btnClose" :title="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"></div>
       </div>
       <div class="dialog-content">
         <div class="danger-red-icon dialog-content-icon"></div>

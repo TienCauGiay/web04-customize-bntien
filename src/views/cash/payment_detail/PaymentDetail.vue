@@ -1481,6 +1481,7 @@ export default {
               );
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         } else {
@@ -1515,6 +1516,7 @@ export default {
               );
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         } else {
@@ -1580,6 +1582,7 @@ export default {
               );
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         } else {
@@ -1619,6 +1622,7 @@ export default {
               );
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputReceipt(error, this.receiptProperty);
           }
         } else {

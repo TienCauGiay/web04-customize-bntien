@@ -5,7 +5,7 @@
         <h1>
           {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.titleDialogSystemError }}
         </h1>
-        <div class="close-icon" @click="btnClose"></div>
+        <div class="close-icon" @click="btnClose" :title="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"></div>
       </div>
       <div class="dialog-content">
         <div class="danger-red-icon dialog-content-icon"></div>
@@ -42,7 +42,7 @@ export default {
      */
     btnClose() {
       this.isShowDialogSystemError = false;
-      localStorage.setItem("isShowDialogSystemError", false);
+      localStorage.setItem("isShowDialogSystemError", "false");
     },
   },
 };

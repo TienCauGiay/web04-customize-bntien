@@ -307,6 +307,11 @@ export default {
     this.$_MISAEmitter.on("confirmNoTaskEntity", async () => {
       await this.confirmNoUpdateStateChildren();
     });
+
+    this.$_MISAEmitter.on("closeTaskEntity", () => {
+      this.isShowToggleState = false;
+      this.isOverlay = false;
+    });
   },
 
   mounted() {
@@ -975,6 +980,9 @@ export default {
     this.$_MISAEmitter.off("setFormModeAdd");
     this.$_MISAEmitter.off("refreshDataTable");
     this.$_MISAEmitter.off("closeToastMessage");
+    this.$_MISAEmitter.off("confirmYesTaskEntity");
+    this.$_MISAEmitter.off("confirmNoTaskEntity");
+    this.$_MISAEmitter.off("closeTaskEntity");
     window.removeEventListener("click", this.handleClickOutsidePaging);
     window.removeEventListener("click", this.handleClickOutsideFeature);
   },

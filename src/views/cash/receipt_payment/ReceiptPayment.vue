@@ -1094,6 +1094,7 @@ export default {
           this.dataTable = await this.getListReceipt(20, 1, "", null);
         }
       } catch (error) {
+        this.isShowLoading = false;
         this.dataNotNull.push(error.Data);
         this.titleDialogError =
           this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.freeText.noteNotSuccess;

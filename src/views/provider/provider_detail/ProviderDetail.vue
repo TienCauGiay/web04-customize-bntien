@@ -2088,10 +2088,10 @@ export default {
             // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống
             if (!providerByCode) {
               this.setGroupIds();
-              if (this.provider.NumberDayOwed) {
+              if (this.provider.NumberDayOwed && typeof this.provider.NumberDayOwed === "string") {
                 this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
               }
-              if (this.provider.AmountDebt) {
+              if (this.provider.AmountDebt && typeof this.provider.NumberDayOwed === "string") {
                 this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
               }
               this.isShowLoading = true;
@@ -2111,6 +2111,7 @@ export default {
               this.handleProviderExisted(providerByCode);
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputProvider(error, this.providerProperty);
           }
         }
@@ -2135,10 +2136,10 @@ export default {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
-                if (this.provider.NumberDayOwed) {
+                if (this.provider.NumberDayOwed && typeof this.provider.NumberDayOwed === "string") {
                   this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
                 }
-                if (this.provider.AmountDebt) {
+                if (this.provider.AmountDebt && typeof this.provider.NumberDayOwed === "string") {
                   this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
                 }
                 this.isShowLoading = true;
@@ -2158,6 +2159,7 @@ export default {
                 this.handleProviderExisted(providerByCode);
               }
             } catch (error) {
+              this.isShowLoading = false;
               this.handleErrorInputProvider(error, this.providerProperty);
             }
           }
@@ -2191,10 +2193,10 @@ export default {
             if (!providerByCode) {
               // Nếu mã nhà cung cấp chưa tồn tại trong hệ thống
               this.setGroupIds();
-              if (this.provider.NumberDayOwed) {
+              if (this.provider.NumberDayOwed && typeof this.provider.NumberDayOwed === "string") {
                 this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
               }
-              if (this.provider.AmountDebt) {
+              if (this.provider.AmountDebt && typeof this.provider.NumberDayOwed === "string") {
                 this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
               }
               this.isShowLoading = true;
@@ -2217,6 +2219,7 @@ export default {
               this.handleProviderExisted(providerByCode);
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputProvider(error, this.providerProperty);
           }
         }
@@ -2241,10 +2244,10 @@ export default {
                 this.setGroupIds();
                 this.handleAccount();
                 this.handleDeliveryAddress();
-                if (this.provider.NumberDayOwed) {
+                if (this.provider.NumberDayOwed && typeof this.provider.NumberDayOwed === "string") {
                   this.provider.NumberDayOwed = this.provider.NumberDayOwed.replace(/\./g, "");
                 }
-                if (this.provider.AmountDebt) {
+                if (this.provider.AmountDebt && typeof this.provider.NumberDayOwed === "string") {
                   this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
                 }
                 this.isShowLoading = true;
@@ -2267,6 +2270,7 @@ export default {
                 this.handleProviderExisted(providerByCode);
               }
             } catch (error) {
+              this.isShowLoading = false;
               this.handleErrorInputProvider(error, this.providerProperty);
             }
           }

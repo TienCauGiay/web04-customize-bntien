@@ -753,6 +753,7 @@ export default {
               this.handleEmployeeExisted(accountByNumber);
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputAccount(error, this.accountProperty);
           }
         }
@@ -785,6 +786,7 @@ export default {
                 this.handleEmployeeExisted(accountByNumber);
               }
             } catch (error) {
+              this.isShowLoading = false;
               this.handleErrorInputAccount(error, this.accountProperty);
             }
           }
@@ -831,6 +833,7 @@ export default {
               this.handleEmployeeExisted(accountByNumber);
             }
           } catch (error) {
+            this.isShowLoading = false;
             this.handleErrorInputAccount(error, this.accountProperty);
           }
         }
@@ -868,6 +871,7 @@ export default {
                 this.handleEmployeeExisted(accountByNumber);
               }
             } catch (error) {
+              this.isShowLoading = false;
               this.handleErrorInputAccount(error, this.accountProperty);
             }
           }

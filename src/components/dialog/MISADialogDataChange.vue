@@ -5,7 +5,7 @@
         <h1>
           {{ this.$_MISAResource[this.$_LANG_CODE].DIALOG.TITLE.CLOSE_RECORD }}
         </h1>
-        <div class="close-icon" @click="btnCancel"></div>
+        <div class="close-icon" @click="btnCancel" :title="this.$_MISAResource[this.$_LANG_CODE].BUTTON.CLOSE"></div>
       </div>
       <div class="dialog-content">
         <div class="question-blue-icon dialog-content-icon"></div>
