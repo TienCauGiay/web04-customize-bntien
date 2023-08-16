@@ -405,7 +405,7 @@
             </thead>
             <tbody>
               <template v-for="(item, index) in receipt.AccountantList" :key="index">
-                <tr @click="focusRow(index)" v-if="item.Flag != 3">
+                <tr @click="focusRow(index)" v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
                   <td class="table-col-1 text-center">{{ index + 1 }}</td>
                   <td class="table-col-2">
                     <misa-input
@@ -892,7 +892,9 @@ export default {
      */
     TotalMoney() {
       if (this.receipt.AccountantList) {
-        const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+        );
         const total = accountantList.reduce((total, item) => {
           const moneyWithoutCommas = String(item.Money).replace(/\./g, "");
           return total + parseFloat(moneyWithoutCommas || 0);
@@ -1016,7 +1018,7 @@ export default {
           x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Customer &&
           x.UserObjectBalance != this.$_MISAEnum.OBJ_ACCOUNT.Employee
       );
-      let accountant = { Description: this.receipt.Reason, Money: 0, Flag: 1 };
+      let accountant = { Description: this.receipt.Reason, Money: 0, Flag: this.$_MISAEnum.STATUS_FLAG.Add };
       if (debtDefault) {
         accountant.AccountDebtId = debtDefault.AccountDebtId;
         accountant.AccountDebtNumber = debtDefault.AccountDebtNumber;
@@ -1262,7 +1264,9 @@ export default {
           return false;
         }
         let checkNoted = true;
-        const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
+        const accountantList = this.receipt.AccountantList.filter(
+          (accountant) => accountant.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+        );
         if (accountantList.length == 0) return false;
         for (const x of accountantList) {
           // Nếu tài khoản nợ không theo nhà cung cấp, có nghĩa nó theo khách hàng hoặc nhân viên
@@ -1329,7 +1333,9 @@ export default {
         if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0) {
           return true;
         } else {
-          const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
+          const accountantList = this.receipt.AccountantList.filter(
+            (accountant) => accountant.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+          );
           if (accountantList.length == 0) {
             return true;
           }
@@ -1349,7 +1355,9 @@ export default {
       try {
         let checkReturn = false;
         if (this.receipt.AccountantList && this.receipt.AccountantList.length > 0) {
-          const accountantList = this.receipt.AccountantList.filter((accountant) => accountant.Flag != 3);
+          const accountantList = this.receipt.AccountantList.filter(
+            (accountant) => accountant.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+          );
           checkReturn = accountantList.some((item, index) => {
             if (!item.AccountDebtId) {
               this.dataNotNull.push(
@@ -1388,11 +1396,11 @@ export default {
         if (this.accountantOlds && this.accountantOlds.length > 0) {
           for (let i = 0; i < this.accountantOlds.length; i++) {
             if (this.hasDataChanged(this.accountantOlds[i], this.receipt.AccountantList[i])) {
-              if (this.receipt.AccountantList[i].Flag != 3) {
-                this.receipt.AccountantList[i].Flag = 2;
+              if (this.receipt.AccountantList[i].Flag != this.$_MISAEnum.STATUS_FLAG.Delete) {
+                this.receipt.AccountantList[i].Flag = this.$_MISAEnum.STATUS_FLAG.Update;
               }
             } else {
-              this.receipt.AccountantList[i].Flag = 0;
+              this.receipt.AccountantList[i].Flag = this.$_MISAEnum.STATUS_FLAG.NoChange;
             }
           }
         }
@@ -1453,7 +1461,7 @@ export default {
             await this.getAccountant();
             this.statusForm = this.$_MISAEnum.FORM_MODE.View;
             // Kiểm tra xem có ghi sổ được không
-            this.checkIsNoted();
+            this.receipt.IsNoted = this.checkIsNoted();
             if (this.dataNotNull.length > 0) {
               this.isShowDialogDataNotNull = true;
               this.titleDataNotnull = `${
@@ -1485,7 +1493,7 @@ export default {
             await this.getAccountant();
             this.isBorderRed = {};
             this.statusForm = this.$_MISAEnum.FORM_MODE.View;
-            this.checkIsNoted();
+            this.receipt.IsNoted = this.checkIsNoted();
             if (this.dataNotNull.length > 0) {
               this.isShowDialogDataNotNull = true;
               this.titleDataNotnull = `${
@@ -1548,7 +1556,7 @@ export default {
             this.setNewAccountant();
             this.$refs.ProviderId.focus();
             // Kiểm tra xem có ghi sổ được không
-            this.checkIsNoted();
+            this.receipt.IsNoted = this.checkIsNoted();
             if (this.dataNotNull.length > 0) {
               this.isShowDialogDataNotNull = true;
               this.titleDataNotnull = `${
@@ -1585,7 +1593,7 @@ export default {
             this.$refs.ProviderId.focus();
             this.statusForm = this.$_MISAEnum.FORM_MODE.Add;
             // Kiểm tra xem có ghi sổ được không
-            this.checkIsNoted();
+            this.receipt.IsNoted = this.checkIsNoted();
             if (this.dataNotNull.length > 0) {
               this.isShowDialogDataNotNull = true;
               this.titleDataNotnull = `${
@@ -2028,13 +2036,13 @@ export default {
           this.receipt.AccountantList.push({
             ...this.receipt.AccountantList[this.receipt.AccountantList.length - 1],
           });
-          this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = 1;
+          this.receipt.AccountantList[this.receipt.AccountantList.length - 1].Flag = this.$_MISAEnum.STATUS_FLAG.Add;
         } else if (!this.receipt.AccountantList || this.receipt.AccountantList.length == 0)
           this.receipt.AccountantList.push({
             ReceiptId: this.receipt.ReceiptId,
             Description: "",
             Money: 0,
-            Flag: 1,
+            Flag: this.$_MISAEnum.STATUS_FLAG.Add,
           });
       } catch {
         return;
@@ -2049,10 +2057,10 @@ export default {
     deleteRowAccountant(index) {
       try {
         if (this.statusForm !== this.$_MISAEnum.FORM_MODE.View && !this.receipt.IsNoted) {
-          if (this.receipt.AccountantList[index].Flag == 1) {
+          if (this.receipt.AccountantList[index].Flag == this.$_MISAEnum.STATUS_FLAG.Add) {
             this.receipt.AccountantList.splice(index, 1);
           } else {
-            this.receipt.AccountantList[index].Flag = 3;
+            this.receipt.AccountantList[index].Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
           }
         }
       } catch {
@@ -2067,10 +2075,12 @@ export default {
      */
     deleteAllRowAccountant() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.receipt.AccountantList = this.receipt.AccountantList.filter((row) => row.Flag != 1);
+      this.receipt.AccountantList = this.receipt.AccountantList.filter(
+        (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Add
+      );
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.receipt.AccountantList.map((row) => {
-        row.Flag = 3;
+        row.Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
       });
     },
 

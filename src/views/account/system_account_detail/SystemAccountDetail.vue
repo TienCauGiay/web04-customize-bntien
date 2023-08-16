@@ -481,7 +481,6 @@ export default {
         if (!this.account.Nature) {
           this.account.Nature = this.listNatureSearch[0].Nature;
         }
-        console.log(this.account);
         await this.setValueInputFormCBB();
       } catch {
         return;
@@ -497,6 +496,7 @@ export default {
       try {
         const res = await accountService.getBySearchFilter(pageSize, pageNumber, textSearch);
         this.accounts = [...this.accounts, ...res.data.Data];
+        // Bỏ số tài khoản đang sửa ra khỏi danh sách tài khoản tổng hợp
         if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
           this.accounts = this.accounts.filter(
             (account) => account.AccountNumber != this.accountSelected.AccountNumber
@@ -786,7 +786,7 @@ export default {
       // }
     },
     /**
-     * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nut cất và thêm trên form chi tiết
+     * Mô tả: Hàm xử lí sự kiện khi người dùng bấm vào nút cất và thêm trên form chi tiết
      * created by : BNTIEN
      * created date: 23-07-2023 12:26:43
      */

@@ -1134,7 +1134,7 @@
               </thead>
               <tbody>
                 <template v-for="(item, index) in provider.AccountProviders" :key="index">
-                  <tr v-if="item.Flag != 3">
+                  <tr v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
                     <td class="table-input-col-1">
                       <misa-input v-model="item.AccountNumber"></misa-input>
                     </td>
@@ -1254,7 +1254,7 @@
                 </thead>
                 <tbody>
                   <template v-for="(item, index) in provider.DeliveryAddresses" :key="index">
-                    <tr class="table-input-has-data" v-if="item.Flag != 3">
+                    <tr class="table-input-has-data" v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
                       <td class="table-input-col-4" colspan="4">
                         <misa-input v-model="item.DeliveryAddressName"></misa-input>
                       </td>
@@ -2012,9 +2012,9 @@ export default {
       if (this.statusFormMode === this.$_MISAEnum.FORM_MODE.Add) {
         accountNumbers = this.provider.AccountProviders.map((item) => item.AccountNumber);
       } else {
-        accountNumbers = this.provider.AccountProviders.filter((row) => row.Flag != 3).map(
-          (item) => item.AccountNumber
-        );
+        accountNumbers = this.provider.AccountProviders.filter(
+          (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Delete
+        ).map((item) => item.AccountNumber);
       }
       const accountNumberSet = new Set(accountNumbers);
       if (accountNumbers.length !== accountNumberSet.size) {
@@ -2032,11 +2032,11 @@ export default {
       if (this.accountProviderOlds && this.accountProviderOlds.length > 0) {
         for (let i = 0; i < this.accountProviderOlds.length; i++) {
           if (this.hasDataChanged(this.accountProviderOlds[i], this.provider.AccountProviders[i])) {
-            if (this.provider.AccountProviders[i].Flag != 3) {
-              this.provider.AccountProviders[i].Flag = 2;
+            if (this.provider.AccountProviders[i].Flag != this.$_MISAEnum.STATUS_FLAG.Delete) {
+              this.provider.AccountProviders[i].Flag = this.$_MISAEnum.STATUS_FLAG.Update;
             }
           } else {
-            this.provider.AccountProviders[i].Flag = 0;
+            this.provider.AccountProviders[i].Flag = this.$_MISAEnum.STATUS_FLAG.NoChange;
           }
         }
       }
@@ -2051,11 +2051,11 @@ export default {
       if (this.deliveryAddressOlds && this.deliveryAddressOlds.length > 0) {
         for (let i = 0; i < this.deliveryAddressOlds.length; i++) {
           if (this.hasDataChanged(this.deliveryAddressOlds[i], this.provider.DeliveryAddresses[i])) {
-            if (this.provider.DeliveryAddresses[i].Flag != 3) {
-              this.provider.DeliveryAddresses[i].Flag = 2;
+            if (this.provider.DeliveryAddresses[i].Flag != this.$_MISAEnum.STATUS_FLAG.Delete) {
+              this.provider.DeliveryAddresses[i].Flag = this.$_MISAEnum.STATUS_FLAG.Update;
             }
           } else {
-            this.provider.DeliveryAddresses[i].Flag = 0;
+            this.provider.DeliveryAddresses[i].Flag = this.$_MISAEnum.STATUS_FLAG.NoChange;
           }
         }
       }
@@ -2604,7 +2604,7 @@ export default {
         BankName: "",
         BankBranch: "",
         BankAddress: "",
-        Flag: 1,
+        Flag: this.$_MISAEnum.STATUS_FLAG.Add,
       });
     },
 
@@ -2614,10 +2614,10 @@ export default {
      * created date: 30-07-2023 21:59:03
      */
     deleteRowAccount(index) {
-      if (this.provider.AccountProviders[index].Flag == 1) {
+      if (this.provider.AccountProviders[index].Flag == this.$_MISAEnum.STATUS_FLAG.Add) {
         this.provider.AccountProviders.splice(index, 1);
       } else {
-        this.provider.AccountProviders[index].Flag = 3;
+        this.provider.AccountProviders[index].Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
       }
     },
 
@@ -2628,10 +2628,12 @@ export default {
      */
     deleteAllRowAccount() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.provider.AccountProviders = this.provider.AccountProviders.filter((row) => row.Flag != 1);
+      this.provider.AccountProviders = this.provider.AccountProviders.filter(
+        (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Add
+      );
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.provider.AccountProviders.map((row) => {
-        row.Flag = 3;
+        row.Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
       });
     },
 
@@ -2643,7 +2645,7 @@ export default {
     btnAddRowAddress() {
       this.provider.DeliveryAddresses.push({
         DeliveryAddressName: "",
-        Flag: 1,
+        Flag: this.$_MISAEnum.STATUS_FLAG.Add,
       });
     },
 
@@ -2653,10 +2655,10 @@ export default {
      * created date: 30-07-2023 21:59:03
      */
     deleteRowAddress(index) {
-      if (this.provider.DeliveryAddresses[index].Flag == 1) {
+      if (this.provider.DeliveryAddresses[index].Flag == this.$_MISAEnum.STATUS_FLAG.Add) {
         this.provider.DeliveryAddresses.splice(index, 1);
       } else {
-        this.provider.DeliveryAddresses[index].Flag = 3;
+        this.provider.DeliveryAddresses[index].Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
       }
     },
 
@@ -2667,10 +2669,12 @@ export default {
      */
     btnDeleteAllRowAddress() {
       // Xóa những cái có Flag bằng 1, có nghĩa là mới thêm vào
-      this.provider.DeliveryAddresses = this.provider.DeliveryAddresses.filter((row) => row.Flag != 1);
+      this.provider.DeliveryAddresses = this.provider.DeliveryAddresses.filter(
+        (row) => row.Flag != this.$_MISAEnum.STATUS_FLAG.Add
+      );
       // Cập nhật những thằng có Flag khác 1 thành 3, hiểu là đã xóa
       this.provider.DeliveryAddresses.map((row) => {
-        row.Flag = 3;
+        row.Flag = this.$_MISAEnum.STATUS_FLAG.Delete;
       });
     },
 
@@ -2684,7 +2688,7 @@ export default {
         this.btnDeleteAllRowAddress();
         this.provider.DeliveryAddresses.push({
           DeliveryAddressName: this.provider.Address,
-          Flag: 1,
+          Flag: this.$_MISAEnum.STATUS_FLAG.Add,
         });
       }
       this.checkedDeliveryAddress = !this.checkedDeliveryAddress;

@@ -522,7 +522,7 @@ export default {
      * created date: 20-07-2023 20:59:17
      */
     updateStatusShowChildren(parentId, status) {
-      // Nếu rowParents tồn tại key là parentId
+      // Nếu rowParents tồn tại key là parentId (đang là cha)
       if (this.rowParents[parentId]) {
         this.rowParents[parentId].showChildren = status;
         // Lấy mảng các key trong rowParents sau đó map để duyệt từng key

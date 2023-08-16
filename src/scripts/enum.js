@@ -1,5 +1,5 @@
 const MISAEnum = {
-    STATUS:{
+    STATUS: {
         // API đã xử lý yêu cầu thành công và trả về kết quả
         OK: 200,
 
@@ -19,7 +19,7 @@ const MISAEnum = {
         INTERNAL_SERVER_ERROR: 500
     },
 
-    CHECK_STATUS:{
+    CHECK_STATUS: {
         // Kiểm tra trạng thái có phải 200 không
         isResponseStatusOk: (status) => {
             return status === 200;
@@ -52,7 +52,7 @@ const MISAEnum = {
     },
 
     // Khai báo dữ liệu phân trang mặc định
-    RECORD:{
+    RECORD: {
         // trang hiện tại 
         CURRENT_PAGE: 1,
         // Số trang hiển thị
@@ -66,7 +66,7 @@ const MISAEnum = {
     },
 
     // Giới tính
-    GENDER:{
+    GENDER: {
         // Nam
         Male: 0,
         // Nữ
@@ -137,11 +137,31 @@ const MISAEnum = {
     },
 
     // Quy định trạng thái có cập nhật trạng thái sử dụng của các node con trong bảng tài khoản không
-    UPDATE_CHILDREN:{
+    UPDATE_CHILDREN: {
         // Có
         TRUE: 1,
         // Không
         FALSE: 0,
+    },
+
+    // Quy định loại phiếu (thu hay chi)
+    RECEIPT_TYPE: {
+        // Phiếu thu
+        Receive: 0,
+        // Phiếu chi
+        Payment: 1,
+    },
+
+    // Quy định trạng thái khi sửa 1 danh sách đối tượng, xem nó mới được thêm, sửa, hay bị xóa đi
+    STATUS_FLAG:{
+        // Không thay đổi
+        NoChange: 0,
+        // Thêm mới
+        Add: 1,
+        // Sửa
+        Update: 2,
+        // Xóa
+        Delete: 3,
     }
 } 
 

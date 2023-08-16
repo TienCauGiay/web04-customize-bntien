@@ -692,7 +692,7 @@ export default {
      * created date: 29-05-2023 07:49:56
      */
     onViewFormDetail(receipt) {
-      if (receipt.ReceiptType == true) {
+      if (receipt.ReceiptType == this.$_MISAEnum.RECEIPT_TYPE.Payment) {
         this.receiptUpdate = receipt;
         this.isShowFormDetail = true;
         this.isOverlay = true;
