@@ -404,9 +404,6 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
     // Đăng kí các sự kiện
-    window.addEventListener("click", this.clickOutsideAccountGeneral);
-    window.addEventListener("click", this.clickOutsideNature);
-    window.addEventListener("click", this.clickOutsideUserObject);
     this.$refs.FormDetailSystemAccount.addEventListener("keydown", this.handleKeyDown);
   },
 
@@ -1067,39 +1064,6 @@ export default {
         return;
       }
     },
-
-    /**
-     * Mô tả: Xử lí click outside combobox tài khoản tổng hợp
-     * created by : BNTIEN
-     * created date: 12-08-2023 01:36:22
-     */
-    clickOutsideAccountGeneral(event) {
-      if (!this.$refs.ParentId.$el.contains(event.target)) {
-        this.$_MISAEmitter.emit("closeMenuItemFormCBB");
-      }
-    },
-
-    /**
-     * Mô tả: Xử lí click outside combobox tính chất
-     * created by : BNTIEN
-     * created date: 12-08-2023 01:44:51
-     */
-    clickOutsideNature(event) {
-      if (!this.$refs.Nature.contains(event.target)) {
-        this.$_MISAEmitter.emit("closeMenuItemCBB");
-      }
-    },
-
-    /**
-     * Mô tả: xử lí click ouside select option chọn đối tượng
-     * created by : BNTIEN
-     * created date: 12-08-2023 10:31:16
-     */
-    clickOutsideUserObject(event) {
-      if (!this.$refs.UserObject.contains(event.target)) {
-        this.$_MISAEmitter.emit("closeMenuSelectOption");
-      }
-    },
   },
 
   beforeUnmount() {
@@ -1116,9 +1080,6 @@ export default {
     this.$_MISAEmitter.off("handleScrollCBBformCBB");
     this.$_MISAEmitter.off("onSearchChangeFormCBB");
     this.$_MISAEmitter.off("onKeyDownFormCBB");
-    window.removeEventListener("click", this.clickOutsideAccountGeneral);
-    window.removeEventListener("click", this.clickOutsideNature);
-    window.removeEventListener("click", this.clickOutsideUserObject);
   },
 };
 </script>

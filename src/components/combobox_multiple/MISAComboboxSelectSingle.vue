@@ -37,6 +37,7 @@
     style="position: relative"
     v-if="isShowSelectEntity"
     @click="this.isShowSelectEntity = !this.isShowSelectEntity"
+    ref="MenuCBB"
   >
     <div class="form-cbb-menu" id="form-cbb-menu-select-single">
       <div class="form-cbb-menu-title">
@@ -137,9 +138,6 @@ export default {
   },
 
   mounted() {
-    this.$_MISAEmitter.on("closeMenuItemCBBSelectSingle", () => {
-      this.isShowSelectEntity = false;
-    });
     if (this.indexSelectedCBB) {
       this.indexEntitySelected = this.indexSelectedCBB;
     }
@@ -147,6 +145,7 @@ export default {
       this.$refs["InputCBB"].focus();
       this.isFocus = false;
     }
+    window.addEventListener("mousedown", this.closeMenuCBB);
   },
 
   methods: {
@@ -289,10 +288,21 @@ export default {
     focus() {
       this.$refs["InputCBB"].focus();
     },
+
+    /**
+     * Mô tả: xử lí click outside
+     * created by : BNTIEN
+     * created date: 16-08-2023 09:48:35
+     */
+    closeMenuCBB() {
+      if (this.isShowSelectEntity && !this.$refs.MenuCBB.contains(event.target)) {
+        this.isShowSelectEntity = false;
+      }
+    },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("closeMenuItemCBBSelectSingle");
+    window.removeEventListener("mousedown", this.closeMenuCBB);
   },
 };
 </script>

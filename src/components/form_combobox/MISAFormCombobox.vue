@@ -33,7 +33,7 @@
     <div class="e-icon-cbb" @click="onShowSelectEntity" :class="{ 'display-none-cbb': isReadonlyCBB }">
       <div class="function-icon"></div>
     </div>
-    <div class="form-cbb-menu" v-show="isShowSelectEntity" @click="onShowSelectEntity">
+    <div class="form-cbb-menu" v-show="isShowSelectEntity" @click="onShowSelectEntity" ref="MenuCBB">
       <div class="form-cbb-menu-title">
         <div>{{ this.textColFirst }}</div>
         <div>
@@ -94,6 +94,7 @@ export default {
     "textColSecond",
     "propBorderRed",
     "isReadonlyCBB",
+    "indexSelectedCBB",
   ],
 
   data() {
@@ -108,9 +109,7 @@ export default {
   },
 
   mounted() {
-    this.$_MISAEmitter.on("closeMenuItemFormCBB", () => {
-      this.isShowSelectEntity = false;
-    });
+    window.addEventListener("mousedown", this.closeMenuCBB);
   },
 
   methods: {
@@ -246,10 +245,21 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: xử lí click outside
+     * created by : BNTIEN
+     * created date: 16-08-2023 09:48:35
+     */
+    closeMenuCBB() {
+      if (this.isShowSelectEntity && !this.$refs.MenuCBB.contains(event.target)) {
+        this.isShowSelectEntity = false;
+      }
+    },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("closeMenuItemFormCBB");
+    window.removeEventListener("mousedown", this.closeMenuCBB);
   },
 };
 </script>

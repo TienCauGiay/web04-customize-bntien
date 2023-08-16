@@ -504,7 +504,6 @@ export default {
     // focus vào ô đầu tiên khi mở form chi tiết
     this.focusCode();
     // Đăng kí các sự kiện
-    window.addEventListener("click", this.handleClickOutsideMenuDepartment);
     this.$refs.FormDetail.addEventListener("keydown", this.handleKeyDown);
   },
 
@@ -1163,17 +1162,6 @@ export default {
     },
 
     /**
-     * Mô tả: Xử lí sự kiện click bên ngoài menu select department thì đóng menu lại
-     * created by : BNTIEN
-     * created date: 30-06-2023 00:39:00
-     */
-    handleClickOutsideMenuDepartment(event) {
-      if (!this.$refs.MenuItemDepartment.contains(event.target)) {
-        this.$_MISAEmitter.emit("closeMenuItemCBB");
-      }
-    },
-
-    /**
      * Mô tả: xử lí sự kiện khi bấm esc khi đang ở form detail
      * created by : BNTIEN
      * created date: 01-07-2023 01:05:25
@@ -1202,7 +1190,6 @@ export default {
     this.$_MISAEmitter.off("onSearchChangeCBB");
     this.$_MISAEmitter.off("onKeyDownEntityCBB");
     // Xóa các sự kiện đã đăng kí
-    window.removeEventListener("click", this.handleClickOutsideMenuDepartment);
     this.$refs.FormDetail.removeEventListener("keydown", this.handleKeyDown);
   },
 };

@@ -18,7 +18,7 @@
         <div class="function-icon"></div>
       </button>
     </div>
-    <div class="col-md-l a-select-entity" v-if="isShowMenuSelect">
+    <div class="col-md-l a-select-entity" v-if="isShowMenuSelect" ref="MenuCBB">
       <ul>
         <template v-for="(item, index) in listData" :key="index">
           <li
@@ -40,16 +40,11 @@ export default {
 
   props: ["listData", "propName", "propCode", "isDisabledMenu", "entity", "indexSelect"],
 
-  created() {
-    this.$_MISAEmitter.on("closeMenuSelectOption", () => {
-      this.isShowMenuSelect = false;
-    });
-  },
-
   mounted() {
     if (this.indexSelect) {
       this.indexSelected = this.indexSelect;
     }
+    window.addEventListener("mousedown", this.closeMenuCBB);
   },
 
   data() {
@@ -149,10 +144,21 @@ export default {
       this.isShowMenuSelect = false;
       this.$_MISAEmitter.emit("onSelectedSelectOption", item, this.propCode);
     },
+
+    /**
+     * Mô tả: xử lí click outside
+     * created by : BNTIEN
+     * created date: 16-08-2023 09:48:35
+     */
+    closeMenuCBB() {
+      if (this.isShowMenuSelect && !this.$refs.MenuCBB.contains(event.target)) {
+        this.isShowMenuSelect = false;
+      }
+    },
   },
 
   beforeUnmount() {
-    this.$_MISAEmitter.off("closeMenuSelectOption");
+    window.removeEventListener("mousedown", this.closeMenuCBB);
   },
 };
 </script>

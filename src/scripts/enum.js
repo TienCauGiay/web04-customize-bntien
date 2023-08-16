@@ -103,6 +103,8 @@ const MISAEnum = {
         ENTER: 13,
         // Dấu trừ
         MINUS: 45,
+        // Xóa 1 kí tự
+        BACK_SPACE: 8,
     },
 
     // Check 1 trạng thái checkbox có là khách hàng trong form employee

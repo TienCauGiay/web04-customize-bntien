@@ -34,7 +34,7 @@
       <div class="function-icon"></div>
     </div>
   </div>
-  <div class="col-md-l select-entity" :class="{ 'select-entity-block': isShowSelectEntity }">
+  <div class="col-md-l select-entity" :class="{ 'select-entity-block': isShowSelectEntity }" ref="MenuCBB">
     <ul v-show="isShowSelectEntity" @click="onShowSelectEntity">
       <li
         v-for="(item, index) in listEntitySearchCBB"
@@ -81,12 +81,10 @@ export default {
     this.$_MISAEmitter.on("focusInputCBB", () => {
       this.$refs["InputCBB"].focus();
     });
-    this.$_MISAEmitter.on("closeMenuItemCBB", () => {
-      this.isShowSelectEntity = false;
-    });
     if (this.indexSelectedCBB) {
       this.indexEntitySelected = this.indexSelectedCBB;
     }
+    window.addEventListener("mousedown", this.closeMenuCBB);
   },
 
   methods: {
@@ -196,11 +194,22 @@ export default {
         return;
       }
     },
+
+    /**
+     * Mô tả: xử lí click outside
+     * created by : BNTIEN
+     * created date: 16-08-2023 09:48:35
+     */
+    closeMenuCBB() {
+      if (this.isShowSelectEntity && !this.$refs.MenuCBB.contains(event.target)) {
+        this.isShowSelectEntity = false;
+      }
+    },
   },
 
   beforeUnmount() {
     this.$_MISAEmitter.off("focusInputCBB");
-    this.$_MISAEmitter.off("closeMenuItemCBB");
+    window.removeEventListener("mousedown", this.closeMenuCBB);
   },
 };
 </script>
