@@ -163,7 +163,7 @@
         </div>
       </teleport>
       <img
-        v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
+        v-show="isShowLoading && this.dataTable.TotalRecord !== undefined"
         class="loading"
         :class="{ 'loadding-form-detail': isShowFormDetail }"
         src="../../../assets/img/loading.svg"
@@ -324,7 +324,7 @@ export default {
       // Khai báo biến quy định trạng thái hiển thị columns feature
       isShowColFeature: false,
       // Khai báo biến quy định trạng thái hiển thị loading
-      isShowLoadding: false,
+      isShowLoading: false,
       // Khai báo dữ liệu duyệt trên 1 trang table
       dataTable: [],
       // Khai báo số bản ghi mặc định được hiển thi trên table
@@ -438,9 +438,9 @@ export default {
      */
     async getListAccount() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, "");
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = resfilter.data;
 
         // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
@@ -561,9 +561,9 @@ export default {
       try {
         if (!this.rowParents[item.AccountId].isMinus) {
           if (!this.rowParents[item.AccountId].isClicked) {
-            this.isShowLoadding = true;
+            this.isShowLoading = true;
             const reschildrens = await accountService.getAllChildren(item.AccountId);
-            this.isShowLoadding = false;
+            this.isShowLoading = false;
             this.dataTable.Data.splice(index + 1, 0, ...reschildrens.data);
             // set giá trị cho các dòng có con: key là id của dòng, value là 1 object
             this.setRowParent(reschildrens.data, false);
@@ -590,7 +590,9 @@ export default {
       if (!this.statusExpand.isExpand) {
         // Nếu chưa mở rộng lần nào, tức là chưa gọi api
         if (!this.statusExpand.isClicked) {
+          this.isShowLoading = true;
           const res = await accountService.getExpand(this.selectedRecord, this.currentPage, this.textSearch);
+          this.isShowLoading = false;
           this.dataTable.Data = res.data;
         }
         this.rowParents = {};
@@ -615,9 +617,9 @@ export default {
      */
     async updateDataTable() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await accountService.getFilter(this.selectedRecord, this.currentPage, this.textSearch);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = resfilter.data;
 
         this.statusExpand.isExpand = false;
@@ -686,9 +688,9 @@ export default {
      */
     async btnConfirmYesDeleteAccount() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const res = await accountService.delete(this.accountIdDeleteSelected);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
@@ -697,7 +699,7 @@ export default {
           await this.getListAccount();
         }
       } catch (error) {
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.dataError.push(error.Data);
         this.isShowDialogDataError = true;
@@ -757,9 +759,9 @@ export default {
      */
     async updateStateAccount(account, state, isUpdateChildren) {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const res = await accountService.updateState(account, state, isUpdateChildren);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
           this.$_MISAEmitter.emit(
             "onShowToastMessageUpdate",
@@ -768,7 +770,7 @@ export default {
           await this.getListAccount();
         }
       } catch (error) {
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataError.push(error.Data);
         this.isShowDialogDataError = true;
       }
@@ -854,13 +856,13 @@ export default {
         // Nếu giá trị tìm kiếm rỗng, gọi api filter
         if (!this.textSearch.trim()) {
           this.textSearch = "";
-          this.isShowLoadding = true;
+          this.isShowLoading = true;
           const filteredAccounts = await accountService.getFilter(
             this.selectedRecord,
             this.currentPage,
             this.textSearch.trim()
           );
-          this.isShowLoadding = false;
+          this.isShowLoading = false;
           this.dataTable = filteredAccounts.data;
 
           this.statusExpand.isExpand = false;
@@ -869,13 +871,13 @@ export default {
           this.setRowParent(this.dataTable.Data, false);
         } else {
           // Nếu giá trị tìm kiếm khác rỗng, gọi api search
-          this.isShowLoadding = true;
+          this.isShowLoading = true;
           const searchAccounts = await accountService.getBySearch(
             this.selectedRecord,
             this.currentPage,
             this.textSearch.trim()
           );
-          this.isShowLoadding = false;
+          this.isShowLoading = false;
           this.dataTable = searchAccounts.data;
 
           this.statusExpand.isExpand = true;
@@ -936,9 +938,9 @@ export default {
      */
     async exportData() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         await accountService.exportData(this.textSearch);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
       } catch {
         return;
       }

@@ -203,7 +203,7 @@
         </div>
       </teleport>
       <img
-        v-show="isShowLoadding && this.dataTable.TotalRecord !== undefined"
+        v-show="isShowLoading && this.dataTable.TotalRecord !== undefined"
         class="loading"
         :class="{ 'loadding-form-detail': isShowFormDetail }"
         src="../../assets/img/loading.svg"
@@ -380,7 +380,7 @@ export default {
       // Khai báo số trang tối đa hiển thị trong phân trang
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
       // Khai báo biến quy định trạng thái hiển thị loadding
-      isShowLoadding: false,
+      isShowLoading: false,
       // Khai báo biến lưu chỉ số index được chọn trong paging
       indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
@@ -485,9 +485,9 @@ export default {
      */
     async getListEmployee() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await employeeService.getFilter(this.selectedRecord, this.currentPage, "");
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = resfilter.data;
       } catch {
         return;
@@ -605,9 +605,9 @@ export default {
      */
     async btnConfirmYesDeleteEmployee() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const res = await employeeService.delete(this.employeeIdDeleteSelected);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
@@ -677,13 +677,13 @@ export default {
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const filteredEmployees = await employeeService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim()
         );
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = filteredEmployees.data;
       } catch {
         return;
@@ -714,13 +714,13 @@ export default {
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await employeeService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim()
         );
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = resfilter.data;
       } catch {
         return;
@@ -855,9 +855,9 @@ export default {
      */
     async btnConfirmYesDeleteMultipleEmployee() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const res = await employeeService.deleteMutiple(this.ids);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
@@ -879,9 +879,9 @@ export default {
     async exportData() {
       try {
         const link = this.$refs.ExportListEmployee;
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         await employeeService.exportData(link);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
       } catch {
         return;
       }

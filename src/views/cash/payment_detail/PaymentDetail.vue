@@ -657,6 +657,7 @@
     ></misa-dialog-handle-exist>
     <!-- dialog employee save and close -->
     <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
+    <img v-show="isShowLoading" class="loading-form" src="../../../assets/img/loading.svg" alt="loading" />
   </div>
 </template>
 
@@ -843,6 +844,8 @@ export default {
       helperCommon: helperCommon,
       // Biến lưu danh sách hạch toán trước khi bị thay đổi ở chức năng sửa
       accountantOlds: [],
+      // Biến quy định trạng thái hiển thị loading
+      isShowLoading: false,
     };
   },
 
@@ -1226,7 +1229,9 @@ export default {
      */
     async checkReceiptExists() {
       try {
+        this.isShowLoading = true;
         const res = await receiptService.getByCode(this.receipt.ReceiptNumber);
+        this.isShowLoading = false;
         return res.data;
       } catch {
         return null;
@@ -1455,7 +1460,9 @@ export default {
         if (!receiptByCode) {
           this.convertMoney();
           try {
+            this.isShowLoading = true;
             let receiptInserted = await receiptService.create(this.receipt);
+            this.isShowLoading = false;
             this.receipt.ReceiptId = receiptInserted.data;
             this.isBorderRed = {};
             await this.getAccountant();
@@ -1489,7 +1496,9 @@ export default {
           // Kiểm tra xem có ghi sổ được không
           this.handleAccountant();
           try {
+            this.isShowLoading = true;
             await receiptService.update(this.receipt.ReceiptId, this.receipt);
+            this.isShowLoading = false;
             await this.getAccountant();
             this.isBorderRed = {};
             this.statusForm = this.$_MISAEnum.FORM_MODE.View;
@@ -1548,7 +1557,9 @@ export default {
           this.convertMoney();
           // Nếu mã nhân viên chưa tồn tại trong hệ thống
           try {
+            this.isShowLoading = true;
             await receiptService.create(this.receipt);
+            this.isShowLoading = false;
             this.receipt = {};
             this.isBorderRed = {};
             await this.getNewCode();
@@ -1584,7 +1595,9 @@ export default {
           this.convertMoney();
           this.handleAccountant();
           try {
+            this.isShowLoading = true;
             await receiptService.update(this.receipt.ReceiptId, this.receipt);
+            this.isShowLoading = false;
             this.receipt = {};
             this.isBorderRed = {};
             await this.getNewCode();
@@ -1758,7 +1771,9 @@ export default {
           newValue = "";
         }
         this.searchEmployeeTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListEmployee = await employeeService.getFilter(20, 1, newValue);
+          this.isShowLoading = false;
           this.listEmployeeSearch = newListEmployee.data;
         }, 500);
       } catch {
@@ -1835,7 +1850,9 @@ export default {
           newValue = "";
         }
         this.searchProviderTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListProvider = await providerService.getFilter(20, 1, newValue);
+          this.isShowLoading = false;
           this.listProviderSearch = newListProvider.data;
         }, 500);
       } catch {
@@ -1947,7 +1964,9 @@ export default {
           newValue = "";
         }
         this.searchDebtTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListDebt = await accountService.getDebt(20, 1, newValue);
+          this.isShowLoading = false;
           this.listAccountDebt = newListDebt.data;
         }, 500);
       } catch {
@@ -1983,7 +2002,9 @@ export default {
           newValue = "";
         }
         this.searchBalanceTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListBalance = await accountService.getBalance(20, 1, newValue);
+          this.isShowLoading = false;
           this.listAccountBalance = newListBalance.data;
         }, 500);
       } catch {
@@ -2095,7 +2116,9 @@ export default {
         const checkNoted = this.checkIsNoted();
         this.convertMoney();
         if (checkNoted) {
+          this.isShowLoading = true;
           const res = await receiptService.updateNote(this.receipt);
+          this.isShowLoading = false;
           this.receipt.IsNoted = !this.receipt.IsNoted;
           if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
             this.$_MISAEmitter.emit(
@@ -2108,8 +2131,12 @@ export default {
           this.titleDataNotnull =
             this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.freeText.noteNotSuccess;
         }
-      } catch {
-        return;
+      } catch (error) {
+        this.isShowLoading = false;
+        this.dataNotNull.push(error.Data);
+        this.isShowDialogDataNotNull = true;
+        this.titleDataNotnull =
+          this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.freeText.noteNotSuccess;
       }
     },
 
@@ -2121,7 +2148,9 @@ export default {
     async btnUnNote() {
       try {
         this.convertMoney();
+        this.isShowLoading = true;
         await receiptService.updateNote(this.receipt);
+        this.isShowLoading = false;
         this.receipt.IsNoted = !this.receipt.IsNoted;
       } catch {
         return;

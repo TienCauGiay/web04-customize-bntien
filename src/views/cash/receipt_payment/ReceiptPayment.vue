@@ -293,7 +293,7 @@
           </div>
         </teleport>
         <img
-          v-show="isShowLoadding && this.dataTable?.TotalRecord !== undefined"
+          v-show="isShowLoading && this.dataTable?.TotalRecord !== undefined"
           class="loading"
           :class="{ 'loadding-form-detail': isShowFormDetail }"
           src="../../../assets//img/loading.svg"
@@ -490,7 +490,7 @@ export default {
       // Khai báo số trang tối đa hiển thị trong phân trang
       maxVisiblePages: this.$_MISAEnum.RECORD.MAX_VISIBLE_PAGE,
       // Khai báo biến quy định trạng thái hiển thị loadding
-      isShowLoadding: false,
+      isShowLoading: false,
       // Khai báo biến lưu chỉ số index được chọn trong paging
       indexSelectedRecord: this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT,
       // Khai báo biến quy định sau 1 khoảng thời gian mới bắt đầu tìm kiếm
@@ -612,9 +612,9 @@ export default {
      */
     async getListReceipt(selectedRecord, currentPage, textSearch, keyFilter) {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await receiptService.getFilter(selectedRecord, currentPage, textSearch, keyFilter);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         return resfilter.data;
       } catch {
         return;
@@ -737,9 +737,9 @@ export default {
      */
     async btnConfirmYesDeleteReceipt() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const res = await receiptService.delete(this.receiptIdDeleteSelected);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
         if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
@@ -802,14 +802,14 @@ export default {
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const filtered = await receiptService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim(),
           this.statusFilter
         );
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = filtered.data;
       } catch {
         return;
@@ -840,14 +840,14 @@ export default {
         if (!this.textSearch.trim()) {
           this.textSearch = "";
         }
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         const resfilter = await receiptService.getFilter(
           this.selectedRecord,
           this.currentPage,
           this.textSearch.trim(),
           null
         );
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.dataTable = resfilter.data;
       } catch {
         return;
@@ -982,11 +982,11 @@ export default {
      */
     async btnConfirmYesDeleteMultipleReceipt() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         // Lấy các chứng từ không xóa được (đã ghi sổ) để thông báo
         const receiptNoDelete = this.dataTable.Data.filter((row) => row.IsNoted && this.ids.includes(row.ReceiptId));
         const res = await receiptService.deleteMutiple(this.ids);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
         this.isShowDialogConfirmDelete = false;
         this.isOverlay = false;
 
@@ -1079,8 +1079,20 @@ export default {
      */
     async toggleNote() {
       try {
-        await receiptService.updateNote(this.selectedReceipt);
-        await this.refreshData();
+        this.isShowLoading = true;
+        const res = await receiptService.updateNote(this.selectedReceipt);
+        this.isShowLoading = false;
+        if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
+          if (this.selectedReceipt.IsNoted) {
+            this.contentToastSuccess =
+              this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.unNoteSuccess;
+          } else {
+            this.contentToastSuccess =
+              this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.FORM_PAYMENT.freeText.noteSuccess;
+          }
+          this.onShowToastMessage();
+          this.dataTable = await this.getListReceipt(20, 1, "", null);
+        }
       } catch (error) {
         this.dataNotNull.push(error.Data);
         this.titleDialogError =
@@ -1097,9 +1109,9 @@ export default {
      */
     async exportData() {
       try {
-        this.isShowLoadding = true;
+        this.isShowLoading = true;
         await receiptService.exportData(this.textSearch, this.statusFilter);
-        this.isShowLoadding = false;
+        this.isShowLoading = false;
       } catch {
         return;
       }
@@ -1113,7 +1125,9 @@ export default {
     async onUnNote() {
       try {
         if (this.ids && this.ids.length > 0) {
+          this.isShowLoading = true;
           const res = await receiptService.updateMultipleNote(this.ids, false);
+          this.isShowLoading = false;
           if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
             this.contentToastSuccess =
               this.$_MISAResource[this.$_LANG_CODE].RECEIPT_PAYMENT.LIST_RECEIPT.freeText.unNoteSuccess;

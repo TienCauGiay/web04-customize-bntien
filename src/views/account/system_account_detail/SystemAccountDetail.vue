@@ -316,6 +316,7 @@
         </div>
       </div>
     </div>
+    <img v-show="isShowLoading" class="loading-form" src="../../../assets/img/loading.svg" alt="loading" />
   </div>
   <!-- dialog acoount input data not blank -->
   <misa-dialog-data-not-null
@@ -453,6 +454,8 @@ export default {
       checkedAccounting: false,
       // Biến lưu các đối tượng chưa dùng
       obj: { UserObject: "", UserObjectName: "" },
+      // Biến quy định trạng thái hiển thị loading
+      isShowLoading: false,
     };
   },
 
@@ -678,7 +681,9 @@ export default {
      */
     async checkAccountExists() {
       try {
+        this.isShowLoading = true;
         const res = await accountService.getByCode(this.account.AccountNumber);
+        this.isShowLoading = false;
         return res.data;
       } catch {
         return null;
@@ -732,7 +737,9 @@ export default {
             let accountByNumber = await this.checkAccountExists();
             if (!accountByNumber) {
               // Nếu số tài khoản chưa tồn tại trong hệ thống
+              this.isShowLoading = true;
               const res = await accountService.create(this.account);
+              this.isShowLoading = false;
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -762,7 +769,9 @@ export default {
               let accountByNumber = await this.checkAccountExists();
               // Nếu số tài khoản chưa tồn tại trong hệ thống hoặc tồn tại nhưng trùng với tài khoản đang sửa
               if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
+                this.isShowLoading = true;
                 const res = await accountService.update(this.accountSelected.AccountId, this.account);
+                this.isShowLoading = false;
                 if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
@@ -802,7 +811,9 @@ export default {
             let accountByNumber = await this.checkAccountExists();
             if (!accountByNumber) {
               // Nếu số tài khoản chưa tồn tại trong hệ thống
+              this.isShowLoading = true;
               const res = await accountService.create(this.account);
+              this.isShowLoading = false;
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -836,7 +847,9 @@ export default {
               let accountByNumber = await this.checkAccountExists();
               // Nếu số tài khoản chưa tồn tại trong hệ thống hoặc tồn tại trùng với tài khoản đang sửa
               if (!accountByNumber || accountByNumber.AccountNumber === this.accountSelected.AccountNumber) {
+                this.isShowLoading = true;
                 const res = await accountService.update(this.accountSelected.AccountId, this.account);
+                this.isShowLoading = false;
                 this.account = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 this.focusCode();
@@ -1052,7 +1065,9 @@ export default {
           newValue = "";
         }
         this.searchGeneralAccountTimeOut = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListAccount = await accountService.getBySearchFilter(20, 1, newValue);
+          this.isShowLoading = false;
           this.accounts = newListAccount.data.Data;
           if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
             this.accounts = this.accounts.filter(

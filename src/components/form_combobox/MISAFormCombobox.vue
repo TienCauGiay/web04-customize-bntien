@@ -62,16 +62,7 @@
           {{ this.$_MISAResource[this.$_LANG_CODE].FORM.NOT_FOUND }}
         </div>
       </div>
-      <!-- <div
-        class="form-cbb-menu-item"
-        style="justify-content: center; position: relative"
-      >
-        <img
-          class="form-cbb-loading"
-          src="../../assets/img/loading.svg"
-          alt="loading"
-        />
-      </div> -->
+      <!-- <img class="form-cbb-loading" src="../../assets/img/loading.svg" alt="loading" v-if="isShowLoadding" /> -->
     </div>
   </div>
 </template>
@@ -141,8 +132,8 @@ export default {
      */
     async onSearchChange($event) {
       try {
-        await this.$_MISAEmitter.emit("onSearchChangeFormCBB", $event.target.value, this.propCode);
         this.isShowSelectEntity = true;
+        await this.$_MISAEmitter.emit("onSearchChangeFormCBB", $event.target.value, this.propCode);
       } catch {
         return;
       }

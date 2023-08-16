@@ -1329,6 +1329,7 @@
     ></misa-dialog-data-exist>
     <!-- dialog save and close -->
     <misa-dialog-data-change v-if="isShowDialogDataChange"></misa-dialog-data-change>
+    <img v-show="isShowLoading" class="loading-form" src="../../../assets/img/loading.svg" alt="loading" />
   </div>
 </template>
 
@@ -1557,6 +1558,8 @@ export default {
       deliveryAddressOlds: [],
       // Xác định trạng thái checkbox giống địa chỉ nhà cung cấp
       checkedDeliveryAddress: false,
+      // Biến quy định trạng thái hiển thị loading
+      isShowLoading: false,
     };
   },
 
@@ -1965,7 +1968,9 @@ export default {
      */
     async checkProviderExists() {
       try {
+        this.isShowLoading = true;
         const res = await providerService.getByCode(this.provider.ProviderCode);
+        this.isShowLoading = false;
         return res.data;
       } catch {
         return null;
@@ -2089,7 +2094,9 @@ export default {
               if (this.provider.AmountDebt) {
                 this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
               }
+              this.isShowLoading = true;
               const res = await providerService.create(this.provider);
+              this.isShowLoading = false;
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -2134,7 +2141,9 @@ export default {
                 if (this.provider.AmountDebt) {
                   this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
                 }
+                this.isShowLoading = true;
                 const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
+                this.isShowLoading = false;
                 if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusOk(res.status) && res.data > 0) {
                   this.$_MISAEmitter.emit(
                     "onShowToastMessageUpdate",
@@ -2188,7 +2197,9 @@ export default {
               if (this.provider.AmountDebt) {
                 this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
               }
+              this.isShowLoading = true;
               const res = await providerService.create(this.provider);
+              this.isShowLoading = false;
               if (this.$_MISAEnum.CHECK_STATUS.isResponseStatusCreated(res.status) && res.data > 0) {
                 this.$_MISAEmitter.emit(
                   "onShowToastMessage",
@@ -2236,7 +2247,9 @@ export default {
                 if (this.provider.AmountDebt) {
                   this.provider.AmountDebt = this.provider.AmountDebt.replace(/\./g, "");
                 }
+                this.isShowLoading = true;
                 const res = await providerService.update(this.providerSelected.ProviderId, this.provider);
+                this.isShowLoading = false;
                 this.provider = {};
                 this.$_MISAEmitter.emit("setFormModeAdd");
                 await this.getNewCode();
@@ -2460,7 +2473,9 @@ export default {
      */
     async onSearchChangeGroup(textSearchGroup) {
       try {
+        this.isShowLoading = true;
         const filteredGroups = await groupService.getFilter(20, 1, textSearchGroup);
+        this.isShowLoading = false;
         this.listGroupSearch = filteredGroups.data;
       } catch {
         return;
@@ -2495,7 +2510,9 @@ export default {
           newValue = "";
         }
         this.searchEmployeeTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListEmployee = await employeeService.getFilter(20, 1, newValue);
+          this.isShowLoading = false;
           this.listEmployeeSearch = newListEmployee.data;
         }, 500);
       } catch {
@@ -2558,7 +2575,9 @@ export default {
           newValue = "";
         }
         this.searchTermPaymentTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           const newListTermPayment = await termPamentService.getFilter(20, 1, newValue);
+          this.isShowLoading = false;
           this.listTermPayment = newListTermPayment.data;
         }, 500);
       } catch {
@@ -2867,7 +2886,9 @@ export default {
           newValue = "";
         }
         this.searchReceivableTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           this.listReceivable = await this.getListReceivalbe(20, 1, newValue);
+          this.isShowLoading = false;
         }, 500);
       } catch {
         return;
@@ -2925,7 +2946,9 @@ export default {
           newValue = "";
         }
         this.searchPayableTimeout = setTimeout(async () => {
+          this.isShowLoading = true;
           this.listPayable = await this.getListPayable(20, 1, newValue);
+          this.isShowLoading = false;
         }, 500);
       } catch {
         return;
