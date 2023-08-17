@@ -157,7 +157,7 @@
                 {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.purchasStaff }}
               </th>
               <th type="feat" class="text-center entity-border-right e-birthday">
-                {{ this.$_MISAResource[this.$_LANG_CODE].EMPLOYEE_COL_NAME.FEATURE }}
+                {{ this.$_MISAResource[this.$_LANG_CODE].PROVIDER.colTableName.feature }}
               </th>
             </tr>
           </thead>
@@ -523,7 +523,9 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
-      (this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT), (this.textSearch = "");
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
+      this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
+      this.textSearch = "";
       await this.getListProvider();
     },
     /**

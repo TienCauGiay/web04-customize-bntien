@@ -17,6 +17,7 @@ const PROVIDER = {
         rawCode: "Mã số thuế",
         phoneNumber: "Điện thoại",
         purchasStaff: "Nhân viên mua hàng",
+        feature: "Chức năng"
     },
     confirmDelete: {
         prev: "Bạn có thực sự muốn xóa nhà cung cấp <",

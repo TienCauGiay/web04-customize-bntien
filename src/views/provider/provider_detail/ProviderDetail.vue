@@ -1272,7 +1272,7 @@
                   </template>
                 </tbody>
                 <tfoot>
-                  <td colspan="4">
+                  <td colspan="5">
                     <misa-button-extra
                       :textButtonExtra="this.$_MISAResource[this.$_LANG_CODE].PROVIDER.form.textProperty.addRow"
                       @click="btnAddRowAddress"
@@ -1484,7 +1484,11 @@ export default {
 
   mounted() {
     // focus vào ô đầu tiên khi mở form chi tiết
-    this.focusCode();
+    if (this.providerSelected.IsPersonal) {
+      this.$refs.ProviderCode.focus();
+    } else {
+      this.focusCode();
+    }
     // Đăng kí các sự kiện
     this.$refs.FormDetailProvider.addEventListener("keydown", this.handleKeyDown);
   },
@@ -1767,7 +1771,7 @@ export default {
      */
     async getAccountProvider() {
       try {
-        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+        if (this.provider.ProviderId) {
           const res = await accountProviderService.getByProviderId(this.provider.ProviderId);
           this.provider.AccountProviders = res.data;
           this.accountProviderOlds = JSON.parse(JSON.stringify(res.data));
@@ -1786,7 +1790,7 @@ export default {
      */
     async getDeliveryAddress() {
       try {
-        if (this.statusFormMode == this.$_MISAEnum.FORM_MODE.Edit) {
+        if (this.provider.ProviderId) {
           const res = await deliveryAddressService.getByProviderId(this.provider.ProviderId);
           this.provider.DeliveryAddresses = res.data;
           this.deliveryAddressOlds = JSON.parse(JSON.stringify(res.data));
@@ -3062,6 +3066,6 @@ input {
 }
 
 #detail-info-provider .overflow-auto {
-  overflow: auto;
+  overflow-y: auto;
 }
 </style>

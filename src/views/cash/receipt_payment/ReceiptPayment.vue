@@ -627,6 +627,7 @@ export default {
      */
     async refreshData() {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
       this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
       this.textSearch = "";
       this.statusFilter = null;

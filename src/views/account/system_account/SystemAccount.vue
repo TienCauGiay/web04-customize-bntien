@@ -468,6 +468,7 @@ export default {
       this.selectedRecord = this.$_MISAEnum.RECORD.RECORD_DEFAULT;
       this.indexSelectedRecord = this.$_MISAEnum.RECORD.INDEX_SELECTED_DEFAULT;
       this.textSearch = "";
+      this.currentPage = this.$_MISAEnum.RECORD.CURRENT_PAGE;
       await this.getListAccount();
     },
     /**
@@ -653,9 +654,14 @@ export default {
      * created date: 20-07-2023 05:06:02
      */
     async onDeleteAccount() {
-      this.accountIdDeleteSelected = this.selectedAccount.AccountId;
-      this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
-      this.isShowDialogConfirmDelete = true;
+      if (this.selectedAccount.IsParent == this.$_MISAEnum.BOOL.TRUE) {
+        this.dataError.push(this.$_MISAResource[this.$_LANG_CODE].ACCOUNT.contentDeleteFailed);
+        this.isShowDialogDataError = true;
+      } else if (this.selectedAccount.IsParent == this.$_MISAEnum.BOOL.FALSE) {
+        this.accountIdDeleteSelected = this.selectedAccount.AccountId;
+        this.accountNumberDeleteSelected = this.selectedAccount.AccountNumber;
+        this.isShowDialogConfirmDelete = true;
+      }
       this.isOverlay = true;
     },
     /**

@@ -246,11 +246,6 @@
   width: calc(100% - 570px);
 }
 
-.table-input-col-5{
-  width: 20px;
-  position: unset;
-}
-
 
 .table-input td:first-child{
   border-bottom: 1px solid var(--color-border-default);
@@ -308,7 +303,8 @@
 
 .delivery-2, .delivery-4{
   width: 32px;
-  max-width: 20px;
+  max-width: 32px;
+  padding: 0 8px;
 }
 
 .delivery-3{
@@ -316,8 +312,16 @@
   max-width: 200px;
 }
 
+.delivery-4{
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
 #table-input-address-other{
   margin-top: -5px;
+  width: calc(100% - 16px);
+  max-width: calc(100% - 16px);
 }
 
 #table-input-address-other th{
@@ -332,6 +336,12 @@
 #table-input-address-other td:last-child{
   background-color: unset;
   border-top: unset;
+}
+
+#table-input-address-other th:not(:first-child), 
+#table-input-address-other td:not(:first-child)
+{
+  padding: 0 8px;
 }
 
 #table-input-address-other td:first-child{
