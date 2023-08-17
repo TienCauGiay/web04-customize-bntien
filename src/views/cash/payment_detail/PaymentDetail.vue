@@ -1664,9 +1664,9 @@ export default {
           } else if (prop === "EmployeeId" || prop === "FullName") {
             this.$refs.EmployeeId.focus();
           } else if (prop == "AccountDebtId") {
-            this.$refs[`AccountDebtId${this.indexSelectRow}`][0].focus();
+            this.$refs[`AccountDebtId${this.indexSelectRow}`][0]?.focus();
           } else if (prop == "AccountBalanceId") {
-            this.$refs[`AccountBalanceId${this.indexSelectRow}`][0].focus();
+            this.$refs[`AccountBalanceId${this.indexSelectRow}`][0]?.focus();
           } else {
             this.$nextTick(() => {
               this.$refs[prop].focus();

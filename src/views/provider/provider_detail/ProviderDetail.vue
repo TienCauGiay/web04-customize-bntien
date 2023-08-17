@@ -1917,7 +1917,7 @@ export default {
               }
               break;
             case "EmailContacter":
-            case "EmailReceiver":
+              // case "EmailReceiver":
               if (this.provider[refInput]) {
                 if (
                   helperCommon.isMaxLengthInput(

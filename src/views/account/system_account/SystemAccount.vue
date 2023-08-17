@@ -176,7 +176,7 @@
     <div class="pagination">
       <p>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.TOTAL }}:
-        <b>{{ this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
+        <b>{{ textSearch ? recordTextSearch : this.dataTable.TotalRecord ? this.dataTable.TotalRecord : 0 }}</b>
         {{ this.$_MISAResource[this.$_LANG_CODE].TEXT_CONTENT.RECORD }}
       </p>
       <div class="pagination-detail">
@@ -378,6 +378,8 @@ export default {
       textStateAccount: "",
       // Biến quy định trạng thái hiển thị dialog xác nhận thay đổi
       isShowToggleState: false,
+      // Biến lưu số lượng bản ghi khi textSearch khác rỗng
+      recordTextSearch: 0,
     };
   },
 
@@ -890,6 +892,8 @@ export default {
           );
           this.isShowLoading = false;
           this.dataTable = searchAccounts.data;
+          this.dataTable.TotalRecord = this.dataTable.Data.filter((x) => x.IsRoot == this.$_MISAEnum.BOOL.TRUE).length;
+          this.recordTextSearch = this.dataTable.Data.length;
 
           this.statusExpand.isExpand = true;
           this.statusExpand.isClicked = true;

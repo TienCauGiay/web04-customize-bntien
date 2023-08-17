@@ -217,7 +217,6 @@ export default {
             // Bấm enter
             if (this.isShowSelectMenu) {
               this.toggleSelectEntity(this.listEntitySearchCBB.Data[this.indexEntitySelected]);
-              this.isShowSelectMenu = false;
             } else {
               this.isShowSelectMenu = true;
               this.indexEntitySelected = 0;
