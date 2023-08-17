@@ -407,9 +407,9 @@
               </tr>
             </thead>
             <tbody>
-              <template v-for="(item, index) in receipt.AccountantList" :key="index">
+              <template v-for="(item, index) in receipt.AccountantList" :key="item.AccountantId">
                 <tr @click="focusRow(index)" v-if="item.Flag != this.$_MISAEnum.STATUS_FLAG.Delete">
-                  <td class="table-col-1 text-center">{{ index + 1 }}</td>
+                  <td class="table-col-1 text-center">{{ filteredIndex(index) }}</td>
                   <td class="table-col-2">
                     <misa-input
                       v-model="item.Description"
@@ -2171,6 +2171,21 @@ export default {
       } catch {
         return;
       }
+    },
+
+    /**
+     * Mô tả: Tính toán chỉ số index trong table hạch toán
+     * created by : BNTIEN
+     * created date: 18-08-2023 01:15:31
+     */
+    filteredIndex(index) {
+      let count = 0;
+      for (let i = 0; i <= index; i++) {
+        if (this.receipt.AccountantList[i]?.Flag !== this.$_MISAEnum.STATUS_FLAG.Delete) {
+          count++;
+        }
+      }
+      return count;
     },
   },
 
